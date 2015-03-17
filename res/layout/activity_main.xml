@@ -12,23 +12,11 @@
         android:layout_weight="1"
         android:clickable="true" />
 
-    <LinearLayout
+    <Button
+        android:id="@+id/bn_logout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/tv_result_show"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/bn_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="登陆" />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:onClick="logout"
+        android:text="退出" />
 
 </LinearLayout>

@@ -1,6 +1,8 @@
 package jason.wondermap.controler;
 
-import jason.wondermap.utils.JasonLog;
+import jason.wondermap.R;
+import jason.wondermap.manager.HelloMessageManager;
+import jason.wondermap.utils.L;
 import android.content.Context;
 import android.view.MotionEvent;
 
@@ -21,9 +23,12 @@ import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 
 /**
@@ -44,6 +49,8 @@ public class WMapControler {
 	private LocationMode mCurrentMode; // 定位模式（普通、跟随、罗盘）
 	private BitmapDescriptor mCurrentMarker;// 定位图标样式
 	private boolean isFirstLoc = true; // 是否首次定位
+	private double lat = 0.0;
+	private double lng = 0.0;
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -54,7 +61,7 @@ public class WMapControler {
 	 */
 	public void perfomZoom(float zoomLevel) {
 		if (zoomLevel < 3 || zoomLevel > 19) {
-			JasonLog.log("请输入正确的缩放级别");
+			L.d("请输入正确的缩放级别");
 			return;
 		}
 		MapStatusUpdate u = MapStatusUpdateFactory.zoomTo(zoomLevel);
@@ -66,7 +73,7 @@ public class WMapControler {
 	 */
 	public void perfomRotate(int rotateAngle) {
 		if (rotateAngle < -180 || rotateAngle > 180) {
-			JasonLog.log("请输入正确的旋转角度");
+			L.d("请输入正确的旋转角度");
 		}
 		MapStatus ms = new MapStatus.Builder(mBaiduMap.getMapStatus()).rotate(
 				rotateAngle).build();
@@ -79,7 +86,7 @@ public class WMapControler {
 	 */
 	public void perfomOverlook(int overlookAngle) {
 		if (overlookAngle < -45 || overlookAngle > 0) {
-			JasonLog.log("请输入正确的俯角");
+			L.d("请输入正确的俯角");
 		}
 		MapStatus ms = new MapStatus.Builder(mBaiduMap.getMapStatus())
 				.overlook(overlookAngle).build();
@@ -127,6 +134,45 @@ public class WMapControler {
 	}
 
 	/**
+	 * 要在定位成功之后才能获取到正确值
+	 * 
+	 * @return
+	 */
+	public double getLat() {
+		return lat;
+	}
+
+	/**
+	 * 要在定位成功之后才能获取到正确值
+	 * 
+	 * @return
+	 */
+	public double getLng() {
+		return lng;
+	}
+
+	/**
+	 * 以默认图标显示marker
+	 */
+	public Marker addMarker(double lat, double lng) {
+		BitmapDescriptor bd = BitmapDescriptorFactory
+				.fromResource(R.drawable.icon_gcoding);
+		LatLng ll = new LatLng(lat, lng);
+		OverlayOptions oo = new MarkerOptions().position(ll).icon(bd);
+		return (Marker) (mBaiduMap.addOverlay(oo));
+	}
+
+	/**
+	 * 地图上面显示marker
+	 */
+	public Marker addMarker(double lat, double lng, int icon) {
+		BitmapDescriptor bd = BitmapDescriptorFactory.fromResource(icon);
+		LatLng ll = new LatLng(lat, lng);
+		OverlayOptions oo = new MarkerOptions().position(ll).icon(bd);
+		return (Marker) (mBaiduMap.addOverlay(oo));
+	}
+
+	/**
 	 * 监听地图的各种触摸事件，之后应该实现为多个回调都可以接收到事件，暂时不使用
 	 * 
 	 */
@@ -169,7 +215,7 @@ public class WMapControler {
 		MapStatus ms = mBaiduMap.getMapStatus();
 		state += String.format("zoom=%.1f rotate=%d overlook=%d", ms.zoom,
 				(int) ms.rotate, (int) ms.overlook);
-		JasonLog.log(state);
+		// L.d(state);
 	}
 
 	/**
@@ -182,19 +228,21 @@ public class WMapControler {
 			// map view 销毁后不在处理新接收的位置
 			if (location == null || mMapView == null)
 				return;
+			lat = location.getLatitude();
+			lng = location.getLongitude();
 			MyLocationData locData = new MyLocationData.Builder()
 					.accuracy(location.getRadius())
 					// 此处设置开发者获取到的方向信息，顺时针0-360
-					.direction(100).latitude(location.getLatitude())
-					.longitude(location.getLongitude()).build();
+					.direction(100).latitude(lat).longitude(lng).build();
 			mBaiduMap.setMyLocationData(locData);
-			if (isFirstLoc) {
+			if (isFirstLoc) {// 第一次定位成功，移动地图，发送hello消息
 				isFirstLoc = false;
-				LatLng ll = new LatLng(location.getLatitude(),
-						location.getLongitude());
+				LatLng ll = new LatLng(lat, lng);
 				MapStatusUpdate u = MapStatusUpdateFactory
 						.newLatLngZoom(ll, 19);// 默认以当前坐标为中心，最大化显示
 				mBaiduMap.animateMapStatus(u);
+				// hello消息发送
+				HelloMessageManager.getInstance().sayHello();
 			}
 		}
 

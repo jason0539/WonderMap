@@ -2,25 +2,19 @@ package jason.wondermap;
 
 import jason.wondermap.controler.WMapControler;
 import jason.wondermap.manager.WAccountManager;
-import jason.wondermap.manager.WStorageManager;
-import jason.wondermap.utils.JasonLog;
+import jason.wondermap.utils.SharePreferenceUtil;
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
 
+import com.baidu.frontia.Frontia;
+import com.baidu.frontia.FrontiaAccount;
 import com.baidu.mapapi.map.MapView;
 
 public class MainActivity extends Activity {
 	// 地图图层
 	MapView mMapView = null;
-	Button logButton = null;
-	TextView resultTextView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,32 +22,11 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		mMapView = (MapView) findViewById(R.id.bmapView);
 		WMapControler.getInstance().init(mMapView, this);
-
-		logButton = (Button) findViewById(R.id.bn_login);
-		resultTextView = (TextView) findViewById(R.id.tv_result_show);
-		WAccountManager.getInstance().init(this, handler);
-		logButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				WAccountManager.getInstance().startBaidu();
-			}
-		});
 	}
 
-	 Handler handler = new Handler() {
-		public void handleMessage(Message msg) {
-			resultTextView.setText(msg.getData().getString("result"));
-		};
-	};
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode,
-			android.content.Intent data) {
-		WAccountManager.getInstance().onActivityResult(requestCode, resultCode,
-				data);
-	};
+	public void logout(View view) {// 退出逻辑需要处理
+		WAccountManager.getInstance().startBaiduLogout();
+	}
 
 	@Override
 	protected void onDestroy() {
