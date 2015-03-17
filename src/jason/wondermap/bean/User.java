@@ -2,27 +2,39 @@ package jason.wondermap.bean;
 
 import java.io.Serializable;
 
+import com.baidu.mapapi.map.Marker;
+
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String UserId;// 用户id
 	private String channelId;// 设备id
 	private String nick;// 昵称
 	private String headIcon;// 头像
+	private double lat;
+	private double lng;
+	private Marker mMarker;
 	private int group; // 分组
 
 	/**
-	 * @param UserId 
+	 * @param UserId
 	 * @param channelId
 	 * @param nick
 	 * @param headIcon
-	 * @param group 推送中的TAG实现分组发送
+	 * @param lat
+	 * @param lng
+	 * @param mMarker
+	 *            更新用户地图坐标的时候可能有用
+	 * @param group
+	 *            推送中的TAG实现分组发送
 	 */
 	public User(String UserId, String channelId, String nick, String headIcon,
-			int group) {
+			double lat, double lng, int group) {
 		this.UserId = UserId;
 		this.channelId = channelId;
 		this.nick = nick;
 		this.headIcon = headIcon;
+		this.lat = lat;
+		this.lng = lng;
 		this.group = group;
 	}
 
@@ -62,6 +74,30 @@ public class User implements Serializable {
 		this.headIcon = headIcon;
 	}
 
+	public double getLat() {
+		return lat;
+	}
+
+	public void setLat(double lat) {
+		this.lat = lat;
+	}
+
+	public double getLng() {
+		return lng;
+	}
+
+	public void setLng(double lng) {
+		this.lng = lng;
+	}
+
+	public Marker getMarker() {
+		return mMarker;
+	}
+
+	public void setMarker(Marker mMarker) {
+		this.mMarker = mMarker;
+	}
+
 	public int getGroup() {
 		return group;
 	}
@@ -73,8 +109,8 @@ public class User implements Serializable {
 	@Override
 	public String toString() {
 		return "User [UserId=" + UserId + ", channelId=" + channelId
-				+ ", nick=" + nick + ", headIcon=" + headIcon + ", group="
-				+ group + "]";
+				+ ", nick=" + nick + ", headIcon=" + headIcon + ",lat =" + lat
+				+ ",lng = " + lng + ", group=" + group + "]";
 	}
 
 }

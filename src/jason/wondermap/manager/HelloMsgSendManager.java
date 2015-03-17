@@ -11,7 +11,7 @@ import java.util.TimerTask;
 
 import com.google.gson.Gson;
 
-public class HelloMessageManager {
+public class HelloMsgSendManager {
 	private SendMsgAsyncTask task;
 	private Gson mGson;
 //	private Timer mTimer;
@@ -51,7 +51,7 @@ public class HelloMessageManager {
 	};
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-	private HelloMessageManager() {
+	private HelloMsgSendManager() {
 		init();
 	}
 
@@ -65,11 +65,11 @@ public class HelloMessageManager {
 			task.stop();
 	}
 
-	private static HelloMessageManager instance = null;
+	private static HelloMsgSendManager instance = null;
 
-	public static HelloMessageManager getInstance() {
+	public static HelloMsgSendManager getInstance() {
 		if (instance == null) {
-			instance = new HelloMessageManager();
+			instance = new HelloMsgSendManager();
 		}
 		return instance;
 	}

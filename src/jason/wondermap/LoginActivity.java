@@ -1,7 +1,5 @@
 package jason.wondermap;
 
-import jason.wondermap.bean.User;
-import jason.wondermap.dao.UserDB;
 import jason.wondermap.interfacer.onBaiduPushBindListener;
 import jason.wondermap.manager.WAccountManager;
 import jason.wondermap.receiver.BDPushMessageReceiver;
@@ -29,7 +27,7 @@ public class LoginActivity extends FragmentActivity implements
 	private LoadingDialog mLoadingDialog;
 	// 工具相关
 	private SharePreferenceUtil mSpUtil;
-	private UserDB mUserDB;
+//	private UserDB mUserDB;
 
 	private Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -73,10 +71,10 @@ public class LoginActivity extends FragmentActivity implements
 			if (mLoadingDialog != null && mLoadingDialog.isVisible())
 				mLoadingDialog.dismiss();
 			L.d("成功绑定推送");
-			// 如果绑定账号成功，由于第一次运行，给同一tag的人推送一条新人消息
-			User u = new User(mSpUtil.getUserId(), mSpUtil.getChannelId(),
-					mSpUtil.getUserNick(), mSpUtil.getUserHeadPicUrl(), 0);
-			mUserDB.addUser(u);// 把自己添加到数据库
+//			// 如果绑定账号成功，由于第一次运行，给同一tag的人推送一条新人消息
+//			User u = new User(mSpUtil.getUserId(), mSpUtil.getChannelId(),
+//					mSpUtil.getUserNick(), mSpUtil.getUserHeadPicUrl(), 0);
+//			mUserDB.addUser(u);// 把自己添加到数据库,区分用户和好友的逻辑在这里不存储自己
 			mSpUtil.login();// 绑定推送后即可视为登陆成功
 			finish();
 			// 绑定推送成功则进入主页，等定位成功发送hello消息
@@ -128,7 +126,7 @@ public class LoginActivity extends FragmentActivity implements
 		mLoadingDialog = new LoadingDialog();
 		// 工具初始化
 		mSpUtil = WonderMapApplication.getInstance().getSpUtil();
-		mUserDB = WonderMapApplication.getInstance().getUserDB();
+//		mUserDB = WonderMapApplication.getInstance().getUserDB();
 		// 账户绑定监听器
 		WAccountManager.getInstance().init(this, mHandler);
 		// 推送绑定监听器

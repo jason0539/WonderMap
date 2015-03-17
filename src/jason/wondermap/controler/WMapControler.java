@@ -1,10 +1,18 @@
 package jason.wondermap.controler;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import jason.wondermap.R;
-import jason.wondermap.manager.HelloMessageManager;
+import jason.wondermap.WonderMapApplication;
+import jason.wondermap.bean.User;
+import jason.wondermap.manager.HelloMsgSendManager;
+import jason.wondermap.manager.WMapUserManager;
 import jason.wondermap.utils.L;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.MotionEvent;
+import android.widget.Button;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -16,8 +24,10 @@ import com.baidu.mapapi.map.BaiduMap.OnMapDoubleClickListener;
 import com.baidu.mapapi.map.BaiduMap.OnMapLongClickListener;
 import com.baidu.mapapi.map.BaiduMap.OnMapStatusChangeListener;
 import com.baidu.mapapi.map.BaiduMap.OnMapTouchListener;
+import com.baidu.mapapi.map.BaiduMap.OnMarkerClickListener;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
@@ -43,6 +53,7 @@ public class WMapControler {
 	private BaiduMap mBaiduMap;// 地图控制
 	private LatLng currentPt;// 当前触摸地点
 	private String touchType;// 触摸事件类型
+	private InfoWindow mInfoWindow;// 点击用户图标弹出窗
 
 	private LocationClient mLocClient;// 定位相关
 	private MyLocationListenner myListener = new MyLocationListenner();// 定位回调函数
@@ -172,6 +183,47 @@ public class WMapControler {
 		return (Marker) (mBaiduMap.addOverlay(oo));
 	}
 
+	public Marker addUser(User user) {
+		Marker marker = addMarker(user.getLat(), user.getLng());
+		return marker;
+	}
+
+	public void updateUserPosition(User oldUser) {
+		Marker marker = oldUser.getMarker();
+		marker.setPosition(new LatLng(oldUser.getLat(), oldUser.getLng()));
+		mBaiduMap.hideInfoWindow();
+	}
+
+	OnMarkerClickListener onMarkerClickListener = new OnMarkerClickListener() {
+
+		@Override
+		public boolean onMarkerClick(Marker mark) {
+			ArrayList<User> mapUsers = WMapUserManager.getInstance()
+					.getMapUsers();
+			for (User user : mapUsers) {
+				if (user.getMarker() == mark) {
+					onMyMapMarkerClick(user, mark);
+				}
+			}
+			return true;
+		}
+	};
+
+	/**
+	 * 点击地图marker的事件处理
+	 * 
+	 * @param user
+	 * @param marker
+	 */
+	private void onMyMapMarkerClick(User user, Marker marker) {
+		Button button = new Button(WonderMapApplication.getInstance());
+		button.setBackgroundResource(R.drawable.popup);
+		button.setText(user.getNick());
+		mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(button),
+				marker.getPosition(), -47, null);
+		mBaiduMap.showInfoWindow(mInfoWindow);
+	}
+
 	/**
 	 * 监听地图的各种触摸事件，之后应该实现为多个回调都可以接收到事件，暂时不使用
 	 * 
@@ -242,7 +294,7 @@ public class WMapControler {
 						.newLatLngZoom(ll, 19);// 默认以当前坐标为中心，最大化显示
 				mBaiduMap.animateMapStatus(u);
 				// hello消息发送
-				HelloMessageManager.getInstance().sayHello();
+				HelloMsgSendManager.getInstance().sayHello();
 			}
 		}
 
@@ -258,6 +310,7 @@ public class WMapControler {
 		mContext = context;
 		mMapView = mapView;
 		mBaiduMap = mMapView.getMap();
+		mBaiduMap.setOnMarkerClickListener(onMarkerClickListener);// 用户的marker点击监听
 		mCurrentMode = LocationMode.NORMAL;
 		mCurrentMarker = null;// null则为默认
 		mBaiduMap.setMyLocationEnabled(true); // 开启定位图层
