@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:background="@drawable/main_weixin_list_item"
+    android:padding="3dp" >
+
+    <RelativeLayout
+        android:id="@+id/id_item_ly"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent" >
+
+        <ImageView
+            android:id="@+id/header_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/xiaohei" />
+
+        <TextView
+            android:id="@+id/id_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/header_icon"
+            android:text="小黑"
+            android:textColor="#000" />
+
+        <TextView
+            android:id="@+id/id_userId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/header_icon"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="3dp"
+            android:layout_toRightOf="@id/header_icon"
+            android:text="你滚...." />
+    </RelativeLayout>
+
+</RelativeLayout>

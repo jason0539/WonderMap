@@ -1,6 +1,7 @@
 package jason.wondermap.fragment;
 
 import jason.wondermap.R;
+import jason.wondermap.manager.WMapUserManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.view.MainBottomBar;
 
@@ -16,32 +17,32 @@ public class MapHomeFragment extends ContentFragment {
 	private final static String TAG = MapHomeFragment.class.getSimpleName();
 	// bottomBar
 	private MainBottomBar bottomBar;
+	private ViewGroup mRootView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		L.d(TAG + ":onCreateView");
 		// TODO Auto-generated method stub
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 		if (view != null) {
 			view.setClickable(false); // 允许地图可点击
 		}
-
 		return view;
 	}
 
 	@Override
 	protected View onCreateContentView(LayoutInflater inflater) {
 		L.d(TAG + ":onCreateContentView");
-		ViewGroup viewGroup = (ViewGroup) inflater.inflate(
-				R.layout.fragment_map, null);
-		bottomBar = new MainBottomBar(
-				viewGroup.findViewById(R.id.main_bottom_bar), getType());
-		return viewGroup;
+		mRootView = (ViewGroup) inflater.inflate(R.layout.fragment_map, null);
+		return mRootView;
 	}
 
 	@Override
 	protected void onInitView() {
 		L.d(TAG + ":onInitView");
+		bottomBar = new MainBottomBar(
+				mRootView.findViewById(R.id.main_bottom_bar));
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -66,6 +67,7 @@ public class MapHomeFragment extends ContentFragment {
 	@Override
 	public void onResume() {
 		L.d(TAG + ":onResume");
+		bottomBar.onResume();
 		super.onResume();
 	}
 

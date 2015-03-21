@@ -10,8 +10,8 @@ import jason.wondermap.dao.UserDB;
 import jason.wondermap.interfacer.OnBaiduPushNewFriendListener;
 import jason.wondermap.interfacer.OnBaiduPushNewMessageListener;
 import jason.wondermap.interfacer.OnNetChangeListener;
+import jason.wondermap.interfacer.OnUnReadMessageUpdateListener;
 import jason.wondermap.task.SendMsgAsyncTask;
-import jason.wondermap.utils.ConvertUtil;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.StaticConstant;
 import jason.wondermap.utils.T;
@@ -19,12 +19,14 @@ import jason.wondermap.utils.TimeUtil;
 
 import java.util.ArrayList;
 
+import android.R.integer;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.text.TextUtils;
 
-public class PushMsgManager {
+public class PushMsgReceiveManager {
+
 	/**
 	 * 处理推送过来的消息
 	 * 
@@ -55,11 +57,13 @@ public class PushMsgManager {
 		// 漏网之鱼,用户好友两层逻辑，用户存放到list，好友存放到数据库
 		if (user == null) {
 			user = new User(userId, msg.getChannelId(), msg.getNickname(),
-					msg.getHeadIcon(), msg.getLat(), msg.getLng(), 0);
-			// userDB.addUser(user);//暂时不做存储好友
+					msg.getHeadIcon(), msg.getLat(), msg.getLng(), "");
+			userDB.addUser(user);// 暂时不做存储好友
 			// 通知监听的面板,新人加入
-			for (OnBaiduPushNewFriendListener listener : friendListeners)
-				listener.onNewFriend(user);
+			if (friendListeners.size() > 0) {
+				for (OnBaiduPushNewFriendListener listener : friendListeners)
+					listener.onNewFriend(user);
+			}
 		}
 		if (msgListeners.size() > 0) {// 有监听的时候，传递下去
 			for (int i = 0; i < msgListeners.size(); i++)
@@ -73,6 +77,9 @@ public class PushMsgManager {
 					TimeUtil.getTime(msg.getTimeSamp()));
 			WonderMapApplication.getInstance().getMessageDB()
 					.add(userId, chatMessage);
+			for (int i = 0; i < unReadListeners.size(); i++) {
+				unReadListeners.get(i).unReadMessageUpdate(1);
+			}
 			// showNotify(msg);
 		}
 	}
@@ -85,30 +92,20 @@ public class PushMsgManager {
 		String userId = msg.getUserId();
 		String hello = msg.getHello();
 		if (!TextUtils.isEmpty(hello)) {
-			boolean hasUserIdAdd = WMapUserManager.getInstance().containsUser(
-					userId);
-			// 添加过则更新位置
-			if (hasUserIdAdd) {
-				WMapUserManager.getInstance().updateUser(msg);
-				L.d(msg.getNickname() + "已经添加过，更新位置");
-			}
-			// 没添加则添加
-			else {
-				User u = ConvertUtil.HelloMsgToUser(msg);
-				WMapUserManager.getInstance().addUser(u);
-				// WonderMapApplication.getInstance().getUserDB().addUser(u);
-				// 存入或更新好友，暂时不做好友功能
-				T.showShort(WonderMapApplication.getInstance(), u.getNick()
-						+ "加入");
-			}
+			WMapUserManager.getInstance().addUserFromPushMsg(userId, msg);// 更新地图
+			// User u = ConvertUtil.HelloMsgToUser(msg);
+			// WonderMapApplication.getInstance().getUserDB().addUser(u);//
+			// 存入或更新好友，不谈话不算好友
 			HelloMessage message = new HelloMessage(System.currentTimeMillis(),
 					"");
 			message.setWorld(StaticConstant.SayWorld);
 			new SendMsgAsyncTask(WonderMapApplication.getInstance().getGson()
 					.toJson(message), userId).send();
-			// // 通知监听的面板，新人加入
+			// // 通知监听的面板，新人加入，如果没有监听面板，则面板进入时会从数据库读取，同样可以加入
+			// if (friendListeners.size() > 0) {
 			// for (OnBaiduPushNewFriendListener listener : friendListeners)
 			// listener.onNewFriend(u);
+			// }
 			return true;
 		}
 		return false;
@@ -123,24 +120,25 @@ public class PushMsgManager {
 		String world = msg.getWorld();
 		String userId = msg.getUserId();
 		if (!TextUtils.isEmpty(world)) {
-			User u = new User(userId, msg.getChannelId(), msg.getNickname(),
-					msg.getHeadIcon(), msg.getLat(), msg.getLng(), 0);
-			WMapUserManager.getInstance().addUser(u);
+			// User u = ConvertUtil.HelloMsgToUser(msg);
+			WMapUserManager.getInstance().addUserFromPushMsg(userId, msg);
 			// WonderMapApplication.getInstance().getUserDB().addUser(u);//
-			// 存入或更新好友
-			T.showShort(WonderMapApplication.getInstance(), "收到" + u.getNick()
-					+ "回复");
-			// 通知监听的面板
-			for (OnBaiduPushNewFriendListener listener : friendListeners)
-				listener.onNewFriend(u);
-			// 添加好友位置
+			T.showShort(WonderMapApplication.getInstance(),
+					"收到" + msg.getNickname() + "回复");
+			// // 通知监听的面板
+			// if (friendListeners.size() > 0) {
+			// for (OnBaiduPushNewFriendListener listener : friendListeners)
+			// listener.onNewFriend(u);
+			// }
 			return true;
 		}
 		return false;
 	}
-	//＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝暂时用不到＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-	//＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝暂时用不到＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝暂时用不到＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝暂时用不到＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝暂时用不到＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	public static ArrayList<OnUnReadMessageUpdateListener> unReadListeners = new ArrayList<OnUnReadMessageUpdateListener>();
 	/**
 	 * 新消息的监听
 	 */
@@ -185,15 +183,15 @@ public class PushMsgManager {
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-	private PushMsgManager() {
+	private PushMsgReceiveManager() {
 
 	}
 
-	private static PushMsgManager instance = null;
+	private static PushMsgReceiveManager instance = null;
 
-	public static PushMsgManager getInstance() {
+	public static PushMsgReceiveManager getInstance() {
 		if (instance == null) {
-			instance = new PushMsgManager();
+			instance = new PushMsgReceiveManager();
 		}
 		return instance;
 	}

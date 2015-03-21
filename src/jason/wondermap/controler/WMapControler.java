@@ -1,17 +1,23 @@
 package jason.wondermap.controler;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.User;
+import jason.wondermap.fragment.BaseFragment;
+import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.manager.HelloMsgSendManager;
 import jason.wondermap.manager.WMapUserManager;
+import jason.wondermap.utils.ConvertUtil;
 import jason.wondermap.utils.L;
+import jason.wondermap.utils.StaticConstant;
+
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.baidu.location.BDLocation;
@@ -36,6 +42,7 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.baidu.mapapi.map.InfoWindow.OnInfoWindowClickListener;
 import com.baidu.mapapi.map.MyLocationConfiguration.LocationMode;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
@@ -215,12 +222,20 @@ public class WMapControler {
 	 * @param user
 	 * @param marker
 	 */
-	private void onMyMapMarkerClick(User user, Marker marker) {
+	private void onMyMapMarkerClick(final User user, Marker marker) {
 		Button button = new Button(WonderMapApplication.getInstance());
 		button.setBackgroundResource(R.drawable.popup);
 		button.setText(user.getNick());
+		OnInfoWindowClickListener listener = null;
+		listener = new OnInfoWindowClickListener() {
+			public void onInfoWindowClick() {
+				Bundle bundle = ConvertUtil.UserPutInBundle(user);
+				BaseFragment.getWMFragmentManager().showFragment(
+						WMFragmentManager.TYPE_CHAT, bundle);
+			}
+		};
 		mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(button),
-				marker.getPosition(), -47, null);
+				marker.getPosition(), -47, listener);
 		mBaiduMap.showInfoWindow(mInfoWindow);
 	}
 

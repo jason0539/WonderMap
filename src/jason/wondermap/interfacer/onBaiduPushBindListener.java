@@ -1,6 +1,6 @@
 package jason.wondermap.interfacer;
 
-public interface onBaiduPushBindListener {
+public interface OnBaiduPushBindListener {
 	/**
 	 * @param userId
 	 *            绑定云推送成功后返回的用户id

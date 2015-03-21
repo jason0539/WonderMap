@@ -1,5 +1,7 @@
 package jason.wondermap;
 
+import com.baidu.mapapi.map.MapView;
+
 import jason.sdk.dialog.JasonDialog;
 import jason.wondermap.controler.WMapControler;
 import jason.wondermap.fragment.BaseFragment;
@@ -15,8 +17,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-
-import com.baidu.mapapi.map.MapView;
 
 public class MainActivity extends FragmentActivity {
 	private WMFragmentManager fragmentManager;

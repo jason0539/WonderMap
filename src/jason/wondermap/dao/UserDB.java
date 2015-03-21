@@ -32,7 +32,7 @@ public class UserDB {
 			u.setHeadIcon(c.getString(c.getColumnIndex("img")));
 			u.setNick(c.getString(c.getColumnIndex("nick")));
 			u.setChannelId(c.getString(c.getColumnIndex("channelId")));
-			u.setGroup(c.getInt(c.getColumnIndex("_group")));
+			u.setGroup(c.getString(c.getColumnIndex("_group")));
 		} else {
 			return null;
 		}
@@ -74,7 +74,7 @@ public class UserDB {
 			u.setNick(c.getString(c.getColumnIndex("nick")));
 			u.setHeadIcon(c.getString(c.getColumnIndex("img")));
 			u.setChannelId(c.getString(c.getColumnIndex("channelId")));
-			u.setGroup(c.getInt(c.getColumnIndex("_group")));
+			u.setGroup(c.getString(c.getColumnIndex("_group")));
 		}
 		return u;
 	}
@@ -101,7 +101,7 @@ public class UserDB {
 			u.setNick(c.getString(c.getColumnIndex("nick")));
 			u.setHeadIcon(c.getString(c.getColumnIndex("img")));
 			u.setChannelId(c.getString(c.getColumnIndex("channelId")));
-			u.setGroup(c.getInt(c.getColumnIndex("_group")));
+			u.setGroup(c.getString(c.getColumnIndex("_group")));
 			list.add(u);
 		}
 		c.close();
@@ -145,7 +145,7 @@ public class UserDB {
 			u.setNick(c.getString(c.getColumnIndex("nick")));
 			u.setHeadIcon(c.getString(c.getColumnIndex("img")));
 			u.setChannelId(c.getString(c.getColumnIndex("channelId")));
-			u.setGroup(c.getInt(c.getColumnIndex("_group")));
+			u.setGroup(c.getString(c.getColumnIndex("_group")));
 		}
 		c.close();
 		db.close();

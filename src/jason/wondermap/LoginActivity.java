@@ -1,6 +1,6 @@
 package jason.wondermap;
 
-import jason.wondermap.interfacer.onBaiduPushBindListener;
+import jason.wondermap.interfacer.OnBaiduPushBindListener;
 import jason.wondermap.manager.WAccountManager;
 import jason.wondermap.receiver.BDPushMessageReceiver;
 import jason.wondermap.utils.L;
@@ -21,7 +21,7 @@ import com.baidu.android.pushservice.PushConstants;
 import com.baidu.android.pushservice.PushManager;
 
 public class LoginActivity extends FragmentActivity implements
-		onBaiduPushBindListener {
+		OnBaiduPushBindListener {
 	// UI相关
 	private TextView resultTextView;
 	private LoadingDialog mLoadingDialog;

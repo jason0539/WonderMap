@@ -13,7 +13,7 @@ public class User implements Serializable {
 	private double lat;
 	private double lng;
 	private Marker mMarker;
-	private int group; // 分组
+	private String group; // 分组
 
 	/**
 	 * @param UserId
@@ -28,7 +28,7 @@ public class User implements Serializable {
 	 *            推送中的TAG实现分组发送
 	 */
 	public User(String UserId, String channelId, String nick, String headIcon,
-			double lat, double lng, int group) {
+			double lat, double lng, String group) {
 		this.UserId = UserId;
 		this.channelId = channelId;
 		this.nick = nick;
@@ -98,11 +98,11 @@ public class User implements Serializable {
 		this.mMarker = mMarker;
 	}
 
-	public int getGroup() {
+	public String getGroup() {
 		return group;
 	}
 
-	public void setGroup(int group) {
+	public void setGroup(String group) {
 		this.group = group;
 	}
 

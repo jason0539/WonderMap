@@ -3,8 +3,8 @@ package jason.wondermap.receiver;
 import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.HelloMessage;
-import jason.wondermap.interfacer.onBaiduPushBindListener;
-import jason.wondermap.manager.PushMsgManager;
+import jason.wondermap.interfacer.OnBaiduPushBindListener;
+import jason.wondermap.manager.PushMsgReceiveManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.NetUtil;
 import jason.wondermap.utils.PreUtils;
@@ -25,7 +25,7 @@ public class BDPushMessageReceiver extends FrontiaPushMessageReceiver {
 	/**
 	 * 接收绑定结果的监听器
 	 */
-	public static ArrayList<onBaiduPushBindListener> bindListeners = new ArrayList<onBaiduPushBindListener>();
+	public static ArrayList<OnBaiduPushBindListener> bindListeners = new ArrayList<OnBaiduPushBindListener>();
 
 	/*
 	 * ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝收到百度服务端推送过来的消息＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -42,7 +42,7 @@ public class BDPushMessageReceiver extends FrontiaPushMessageReceiver {
 		}
 		HelloMessage receivedMsg = WonderMapApplication.getInstance().getGson()
 				.fromJson(message, HelloMessage.class);
-		PushMsgManager.getInstance().handleMsg(receivedMsg);
+		PushMsgReceiveManager.getInstance().handleMsg(receivedMsg);
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝绑定后的相关回调＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝

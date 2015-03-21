@@ -4,34 +4,55 @@
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:background="@android:color/transparent"
+    android:baselineAligned="false"
     android:orientation="horizontal" >
 
-    <Button
-        android:id="@+id/btn_main_msg"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="消息" />
+        android:layout_weight="1" >
 
-    <Button
-        android:id="@+id/btn_main_friend"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="好友" />
+        <Button
+            android:id="@+id/btn_main_msg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="消息" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_main_discover"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="发现" />
+        android:layout_weight="1" >
 
-    <Button
-        android:id="@+id/btn_main_mine"
+        <Button
+            android:id="@+id/btn_main_friend"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="好友" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="我的" />
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/btn_main_discover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="发现" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/btn_main_mine"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="我的" />
+    </LinearLayout>
 
 </LinearLayout>
