@@ -17,7 +17,7 @@ public class AppStart extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.app_start);
+		setContentView(R.layout.activity_app_start);
 
 		mApplication = (WonderMapApplication) getApplication();
 		mPreferenceUtil = mApplication.getSpUtil();

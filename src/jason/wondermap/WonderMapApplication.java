@@ -59,10 +59,6 @@ public class WonderMapApplication extends FrontiaApplication {
 	 */
 	private MessageDB messageDB;
 
-	public synchronized static WonderMapApplication getInstance() {
-		return mApplication;
-	}
-
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -70,6 +66,7 @@ public class WonderMapApplication extends FrontiaApplication {
 		initData();
 	}
 
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝内部实现＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	private void initData() {
 		// 在使用SDK各组件之前初始化context信息，传入ApplicationContext
 		SDKInitializer.initialize(this);
@@ -88,6 +85,21 @@ public class WonderMapApplication extends FrontiaApplication {
 		messageDB = new MessageDB(this);
 	}
 
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	/**
+	 * 获取应用的全局上下文
+	 * 
+	 * @return
+	 */
+	public synchronized static WonderMapApplication getInstance() {
+		return mApplication;
+	}
+
+	/**
+	 * 获取百度推送服务器
+	 * 
+	 * @return
+	 */
 	public synchronized BaiduPush getBaiduPush() {
 		if (mBaiduPushServer == null)
 			mBaiduPushServer = new BaiduPush(BaiduPush.HTTP_METHOD_POST,
@@ -95,6 +107,11 @@ public class WonderMapApplication extends FrontiaApplication {
 		return mBaiduPushServer;
 	}
 
+	/**
+	 * 获取json转换工具
+	 * 
+	 * @return
+	 */
 	public synchronized Gson getGson() {
 		if (mGson == null)
 			// 不转换没有 @Expose 注解的字段
@@ -103,23 +120,44 @@ public class WonderMapApplication extends FrontiaApplication {
 		return mGson;
 	}
 
+	/**
+	 * 获取通知管理工具
+	 * 
+	 * @return
+	 */
 	public NotificationManager getNotificationManager() {
 		if (mNotificationManager == null)
 			mNotificationManager = (NotificationManager) getSystemService(android.content.Context.NOTIFICATION_SERVICE);
 		return mNotificationManager;
 	}
 
+	/**
+	 * 获取本地存储帮助类
+	 * 
+	 * @return
+	 */
 	public synchronized SharePreferenceUtil getSpUtil() {
 		if (mSpUtil == null)
 			mSpUtil = new SharePreferenceUtil(this, SP_FILE_NAME);
 		return mSpUtil;
 	}
 
+	/**
+	 * 获取消息数据存储帮助
+	 * 
+	 * @return
+	 */
 	public MessageDB getMessageDB() {
 		return messageDB;
 	}
 
+	/**
+	 * 获取用户数据存储帮助
+	 * 
+	 * @return
+	 */
 	public UserDB getUserDB() {
 		return userDB;
 	}
+
 }

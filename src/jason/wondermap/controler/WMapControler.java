@@ -306,8 +306,8 @@ public class WMapControler {
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
-	public void init(MapView mapView, Context context) {
-		mContext = context;
+	public void init(MapView mapView) {
+		mContext = WonderMapApplication.getInstance();
 		mMapView = mapView;
 		mBaiduMap = mMapView.getMap();
 		mBaiduMap.setOnMarkerClickListener(onMarkerClickListener);// 用户的marker点击监听

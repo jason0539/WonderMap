@@ -1,22 +1,35 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity" >
+    android:orientation="vertical" >
 
-    <com.baidu.mapapi.map.MapView
-        android:id="@+id/bmapView"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="80dp" >
+
+        <com.baidu.mapapi.map.MapView
+            android:id="@+id/bmapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true" />
+    </FrameLayout>
+    <!-- 底部Bar -->
+
+
+    <!-- 显示框架 -->
+
+    <FrameLayout
+        android:id="@+id/frame_main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <View
+        android:id="@+id/view_main_forbid_touch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:clickable="true" />
 
-    <Button
-        android:id="@+id/bn_logout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="logout"
-        android:text="退出" />
-
-</LinearLayout>
+</RelativeLayout>

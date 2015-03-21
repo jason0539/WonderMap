@@ -1,4 +1,4 @@
-package jason.wondermap.ui;
+package jason.wondermap.view;
 
 import jason.wondermap.R;
 import android.app.Dialog;

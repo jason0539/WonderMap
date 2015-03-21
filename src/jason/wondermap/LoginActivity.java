@@ -3,12 +3,12 @@ package jason.wondermap;
 import jason.wondermap.interfacer.onBaiduPushBindListener;
 import jason.wondermap.manager.WAccountManager;
 import jason.wondermap.receiver.BDPushMessageReceiver;
-import jason.wondermap.ui.LoadingDialog;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.NetUtil;
 import jason.wondermap.utils.SharePreferenceUtil;
 import jason.wondermap.utils.StaticConstant;
 import jason.wondermap.utils.T;
+import jason.wondermap.view.LoadingDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -116,7 +116,7 @@ public class LoginActivity extends FragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.login);
+		setContentView(R.layout.activity_login);
 		init();
 	}
 
