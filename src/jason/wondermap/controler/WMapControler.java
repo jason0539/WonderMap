@@ -7,6 +7,7 @@ import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.manager.HelloMsgSendManager;
 import jason.wondermap.manager.WMapUserManager;
+import jason.wondermap.utils.WModel;
 import jason.wondermap.utils.ConvertUtil;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.StaticConstant;
@@ -170,7 +171,7 @@ public class WMapControler {
 	}
 
 	/**
-	 * 以默认图标显示marker
+	 * 地图上面显示marker，指定图标
 	 */
 	public Marker addMarker(double lat, double lng) {
 		BitmapDescriptor bd = BitmapDescriptorFactory
@@ -181,7 +182,7 @@ public class WMapControler {
 	}
 
 	/**
-	 * 地图上面显示marker
+	 * 地图上面显示marker，指定图标
 	 */
 	public Marker addMarker(double lat, double lng, int icon) {
 		BitmapDescriptor bd = BitmapDescriptorFactory.fromResource(icon);
@@ -190,21 +191,31 @@ public class WMapControler {
 		return (Marker) (mBaiduMap.addOverlay(oo));
 	}
 
+	/**添加用户在地图上的地标
+	 * @param user 
+	 * @return 返回该用户的地标，唯一，位置变动则更新该地标位置
+	 */
 	public Marker addUser(User user) {
 		Marker marker = addMarker(user.getLat(), user.getLng());
 		return marker;
 	}
 
+	/**更新用户位置
+	 * @param oldUser
+	 */
 	public void updateUserPosition(User oldUser) {
+		L.d(WModel.EnsureEveryoneOnMap, "updateUserPosition lat :"+oldUser.getLat()+",lng :"+oldUser.getLng());
 		Marker marker = oldUser.getMarker();
+		L.d(WModel.EnsureEveryoneOnMap, "updateUserPosition position :"+marker.getPosition());
 		marker.setPosition(new LatLng(oldUser.getLat(), oldUser.getLng()));
 		mBaiduMap.hideInfoWindow();
 	}
-
+	
 	OnMarkerClickListener onMarkerClickListener = new OnMarkerClickListener() {
 
 		@Override
 		public boolean onMarkerClick(Marker mark) {
+			//地图marker被点击，从WMapUserManager取出目前所有用户，判断点击的是那个
 			ArrayList<User> mapUsers = WMapUserManager.getInstance()
 					.getMapUsers();
 			for (User user : mapUsers) {

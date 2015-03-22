@@ -1,13 +1,18 @@
 package jason.wondermap.manager;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import android.widget.Gallery;
+
+import com.baidu.location.m;
 import com.baidu.mapapi.map.Marker;
 
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.HelloMessage;
 import jason.wondermap.bean.User;
 import jason.wondermap.controler.WMapControler;
+import jason.wondermap.utils.WModel;
 import jason.wondermap.utils.ConvertUtil;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.T;
@@ -23,15 +28,16 @@ public class WMapUserManager {
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	public void addUserFromPushMsg(String userId, HelloMessage msg) {
-		boolean hasUserIdAdd = WMapUserManager.getInstance().containsUser(
-				userId);
+		User alreadExitsUser = WMapUserManager.getInstance().getUser(userId);
 		// 添加过则更新位置
-		if (hasUserIdAdd) {
-			WMapUserManager.getInstance().updateUser(msg);
+		if (alreadExitsUser != null) {
+			L.d(WModel.EnsureEveryoneOnMap, "更新位置" + userId);
+			WMapUserManager.getInstance().updateUser(alreadExitsUser, msg);
 			L.d(msg.getNickname() + "已经添加过，更新位置");
 		}
 		// 没添加则添加
 		else {
+			L.d(WModel.EnsureEveryoneOnMap, "添加用户" + userId);
 			User u = ConvertUtil.HelloMsgToUser(msg);
 			WMapUserManager.getInstance().addUser(u);
 			// WonderMapApplication.getInstance().getUserDB().addUser(u);
@@ -40,18 +46,28 @@ public class WMapUserManager {
 		}
 	}
 
-	/**
-	 * 是否已经显示用户
-	 */
-	private boolean containsUser(String userId) {
-		for (User user : mapUsers) {
-			if (user.getUserId().equals(userId)) {
-				return true;
-			}
+	public void onResumeAllUsersOnMap() {
+		L.d(WModel.EnsureEveryoneOnMap,
+				"ensureAllUsersOnMap into,user count = " + mapUsers.size());
+		ArrayList<User> arrayList = new ArrayList<User>(mapUsers);
+		mapUsers.clear();
+		for (User user : arrayList) {
+			L.d(WModel.EnsureEveryoneOnMap, "userId is "+user.getUserId());
+			addUser(user);
 		}
-		return false;
+		arrayList = null;
 	}
 
+	/**
+	 * 获取目前应该显示的所有用户，用来给WMapControl判断点击的marker是那个用户的
+	 * 
+	 * @return
+	 */
+	public synchronized ArrayList<User> getMapUsers() {
+		return mapUsers;
+	}
+
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝内部实现＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	/**
 	 * 向地图添加新用户，如果已经添加过则更新位置
 	 */
@@ -62,35 +78,34 @@ public class WMapUserManager {
 	}
 
 	/**
-	 * 根据收到的hellomsg更新user的位置信息,
+	 * 收到的helloMsg，用户已存在，更新user的位置信息
+	 * 
+	 * @param alreadExitsUser
 	 */
-	private void updateUser(HelloMessage msg) {
-		User oldUser = getUser(msg.getUserId());
-		if (oldUser != null) {
-			// oldUser.setChannelId(msg.getChannelId());
-			// oldUser.setGroup(msg.getGroup());
-			// oldUser.setHeadIcon(msg.getHeadIcon());
-			oldUser.setLat(msg.getLat());
-			oldUser.setLng(msg.getLng());
-			// oldUser.setNick(msg.getNick());
-			WMapControler.getInstance().updateUserPosition(oldUser);
-		} else {
-			L.e("WMapUserManager:要更新位置的用户不存在");
-			return;
-		}
+	private void updateUser(User alreadExitsUser, HelloMessage msg) {
+		User oldUser = alreadExitsUser;
+		// oldUser.setChannelId(msg.getChannelId());
+		// oldUser.setGroup(msg.getGroup());
+		// oldUser.setHeadIcon(msg.getHeadIcon());
+		oldUser.setLat(msg.getLat());
+		oldUser.setLng(msg.getLng());
+		// oldUser.setNick(msg.getNick());
+		WMapControler.getInstance().updateUserPosition(oldUser);
 	}
 
-	public User getUser(String userId) {
+	/**
+	 * 查找指定id的用户
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	private User getUser(String userId) {
 		for (User usr : mapUsers) {
 			if (usr.getUserId().equals(userId)) {
 				return usr;
 			}
 		}
 		return null;
-	}
-
-	public synchronized ArrayList<User> getMapUsers() {
-		return mapUsers;
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝

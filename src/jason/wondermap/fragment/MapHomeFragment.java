@@ -67,6 +67,7 @@ public class MapHomeFragment extends ContentFragment {
 	@Override
 	public void onResume() {
 		L.d(TAG + ":onResume");
+		//确保消息未读数量正确
 		bottomBar.onResume();
 		super.onResume();
 	}

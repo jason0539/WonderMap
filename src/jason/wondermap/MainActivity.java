@@ -7,6 +7,9 @@ import jason.wondermap.controler.WMapControler;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.ContentFragment;
 import jason.wondermap.fragment.WMFragmentManager;
+import jason.wondermap.manager.WMapUserManager;
+import jason.wondermap.utils.L;
+import jason.wondermap.utils.WModel;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
@@ -134,14 +137,17 @@ public class MainActivity extends FragmentActivity {
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	@Override
 	protected void onPause() {
+		L.d(WModel.MainActivity, "onPause");
 		mMapView.onPause();
-
 		super.onPause();
 	}
 
 	@Override
 	protected void onResume() {
+		L.d(WModel.MainActivity, "onResume");
 		mMapView.onResume();
+		// 确保所有用户都在地图上显示出来,activity进入onPause之后marker都消失了
+		WMapUserManager.getInstance().onResumeAllUsersOnMap();
 		super.onResume();
 	}
 
