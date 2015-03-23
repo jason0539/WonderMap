@@ -46,6 +46,9 @@ public class WMapUserManager {
 		}
 	}
 
+	/**
+	 * activity退到后台进入时在onResume里面调用，恢复所有marker
+	 */
 	public void onResumeAllUsersOnMap() {
 		L.d(WModel.EnsureEveryoneOnMap,
 				"ensureAllUsersOnMap into,user count = " + mapUsers.size());

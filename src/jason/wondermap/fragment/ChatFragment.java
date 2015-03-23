@@ -11,10 +11,13 @@ import jason.wondermap.interfacer.OnBaiduPushNewMessageListener;
 import jason.wondermap.manager.PushMsgReceiveManager;
 import jason.wondermap.task.SendMsgAsyncTask;
 import jason.wondermap.utils.ConvertUtil;
+import jason.wondermap.utils.L;
 import jason.wondermap.utils.NetUtil;
 import jason.wondermap.utils.SharePreferenceUtil;
 import jason.wondermap.utils.StaticConstant;
 import jason.wondermap.utils.T;
+import jason.wondermap.utils.TimeUtil;
+import jason.wondermap.utils.WModel;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -141,8 +144,8 @@ public class ChatFragment extends ContentFragment implements
 				// 得到InputMethodManager的实例
 				if (imm.isActive()) {
 					// 如果开启,则关闭，个人感觉不关闭比较好
-//					imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,
-//							InputMethodManager.HIDE_NOT_ALWAYS);
+					// imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,
+					// InputMethodManager.HIDE_NOT_ALWAYS);
 					// 关闭软键盘，开启方法相同，这个方法是切换开启与关闭状态的
 				}
 
@@ -158,17 +161,17 @@ public class ChatFragment extends ContentFragment implements
 	}
 
 	@Override
-	public void onNewMessage(HelloMessage message) {
-		Log.e("TAG", "getMsg in chatActivity" + message.getNickname());
+	public void onNewMessage(HelloMessage msg) {
+		Log.e("TAG", "getMsg in chatActivity" + msg.getNickname());
 
-		// 获得回复的消息
-		if (mFromUser.getUserId().equals(message.getUserId())) {
+		// 获得回复的消息是当前正在聊天的对象
+		if (mFromUser.getUserId().equals(msg.getUserId())) {
 			ChatMessage chatMessage = new ChatMessage();
 			chatMessage.setComing(true);
-			chatMessage.setDate(new Date(message.getTimeSamp()));
-			chatMessage.setMessage(message.getMessage());
-			chatMessage.setUserId(message.getUserId());
-			chatMessage.setNickname(message.getNickname());
+			chatMessage.setDate(new Date(msg.getTimeSamp()));
+			chatMessage.setMessage(msg.getMessage());
+			chatMessage.setUserId(msg.getUserId());
+			chatMessage.setNickname(msg.getNickname());
 			chatMessage.setReaded(true);
 			mDatas.add(chatMessage);
 			mAdapter.notifyDataSetChanged();
@@ -176,11 +179,26 @@ public class ChatFragment extends ContentFragment implements
 			// 存入数据库，当前聊天记录
 			mApplication.getMessageDB().add(mFromUser.getUserId(), chatMessage);
 		}
+		// 消息来自其他用户
+		else {
+			// 将新来的消息进行存储
+			//构造chatMessage
+			L.d(WModel.EnsureMsgArrived,"来自其他用户的消息");
+			ChatMessage chatMessage = new ChatMessage(msg.getMessage(), true,
+					msg.getUserId(), msg.getHeadIcon(), msg.getNickname(), false,
+					TimeUtil.getTime(msg.getTimeSamp()));
+			//储存message
+			WonderMapApplication.getInstance().getMessageDB()
+					.add(msg.getUserId(), chatMessage);
+			//通知监听未读消息的listener
+			for (int i = 0; i < PushMsgReceiveManager.unReadListeners.size(); i++) {
+				PushMsgReceiveManager.unReadListeners.get(i).unReadMessageUpdate(1);
+			}
+		}
 	}
 
 	@Override
 	protected void onInitView() {
-		// TODO Auto-generated method stub
 
 	}
 

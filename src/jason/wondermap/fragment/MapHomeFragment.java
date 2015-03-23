@@ -80,7 +80,7 @@ public class MapHomeFragment extends ContentFragment {
 	@Override
 	public void onDestroyView() {
 		L.d(TAG + ":onDestroyView");
-
+		bottomBar.onDestroyView();
 		super.onDestroyView();
 	}
 

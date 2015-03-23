@@ -8,8 +8,8 @@ import jason.wondermap.bean.HelloMessage;
 import jason.wondermap.bean.User;
 import jason.wondermap.interfacer.OnBaiduPushNewFriendListener;
 import jason.wondermap.interfacer.OnBaiduPushNewMessageListener;
-import jason.wondermap.interfacer.OnUnReadMessageUpdateListener;
 import jason.wondermap.manager.PushMsgReceiveManager;
+import jason.wondermap.utils.L;
 import jason.wondermap.utils.SharePreferenceUtil;
 import jason.wondermap.utils.StaticConstant;
 import jason.wondermap.utils.T;
@@ -28,71 +28,77 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.baidu.android.bbalbs.common.a.b;
 import com.baidu.android.pushservice.PushManager;
 
 public class MessageFragment extends ContentFragment implements
 		OnBaiduPushNewFriendListener, OnBaiduPushNewMessageListener {
 
 	private final static String TAG = MessageFragment.class.getSimpleName();
+	private FriendsListAdapter mAdapter;
+	private ListView mFrineds;
+	private View mEmptyView;
+	private WonderMapApplication mApplication;
+	private SharePreferenceUtil mSpUtils;
+	private ViewGroup mContainer;
+	private LayoutInflater inflater;
 	/**
 	 * 存储userId-新来消息的个数
 	 */
 	public Map<String, Integer> mUserMessages = new HashMap<String, Integer>();
-	/**
-	 * 未读消息总数
-	 */
-	private int mUnReadedMsgs;
 
-	private ListView mFrineds;
-	private View mEmptyView;
 	/**
 	 * 所有的用户
 	 */
 	private List<User> mUsersList;
-	/**
-	 * 适配器
-	 */
-	private FriendsListAdapter mAdapter;
-
-	private WonderMapApplication mApplication;
-
-	private SharePreferenceUtil mSpUtils;
-	private ViewGroup mContainer;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+		L.d(TAG, "onCreateView");
 		mContainer = container;
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
 	@Override
 	protected View onCreateContentView(LayoutInflater inflater) {
+		L.d(TAG, "onCreateContentView");
+		this.inflater = inflater;
 		mApplication = WonderMapApplication.getInstance();
-		mUsersList = mApplication.getUserDB().getUser();
-		// 获取数据库中所有的用户以及未读消息个数
-		mUserMessages = mApplication.getMessageDB().getUserUnReadMsgs(
-				mApplication.getUserDB().getUserIds());
-		mAdapter = new FriendsListAdapter(mUsersList, inflater, mUserMessages,
-				mApplication);
 		mSpUtils = WonderMapApplication.getInstance().getSpUtil();
 
-		for (Integer val : mUserMessages.values()) {
-			mUnReadedMsgs += val;
-		}
-		//聊天页面
+		// 聊天页面
 		View view = inflater.inflate(R.layout.main_tab_weixin, mContainer,
 				false);
 		mFrineds = (ListView) view.findViewById(R.id.id_listview_friends);
 		mEmptyView = inflater
 				.inflate(R.layout.no_zuo_no_die, mContainer, false);
 		mFrineds.setEmptyView(mEmptyView);
+		return view;
+	}
+
+	@Override
+	protected void onInitView() {
+		L.d(TAG, "onInitView");
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		Log.e(TAG, "onResume");
+		if (!PushManager.isPushEnabled(getActivity()))
+			PushManager.resumeWork(getActivity());
+		// 更新用户列表
+		mUsersList = mApplication.getUserDB().getUser();
+		// 获取数据库中所有的用户
+		mUserMessages = mApplication.getMessageDB().getUserUnReadMsgs(
+				mApplication.getUserDB().getUserIds());
+		mAdapter = new FriendsListAdapter(mUsersList, inflater, mUserMessages,
+				mApplication);
 		mFrineds.setAdapter(mAdapter);
-
-		notifyUnReadedMsg();
-
+		// 设置新朋友的监听
+		PushMsgReceiveManager.friendListeners.add(this);
+		// 设置新消息的监听
+		PushMsgReceiveManager.msgListeners.add(this);
 		mFrineds.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -102,54 +108,18 @@ public class MessageFragment extends ContentFragment implements
 					T.showShort(getActivity(), "不能和自己聊天哈！");
 					return;
 				}
-
 				if (mUserMessages.containsKey(userId)) {
-					Integer val = mUserMessages.get(userId);
-					mUnReadedMsgs -= val;
 					mUserMessages.remove(userId);
 					mAdapter.notifyDataSetChanged();
-					notifyUnReadedMsg();
-
 				}
 				Bundle bundle = new Bundle();
-				bundle.putString(StaticConstant.FragBundleUserId, mUsersList.get(position).getUserId());
-				wmFragmentManager.showFragment(WMFragmentManager.TYPE_CHAT,bundle);//
+				bundle.putString(StaticConstant.FragBundleUserId, mUsersList
+						.get(position).getUserId());
+				wmFragmentManager.showFragment(WMFragmentManager.TYPE_CHAT,
+						bundle);//
 			}
 
 		});
-		return view;
-	}
-
-	@Override
-	protected void onInitView() {
-	}
-
-	/**
-	 * 回调未读消息个数
-	 */
-	private void notifyUnReadedMsg() {
-		if (getActivity() instanceof OnUnReadMessageUpdateListener) {
-			OnUnReadMessageUpdateListener listener = (OnUnReadMessageUpdateListener) getActivity();
-			listener.unReadMessageUpdate(mUnReadedMsgs);
-		}
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		Log.e(TAG, "onResume");
-		// 回调未读消息个数的更新
-		notifyUnReadedMsg();
-		// 设置新朋友的监听
-		PushMsgReceiveManager.friendListeners.add(this);
-		// 设置新消息的监听
-		PushMsgReceiveManager.msgListeners.add(this);
-
-		if (!PushManager.isPushEnabled(getActivity()))
-			PushManager.resumeWork(getActivity());
-		// 更新用户列表
-		mUsersList = mApplication.getUserDB().getUser();
-		mAdapter.notifyDataSetChanged();
 	}
 
 	@Override
@@ -178,8 +148,6 @@ public class MessageFragment extends ContentFragment implements
 		} else {
 			mUserMessages.put(userId, 1);
 		}
-		mUnReadedMsgs++;
-		notifyUnReadedMsg();
 		// 将新来的消息进行存储
 		ChatMessage chatMessage = new ChatMessage(message.getMessage(), true,
 				userId, message.getHeadIcon(), message.getNickname(), false,
@@ -202,6 +170,7 @@ public class MessageFragment extends ContentFragment implements
 	@Override
 	public void onDestroyView() {
 		// 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
+		Log.e(TAG, "onDestroyView");
 		super.onDestroyView();
 	}
 
