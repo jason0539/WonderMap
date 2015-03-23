@@ -47,9 +47,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-         <activity android:name=".LoginActivity" >
+        <activity android:name=".LoginActivity" >
         </activity>
-        <activity android:name=".MainActivity" >
+        <activity
+            android:name=".MainActivity"
+            android:clearTaskOnLaunch="true"
+            android:launchMode="singleTask" >
         </activity>
         <!-- 定位服务 -->
         <service
@@ -101,7 +104,7 @@
                 <action android:name="com.baidu.android.pushservice.action.PUSH_SERVICE" />
             </intent-filter>
         </service>
-        
+
         <!-- push应用定义消息receiver声明，自己实现的 -->
         <receiver android:name="jason.wondermap.receiver.BDPushMessageReceiver" >
             <intent-filter>

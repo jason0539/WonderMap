@@ -9,6 +9,7 @@ import jason.wondermap.bean.User;
 import jason.wondermap.interfacer.OnBaiduPushNewFriendListener;
 import jason.wondermap.interfacer.OnBaiduPushNewMessageListener;
 import jason.wondermap.manager.PushMsgReceiveManager;
+import jason.wondermap.manager.UnReadMsgManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.SharePreferenceUtil;
 import jason.wondermap.utils.StaticConstant;
@@ -90,8 +91,7 @@ public class MessageFragment extends ContentFragment implements
 		// 更新用户列表
 		mUsersList = mApplication.getUserDB().getUser();
 		// 获取数据库中所有的用户
-		mUserMessages = mApplication.getMessageDB().getUserUnReadMsgs(
-				mApplication.getUserDB().getUserIds());
+		mUserMessages = UnReadMsgManager.getInstance().getAllUsersUnreadMsg();
 		mAdapter = new FriendsListAdapter(mUsersList, inflater, mUserMessages,
 				mApplication);
 		mFrineds.setAdapter(mAdapter);

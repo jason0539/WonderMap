@@ -19,7 +19,6 @@ import jason.wondermap.utils.TimeUtil;
 
 import java.util.ArrayList;
 
-import android.R.integer;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -77,10 +76,13 @@ public class PushMsgReceiveManager {
 					TimeUtil.getTime(msg.getTimeSamp()));
 			WonderMapApplication.getInstance().getMessageDB()
 					.add(userId, chatMessage);
-			for (int i = 0; i < unReadListeners.size(); i++) {
-				unReadListeners.get(i).unReadMessageUpdate(1);
+			if (unReadListeners.size() > 0) {
+				for (int i = 0; i < unReadListeners.size(); i++) {
+					unReadListeners.get(i).unReadMessageUpdate(1);
+				}
+			} else {//什么监听都没有的时候通知栏通知
+				showNotify(msg);
 			}
-			// showNotify(msg);
 		}
 	}
 
@@ -164,7 +166,7 @@ public class PushMsgReceiveManager {
 				+ message.getMessage();
 		long when = System.currentTimeMillis();
 		Notification notification = new Notification(icon, tickerText, when);
-		notification.flags = Notification.FLAG_NO_CLEAR;
+		notification.flags = Notification.FLAG_AUTO_CANCEL;
 		// 设置默认声音
 		// notification.defaults |= Notification.DEFAULT_SOUND;
 		// 设定震动(需加VIBRATE权限)

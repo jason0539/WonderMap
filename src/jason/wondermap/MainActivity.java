@@ -30,6 +30,7 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		L.d(WModel.MainActivity, "onCreate");
 		setContentView(R.layout.activity_main);
 		initView();
 		WMapControler.getInstance().init(mMapView);
@@ -153,6 +154,7 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	protected void onDestroy() {
+		L.d(WModel.MainActivity, "onDestroy");
 		// 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
 		WMapControler.getInstance().unInit();
 		mMapView.onDestroy();
