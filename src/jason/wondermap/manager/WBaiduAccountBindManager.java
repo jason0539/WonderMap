@@ -19,7 +19,7 @@ import com.baidu.frontia.api.FrontiaAuthorization.MediaType;
 import com.baidu.frontia.api.FrontiaAuthorizationListener.AuthorizationListener;
 import com.baidu.frontia.api.FrontiaAuthorizationListener.UserInfoListener;
 
-public class WAccountManager {
+public class WBaiduAccountBindManager {
 	private FrontiaAuthorization mAuthorization;
 	private final static String Scope_Basic = "basic";
 	private final static String Scope_Netdisk = "netdisk";
@@ -149,9 +149,9 @@ public class WAccountManager {
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-	private static WAccountManager instance = null;
+	private static WBaiduAccountBindManager instance = null;
 
-	private WAccountManager() {
+	private WBaiduAccountBindManager() {
 		mAuthorization = Frontia.getAuthorization();
 		spUtil = WonderMapApplication.getInstance().getSpUtil();
 	}
@@ -167,9 +167,9 @@ public class WAccountManager {
 		mHandler = handler;
 	}
 
-	public static WAccountManager getInstance() {
+	public static WBaiduAccountBindManager getInstance() {
 		if (instance == null) {
-			instance = new WAccountManager();
+			instance = new WBaiduAccountBindManager();
 		}
 		return instance;
 	}

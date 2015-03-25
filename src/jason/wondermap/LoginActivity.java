@@ -1,7 +1,7 @@
 package jason.wondermap;
 
 import jason.wondermap.interfacer.OnBaiduPushBindListener;
-import jason.wondermap.manager.WAccountManager;
+import jason.wondermap.manager.WBaiduAccountBindManager;
 import jason.wondermap.receiver.BDPushMessageReceiver;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.NetUtil;
@@ -64,7 +64,7 @@ public class LoginActivity extends FragmentActivity implements
 	// 绑定推送后回调，绑定基本很快就能成功，推送限制了速度，总是超时是因为登陆后的推送
 	@Override
 	public void onBind(String userId, int errorCode) {
-		if (!WAccountManager.getInstance().startBaiduStatus()) {
+		if (!WBaiduAccountBindManager.getInstance().startBaiduStatus()) {
 			return;
 		}
 		if (errorCode == 0) {// 绑定成功，个人信息从数据库读取，构建自己的用户，添加到用户数据库
@@ -92,7 +92,7 @@ public class LoginActivity extends FragmentActivity implements
 			T.showLong(this, R.string.net_error_tip);
 			return;
 		}
-		WAccountManager.getInstance().startBaidu();
+		WBaiduAccountBindManager.getInstance().startBaidu();
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class LoginActivity extends FragmentActivity implements
 		mSpUtil = WonderMapApplication.getInstance().getSpUtil();
 //		mUserDB = WonderMapApplication.getInstance().getUserDB();
 		// 账户绑定监听器
-		WAccountManager.getInstance().init(this, mHandler);
+		WBaiduAccountBindManager.getInstance().init(this, mHandler);
 		// 推送绑定监听器
 		BDPushMessageReceiver.bindListeners.add(this);
 	}
@@ -136,7 +136,7 @@ public class LoginActivity extends FragmentActivity implements
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode,
 			android.content.Intent data) {
-		WAccountManager.getInstance().onActivityResult(requestCode, resultCode,
+		WBaiduAccountBindManager.getInstance().onActivityResult(requestCode, resultCode,
 				data);
 	};
 

@@ -1,12 +1,11 @@
 package jason.wondermap;
 
-import com.baidu.mapapi.map.MapView;
-
 import jason.sdk.dialog.JasonDialog;
 import jason.wondermap.controler.WMapControler;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.ContentFragment;
 import jason.wondermap.fragment.WMFragmentManager;
+import jason.wondermap.manager.FriendAndGroupManager;
 import jason.wondermap.manager.WMapUserManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.WModel;
@@ -20,6 +19,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+
+import com.baidu.mapapi.map.MapView;
 
 public class MainActivity extends FragmentActivity {
 	private WMFragmentManager fragmentManager;
@@ -37,6 +38,7 @@ public class MainActivity extends FragmentActivity {
 		fragmentManager = new WMFragmentManager(this);
 		BaseFragment.initBeforeAll(this);
 		fragmentManager.showFragment(WMFragmentManager.TYPE_MAP, null);
+//		FriendAndGroupManager.getInstance().createRole();
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
