@@ -19,4 +19,5 @@ public class StaticConstant {
 	public final static String FragBundleLat = "lat";
 	public final static String FragBundleLng = "lng";
 	public final static String FragBundleGroup = "group";
+	
 }
