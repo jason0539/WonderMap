@@ -1,21 +1,36 @@
 package jason.wondermap.fragment;
 
+import jason.wondermap.LoginActivity;
 import jason.wondermap.MainActivity;
+import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
+import jason.wondermap.manager.UserinfoAndLocationManager;
+import jason.wondermap.view.HeaderLayout;
+import jason.wondermap.view.HeaderLayout.HeaderStyle;
+import jason.wondermap.view.HeaderLayout.onLeftImageButtonClickListener;
+import jason.wondermap.view.HeaderLayout.onRightImageButtonClickListener;
+import jason.wondermap.view.dialog.DialogTips;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
+import cn.bmob.im.util.BmobLog;
 
 public class BaseFragment extends Fragment {
 	protected static MainActivity mActivity; // 依附的activity
 	protected static Context mContext; // 上下文
 	protected static WMFragmentManager wmFragmentManager; // fragment管理器
 	protected boolean mViewCreated = false; // 视图生成标志，视图生成之后才能开始设置监听事件，在onInitView中
+	protected ViewGroup mContainer;
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	public static void initBeforeAll(MainActivity activity) {
@@ -65,12 +80,15 @@ public class BaseFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		// L.e(TAG, "onCreate");
 		setHasOptionsMenu(true); // 允许fragment修改menu
+		// 自动登陆状态下检测是否在其他设备登陆
+		UserinfoAndLocationManager.getInstance().checkLogin();
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// L.e(TAG, "onCreateView");
+		mContainer = container;
 		return super.onCreateView(inflater, container, savedInstanceState);
 	}
 
@@ -123,4 +141,137 @@ public class BaseFragment extends Fragment {
 		// LogUtil.e(TAG, "onDetach");
 	}
 
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝移植过来的标题－－－－－－－－－－－－－－－－－－－－－－
+	Toast mToast;
+	/** 打Log
+	  */
+	public void ShowLog(String msg){
+		BmobLog.i(msg);
+	}
+	public void ShowToast(String text) {
+		if (mToast == null) {
+			mToast = Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT);
+		} else {
+			mToast.setText(text);
+		}
+		mToast.show();
+	}
+
+	public void ShowToast(int text) {
+		if (mToast == null) {
+			mToast = Toast.makeText(getActivity(), text, Toast.LENGTH_LONG);
+		} else {
+			mToast.setText(text);
+		}
+		mToast.show();
+	}
+
+	public View findViewById(int paramInt) {
+		return getView().findViewById(paramInt);
+	}
+
+	/**
+	 * 公用的Header布局
+	 */
+	public HeaderLayout mHeaderLayout;
+
+	/**
+	 * 只有title initTopBarLayoutByTitle
+	 * @Title: initTopBarLayoutByTitle
+	 * @throws
+	 */
+	public void initTopBarForOnlyTitle(ViewGroup rootGroup,String titleName) {
+		mHeaderLayout = (HeaderLayout)rootGroup.findViewById(R.id.common_actionbar);
+		mHeaderLayout.init(HeaderStyle.DEFAULT_TITLE);
+		mHeaderLayout.setDefaultTitle(titleName);
+	}
+
+	/**
+	 * 初始化标题栏-带左右按钮
+	 * 
+	 * @return void
+	 * @throws
+	 */
+	public void initTopBarForBoth(ViewGroup rootView,String titleName, int rightDrawableId,
+			onRightImageButtonClickListener listener) {
+		mHeaderLayout = (HeaderLayout)rootView.findViewById(R.id.common_actionbar);
+		mHeaderLayout.init(HeaderStyle.TITLE_DOUBLE_IMAGEBUTTON);
+		mHeaderLayout.setTitleAndLeftImageButton(titleName,
+				R.drawable.base_action_bar_back_bg_selector,
+				new OnLeftButtonClickListener());
+		mHeaderLayout.setTitleAndRightImageButton(titleName, rightDrawableId,
+				listener);
+	}
+	public void initTopBarForBoth(ViewGroup rootView,String titleName, int rightDrawableId,String text,
+			onRightImageButtonClickListener listener) {
+		mHeaderLayout = (HeaderLayout)rootView.findViewById(R.id.common_actionbar);
+		mHeaderLayout.init(HeaderStyle.TITLE_DOUBLE_IMAGEBUTTON);
+		mHeaderLayout.setTitleAndLeftImageButton(titleName,
+				R.drawable.base_action_bar_back_bg_selector,
+				new OnLeftButtonClickListener());
+		mHeaderLayout.setTitleAndRightButton(titleName, rightDrawableId,text,
+				listener);
+	}
+	/**
+	 * 只有左边按钮和Title initTopBarLayout
+	 * 
+	 * @throws
+	 */
+	public void initTopBarForLeft(ViewGroup rootView,String titleName) {
+		mHeaderLayout = (HeaderLayout)rootView.findViewById(R.id.common_actionbar);
+		mHeaderLayout.init(HeaderStyle.TITLE_LIFT_IMAGEBUTTON);
+		mHeaderLayout.setTitleAndLeftImageButton(titleName,
+				R.drawable.base_action_bar_back_bg_selector,
+				new OnLeftButtonClickListener());
+	}
+	
+	/** 右边+title
+	  * initTopBarForRight
+	  * @return void
+	  * @throws
+	  */
+	public void initTopBarForRight(ViewGroup rootView,String titleName,int rightDrawableId,
+			onRightImageButtonClickListener listener) {
+		mHeaderLayout = (HeaderLayout)rootView.findViewById(R.id.common_actionbar);
+		mHeaderLayout.init(HeaderStyle.TITLE_RIGHT_IMAGEBUTTON);
+		mHeaderLayout.setTitleAndRightImageButton(titleName, rightDrawableId,
+				listener);
+	}
+	
+	// 左边按钮的点击事件
+	public class OnLeftButtonClickListener implements
+			onLeftImageButtonClickListener {
+
+		@Override
+		public void onClick() {
+			wmFragmentManager.back(null);
+		}
+	}
+	public void hideSoftInputView() {
+		InputMethodManager manager = ((InputMethodManager) mContext.getSystemService(Activity.INPUT_METHOD_SERVICE));
+		if (getActivity().getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+			if (getActivity().getCurrentFocus() != null)
+				manager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+		}
+	}
+	/** 显示下线的对话框
+	  * showOfflineDialog
+	  * @return void
+	  * @throws
+	  */
+	public void showOfflineDialog(final Context context) {
+		DialogTips dialog = new DialogTips(mContext,"您的账号已在其他设备上登录!", "重新登录");
+		// 设置成功事件
+		dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialogInterface, int userId) {
+				WonderMapApplication.getInstance().logout();
+				startActivity(new Intent(context, LoginActivity.class));
+//				finish();
+				dialogInterface.dismiss();
+			}
+		});
+		// 显示确认对话框
+		dialog.show();
+		dialog = null;
+	}
 }

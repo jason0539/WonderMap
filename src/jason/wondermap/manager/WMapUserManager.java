@@ -1,21 +1,25 @@
 package jason.wondermap.manager;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.widget.Gallery;
-
-import com.baidu.location.m;
-import com.baidu.mapapi.map.Marker;
-
 import jason.wondermap.WonderMapApplication;
-import jason.wondermap.bean.HelloMessage;
-import jason.wondermap.bean.User;
+import jason.wondermap.bean.MapUser;
 import jason.wondermap.controler.WMapControler;
-import jason.wondermap.utils.WModel;
-import jason.wondermap.utils.ConvertUtil;
+import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.T;
+import jason.wondermap.utils.UserInfo;
+import jason.wondermap.utils.WModel;
+
+import java.util.ArrayList;
+import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cn.bmob.im.BmobUserManager;
+import cn.bmob.im.config.BmobConstant;
+import cn.bmob.im.util.BmobJsonUtil;
+
+import com.baidu.mapapi.map.Marker;
 
 /**
  * 地图显示的用户管理类，负责用户管理去重和地图显示位置更新，区别于好友
@@ -24,25 +28,30 @@ import jason.wondermap.utils.T;
  * 
  */
 public class WMapUserManager {
-	private ArrayList<User> mapUsers = new ArrayList<User>();
+	private ArrayList<MapUser> mapUsers = new ArrayList<MapUser>();
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-	public void addUserFromPushMsg(String userId, HelloMessage msg) {
-		User alreadExitsUser = WMapUserManager.getInstance().getUser(userId);
+	public void addUserFromPushMsg(JSONObject msg) {
+		String userName = BmobJsonUtil.getString(msg, UserInfo.USER_NAME);
+		if (userName.equals(BmobUserManager.getInstance(
+				WonderMapApplication.getInstance()).getCurrentUserName())) {// 自己的消息忽略
+			return;
+		}
+		MapUser alreadExitsUser = getUser(userName);
 		// 添加过则更新位置
 		if (alreadExitsUser != null) {
-			L.d(WModel.EnsureEveryoneOnMap, "更新位置" + userId);
-			WMapUserManager.getInstance().updateUser(alreadExitsUser, msg);
-			L.d(msg.getNickname() + "已经添加过，更新位置");
+			L.d(WModel.EnsureEveryoneOnMap, "更新位置" + userName);
+			updateUser(alreadExitsUser, msg);
+			L.d(userName + "已经添加过，更新位置");
 		}
 		// 没添加则添加
 		else {
-			L.d(WModel.EnsureEveryoneOnMap, "添加用户" + userId);
-			User u = ConvertUtil.HelloMsgToUser(msg);
-			WMapUserManager.getInstance().addUser(u);
+			L.d(WModel.EnsureEveryoneOnMap, "添加用户" + userName);
+			MapUser u = CommonUtils.HelloMsgToUser(msg);
+			addUser(u);
 			// WonderMapApplication.getInstance().getUserDB().addUser(u);
 			// 存入或更新好友，暂时不做好友功能
-			T.showShort(WonderMapApplication.getInstance(), u.getNick() + "加入");
+			T.showShort(WonderMapApplication.getInstance(), u.getName() + "加入");
 		}
 	}
 
@@ -52,10 +61,10 @@ public class WMapUserManager {
 	public void onResumeAllUsersOnMap() {
 		L.d(WModel.EnsureEveryoneOnMap,
 				"ensureAllUsersOnMap into,user count = " + mapUsers.size());
-		ArrayList<User> arrayList = new ArrayList<User>(mapUsers);
+		ArrayList<MapUser> arrayList = new ArrayList<MapUser>(mapUsers);
 		mapUsers.clear();
-		for (User user : arrayList) {
-			L.d(WModel.EnsureEveryoneOnMap, "userId is "+user.getUserId());
+		for (MapUser user : arrayList) {
+			L.d(WModel.EnsureEveryoneOnMap, "userId is " + user.getName());
 			addUser(user);
 		}
 		arrayList = null;
@@ -66,15 +75,15 @@ public class WMapUserManager {
 	 * 
 	 * @return
 	 */
-	public synchronized ArrayList<User> getMapUsers() {
+	public synchronized ArrayList<MapUser> getMapUsers() {
 		return mapUsers;
 	}
 
-	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝内部实现＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	// // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝内部实现＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	/**
 	 * 向地图添加新用户，如果已经添加过则更新位置
 	 */
-	private void addUser(User user) {
+	private void addUser(MapUser user) {
 		Marker marker = WMapControler.getInstance().addUser(user);
 		user.setMarker(marker);
 		mapUsers.add(user);
@@ -85,26 +94,30 @@ public class WMapUserManager {
 	 * 
 	 * @param alreadExitsUser
 	 */
-	private void updateUser(User alreadExitsUser, HelloMessage msg) {
-		User oldUser = alreadExitsUser;
+	private void updateUser(MapUser alreadExitsUser, JSONObject msg) {
+		MapUser oldUser = alreadExitsUser;
 		// oldUser.setChannelId(msg.getChannelId());
 		// oldUser.setGroup(msg.getGroup());
 		// oldUser.setHeadIcon(msg.getHeadIcon());
-		oldUser.setLat(msg.getLat());
-		oldUser.setLng(msg.getLng());
+		double lat = Double.valueOf(BmobJsonUtil.getString(msg,
+				(UserInfo.LATITUDE)));
+		double lng = Double.valueOf(BmobJsonUtil.getString(msg,
+				UserInfo.LONGTITUDE));
+		oldUser.setLat(lat);
+		oldUser.setLng(lng);
 		// oldUser.setNick(msg.getNick());
 		WMapControler.getInstance().updateUserPosition(oldUser);
 	}
 
 	/**
-	 * 查找指定id的用户
+	 * 查找指定的用户
 	 * 
 	 * @param userId
 	 * @return
 	 */
-	private User getUser(String userId) {
-		for (User usr : mapUsers) {
-			if (usr.getUserId().equals(userId)) {
+	private MapUser getUser(String name) {
+		for (MapUser usr : mapUsers) {
+			if (usr.getName().equals(name)) {
 				return usr;
 			}
 		}

@@ -3,6 +3,8 @@ package jason.wondermap.bean;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.json.JSONObject;
+
 
 public class ChatMessage {
 	private String message;

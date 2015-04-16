@@ -6,5 +6,6 @@ public class WModel {
 	public static String EnsureMsgArrived = "EnsureMsgArrived";
 	public static String BottomBarNum = "BottomBarNum";
 	public static String CreateRole = "CreateRole";
+	public static String ImageShow = "ImageShow";
 	
 }

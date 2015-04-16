@@ -74,6 +74,7 @@ public class MapHomeFragment extends ContentFragment {
 
 	public void onPause() {
 		L.d(TAG + ":onPause");
+		bottomBar.onPause();
 		super.onPause();
 	};
 

@@ -5,12 +5,14 @@ import jason.wondermap.controler.WMapControler;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.ContentFragment;
 import jason.wondermap.fragment.WMFragmentManager;
-import jason.wondermap.manager.FriendAndGroupManager;
+import jason.wondermap.manager.WMapLocationManager;
 import jason.wondermap.manager.WMapUserManager;
+import jason.wondermap.manager.WMessageManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.WModel;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -35,10 +37,11 @@ public class MainActivity extends FragmentActivity {
 		setContentView(R.layout.activity_main);
 		initView();
 		WMapControler.getInstance().init(mMapView);
+		WMapLocationManager.getInstance().init();// 开始定位,之后最好移到application里面，启动就完成
 		fragmentManager = new WMFragmentManager(this);
 		BaseFragment.initBeforeAll(this);
 		fragmentManager.showFragment(WMFragmentManager.TYPE_MAP, null);
-//		FriendAndGroupManager.getInstance().createRole();
+		WMessageManager.getInstance();// 开始接收消息
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -112,6 +115,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝内部实现＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+
 	@Override
 	public void onBackPressed() {
 		ContentFragment fragment = fragmentManager.getCurrentFragment();
@@ -150,7 +154,7 @@ public class MainActivity extends FragmentActivity {
 		L.d(WModel.MainActivity, "onResume");
 		mMapView.onResume();
 		// 确保所有用户都在地图上显示出来,activity进入onPause之后marker都消失了
-		WMapUserManager.getInstance().onResumeAllUsersOnMap();
+		WMapUserManager.getInstance().onResumeAllUsersOnMap();//TODO 本来有的，注释掉了。
 		super.onResume();
 	}
 
@@ -162,6 +166,12 @@ public class MainActivity extends FragmentActivity {
 		mMapView.onDestroy();
 		mMapView = null;
 		super.onDestroy();
+	}
+
+	@Override
+	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(arg0, arg1, arg2);
 	}
 
 	@Override

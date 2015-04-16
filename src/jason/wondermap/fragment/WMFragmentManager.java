@@ -13,11 +13,20 @@ public class WMFragmentManager extends ContentFragmentManager implements
 	/* 1x: 地图相关页面 */
 	public final static int TYPE_MAP = 0x0011;
 	/* 2x: 检索相关页面 */
-	public final static int TYPE_MESSAGE = 0x0021;
-	public final static int TYPE_FRIEND = 0x0022;
-	public final static int TYPE_DISCOVER = 0x0023;
-	public final static int TYPE_CHAT = 0x0024;
-	public final static int TYPE_MINE = 0x0025;
+	public final static int TYPE_RECENT = 0x0021;// 最近聊天
+	public final static int TYPE_CONTACT = 0x0022;// 好友页面
+	public final static int TYPE_DISCOVER = 0x0023;// 发现页面
+	public final static int TYPE_CHAT = 0x0024;// 聊天界面
+	public final static int TYPE_MINE = 0x0025;//
+	public final static int TYPE_USERINFO = 0x0026;//个人信息页面
+	public final static int TYPE_UPDATE_USERINFO = 0x0027;//修改个人信息页面
+	public final static int TYPE_ADD_FRIEND = 0x0028;//添加好友
+	public final static int TYPE_NEW_FRIEND = 0x0029;//好友请求
+	public final static int TYPE_NEAR_PEOPLE = 0x0030;//附近的人
+	public final static int TYPE_BLACK_LIST = 0x0031;//黑名单
+	public final static int TYPE_LOCATION_MAP = 0x0032;//地图查看页面
+	public final static int TYPE_IMAGE_BROWSER = 0x0033;//图片查看页面
+	
 
 	/** 前一个fragment 类型 ，即从哪个fragment跳转过来的 */
 	private int mPreviousFragmentType = TYPE_NONE;
@@ -36,11 +45,11 @@ public class WMFragmentManager extends ContentFragmentManager implements
 		case TYPE_MAP:
 			fragment = new MapHomeFragment();
 			break;
-		case TYPE_MESSAGE:
-			fragment = new MessageFragment();
+		case TYPE_RECENT:
+			fragment = new RecentFragment();
 			break;
-		case TYPE_FRIEND:
-			fragment = new FriendFragment();
+		case TYPE_CONTACT:
+			fragment = new ContactFragment();
 			break;
 		case TYPE_DISCOVER:
 			fragment = new DiscoveryFragment();
@@ -50,6 +59,30 @@ public class WMFragmentManager extends ContentFragmentManager implements
 			break;
 		case TYPE_MINE:
 			fragment = new MineFragment();
+			break;
+		case TYPE_USERINFO:
+			fragment = new SetMyInfoFragment();
+			break;
+		case TYPE_UPDATE_USERINFO:
+			fragment = new UpdateInfoFragment();
+			break;
+		case TYPE_ADD_FRIEND:
+			fragment = new AddFriendFragment();
+			break;
+		case TYPE_NEW_FRIEND:
+			fragment = new NewFriendFragment();
+			break;
+		case TYPE_NEAR_PEOPLE:
+			fragment = new NearPeopleFragment();
+			break;
+		case TYPE_BLACK_LIST:
+			fragment = new BlackListFragment();
+			break;
+		case TYPE_LOCATION_MAP:
+			fragment = new LocationFragment();
+			break;
+		case TYPE_IMAGE_BROWSER:
+			fragment = new ImageBrowserFragment();
 			break;
 		}
 		return fragment;
@@ -187,7 +220,7 @@ public class WMFragmentManager extends ContentFragmentManager implements
 
 			isMapContentFragment = true;
 			break;
-		case TYPE_MESSAGE:
+		case TYPE_CHAT:
 
 		default:
 			break;
