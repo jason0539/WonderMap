@@ -13,7 +13,13 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.MyLocationData;
 
-public class WMapLocationManager {
+/**
+ * 用户位置管理类
+ * 
+ * @author liuzhenhui
+ * 
+ */
+public class WLocationManager {
 	public final String PREF_LATITUDE = "latitude";// 经度
 	public final String PREF_LONGTITUDE = "longtitude";// 经度
 	public final int LOCATION_SCAN_SPAN = 1000;// 定位间隔1秒
@@ -141,14 +147,14 @@ public class WMapLocationManager {
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
-	private static WMapLocationManager instance = null;
+	private static WLocationManager instance = null;
 
-	private WMapLocationManager() {
+	private WLocationManager() {
 	}
 
-	public static WMapLocationManager getInstance() {
+	public static WLocationManager getInstance() {
 		if (instance == null) {
-			instance = new WMapLocationManager();
+			instance = new WLocationManager();
 		}
 		return instance;
 	}

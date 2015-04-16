@@ -19,13 +19,17 @@ import cn.bmob.im.BmobUserManager;
 import cn.bmob.v3.BmobPushManager;
 import cn.bmob.v3.listener.PushListener;
 
+/**
+ * 负责推送hello和world消息 目前全部推送，之后修改为world推送给指定用户，
+ * 或者每隔几分钟推送一次hello，更新位置，长时间没有hello的，认为下线，心跳策略
+ * 
+ * @author liuzhenhui
+ * 
+ */
 public class PushMsgSendManager {
-	// private Timer mTimer;
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	public void sayHello() {
-		// 开启一个15秒后超时的Callback，一直尝试发送，直到成功／／修正，一直发送可能发出多个，地图点重复，不再重复发送
-		// mTimer.schedule(mConnTimeoutCallback, 15000);
 		if (CommonUtils.isNetworkAvailable(WonderMapApplication.getInstance())) {// 如果网络可用
 			Map<String, String> map = new HashMap<String, String>();
 			map.put(UserInfo.TAG, UserInfo.HELLO);
@@ -33,9 +37,9 @@ public class PushMsgSendManager {
 					BmobUserManager.getInstance(
 							WonderMapApplication.getInstance())
 							.getCurrentUserName());
-			map.put(UserInfo.LATITUDE, WMapLocationManager.getInstance()
+			map.put(UserInfo.LATITUDE, WLocationManager.getInstance()
 					.getLatitude() + "");
-			map.put(UserInfo.LONGTITUDE, WMapLocationManager.getInstance()
+			map.put(UserInfo.LONGTITUDE, WLocationManager.getInstance()
 					.getLongtitude() + "");
 			JSONObject jsonObject = new JSONObject(map);
 			pushManager.pushMessageAll(jsonObject, new PushListener() {
@@ -70,9 +74,9 @@ public class PushMsgSendManager {
 					BmobUserManager.getInstance(
 							WonderMapApplication.getInstance())
 							.getCurrentUserName());
-			map.put(UserInfo.LATITUDE, WMapLocationManager.getInstance()
+			map.put(UserInfo.LATITUDE, WLocationManager.getInstance()
 					.getLatitude() + "");
-			map.put(UserInfo.LONGTITUDE, WMapLocationManager.getInstance()
+			map.put(UserInfo.LONGTITUDE, WLocationManager.getInstance()
 					.getLongtitude() + "");
 			JSONObject jsonObject = new JSONObject(map);
 			pushManager.pushMessageAll(jsonObject, new PushListener() {

@@ -4,7 +4,7 @@ import jason.wondermap.R;
 import jason.wondermap.adapter.base.BaseListAdapter;
 import jason.wondermap.adapter.base.ViewHolder;
 import jason.wondermap.bean.User;
-import jason.wondermap.manager.WMapLocationManager;
+import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.ImageLoadOptions;
 
 import java.util.List;
@@ -52,8 +52,8 @@ public class NearPeopleAdapter extends BaseListAdapter<User> {
 			iv_avatar.setImageResource(R.drawable.default_head);
 		}
 		BmobGeoPoint location = contract.getLocation();
-		String currentLat = String.valueOf(WMapLocationManager.getInstance().getLatitude());
-		String currentLong =String.valueOf(WMapLocationManager.getInstance().getLongtitude());
+		String currentLat = String.valueOf(WLocationManager.getInstance().getLatitude());
+		String currentLong =String.valueOf(WLocationManager.getInstance().getLongtitude());
 		if (location != null && !currentLat.equals("")
 				&& !currentLong.equals("")) {
 			double distance = DistanceOfTwoPoints(

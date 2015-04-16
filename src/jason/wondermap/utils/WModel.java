@@ -7,5 +7,6 @@ public class WModel {
 	public static String BottomBarNum = "BottomBarNum";
 	public static String CreateRole = "CreateRole";
 	public static String ImageShow = "ImageShow";
+	public static String CrashUpload = "CrashUpload";
 	
 }

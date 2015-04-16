@@ -6,7 +6,7 @@ import jason.wondermap.bean.MapUser;
 import jason.wondermap.bean.User;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.WMFragmentManager;
-import jason.wondermap.manager.WMapUserManager;
+import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.UserInfo;
 
@@ -204,7 +204,7 @@ public class WMapControler {
 		@Override
 		public boolean onMarkerClick(Marker mark) {
 			// 地图marker被点击，从WMapUserManager取出目前所有用户，判断点击的是那个
-			ArrayList<MapUser> mapUsers = WMapUserManager.getInstance()
+			ArrayList<MapUser> mapUsers = MapUserManager.getInstance()
 					.getMapUsers();
 			for (MapUser user : mapUsers) {
 				if (user.getMarker() == mark) {

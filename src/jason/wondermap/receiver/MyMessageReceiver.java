@@ -4,7 +4,7 @@ import jason.wondermap.MainActivity;
 import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.manager.PushMsgSendManager;
-import jason.wondermap.manager.WMapUserManager;
+import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.utils.CollectionUtils;
 import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.L;
@@ -79,14 +79,14 @@ public class MyMessageReceiver extends BroadcastReceiver {
 	 */
 	private void handleHelloMsg(JSONObject json) {
 		L.d("收到hello消息，回复world消息");
-		WMapUserManager.getInstance().addUserFromPushMsg(json);// 更新地图
+		MapUserManager.getInstance().addUserFromPushMsg(json);// 更新地图
 //		应该加上参数，只发送给hello用户
 		PushMsgSendManager.getInstance().sayWorld();
 	}
 
 	private void handleWorldMsg(JSONObject json) {
 		L.d("收到world消息");
-		WMapUserManager.getInstance().addUserFromPushMsg(json);
+		MapUserManager.getInstance().addUserFromPushMsg(json);
 	}
 
 	/**

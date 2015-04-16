@@ -5,9 +5,11 @@ import jason.wondermap.controler.WMapControler;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.ContentFragment;
 import jason.wondermap.fragment.WMFragmentManager;
-import jason.wondermap.manager.WMapLocationManager;
-import jason.wondermap.manager.WMapUserManager;
-import jason.wondermap.manager.WMessageManager;
+import jason.wondermap.manager.FeedbackManager;
+import jason.wondermap.manager.WLocationManager;
+import jason.wondermap.manager.MapUserManager;
+import jason.wondermap.manager.MessageManager;
+import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.WModel;
 import android.content.DialogInterface;
@@ -37,11 +39,13 @@ public class MainActivity extends FragmentActivity {
 		setContentView(R.layout.activity_main);
 		initView();
 		WMapControler.getInstance().init(mMapView);
-		WMapLocationManager.getInstance().init();// 开始定位,之后最好移到application里面，启动就完成
+		WLocationManager.getInstance().init();// 开始定位,之后最好移到application里面，启动就完成
 		fragmentManager = new WMFragmentManager(this);
 		BaseFragment.initBeforeAll(this);
 		fragmentManager.showFragment(WMFragmentManager.TYPE_MAP, null);
-		WMessageManager.getInstance();// 开始接收消息
+		MessageManager.getInstance();// 开始接收消息
+//		添加检查log，上传到服务器
+		CommonUtils.checkCrashLog();
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -154,7 +158,7 @@ public class MainActivity extends FragmentActivity {
 		L.d(WModel.MainActivity, "onResume");
 		mMapView.onResume();
 		// 确保所有用户都在地图上显示出来,activity进入onPause之后marker都消失了
-		WMapUserManager.getInstance().onResumeAllUsersOnMap();//TODO 本来有的，注释掉了。
+		MapUserManager.getInstance().onResumeAllUsersOnMap();// TODO 本来有的，注释掉了。
 		super.onResume();
 	}
 

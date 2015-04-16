@@ -26,6 +26,7 @@ public class SharePreferenceUtil {
 	private String SHARED_KEY_NOTIFY = "shared_key_notify";
 	private String SHARED_KEY_VOICE = "shared_key_sound";
 	private String SHARED_KEY_VIBRATE = "shared_key_vibrate";
+	private String SHARED_KEY_CRASH = "shared_key_crash";
 
 	// 是否允许推送通知
 	public boolean isAllowPushNotify() {
@@ -54,6 +55,16 @@ public class SharePreferenceUtil {
 
 	public void setAllowVibrateEnable(boolean isChecked) {
 		editor.putBoolean(SHARED_KEY_VIBRATE, isChecked);
+		editor.commit();
+	}
+
+	// 是否发生过crash，存储文件名
+	public String hasCrashLog() {
+		return mSharedPreferences.getString(SHARED_KEY_CRASH, "");
+	}
+
+	public void setCrashLog(String name) {
+		editor.putString(SHARED_KEY_CRASH, name);
 		editor.commit();
 	}
 

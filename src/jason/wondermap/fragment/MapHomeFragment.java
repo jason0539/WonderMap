@@ -1,7 +1,7 @@
 package jason.wondermap.fragment;
 
 import jason.wondermap.R;
-import jason.wondermap.manager.WMapUserManager;
+import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.view.MainBottomBar;
 

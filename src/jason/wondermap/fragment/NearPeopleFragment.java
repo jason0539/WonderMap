@@ -4,7 +4,7 @@ import jason.wondermap.R;
 import jason.wondermap.adapter.NearPeopleAdapter;
 import jason.wondermap.bean.User;
 import jason.wondermap.manager.UserinfoAndLocationManager;
-import jason.wondermap.manager.WMapLocationManager;
+import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.CollectionUtils;
 import jason.wondermap.utils.UserInfo;
 import jason.wondermap.view.xlist.XListView;
@@ -79,10 +79,10 @@ public class NearPeopleFragment extends ContentFragment implements
 			progress.show();
 		}
 
-		if (WMapLocationManager.getInstance().getLatitude() != 0.0
-				&& WMapLocationManager.getInstance().getLongtitude() != 0.0) {
-			double latitude = WMapLocationManager.getInstance().getLatitude();
-			double longtitude = WMapLocationManager.getInstance()
+		if (WLocationManager.getInstance().getLatitude() != 0.0
+				&& WLocationManager.getInstance().getLongtitude() != 0.0) {
+			double latitude = WLocationManager.getInstance().getLatitude();
+			double longtitude = WLocationManager.getInstance()
 					.getLongtitude();
 			// 封装的查询方法，当进入此页面时 isUpdate为false，当下拉刷新的时候设置为true就行。
 			// 此方法默认每页查询10条数据,若想查询多于10条，可在查询之前设置BRequest.QUERY_LIMIT_COUNT，如：BRequest.QUERY_LIMIT_COUNT=20
@@ -152,8 +152,8 @@ public class NearPeopleFragment extends ContentFragment implements
 	 * @throws
 	 */
 	private void queryMoreNearList(int page) {
-		double latitude = WMapLocationManager.getInstance().getLatitude();
-		double longtitude = WMapLocationManager.getInstance().getLongtitude();
+		double latitude = WLocationManager.getInstance().getLatitude();
+		double longtitude = WLocationManager.getInstance().getLongtitude();
 		// 查询10公里范围内的性别为女的用户列表
 		userManager.queryKiloMetersListByPage(true, page, "location",
 				longtitude, latitude, true, QUERY_KILOMETERS, "sex", false,
@@ -215,8 +215,8 @@ public class NearPeopleFragment extends ContentFragment implements
 	@Override
 	public void onLoadMore() {
 		// TODO Auto-generated method stub
-		double latitude = WMapLocationManager.getInstance().getLatitude();
-		double longtitude = WMapLocationManager.getInstance().getLongtitude();
+		double latitude = WLocationManager.getInstance().getLatitude();
+		double longtitude = WLocationManager.getInstance().getLongtitude();
 		// 这是查询10公里范围内的性别为女用户总数
 		userManager.queryKiloMetersTotalCount(User.class, "location",
 				longtitude, latitude, true, QUERY_KILOMETERS, "sex", false,

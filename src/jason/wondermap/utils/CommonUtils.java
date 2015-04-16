@@ -1,17 +1,17 @@
 package jason.wondermap.utils;
 
+import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.MapUser;
 import jason.wondermap.fragment.BaseFragment;
+import jason.wondermap.manager.CrashLogManager;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import cn.bmob.im.util.BmobJsonUtil;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
+import cn.bmob.im.util.BmobJsonUtil;
 
 public class CommonUtils {
 
@@ -67,6 +67,11 @@ public class CommonUtils {
 		return metric.widthPixels;
 	}
 
+	/**
+	 * hello消息转换成MapUser
+	 * 
+	 * @param msg
+	 */
 	public static MapUser HelloMsgToUser(JSONObject msg) {
 		String name = BmobJsonUtil.getString(msg, UserInfo.USER_NAME);
 		double lat = Double.valueOf(BmobJsonUtil.getString(msg,
@@ -75,5 +80,16 @@ public class CommonUtils {
 				UserInfo.LONGTITUDE));
 		MapUser user = new MapUser(name, lat, lng);
 		return user;
+	}
+
+	public static void checkCrashLog() {
+		String logName = WonderMapApplication.getInstance().getSpUtil()
+				.hasCrashLog();
+		if ("".equals(logName) || logName == null) {
+			L.d(WModel.CrashUpload, "没有crash");
+		} else {
+			CrashLogManager.getInstance().uploadLog(logName);
+			L.d(WModel.CrashUpload, "crash 文件");
+		}
 	}
 }

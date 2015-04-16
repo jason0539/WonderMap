@@ -18,16 +18,21 @@ public class WMapConstants {
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝SharedPreference存储相关 end＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝bmob移植 start＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	public static final String APP_ROOT_PATH = Environment
+			.getExternalStorageDirectory() + "/WonderMap/";
 	/**
 	 * 存放发送图片的目录
 	 */
-	public static String BMOB_PICTURE_PATH = Environment
-			.getExternalStorageDirectory() + "/bmobimdemo/image/";
+	public static String BMOB_PICTURE_PATH = APP_ROOT_PATH + "sendImage/";
 
 	/**
 	 * 我的头像保存目录
 	 */
-	public static String MyAvatarDir = "/sdcard/bmobimdemo/avatar/";
+	public static String MyAvatarDir = APP_ROOT_PATH + "myAvatar/";
+	/**
+	 * 发生crash之后，log存放位置
+	 */
+	public static String CrashLogDir = APP_ROOT_PATH + "crashLog/";
 	/**
 	 * 拍照回调
 	 */

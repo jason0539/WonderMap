@@ -1,7 +1,7 @@
 package jason.wondermap;
 
 import jason.wondermap.config.WMapConstants;
-import jason.wondermap.manager.WMapLocationManager;
+import jason.wondermap.crash.CrashHandler;
 import jason.wondermap.utils.CollectionUtils;
 import jason.wondermap.utils.SharePreferenceUtil;
 
@@ -44,9 +44,9 @@ public class WonderMapApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		// 将crash 的log抓取存储在sd卡的crash目录，
-		// CrashHandler crashHandler = CrashHandler.getInstance();
-		// crashHandler.init(getApplicationContext());
+		// 将crash 的log抓取存储在sd卡的crash目录，正式发布打开
+//		 CrashHandler crashHandler = CrashHandler.getInstance();
+//		 crashHandler.init(getApplicationContext());
 		mApplication = this;
 		init();
 	}

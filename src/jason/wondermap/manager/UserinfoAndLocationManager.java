@@ -36,7 +36,9 @@ public class UserinfoAndLocationManager {
 //			MainActivity.finish();
 		}
 	}
-
+	public String getCurrentUserName(){
+		return userManager.getCurrentUserName();
+	}
 	/**
 	 * 用于登陆或者自动登陆情况下的用户资料及好友资料的检测更新
 	 */
@@ -71,19 +73,19 @@ public class UserinfoAndLocationManager {
 	 * 更新用户的经纬度信息
 	 */
 	public void updateUserLocation() {
-		if (WMapLocationManager.getInstance().getLastPoint() != null) {
-			String saveLatitude = WMapLocationManager.getInstance()
+		if (WLocationManager.getInstance().getLastPoint() != null) {
+			String saveLatitude = WLocationManager.getInstance()
 					.getSavedLatitude();
-			String saveLongtitude = WMapLocationManager.getInstance()
+			String saveLongtitude = WLocationManager.getInstance()
 					.getSavedLongtitude();
-			String newLat = String.valueOf(WMapLocationManager.getInstance()
+			String newLat = String.valueOf(WLocationManager.getInstance()
 					.getLatitude());
-			String newLong = String.valueOf(WMapLocationManager.getInstance()
+			String newLong = String.valueOf(WLocationManager.getInstance()
 					.getLongtitude());
 			if (!saveLatitude.equals(newLat) || !saveLongtitude.equals(newLong)) {// 只有位置有变化就更新当前位置，达到实时更新的目的
 				User u = (User) userManager.getCurrentUser(User.class);
 				final User user = new User();
-				user.setLocation(WMapLocationManager.getInstance()
+				user.setLocation(WLocationManager.getInstance()
 						.getLastPoint());
 				user.setObjectId(u.getObjectId());
 				user.update(WonderMapApplication.getInstance(),
@@ -92,10 +94,10 @@ public class UserinfoAndLocationManager {
 							public void onSuccess() {
 								// TODO Auto-generated method stub
 								// 下面两句貌似没用
-								WMapLocationManager.getInstance().saveLatitude(
+								WLocationManager.getInstance().saveLatitude(
 										String.valueOf(user.getLocation()
 												.getLatitude()));
-								WMapLocationManager.getInstance()
+								WLocationManager.getInstance()
 										.saveLongtitude(
 												String.valueOf(user
 														.getLocation()

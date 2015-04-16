@@ -10,24 +10,21 @@ import jason.wondermap.utils.UserInfo;
 import jason.wondermap.utils.WModel;
 
 import java.util.ArrayList;
-import java.util.Map;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import cn.bmob.im.BmobUserManager;
-import cn.bmob.im.config.BmobConstant;
 import cn.bmob.im.util.BmobJsonUtil;
 
 import com.baidu.mapapi.map.Marker;
 
 /**
- * 地图显示的用户管理类，负责用户管理去重和地图显示位置更新，区别于好友
+ * 地图显示的用户管理类，显示，位置更新，
  * 
  * @author liuzhenhui
  * 
  */
-public class WMapUserManager {
+public class MapUserManager {
 	private ArrayList<MapUser> mapUsers = new ArrayList<MapUser>();
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -91,8 +88,6 @@ public class WMapUserManager {
 
 	/**
 	 * 收到的helloMsg，用户已存在，更新user的位置信息
-	 * 
-	 * @param alreadExitsUser
 	 */
 	private void updateUser(MapUser alreadExitsUser, JSONObject msg) {
 		MapUser oldUser = alreadExitsUser;
@@ -111,9 +106,6 @@ public class WMapUserManager {
 
 	/**
 	 * 查找指定的用户
-	 * 
-	 * @param userId
-	 * @return
 	 */
 	private MapUser getUser(String name) {
 		for (MapUser usr : mapUsers) {
@@ -125,14 +117,14 @@ public class WMapUserManager {
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-	private WMapUserManager() {
+	private MapUserManager() {
 	}
 
-	private static WMapUserManager instance = null;
+	private static MapUserManager instance = null;
 
-	public static WMapUserManager getInstance() {
+	public static MapUserManager getInstance() {
 		if (instance == null) {
-			instance = new WMapUserManager();
+			instance = new MapUserManager();
 		}
 		return instance;
 	}
