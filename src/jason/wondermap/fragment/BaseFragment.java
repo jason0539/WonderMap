@@ -126,6 +126,7 @@ public class BaseFragment extends Fragment {
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
+		hideSoftInputView();
 		// LogUtil.e(TAG, "onDestroyView");
 	}
 
