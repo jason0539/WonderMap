@@ -34,13 +34,14 @@ public class MapHomeFragment extends ContentFragment {
 	@Override
 	protected View onCreateContentView(LayoutInflater inflater) {
 		L.d(TAG + ":onCreateContentView");
-		mRootView = (ViewGroup) inflater.inflate(R.layout.fragment_map, null);
+		mRootView = (ViewGroup) inflater.inflate(R.layout.fragment_map_home, null);
 		return mRootView;
 	}
 
 	@Override
 	protected void onInitView() {
 		L.d(TAG + ":onInitView");
+		initTopBarForOnlyTitle(mRootView, "活点地图");
 		bottomBar = new MainBottomBar(
 				mRootView.findViewById(R.id.main_bottom_bar));
 	}
@@ -67,7 +68,7 @@ public class MapHomeFragment extends ContentFragment {
 	@Override
 	public void onResume() {
 		L.d(TAG + ":onResume");
-		//确保消息未读数量正确
+		// 确保消息未读数量正确
 		bottomBar.onResume();
 		super.onResume();
 	}
@@ -81,7 +82,9 @@ public class MapHomeFragment extends ContentFragment {
 	@Override
 	public void onDestroyView() {
 		L.d(TAG + ":onDestroyView");
-		bottomBar.onDestroyView();
+		if (bottomBar != null) {
+			bottomBar.onDestroyView();
+		}
 		super.onDestroyView();
 	}
 

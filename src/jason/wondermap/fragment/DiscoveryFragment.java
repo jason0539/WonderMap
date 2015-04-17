@@ -1,28 +1,35 @@
 package jason.wondermap.fragment;
 
 import jason.wondermap.R;
-import jason.wondermap.view.MainBottomBar;
+import jason.wondermap.view.HeaderLayout.onRightImageButtonClickListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.TextView;
 
 public class DiscoveryFragment extends ContentFragment {
-
-	private final static String TAG = DiscoveryFragment.class.getSimpleName();
+	ViewGroup mRootViewGroup;
 
 	@Override
 	protected View onCreateContentView(LayoutInflater inflater) {
-		ViewGroup viewGroup = (ViewGroup) inflater.inflate(
-				R.layout.fragment_discover, null);
-		return viewGroup;
+		mRootViewGroup = (ViewGroup) inflater.inflate(
+				R.layout.fragment_discover, mContainer, false);
+		return mRootViewGroup;
 	}
-
 
 	@Override
 	protected void onInitView() {
+		initTopBarForBoth(mRootViewGroup, "足迹",
+				R.drawable.btn_chat_add_camera_selector,
+				editFootLogClickListener);
 	}
+
+	onRightImageButtonClickListener editFootLogClickListener = new onRightImageButtonClickListener() {
+
+		@Override
+		public void onClick() {
+			wmFragmentManager.showFragment(WMFragmentManager.TYPE_NEW_FOOTBLOG, null);
+		}
+	};
 
 	@Override
 	public void onResume() {
@@ -35,7 +42,6 @@ public class DiscoveryFragment extends ContentFragment {
 
 	@Override
 	public void onDestroyView() {
-		// 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
 		super.onDestroyView();
 	}
 

@@ -11,22 +11,23 @@ public class WMFragmentManager extends ContentFragmentManager implements
 	/* 无效值 */
 	public final static int TYPE_NONE = 0x0000;
 	/* 1x: 地图相关页面 */
-	public final static int TYPE_MAP = 0x0011;
-	/* 2x: 检索相关页面 */
+	public final static int TYPE_MAP_HOME = 0x0011;
+	/* 2x: 其他页面 */
 	public final static int TYPE_RECENT = 0x0021;// 最近聊天
 	public final static int TYPE_CONTACT = 0x0022;// 好友页面
 	public final static int TYPE_DISCOVER = 0x0023;// 发现页面
 	public final static int TYPE_CHAT = 0x0024;// 聊天界面
 	public final static int TYPE_MINE = 0x0025;//
-	public final static int TYPE_USERINFO = 0x0026;//个人信息页面
-	public final static int TYPE_UPDATE_USERINFO = 0x0027;//修改个人信息页面
-	public final static int TYPE_ADD_FRIEND = 0x0028;//添加好友
-	public final static int TYPE_NEW_FRIEND = 0x0029;//好友请求
-	public final static int TYPE_NEAR_PEOPLE = 0x0030;//附近的人
-	public final static int TYPE_BLACK_LIST = 0x0031;//黑名单
-	public final static int TYPE_LOCATION_MAP = 0x0032;//地图查看页面
-	public final static int TYPE_IMAGE_BROWSER = 0x0033;//图片查看页面
-	
+	public final static int TYPE_USERINFO = 0x0026;// 个人信息页面
+	public final static int TYPE_UPDATE_USERINFO = 0x0027;// 修改个人信息页面
+	public final static int TYPE_ADD_FRIEND = 0x0028;// 添加好友
+	public final static int TYPE_NEW_FRIEND = 0x0029;// 好友请求
+	public final static int TYPE_NEAR_PEOPLE = 0x0030;// 附近的人
+	public final static int TYPE_BLACK_LIST = 0x0031;// 黑名单
+	public final static int TYPE_LOCATION_MAP = 0x0032;// 地图查看页面
+	public final static int TYPE_IMAGE_BROWSER = 0x0033;// 图片查看页面
+	public final static int TYPE_FEEDBACK = 0x0034;// 图片查看页面
+	public final static int TYPE_NEW_FOOTBLOG = 0x0035;// 发布足迹页面
 
 	/** 前一个fragment 类型 ，即从哪个fragment跳转过来的 */
 	private int mPreviousFragmentType = TYPE_NONE;
@@ -42,7 +43,7 @@ public class WMFragmentManager extends ContentFragmentManager implements
 	public ContentFragment createFragment(int type) {
 		ContentFragment fragment = null;
 		switch (type) {
-		case TYPE_MAP:
+		case TYPE_MAP_HOME:
 			fragment = new MapHomeFragment();
 			break;
 		case TYPE_RECENT:
@@ -61,7 +62,7 @@ public class WMFragmentManager extends ContentFragmentManager implements
 			fragment = new MineFragment();
 			break;
 		case TYPE_USERINFO:
-			fragment = new SetMyInfoFragment();
+			fragment = new UserInfoFragment();
 			break;
 		case TYPE_UPDATE_USERINFO:
 			fragment = new UpdateInfoFragment();
@@ -84,6 +85,12 @@ public class WMFragmentManager extends ContentFragmentManager implements
 		case TYPE_IMAGE_BROWSER:
 			fragment = new ImageBrowserFragment();
 			break;
+		case TYPE_FEEDBACK:
+			fragment = new FeedbackFragment();
+			break;
+		case TYPE_NEW_FOOTBLOG:
+			fragment = new NewFootblogFragment();
+			break;
 		}
 		return fragment;
 	}
@@ -93,7 +100,7 @@ public class WMFragmentManager extends ContentFragmentManager implements
 		String str = null;
 		switch (type) {
 		/* 1x: 地图相关页面 */
-		case TYPE_MAP:
+		case TYPE_MAP_HOME:
 			str = "TYPE_BROWSE_MAP";
 			break;
 
@@ -216,8 +223,8 @@ public class WMFragmentManager extends ContentFragmentManager implements
 	public boolean isMapContent(int type) {
 		boolean isMapContentFragment = false;
 		switch (type) {
-		case TYPE_MAP:
-
+		case TYPE_MAP_HOME:
+			
 			isMapContentFragment = true;
 			break;
 		case TYPE_CHAT:

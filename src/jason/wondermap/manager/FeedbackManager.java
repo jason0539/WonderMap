@@ -16,7 +16,7 @@ public class FeedbackManager {
 	/**
 	 * 保存反馈信息到Bmob云数据库中
 	 */
-	public void saveFeedbackMsg(String msg) {
+	public void saveFeedbackMsg(String msg,final SaveListener listener) {
 		FeedBack feedback = new FeedBack(AccountUserManager
 				.getInstance().getCurrentUserName(), msg);
 		feedback.save(WonderMapApplication.getInstance(), new SaveListener() {
@@ -24,11 +24,13 @@ public class FeedbackManager {
 			@Override
 			public void onSuccess() {
 				Log.i("bmob", "反馈信息已保存到服务器");
+				listener.onSuccess();
 			}
 
 			@Override
 			public void onFailure(int code, String arg0) {
 				Log.e("bmob", "保存反馈信息失败：" + arg0);
+				listener.onFailure(code, arg0);
 			}
 		});
 	}

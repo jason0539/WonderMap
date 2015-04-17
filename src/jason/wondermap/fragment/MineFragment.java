@@ -21,7 +21,7 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 	Button btn_logout;
 	TextView tv_set_name;
 	RelativeLayout layout_info, rl_switch_notification, rl_switch_voice,
-			rl_switch_vibrate, layout_blacklist;
+			rl_switch_vibrate, layout_blacklist, layout_feedback;
 
 	ImageView iv_open_notification, iv_close_notification, iv_open_voice,
 			iv_close_voice, iv_open_vibrate, iv_close_vibrate;
@@ -40,11 +40,12 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 	@Override
 	protected void onInitView() {
 		mSharedUtil = WonderMapApplication.getInstance().getSpUtil();
-		initTopBarForOnlyTitle(mRootView, "设置");
+		initTopBarForLeft(mRootView, "设置");
 		// 黑名单列表
 		layout_blacklist = (RelativeLayout) mRootView
 				.findViewById(R.id.layout_blacklist);
-
+		layout_feedback = (RelativeLayout) mRootView
+				.findViewById(R.id.layout_feedback);
 		layout_info = (RelativeLayout) mRootView.findViewById(R.id.layout_info);
 		rl_switch_notification = (RelativeLayout) mRootView
 				.findViewById(R.id.rl_switch_notification);
@@ -102,6 +103,7 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 		btn_logout.setOnClickListener(this);
 		layout_info.setOnClickListener(this);
 		layout_blacklist.setOnClickListener(this);
+		layout_feedback.setOnClickListener(this);
 		initData();
 	}
 
@@ -122,6 +124,9 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.layout_blacklist:// 启动到黑名单页面
 			wmFragmentManager.showFragment(WMFragmentManager.TYPE_BLACK_LIST);
+			break;
+		case R.id.layout_feedback:
+			wmFragmentManager.showFragment(WMFragmentManager.TYPE_FEEDBACK);
 			break;
 		case R.id.layout_info:// 启动到个人资料页面
 			Bundle bundle = new Bundle();

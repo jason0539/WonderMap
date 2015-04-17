@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_main_bottom_bar"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="@dimen/main_bottombar_height"
     android:background="@android:color/transparent"
     android:baselineAligned="false"
     android:orientation="horizontal" >
@@ -16,7 +16,15 @@
             android:id="@+id/btn_main_recent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="消息" />
+            android:background="@drawable/top_bar"
+            android:drawableTop="@drawable/tab_message_btn"
+            android:onClick="onTabSelect"
+            android:paddingBottom="2dip"
+            android:paddingTop="7dip"
+            android:scaleType="matrix"
+            android:text="@string/main_tab_recent"
+            android:textColor="@drawable/tab_textcolor"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -28,7 +36,15 @@
             android:id="@+id/btn_main_contact"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="好友" />
+            android:background="@drawable/top_bar"
+            android:drawableTop="@drawable/tab_contact_btn"
+            android:onClick="onTabSelect"
+            android:paddingBottom="2dip"
+            android:paddingTop="7dip"
+            android:scaleType="matrix"
+            android:text="@string/main_tab_contact"
+            android:textColor="@drawable/tab_textcolor"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -40,7 +56,15 @@
             android:id="@+id/btn_main_discover"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="发现" />
+            android:background="@drawable/top_bar"
+            android:drawableTop="@drawable/tab_footblog"
+            android:onClick="onTabSelect"
+            android:paddingBottom="2dip"
+            android:paddingTop="7dip"
+            android:scaleType="matrix"
+            android:text="@string/main_tab_footblog"
+            android:textColor="@drawable/tab_textcolor"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -50,9 +74,18 @@
 
         <Button
             android:id="@+id/btn_main_mine"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="我的" />
+            android:layout_weight="1"
+            android:background="@drawable/top_bar"
+            android:drawableTop="@drawable/tab_set_btn"
+            android:onClick="onTabSelect"
+            android:paddingBottom="2dip"
+            android:paddingTop="7dip"
+            android:scaleType="matrix"
+            android:text="@string/mian_tab_set"
+            android:textColor="@drawable/tab_textcolor"
+            android:textSize="12sp" />
     </LinearLayout>
 
 </LinearLayout>

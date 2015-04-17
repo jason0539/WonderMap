@@ -83,7 +83,7 @@ public class NewFriendFragment extends ContentFragment implements
 		// TODO Auto-generated method stub
 		super.onDestroyView();
 		if (from == null) {//  如果是点击通知栏进来的，则返回时回到主页面,这里定为返回到地图首页
-			wmFragmentManager.backTo(WMFragmentManager.TYPE_MAP, null);
+			wmFragmentManager.backTo(WMFragmentManager.TYPE_MAP_HOME, null);
 		}
 	}
 }

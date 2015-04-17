@@ -3,13 +3,17 @@
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clickable="false"
-    android:background="@android:color/transparent">
+    android:background="@android:color/transparent"
+    android:clickable="false" >
+
+    <include
+        android:id="@+id/common_actionbar"
+        layout="@layout/include_action_bar" />
 
     <FrameLayout
         android:id="@+id/main_bottom_bar"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/main_bottombar_height"
         android:layout_alignParentBottom="true"
         android:visibility="visible" >
 

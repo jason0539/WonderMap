@@ -103,7 +103,7 @@ public class ContactFragment extends ContentFragment implements
 				.getSystemService(Context.INPUT_METHOD_SERVICE);
 		characterParser = CharacterParser.getInstance();
 		pinyinComparator = new PinyinComparator();
-		initTopBarForRight(mRootView,"联系人", R.drawable.base_action_bar_add_bg_selector,
+		initTopBarForBoth(mRootView,"联系人", R.drawable.base_action_bar_add_bg_selector,
 				new onRightImageButtonClickListener() {
 
 					@Override

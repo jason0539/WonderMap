@@ -71,7 +71,7 @@ public class RecentFragment extends ContentFragment implements
 		L.d(TAG, "onInitView");
 		// 开启广播接收器==重构时要考虑同一管理
 		initNewMessageBroadCast();
-		initTopBarForOnlyTitle(mRootView, "会话");
+		initTopBarForLeft(mRootView, "会话");
 		listview = (ListView) mRootView.findViewById(R.id.list);
 		listview.setOnItemClickListener(this);
 		listview.setOnItemLongClickListener(this);

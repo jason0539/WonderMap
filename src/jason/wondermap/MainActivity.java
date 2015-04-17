@@ -40,7 +40,7 @@ public class MainActivity extends FragmentActivity {
 		WLocationManager.getInstance().start();// 开始定位,之后最好移到application里面，启动就完成
 		fragmentManager = new WMFragmentManager(this);
 		BaseFragment.initBeforeAll(this);
-		fragmentManager.showFragment(WMFragmentManager.TYPE_MAP, null);
+		fragmentManager.showFragment(WMFragmentManager.TYPE_MAP_HOME, null);
 		ChatMessageManager.getInstance();// 开始接收消息
 		// 添加检查log，上传到服务器
 		CommonUtils.checkCrashLog();

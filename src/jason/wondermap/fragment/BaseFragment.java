@@ -177,8 +177,6 @@ public class BaseFragment extends Fragment {
 
 	/**
 	 * 只有title initTopBarLayoutByTitle
-	 * @Title: initTopBarLayoutByTitle
-	 * @throws
 	 */
 	public void initTopBarForOnlyTitle(ViewGroup rootGroup,String titleName) {
 		mHeaderLayout = (HeaderLayout)rootGroup.findViewById(R.id.common_actionbar);
@@ -188,9 +186,6 @@ public class BaseFragment extends Fragment {
 
 	/**
 	 * 初始化标题栏-带左右按钮
-	 * 
-	 * @return void
-	 * @throws
 	 */
 	public void initTopBarForBoth(ViewGroup rootView,String titleName, int rightDrawableId,
 			onRightImageButtonClickListener listener) {

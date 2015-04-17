@@ -16,14 +16,14 @@
     <dimen name="base_line_width_1">1dip</dimen>
     <dimen name="base_line_width_2">2dip</dimen>
     <dimen name="base_line_width">0.5dip</dimen>
-
     <dimen name="time_line_line_left_margin">24dip</dimen>
     <dimen name="time_line_line_width">2.0dip</dimen>
     <dimen name="time_line_content_left_margin">52.0dip</dimen>
     <dimen name="time_line_content_right_margin">7.0dip</dimen>
-    
     <dimen name="score_item_height">100.0dip</dimen>
-     <dimen name="message_top_height">70.0dip</dimen>
-     
-     <dimen name="margin_chat_top">5.0dip</dimen>
+    <dimen name="message_top_height">70.0dip</dimen>
+    <dimen name="margin_chat_top">5.0dip</dimen>
+    <!-- 活点地图 -->
+    <dimen name="main_bottombar_height">52dp</dimen>
+
 </resources>

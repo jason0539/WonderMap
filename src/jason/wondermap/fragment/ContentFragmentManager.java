@@ -76,7 +76,6 @@ public class ContentFragmentManager {
 		mCurrentFragmentInfo = new FragmentInfo(fragment, type);
 		if (mCurrentFragmentInfo.mFragment != null)
 			mCurrentFragmentInfo.mFragment.requestInitView();
-
 	}
 
 	/**

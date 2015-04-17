@@ -12,6 +12,7 @@ import jason.wondermap.utils.ImageLoadOptions;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.PhotoUtil;
 import jason.wondermap.utils.UserInfo;
+import jason.wondermap.utils.WModel;
 import jason.wondermap.view.dialog.DialogTips;
 
 import java.io.File;
@@ -65,7 +66,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  * @author liuzhenhui
  * 
  */
-public class SetMyInfoFragment extends ContentFragment implements
+public class UserInfoFragment extends ContentFragment implements
 		OnClickListener {
 	TextView tv_set_name, tv_set_nick, tv_set_gender;
 	ImageView iv_set_avator, iv_arraw, iv_nickarraw;
@@ -83,11 +84,12 @@ public class SetMyInfoFragment extends ContentFragment implements
 	@Override
 	protected View onCreateContentView(LayoutInflater inflater) {
 		// 因为魅族手机下面有三个虚拟的导航按钮，需要将其隐藏掉，不然会遮掉拍照和相册两个按钮，且在setContentView之前调用才能生效
-		int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-		if (currentapiVersion >= 14) {
-			getActivity().getWindow().getDecorView()
-					.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-		}
+		// 加了之后，第一次点击会无效，所有点击都得两次才生效
+		// int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+		// if (currentapiVersion >= 14) {
+		// getActivity().getWindow().getDecorView()
+		// .setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+		// }
 		userManager = BmobUserManager.getInstance(mContext);
 		mRootView = (ViewGroup) inflater.inflate(R.layout.activity_set_info,
 				mContainer, false);
@@ -236,6 +238,7 @@ public class SetMyInfoFragment extends ContentFragment implements
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.btn_chat:// 发起聊天
+			L.d(WModel.clickUseless, "点击发起会话");
 			Bundle bundle = new Bundle();
 			bundle.putString(UserInfo.AVATAR, user.getAvatar());
 			bundle.putString(UserInfo.NICK, user.getNick());
@@ -260,7 +263,10 @@ public class SetMyInfoFragment extends ContentFragment implements
 		case R.id.btn_add_friend:// 添加好友
 			addFriend();
 			break;
+		default:
+			break;
 		}
+		L.d(WModel.clickUseless, "click");
 	}
 
 	String[] sexs = new String[] { "男", "女" };
@@ -269,7 +275,7 @@ public class SetMyInfoFragment extends ContentFragment implements
 		new AlertDialog.Builder(getActivity())
 				.setTitle("单选框")
 				.setIcon(android.R.drawable.ic_dialog_info)
-				.setSingleChoiceItems(sexs, user.getSex()?0:1,
+				.setSingleChoiceItems(sexs, user.getSex() ? 0 : 1,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int which) {
