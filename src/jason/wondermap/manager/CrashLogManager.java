@@ -36,7 +36,7 @@ public class CrashLogManager {
 						public void onSuccess() {
 							L.d(WModel.CrashUpload, "上传成功");
 							CrashLogFile crashLogFile = new CrashLogFile(
-									UserinfoAndLocationManager.getInstance()
+									AccountUserManager.getInstance()
 											.getCurrentUserName(), bmobFile);
 							insertObject(crashLogFile);
 							WonderMapApplication.getInstance().getSpUtil()

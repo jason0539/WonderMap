@@ -5,6 +5,7 @@ import jason.wondermap.WonderMapApplication;
 import jason.wondermap.adapter.base.BaseListAdapter;
 import jason.wondermap.adapter.base.ViewHolder;
 import jason.wondermap.fragment.BaseFragment;
+import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.utils.CollectionUtils;
 import jason.wondermap.utils.ImageLoadOptions;
 
@@ -113,7 +114,7 @@ public class NewFriendAdapter extends BaseListAdapter<BmobInvitation> {
 					btn_add.setTextColor(mContext.getResources().getColor(R.color.base_color_text_black));
 					btn_add.setEnabled(false);
 					//保存到application中方便比较
-					WonderMapApplication.getInstance().setContactList(CollectionUtils.list2map(BmobDB.create(mContext).getContactList()));	
+					AccountUserManager.getInstance().setContactList(CollectionUtils.list2map(BmobDB.create(mContext).getContactList()));	
 				}
 				
 				@Override

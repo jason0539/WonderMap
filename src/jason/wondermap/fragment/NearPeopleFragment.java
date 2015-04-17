@@ -3,7 +3,7 @@ package jason.wondermap.fragment;
 import jason.wondermap.R;
 import jason.wondermap.adapter.NearPeopleAdapter;
 import jason.wondermap.bean.User;
-import jason.wondermap.manager.UserinfoAndLocationManager;
+import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.CollectionUtils;
 import jason.wondermap.utils.UserInfo;

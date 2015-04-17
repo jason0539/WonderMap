@@ -4,7 +4,7 @@ import jason.wondermap.LoginActivity;
 import jason.wondermap.MainActivity;
 import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
-import jason.wondermap.manager.UserinfoAndLocationManager;
+import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.view.HeaderLayout;
 import jason.wondermap.view.HeaderLayout.HeaderStyle;
 import jason.wondermap.view.HeaderLayout.onLeftImageButtonClickListener;
@@ -81,7 +81,7 @@ public class BaseFragment extends Fragment {
 		// L.e(TAG, "onCreate");
 		setHasOptionsMenu(true); // 允许fragment修改menu
 		// 自动登陆状态下检测是否在其他设备登陆
-		UserinfoAndLocationManager.getInstance().checkLogin();
+		AccountUserManager.getInstance().checkLogin();
 	}
 
 	@Override

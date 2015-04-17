@@ -17,7 +17,7 @@ import cn.bmob.im.bean.BmobMsg;
 import cn.bmob.im.config.BmobConfig;
 import cn.bmob.im.inteface.EventListener;
 
-public class MessageManager implements EventListener {
+public class ChatMessageManager implements EventListener {
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	public void unInit() {
@@ -162,10 +162,10 @@ public class MessageManager implements EventListener {
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-	private static MessageManager instance = null;
+	private static ChatMessageManager instance = null;
 	private Context mContext;
 
-	private MessageManager() {
+	private ChatMessageManager() {
 		mContext = WonderMapApplication.getInstance();
 		// 开启定时检测服务（单位为秒）-在这里检测后台是否还有未读的消息，有的话就取出来
 		// 如果你觉得检测服务比较耗流量和电量，你也可以去掉这句话-同时还有onDestory方法里面的stopPollService方法
@@ -178,9 +178,9 @@ public class MessageManager implements EventListener {
 		MyMessageReceiver.mNewNum = 0;
 	}
 
-	public static MessageManager getInstance() {
+	public static ChatMessageManager getInstance() {
 		if (instance == null) {
-			instance = new MessageManager();
+			instance = new ChatMessageManager();
 		}
 		return instance;
 	}

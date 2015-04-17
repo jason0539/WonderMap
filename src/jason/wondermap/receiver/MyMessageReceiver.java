@@ -3,6 +3,7 @@ package jason.wondermap.receiver;
 import jason.wondermap.MainActivity;
 import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
+import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.manager.PushMsgSendManager;
 import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.utils.CollectionUtils;
@@ -80,7 +81,7 @@ public class MyMessageReceiver extends BroadcastReceiver {
 	private void handleHelloMsg(JSONObject json) {
 		L.d("收到hello消息，回复world消息");
 		MapUserManager.getInstance().addUserFromPushMsg(json);// 更新地图
-//		应该加上参数，只发送给hello用户
+		// 应该加上参数，只发送给hello用户
 		PushMsgSendManager.getInstance().sayWorld();
 	}
 
@@ -210,7 +211,7 @@ public class MyMessageReceiver extends BroadcastReceiver {
 													// TODO Auto-generated
 													// method stub
 													// 保存到内存中
-													WonderMapApplication
+													AccountUserManager
 															.getInstance()
 															.setContactList(
 																	CollectionUtils

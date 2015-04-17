@@ -17,12 +17,12 @@ public class User extends BmobChatUser {
 	private BmobRelation blogs;
 
 	/**
-	 * //显示数据拼音的首字母
+	 * 显示数据拼音的首字母
 	 */
 	private String sortLetters;
 
 	/**
-	 * //性别-true-男
+	 * 性别-true-男
 	 */
 	private boolean sex;
 
@@ -67,11 +67,14 @@ public class User extends BmobChatUser {
 		this.location = location;
 	}
 
-	public Boolean getSex() {
+	public boolean getSex() {
 		return sex;
 	}
 
-	public void setSex(Boolean sex) {
+	/**true 为男
+	 * @param sex
+	 */
+	public void setSex(boolean sex) {
 		this.sex = sex;
 	}
 

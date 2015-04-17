@@ -17,7 +17,7 @@ public class FeedbackManager {
 	 * 保存反馈信息到Bmob云数据库中
 	 */
 	public void saveFeedbackMsg(String msg) {
-		FeedBack feedback = new FeedBack(UserinfoAndLocationManager
+		FeedBack feedback = new FeedBack(AccountUserManager
 				.getInstance().getCurrentUserName(), msg);
 		feedback.save(WonderMapApplication.getInstance(), new SaveListener() {
 

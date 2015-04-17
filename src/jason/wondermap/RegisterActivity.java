@@ -2,20 +2,16 @@ package jason.wondermap;
 
 import jason.wondermap.bean.User;
 import jason.wondermap.config.WMapConstants;
-import jason.wondermap.manager.UserinfoAndLocationManager;
+import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.view.HeaderLayout;
 import jason.wondermap.view.HeaderLayout.HeaderStyle;
 import jason.wondermap.view.HeaderLayout.onLeftImageButtonClickListener;
-
-import java.util.List;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -24,10 +20,7 @@ import android.widget.Toast;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.util.BmobLog;
 import cn.bmob.v3.BmobInstallation;
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UpdateListener;
 
 public class RegisterActivity extends Activity {
 
@@ -38,7 +31,6 @@ public class RegisterActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 		userManager = BmobUserManager.getInstance(this);
@@ -57,13 +49,10 @@ public class RegisterActivity extends Activity {
 				register();
 			}
 		});
-		checkUser();
 	}
 
 	/**
 	 * 只有左边按钮和Title initTopBarLayout
-	 * 
-	 * @throws
 	 */
 	public void initTopBarForLeft(String titleName) {
 		mHeaderLayout = (HeaderLayout) findViewById(R.id.common_actionbar);
@@ -81,58 +70,6 @@ public class RegisterActivity extends Activity {
 		public void onClick() {
 			finish();
 		}
-	}
-
-	private void checkUser() {
-		BmobQuery<User> query = new BmobQuery<User>();
-		query.addWhereEqualTo("username", "smile");
-		query.findObjects(this, new FindListener<User>() {
-
-			@Override
-			public void onError(int arg0, String arg1) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onSuccess(List<User> arg0) {
-				// TODO Auto-generated method stub
-				if (arg0 != null && arg0.size() > 0) {
-					User user = arg0.get(0);
-					user.setPassword("1234567");
-					user.update(RegisterActivity.this, new UpdateListener() {
-
-						@Override
-						public void onSuccess() {
-							// TODO Auto-generated method stub
-							userManager.login("smile", "1234567",
-									new SaveListener() {
-
-										@Override
-										public void onSuccess() {
-											// TODO Auto-generated method stub
-											Log.i("smile", "登陆成功");
-										}
-
-										@Override
-										public void onFailure(int code,
-												String msg) {
-											// TODO Auto-generated method stub
-											Log.i("smile", "登陆失败：" + code
-													+ ".msg = " + msg);
-										}
-									});
-						}
-
-						@Override
-						public void onFailure(int code, String msg) {
-							// TODO Auto-generated method stub
-
-						}
-					});
-				}
-			}
-		});
 	}
 
 	private void register() {
@@ -173,7 +110,7 @@ public class RegisterActivity extends Activity {
 		// 将user和设备id进行绑定aa
 		bu.setSex(true);
 		bu.setDeviceType("android");
-		bu.setInstallId(BmobInstallation.getInstallationId(this));
+		bu.setInstallId(BmobInstallation.getInstallationId(this));// 用户与设备绑定
 		bu.signUp(RegisterActivity.this, new SaveListener() {
 
 			@Override
@@ -183,8 +120,8 @@ public class RegisterActivity extends Activity {
 				ShowToast("注册成功");
 				// 将设备与username进行绑定
 				userManager.bindInstallationForRegister(bu.getUsername());
-				// 更新地理位置信息
-				UserinfoAndLocationManager.getInstance().updateUserLocation();
+				// 更新地理位置信息，放到LocationManager中，调用accountUserManager更新位置，每隔一段时间更新一次
+				// AccountUserManager.getInstance().updateUserLocation();
 				// 发广播通知登陆页面退出
 				sendBroadcast(new Intent(
 						WMapConstants.ACTION_REGISTER_SUCCESS_FINISH));

@@ -1,17 +1,16 @@
 package jason.wondermap;
 
-import jason.sdk.dialog.JasonDialog;
 import jason.wondermap.controler.WMapControler;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.ContentFragment;
 import jason.wondermap.fragment.WMFragmentManager;
-import jason.wondermap.manager.FeedbackManager;
-import jason.wondermap.manager.WLocationManager;
+import jason.wondermap.manager.ChatMessageManager;
 import jason.wondermap.manager.MapUserManager;
-import jason.wondermap.manager.MessageManager;
+import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.WModel;
+import jason.wondermap.view.dialog.DialogTips;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
@@ -21,7 +20,6 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 
 import com.baidu.mapapi.map.MapView;
@@ -29,7 +27,7 @@ import com.baidu.mapapi.map.MapView;
 public class MainActivity extends FragmentActivity {
 	private WMFragmentManager fragmentManager;
 	private View mForbidTouchView; // 禁止触摸的空视图
-	private JasonDialog mExitAppDialog = null;
+	private DialogTips mExitAppDialog = null;
 	private MapView mMapView = null;
 
 	@Override
@@ -39,12 +37,12 @@ public class MainActivity extends FragmentActivity {
 		setContentView(R.layout.activity_main);
 		initView();
 		WMapControler.getInstance().init(mMapView);
-		WLocationManager.getInstance().init();// 开始定位,之后最好移到application里面，启动就完成
+		WLocationManager.getInstance().start();// 开始定位,之后最好移到application里面，启动就完成
 		fragmentManager = new WMFragmentManager(this);
 		BaseFragment.initBeforeAll(this);
 		fragmentManager.showFragment(WMFragmentManager.TYPE_MAP, null);
-		MessageManager.getInstance();// 开始接收消息
-//		添加检查log，上传到服务器
+		ChatMessageManager.getInstance();// 开始接收消息
+		// 添加检查log，上传到服务器
 		CommonUtils.checkCrashLog();
 	}
 
@@ -72,14 +70,18 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void openExitAppDialog() {
-		mExitAppDialog = new JasonDialog(this).setTitle("退出")
-				.setMessage("确定退出").setLeftText("取消")
-				.setRightOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
+		mExitAppDialog = new DialogTips(this, "退出", getResources().getString(
+				R.string.exit_tips), "确定", true, true);
+		// 设置成功事件
+		mExitAppDialog
+				.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialogInterface,
+							int userId) {
 						exitApp();
 					}
-				}).setRightText("退出");
+				});
+		// 显示确认对话框
+		mExitAppDialog.show();
 
 		mExitAppDialog.setOnDismissListener(new OnDismissListener() {
 
@@ -89,7 +91,7 @@ public class MainActivity extends FragmentActivity {
 			}
 		});
 
-		if (!mExitAppDialog.isShow()) {
+		if (!mExitAppDialog.isShowing()) {
 			try {
 				mExitAppDialog.show();
 			} catch (Exception e) {
@@ -99,7 +101,7 @@ public class MainActivity extends FragmentActivity {
 
 	/** 是否正在显示退出应用对话框 */
 	public boolean isShowingExitAppDialog() {
-		if (mExitAppDialog != null && mExitAppDialog.isShow()) {
+		if (mExitAppDialog != null && mExitAppDialog.isShowing()) {
 			return true;
 		}
 		return false;
@@ -109,6 +111,7 @@ public class MainActivity extends FragmentActivity {
 	 * 退出应用
 	 */
 	public void exitApp() {
+		// 做一些销毁操作
 		finish();
 		new Handler().postDelayed(new Runnable() {
 			@Override
@@ -165,6 +168,7 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onDestroy() {
 		L.d(WModel.MainActivity, "onDestroy");
+		WLocationManager.getInstance().stop();
 		// 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
 		WMapControler.getInstance().unInit();
 		mMapView.onDestroy();

@@ -5,6 +5,7 @@ import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.Blog;
 import jason.wondermap.bean.User;
 import jason.wondermap.config.WMapConstants;
+import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.utils.CollectionUtils;
 import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.ImageLoadOptions;
@@ -135,7 +136,7 @@ public class SetMyInfoFragment extends ContentFragment implements
 			btn_chat.setVisibility(View.VISIBLE);
 			btn_chat.setOnClickListener(this);
 			if (from.equals("add")) {// 从附近的人列表添加好友--因为获取附近的人的方法里面有是否显示好友的情况，因此在这里需要判断下这个用户是否是自己的好友
-				if (WonderMapApplication.getInstance().getContactList()
+				if (AccountUserManager.getInstance().getContactList()
 						.containsKey(username)) {// 是好友
 					// btn_chat.setVisibility(View.VISIBLE);
 					// btn_chat.setOnClickListener(this);
@@ -370,7 +371,7 @@ public class SetMyInfoFragment extends ContentFragment implements
 						btn_back.setVisibility(View.GONE);
 						layout_black_tips.setVisibility(View.VISIBLE);
 						// 重新设置下内存中保存的好友列表
-						WonderMapApplication.getInstance().setContactList(
+						AccountUserManager.getInstance().setContactList(
 								CollectionUtils.list2map(BmobDB
 										.create(mContext).getContactList()));
 					}

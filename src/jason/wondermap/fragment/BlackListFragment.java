@@ -3,6 +3,7 @@ package jason.wondermap.fragment;
 import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.adapter.BlackListAdapter;
+import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.utils.CollectionUtils;
 import jason.wondermap.view.HeaderLayout;
 import jason.wondermap.view.dialog.DialogTips;
@@ -72,7 +73,7 @@ public class BlackListFragment extends ContentFragment implements
 								// TODO Auto-generated method stub
 								ShowToast("移出黑名单成功");
 								// 重新设置下内存中保存的好友列表
-								WonderMapApplication.getInstance()
+								AccountUserManager.getInstance()
 										.setContactList(
 												CollectionUtils.list2map(BmobDB
 														.create(mContext)

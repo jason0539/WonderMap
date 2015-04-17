@@ -229,7 +229,7 @@ public class WMapControler {
 		listener = new OnInfoWindowClickListener() {
 			public void onInfoWindowClick() {
 				Bundle bundle = new Bundle();
-				bundle.putString(UserInfo.FROM, "map");
+				bundle.putString(UserInfo.FROM, "add");
 				bundle.putString(UserInfo.USER_NAME, user.getName());
 				BaseFragment.getWMFragmentManager().showFragment(
 						WMFragmentManager.TYPE_USERINFO, bundle);

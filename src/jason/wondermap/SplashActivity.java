@@ -1,7 +1,7 @@
 package jason.wondermap;
 
 import jason.wondermap.config.WMapConfig;
-import jason.wondermap.manager.UserinfoAndLocationManager;
+import jason.wondermap.manager.AccountUserManager;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,16 +12,20 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
 import cn.bmob.im.BmobChat;
-import cn.bmob.im.BmobUserManager;
 
 import com.baidu.mapapi.SDKInitializer;
 
+/**
+ * 启动页 完成IM SDK初始化，检查更新好友信息到内存
+ * 
+ * @author liuzhenhui
+ * 
+ */
 public class SplashActivity extends Activity {
 	private static final int GO_HOME = 100;
 	private static final int GO_LOGIN = 200;
 
 	private BaiduReceiver mReceiver;// 注册广播接收器，用于监听网络以及验证key
-	private BmobUserManager userManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +35,6 @@ public class SplashActivity extends Activity {
 		BmobChat.DEBUG_MODE = true;
 		// BmobIM SDK初始化--只需要这一段代码即可完成初始化
 		BmobChat.getInstance(this).init(WMapConfig.applicationId);
-		userManager = BmobUserManager.getInstance(this);
 		// 注册地图 SDK 广播监听者
 		IntentFilter iFilter = new IntentFilter();
 		iFilter.addAction(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR);
@@ -44,9 +47,9 @@ public class SplashActivity extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		if (userManager.getCurrentUser() != null) {
+		if (AccountUserManager.getInstance().getCurrentUser() != null) {
 			// 每次自动登陆的时候就需要更新下当前位置和好友的资料，因为好友的头像，昵称啥的是经常变动的
-			UserinfoAndLocationManager.getInstance().updateUserInfos();// 建立一个好友管理类，负责更新相关信息。
+			AccountUserManager.getInstance().updateUserInfos();
 			mHandler.sendEmptyMessageDelayed(GO_HOME, 2000);
 		} else {
 			mHandler.sendEmptyMessageDelayed(GO_LOGIN, 2000);
@@ -61,11 +64,13 @@ public class SplashActivity extends Activity {
 				Intent intent = new Intent(SplashActivity.this,
 						MainActivity.class);
 				startActivity(intent);
+				finish();
 				break;
 			case GO_LOGIN:
 				Intent intent2 = new Intent(SplashActivity.this,
 						LoginActivity.class);
 				startActivity(intent2);
+				finish();
 				break;
 			}
 			finish();
@@ -74,7 +79,6 @@ public class SplashActivity extends Activity {
 
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		unregisterReceiver(mReceiver);
 		super.onDestroy();
 	}

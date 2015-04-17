@@ -3,7 +3,7 @@ package jason.wondermap.fragment;
 import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.adapter.AddFriendAdapter;
-import jason.wondermap.manager.UserinfoAndLocationManager;
+import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.utils.CollectionUtils;
 import jason.wondermap.utils.UserInfo;
 import jason.wondermap.view.xlist.XListView;

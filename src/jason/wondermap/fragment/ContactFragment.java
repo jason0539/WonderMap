@@ -4,6 +4,7 @@ import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.adapter.UserFriendAdapter;
 import jason.wondermap.bean.User;
+import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.utils.CharacterParser;
 import jason.wondermap.utils.CollectionUtils;
 import jason.wondermap.utils.L;
@@ -305,11 +306,11 @@ public class ContactFragment extends ContentFragment implements
 		}
 		// 在这里再做一次本地的好友数据库的检查，是为了本地好友数据库中已经添加了对方，但是界面却没有显示出来的问题
 		// 重新设置下内存中保存的好友列表
-		WonderMapApplication.getInstance().setContactList(
+		AccountUserManager.getInstance().setContactList(
 				CollectionUtils.list2map(BmobDB.create(getActivity())
 						.getContactList()));
 
-		Map<String, BmobChatUser> users = WonderMapApplication.getInstance()
+		Map<String, BmobChatUser> users = AccountUserManager.getInstance()
 				.getContactList();
 		// 组装新的User
 		filledData(CollectionUtils.map2list(users));
@@ -403,7 +404,7 @@ public class ContactFragment extends ContentFragment implements
 			public void onSuccess() {
 				ShowToast("删除成功");
 				// 删除内存
-				WonderMapApplication.getInstance().getContactList()
+				AccountUserManager.getInstance().getContactList()
 						.remove(user.getUsername());
 				// 更新界面
 				getActivity().runOnUiThread(new Runnable() {
