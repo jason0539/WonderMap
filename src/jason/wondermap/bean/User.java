@@ -15,7 +15,7 @@ public class User extends BmobChatUser {
 	 * 发布的博客列表
 	 */
 	private BmobRelation blogs;
-
+	private BmobRelation favorite;//收藏
 	/**
 	 * 显示数据拼音的首字母
 	 */
@@ -34,6 +34,14 @@ public class User extends BmobChatUser {
 	private BmobGeoPoint location;//
 
 	private Integer hight;
+
+	public BmobRelation getFavorite() {
+		return favorite;
+	}
+
+	public void setFavorite(BmobRelation favorite) {
+		this.favorite = favorite;
+	}
 
 	public Blog getBlog() {
 		return blog;
@@ -71,7 +79,9 @@ public class User extends BmobChatUser {
 		return sex;
 	}
 
-	/**true 为男
+	/**
+	 * true 为男
+	 * 
 	 * @param sex
 	 */
 	public void setSex(boolean sex) {

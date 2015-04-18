@@ -1,5 +1,6 @@
 package jason.wondermap.config;
 
+import android.R.integer;
 import android.os.Environment;
 
 /**
@@ -47,4 +48,10 @@ public class WMapConstants {
 
 	public static final String ACTION_REGISTER_SUCCESS_FINISH = "register.success.finish";// 注册成功之后登陆页面退出
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝bmob移植 end＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝图片移植 start＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	public static final int NUMBERS_PER_PAGE = 15;//每次请求返回评论条数
+	public static final int GET_FAVOURITE = 3;
+
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝图片移植 end＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	//
 }

@@ -89,7 +89,7 @@ public class WMFragmentManager extends ContentFragmentManager implements
 			fragment = new FeedbackFragment();
 			break;
 		case TYPE_NEW_FOOTBLOG:
-			fragment = new NewFootblogFragment();
+			fragment = new PublishFootblogFragment();
 			break;
 		}
 		return fragment;

@@ -1,6 +1,17 @@
 package jason.wondermap.manager;
 
+import jason.wondermap.bean.Blog;
+
 public class FootblogManager {
+	private Blog currentBlog = null;
+
+	public Blog getCurrentBlog() {
+		return currentBlog;
+	}
+
+	public void setCurrentQiangYu(Blog blog) {
+		this.currentBlog = blog;
+	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝格式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	private static FootblogManager instance;
@@ -9,7 +20,7 @@ public class FootblogManager {
 
 	}
 
-	public FootblogManager getInstance() {
+	public static FootblogManager getInstance() {
 		if (instance == null) {
 			instance = new FootblogManager();
 		}

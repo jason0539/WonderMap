@@ -1,15 +1,20 @@
 package jason.wondermap.fragment;
 
 import jason.wondermap.R;
+import jason.wondermap.adapter.QiangContentAdapter;
 import jason.wondermap.view.HeaderLayout.onRightImageButtonClickListener;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
-public class DiscoveryFragment extends ContentFragment {
+public class DiscoveryFragment extends ContentFragment implements
+		OnPageChangeListener {
 	ViewGroup mRootViewGroup;
-	ListView mListViewBlog;
+	private View contentView;
+	private ViewPager mViewPager;
+	private QiangContentAdapter mAdapter;
 
 	@Override
 	protected View onCreateContentView(LayoutInflater inflater) {
@@ -23,8 +28,12 @@ public class DiscoveryFragment extends ContentFragment {
 		initTopBarForBoth(mRootViewGroup, "足迹",
 				R.drawable.btn_chat_add_camera_selector,
 				editFootLogClickListener);
-		mListViewBlog = (ListView) mRootViewGroup
-				.findViewById(R.id.lv_footblog);
+		mViewPager = (ViewPager) mRootViewGroup.findViewById(R.id.viewpager);
+		mAdapter = new QiangContentAdapter(getActivity()
+				.getSupportFragmentManager());
+		mViewPager.setAdapter(mAdapter);
+		mViewPager.setOnPageChangeListener(this);
+		mViewPager.setOffscreenPageLimit(4);
 	}
 
 	onRightImageButtonClickListener editFootLogClickListener = new onRightImageButtonClickListener() {
@@ -48,6 +57,25 @@ public class DiscoveryFragment extends ContentFragment {
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
+	}
+
+	// OnPageChangeListener方法
+	@Override
+	public void onPageScrollStateChanged(int arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onPageScrolled(int arg0, float arg1, int arg2) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onPageSelected(int arg0) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

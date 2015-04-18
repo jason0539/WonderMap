@@ -40,7 +40,7 @@ import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
-public class NewFootblogFragment extends ContentFragment implements
+public class PublishFootblogFragment extends ContentFragment implements
 		OnClickListener {
 	private static final int REQUEST_CODE_ALBUM = 1;
 	private static final int REQUEST_CODE_CAMERA = 2;
@@ -150,15 +150,12 @@ public class NewFootblogFragment extends ContentFragment implements
 
 			@Override
 			public void onSuccess() {
-				// TODO Auto-generated method stub
 				L.i("上传文件成功。" + figureFile.getFileUrl(mContext));
 				publishWithoutFigure(commitContent, figureFile);
-
 			}
 
 			@Override
 			public void onProgress(Integer arg0) {
-				// TODO Auto-generated method stub
 				L.d(WModel.PublishBlog, "progress --->" + arg0);
 			}
 
@@ -168,7 +165,6 @@ public class NewFootblogFragment extends ContentFragment implements
 				L.i("上传文件失败。" + arg1);
 			}
 		});
-
 	}
 
 	private void publishWithoutFigure(final String commitContent,

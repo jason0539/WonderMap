@@ -23,6 +23,10 @@
     <dimen name="score_item_height">100.0dip</dimen>
     <dimen name="message_top_height">70.0dip</dimen>
     <dimen name="margin_chat_top">5.0dip</dimen>
+    <!-- 下拉刷新 -->
+    <dimen name="indicator_right_padding">10dp</dimen>
+    <dimen name="indicator_corner_radius">12dp</dimen>
+    <dimen name="indicator_internal_padding">4dp</dimen>
     <!-- 活点地图 -->
     <dimen name="main_bottombar_height">52dp</dimen>
 

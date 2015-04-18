@@ -1,5 +1,7 @@
 package jason.wondermap.utils;
 
+import com.baidu.location.m;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -65,6 +67,24 @@ public class SharePreferenceUtil {
 
 	public void setCrashLog(String name) {
 		editor.putString(SHARED_KEY_CRASH, name);
+		editor.commit();
+	}
+
+	// 第三方分享
+	// Delete
+	public void remove(String key) {
+		editor.remove(key);
+		editor.commit();
+	}
+
+	// String
+	public String getValue(String key, String defaultValue) {
+		return mSharedPreferences.getString(key, defaultValue);
+	}
+
+	// String
+	public void setValue(String key, String value) {
+		editor.putString(key, value);
 		editor.commit();
 	}
 
