@@ -17,16 +17,15 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
-    
-     <style name="ActionBar">
+    <style name="ActionBar">
         <item name="android:orientation">horizontal</item>
         <item name="android:background">@drawable/top_bar</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_height">@dimen/base_action_bar_height</item>
     </style>
-    
-      <style name="ActionBarTitle">
+
+    <style name="ActionBarTitle">
         <item name="android:textSize">@dimen/base_action_bar_title_size</item>
         <item name="android:textColor">@color/base_color_text_white</item>
         <item name="android:gravity">left|center</item>
@@ -35,8 +34,8 @@
         <item name="android:singleLine">true</item>
         <item name="android:drawablePadding">1.0dip</item>
     </style>
-      
-     <style name="chat_content_date_style">
+
+    <style name="chat_content_date_style">
         <item name="android:minHeight">50dp</item>
         <item name="android:gravity">left|center</item>
         <item name="android:textColor">#000000</item>
@@ -52,7 +51,7 @@
         <item name="android:textSize">15sp</item>
         <item name="android:gravity">center</item>
     </style>
-    
+
     <style name="chat_text_date_style">
         <item name="android:padding">2dp</item>
         <item name="android:paddingTop">2dip</item>
@@ -63,9 +62,8 @@
         <item name="android:textSize">12sp</item>
         <item name="android:background">@drawable/chat_time_block</item>
     </style>
-    
-    
-     <style name="Smile">
+
+    <style name="Smile">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
@@ -73,7 +71,7 @@
     <style name="Smile.TextView">
         <item name="android:textSize">18sp</item>
     </style>
-    
+
     <style name="Smile.Button">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/base_action_bar_height</item>
@@ -93,6 +91,7 @@
         <item name="android:layout_height">75dp</item>
         <item name="android:scaleType">fitXY</item>
     </style>
+
     <style name="Smile.ImageView.Photo_Middle">
         <item name="android:layout_width">60dp</item>
         <item name="android:layout_height">60dp</item>
@@ -128,9 +127,8 @@
     <style name="Smile.TextView._Black">
         <item name="android:textColor">@color/base_color_text_black</item>
     </style>
-    
-    
-     <style name="Register_Input">
+
+    <style name="Register_Input">
         <item name="android:orientation">horizontal</item>
         <item name="android:background">@drawable/base_edit_input</item>
         <item name="android:layout_width">match_parent</item>
@@ -147,16 +145,16 @@
         <item name="android:layout_marginLeft">@dimen/register_margin</item>
         <item name="android:background">@color/transparent</item>
     </style>
-    
+
     <style name="Animations" />
 
     <style name="Animations.GrowFromBottom">
         <item name="@android:windowEnterAnimation">@anim/grow_from_bottom</item>
         <item name="@android:windowExitAnimation">@anim/shrink_from_top</item>
     </style>
-    
+
     <!-- dialog -->
-     <style name="TextAppearance">
+    <style name="TextAppearance">
         <item name="android:textColor">#000000</item>
         <item name="android:textColorHighlight">#FFFFFF</item>
         <item name="android:textColorHint">#FFFFFF</item>
@@ -183,6 +181,38 @@
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+    <!--  -->
+    <style name="TextTheme">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:shadowColor">#00000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">0</item>
+        <item name="android:shadowRadius">0</item>
+        <item name="android:background">@null</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#242424</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextTheme.tipstheme">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextTheme.tipstheme_second">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#888888</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextTheme.tipstheme_buttontext">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 
 </resources>
-

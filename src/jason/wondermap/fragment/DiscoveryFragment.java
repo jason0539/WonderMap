@@ -5,9 +5,11 @@ import jason.wondermap.view.HeaderLayout.onRightImageButtonClickListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 public class DiscoveryFragment extends ContentFragment {
 	ViewGroup mRootViewGroup;
+	ListView mListViewBlog;
 
 	@Override
 	protected View onCreateContentView(LayoutInflater inflater) {
@@ -21,13 +23,16 @@ public class DiscoveryFragment extends ContentFragment {
 		initTopBarForBoth(mRootViewGroup, "足迹",
 				R.drawable.btn_chat_add_camera_selector,
 				editFootLogClickListener);
+		mListViewBlog = (ListView) mRootViewGroup
+				.findViewById(R.id.lv_footblog);
 	}
 
 	onRightImageButtonClickListener editFootLogClickListener = new onRightImageButtonClickListener() {
 
 		@Override
 		public void onClick() {
-			wmFragmentManager.showFragment(WMFragmentManager.TYPE_NEW_FOOTBLOG, null);
+			wmFragmentManager.showFragment(WMFragmentManager.TYPE_NEW_FOOTBLOG,
+					null);
 		}
 	};
 

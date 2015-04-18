@@ -663,7 +663,7 @@ public class UserInfoFragment extends ContentFragment implements
 		// relation.add(blog);
 		// user.setBlogs(relation);
 		final Blog blog = new Blog();
-		blog.setBrief("你好");
+//		blog.setBrief("你好");
 		blog.save(mContext, new SaveListener() {
 
 			@Override
