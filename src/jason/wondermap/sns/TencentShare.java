@@ -74,7 +74,8 @@ public class TencentShare implements TencentShareConstants {
 	 */
 	private void initTencent() {
 		if (tencent == null) {
-			tencent = Tencent.createInstance(getAppId(), mContext);
+			tencent = Tencent.createInstance(getAppId(),
+					mContext.getApplicationContext());
 		}
 
 	}
@@ -92,7 +93,7 @@ public class TencentShare implements TencentShareConstants {
 			ApplicationInfo appInfo = pm.getApplicationInfo(packageName,
 					PackageManager.GET_META_DATA);
 			appId = appInfo.metaData.getString("TA_APPKEY");
-			L.d("appid is "+appId);
+			L.d("appid is " + appId);
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}

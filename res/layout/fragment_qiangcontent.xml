@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="8dip"
-    android:paddingRight="8dip"
-    >
-<!--     The PullToRefreshListView replaces a standard ListView widget. -->
+    android:paddingRight="8dip" >
+
+    <!-- The PullToRefreshListView replaces a standard ListView widget. -->
 
     <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/pull_refresh_list"
@@ -18,25 +18,24 @@
         android:fastScrollEnabled="false"
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"
-        android:smoothScrollbar="true" 
+        android:smoothScrollbar="true" />
 
-        />
-	<ProgressBar 
+    <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
-		android:indeterminateDrawable="@anim/loading"
-        />
-    <TextView 
+        android:indeterminateDrawable="@anim/loading"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/networkTips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="请检查网络并下拉刷新"
-        android:textSize="18sp"
         android:textColor="@android:color/black"
-        android:visibility="visible"
-        />
+        android:textSize="18sp"
+        android:visibility="visible" />
+
 </RelativeLayout>

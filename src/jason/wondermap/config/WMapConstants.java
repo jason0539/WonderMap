@@ -51,7 +51,8 @@ public class WMapConstants {
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝图片移植 start＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	public static final int NUMBERS_PER_PAGE = 15;//每次请求返回评论条数
 	public static final int GET_FAVOURITE = 3;
-
+	//点击足迹相关控件，如果没有登录，则先进入登陆页面，登陆成功后返回之前操作界面
+	
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝图片移植 end＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	//
 }

@@ -132,9 +132,19 @@
                 style="@style/Smile.TextView._Black"
                 android:layout_marginRight="20dp"
                 android:drawablePadding="10dp" />
-            
         </LinearLayout>
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_browse_footblog"
+        style="@style/Smile.Button.theme"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/browse_footblog"
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/btn_add_friend"

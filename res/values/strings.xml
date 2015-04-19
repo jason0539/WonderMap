@@ -12,6 +12,7 @@
     <string name="feedback_commit">提交建议</string>
     <!-- 设置页面 -->
     <string name="set_feedback">意见反馈</string>
+    <string name="set_favourite">我的收藏</string>
     <!-- my end -->
 
     <string name="login_username_hint">请输入用户名&#8230;</string>
@@ -56,6 +57,7 @@
     <string name="blacklist">黑名单</string>
     <string name="chat">发起会话</string>
     <string name="add_friend">添加好友</string>
+    <string name="browse_footblog">查看足迹</string>
     <string name="send_state">已读</string>
     <string name="longclick_speak">长按说话</string>
     <string name="picture">照片</string>

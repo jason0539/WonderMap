@@ -3,19 +3,17 @@ package jason.wondermap.adapter;
 import jason.wondermap.LoginActivity;
 import jason.wondermap.R;
 import jason.wondermap.bean.Blog;
+import jason.wondermap.bean.BlogComment;
 import jason.wondermap.bean.User;
-import jason.wondermap.config.BundleTake;
 import jason.wondermap.config.WMapConstants;
-import jason.wondermap.dao.DatabaseUtil;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.WMFragmentManager;
-import jason.wondermap.manager.AccountUserManager;
+import jason.wondermap.manager.FootblogManager;
 import jason.wondermap.sns.TencentShare;
 import jason.wondermap.sns.TencentShareEntity;
 import jason.wondermap.utils.ActivityUtil;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.T;
-import jason.wondermap.utils.UserInfo;
 
 import java.util.List;
 
@@ -24,7 +22,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -41,16 +38,14 @@ import cn.bmob.v3.listener.UpdateListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-public class AIContentAdapter extends BaseContentAdapter<Blog> {
+public class PersonCenterContentAdapter extends BaseContentAdapter<Blog> {
 
 	public static final String TAG = "AIContentAdapter";
 	public static final int SAVE_FAVOURITE = 2;
-	public static final int NUMBERS_PER_PAGE = 15;// 每次请求返回评论条数
-	private Context mContext;
 
-	public AIContentAdapter(Context context, List<Blog> list) {
+	public PersonCenterContentAdapter(Context context, List<Blog> list) {
 		super(context, list);
-		mContext = context;
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -93,7 +88,7 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 		}
 		String avatarUrl = null;
 		if (user.getAvatar() != null) {
-			avatarUrl = user.getAvatar();// TODO 原来user存的是图片，目前放的是连接，不止有没有影响
+			avatarUrl = user.getAvatar();
 		}
 		ImageLoader.getInstance().displayImage(avatarUrl, viewHolder.userLogo,
 				ActivityUtil.getOptions(R.drawable.user_icon_default_main),
@@ -111,32 +106,23 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 
 			@Override
 			public void onClick(View v) {
-				// 点击头像，如果未登陆则跳转到登陆页面
-				if (AccountUserManager.getInstance().getCurrentUser() == null) {
-					T.showShort(mContext, "请先登录。");
-					Activity mainActivity = BaseFragment.getMainActivity();
-					mainActivity.startActivity(new Intent(mainActivity,
-							LoginActivity.class));
-					mainActivity.finish();
-					// Intent intent = new Intent();
-					// intent.setClass(mContext,
-					// RegisterAndLoginActivity.class);
-					// MyApplication.getInstance().getTopActivity()
-					// .startActivity(intent);
-					return;
-				}
-				// 登陆用户点击头像， 跳转到用户资料界面，显示“查看他的足迹”，点击进入个人所有足迹界面
-				Bundle bundle = new Bundle();
-				bundle.putString(UserInfo.FROM, "add");
-				bundle.putString(UserInfo.USER_NAME, viewHolder.userName
-						.getText().toString());
-				BaseFragment.getWMFragmentManager().showFragment(
-						WMFragmentManager.TYPE_USERINFO, bundle);
-				// FootblogManager.getInstance().setCurrentQiangYu(entity);
+				// TODO Auto-generated method stub
+				FootblogManager.getInstance().setCurrentQiangYu(entity);
+				// User currentUser =
+				// BmobUser.getCurrentUser(mContext,User.class);
+				// if(currentUser != null){//已登录
 				// Intent intent = new Intent();
 				// intent.setClass(MyApplication.getInstance().getTopActivity(),
 				// PersonalActivity.class);
 				// mContext.startActivity(intent);
+				// }else{//未登录
+				// ActivityUtil.show(mContext, "请先登录。");
+				// Intent intent = new Intent();
+				// intent.setClass(MyApplication.getInstance().getTopActivity(),
+				// RegisterAndLoginActivity.class);
+				// MyApplication.getInstance().getTopActivity().startActivityForResult(intent,
+				// Constant.GO_SETTINGS);
+				// }
 			}
 		});
 		viewHolder.userName.setText(entity.getAuthor().getUsername());
@@ -184,62 +170,30 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 		}
 		viewHolder.hate.setText(entity.getHate() + "");
 		viewHolder.love.setOnClickListener(new OnClickListener() {
-			boolean oldFav = entity.getMyFav();
 
 			@Override
 			public void onClick(View v) {
-				if (AccountUserManager.getInstance().getCurrentUser() == null) {
-					T.showShort(mContext, "请先登录。");
-					Activity mainActivity = BaseFragment.getMainActivity();
-					mainActivity.startActivity(new Intent(mainActivity,
-							LoginActivity.class));
-					mainActivity.finish();
-					// Intent intent = new Intent();
-					// intent.setClass(mContext,
-					// RegisterAndLoginActivity.class);
-					// MyApplication.getInstance().getTopActivity()
-					// .startActivity(intent);
-					return;
-				}
+				// TODO Auto-generated method stub
 				if (entity.getMyLove()) {
-					T.showShort(mContext, "您已赞过啦");
 					return;
 				}
-
-				if (DatabaseUtil.getInstance(mContext).isLoved(entity)) {
-					T.showShort(mContext, "您已赞过啦");
-					entity.setMyLove(true);
-					entity.setLove(entity.getLove() + 1);
-					viewHolder.love.setTextColor(Color.parseColor("#D95555"));
-					viewHolder.love.setText(entity.getLove() + "");
-					return;
-				}
-
 				entity.setLove(entity.getLove() + 1);
 				viewHolder.love.setTextColor(Color.parseColor("#D95555"));
 				viewHolder.love.setText(entity.getLove() + "");
-
+				entity.setMyLove(true);
 				entity.increment("love", 1);
-				if (entity.getMyFav()) {
-					entity.setMyFav(false);
-				}
 				entity.update(mContext, new UpdateListener() {
 
 					@Override
 					public void onSuccess() {
 						// TODO Auto-generated method stub
-						entity.setMyLove(true);
-						entity.setMyFav(oldFav);
-						DatabaseUtil.getInstance(mContext).insertFav(entity);
-						// DatabaseUtil.getInstance(mContext).queryFav();
 						L.i(TAG, "点赞成功~");
 					}
 
 					@Override
 					public void onFailure(int arg0, String arg1) {
 						// TODO Auto-generated method stub
-						entity.setMyLove(true);
-						entity.setMyFav(oldFav);
+
 					}
 				});
 			}
@@ -272,7 +226,7 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 
 			@Override
 			public void onClick(View v) {
-				// MyApplication.getInstance().getTopActivity()
+				// TODO Auto-generated method stub
 				// share to sociaty
 				T.showShort(mContext, "分享给好友看哦~");
 				final TencentShare tencentShare = new TencentShare(BaseFragment
@@ -286,30 +240,13 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				// 评论
-				// MyApplication.getInstance().setCurrentQiangYu(entity);
-				if (AccountUserManager.getInstance().getCurrentUser() == null) {
-					T.showShort(mContext, "请先登录。");
-					Activity mainActivity = BaseFragment.getMainActivity();
-					mainActivity.startActivity(new Intent(mainActivity,
-							LoginActivity.class));
-					mainActivity.finish();
-					// Intent intent = new Intent();
-					// intent.setClass(mContext,
-					// RegisterAndLoginActivity.class);
-					// MyApplication.getInstance().getTopActivity()
-					// .startActivity(intent);
-					return;
-				}
-				Bundle bundle = new Bundle();
-				bundle.putSerializable(BundleTake.CommentItemData, entity);
-				BaseFragment.getWMFragmentManager().showFragment(
-						WMFragmentManager.TYPE_FOOTBLOG_COMMENT, bundle);
-				// 点击评论按钮进入评论页面
+				FootblogManager.getInstance().setCurrentQiangYu(entity);
 				// Intent intent = new Intent();
 				// intent.setClass(MyApplication.getInstance().getTopActivity(),
 				// CommentActivity.class);
-				// intent.putExtra("data", entity);
 				// mContext.startActivity(intent);
+				BaseFragment.getWMFragmentManager().showFragment(
+						WMFragmentManager.TYPE_FOOTBLOG_COMMENT);
 			}
 		});
 
@@ -364,7 +301,7 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 		public TextView comment;
 	}
 
-	private void onClickFav(View v, final Blog qiangYu) {
+	private void onClickFav(View v, Blog qiangYu) {
 		// TODO Auto-generated method stub
 		User user = BmobUser.getCurrentUser(mContext, User.class);
 		if (user != null && user.getSessionToken() != null) {
@@ -375,64 +312,43 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 				((ImageView) v)
 						.setImageResource(R.drawable.ic_action_fav_choose);
 				favRelaton.add(qiangYu);
-				user.setFavorite(favRelaton);
 				T.showShort(mContext, "收藏成功。");
-				user.update(mContext, new UpdateListener() {
-
-					@Override
-					public void onSuccess() {
-						// TODO Auto-generated method stub
-						DatabaseUtil.getInstance(mContext).insertFav(qiangYu);
-						L.i(TAG, "收藏成功。");
-						// try get fav to see if fav success
-						// getMyFavourite();
-					}
-
-					@Override
-					public void onFailure(int arg0, String arg1) {
-						// TODO Auto-generated method stub
-						L.i(TAG, "收藏失败。请检查网络~");
-						T.showShort(mContext, "收藏失败。请检查网络~" + arg0);
-					}
-				});
-
 			} else {
 				((ImageView) v)
 						.setImageResource(R.drawable.ic_action_fav_normal);
 				favRelaton.remove(qiangYu);
-				user.setFavorite(favRelaton);
 				T.showShort(mContext, "取消收藏。");
-				user.update(mContext, new UpdateListener() {
-
-					@Override
-					public void onSuccess() {
-						// TODO Auto-generated method stub
-						DatabaseUtil.getInstance(mContext).deleteFav(qiangYu);
-						L.i(TAG, "取消收藏。");
-						// try get fav to see if fav success
-						// getMyFavourite();
-					}
-
-					@Override
-					public void onFailure(int arg0, String arg1) {
-						// TODO Auto-generated method stub
-						L.i(TAG, "取消收藏失败。请检查网络~");
-						T.showShort(mContext, "取消收藏失败。请检查网络~" + arg0);
-					}
-				});
 			}
 
+			user.setFavorite(favRelaton);
+			user.update(mContext, new UpdateListener() {
+
+				@Override
+				public void onSuccess() {
+					// TODO Auto-generated method stub
+					L.i(TAG, "收藏成功。");
+					// try get fav to see if fav success
+					// getMyFavourite();
+				}
+
+				@Override
+				public void onFailure(int arg0, String arg1) {
+					// TODO Auto-generated method stub
+					L.i(TAG, "收藏失败。请检查网络~");
+					T.showShort(mContext, "收藏失败。请检查网络~" + arg0);
+				}
+			});
 		} else {
 			// 前往登录注册界面
 			T.showShort(mContext, "收藏前请先登录。");
-			Activity mainActivity = BaseFragment.getMainActivity();
-			mainActivity.startActivity(new Intent(mainActivity,
-					LoginActivity.class));
-			mainActivity.finish();
 			// Intent intent = new Intent();
 			// intent.setClass(mContext, RegisterAndLoginActivity.class);
 			// MyApplication.getInstance().getTopActivity()
 			// .startActivityForResult(intent, SAVE_FAVOURITE);
+			Activity mainActivity = BaseFragment.getMainActivity();
+			mainActivity.startActivity(new Intent(mainActivity,
+					LoginActivity.class));
+			mainActivity.finish();
 		}
 	}
 
@@ -462,16 +378,14 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 		} else {
 			// 前往登录注册界面
 			T.showShort(mContext, "获取收藏前请先登录。");
+			// Intent intent = new Intent();
+			// intent.setClass(mContext, RegisterAndLoginActivity.class);
+			// MyApplication.getInstance().getTopActivity()
+			// .startActivityForResult(intent, Constant.GET_FAVOURITE);
 			Activity mainActivity = BaseFragment.getMainActivity();
 			mainActivity.startActivity(new Intent(mainActivity,
 					LoginActivity.class));
 			mainActivity.finish();
-			// Intent intent = new Intent();
-			// intent.setClass(mContext, RegisterAndLoginActivity.class);
-			// MyApplication
-			// .getInstance()
-			// .getTopActivity()
-			// .startActivityForResult(intent, WMapConstants.GET_FAVOURITE);
 		}
 	}
 }

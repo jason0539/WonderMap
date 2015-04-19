@@ -4,8 +4,10 @@ import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.Blog;
 import jason.wondermap.bean.User;
+import jason.wondermap.config.BundleTake;
 import jason.wondermap.config.WMapConstants;
 import jason.wondermap.manager.AccountUserManager;
+import jason.wondermap.manager.FootblogManager;
 import jason.wondermap.utils.CollectionUtils;
 import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.ImageLoadOptions;
@@ -72,7 +74,7 @@ public class UserInfoFragment extends ContentFragment implements
 	ImageView iv_set_avator, iv_arraw, iv_nickarraw;
 	LinearLayout layout_all;
 
-	Button btn_chat, btn_back, btn_add_friend;
+	Button btn_chat, btn_back, btn_add_friend,btn_browse_footblog;
 	RelativeLayout layout_head, layout_nick, layout_gender, layout_black_tips;
 	BmobUserManager userManager;
 
@@ -117,10 +119,12 @@ public class UserInfoFragment extends ContentFragment implements
 		btn_chat = (Button) mRootView.findViewById(R.id.btn_chat);
 		btn_back = (Button) mRootView.findViewById(R.id.btn_back);
 		btn_add_friend = (Button) mRootView.findViewById(R.id.btn_add_friend);
+		btn_browse_footblog = (Button) mRootView.findViewById(R.id.btn_browse_footblog);
+		btn_browse_footblog.setOnClickListener(this);
 		btn_add_friend.setEnabled(false);
 		btn_chat.setEnabled(false);
 		btn_back.setEnabled(false);
-		if (from.equals("me")) {
+		if (from.equals("me")) {//查看自己的个人信息
 			initTopBarForLeft(mRootView, "个人资料");
 			layout_head.setOnClickListener(this);
 			layout_nick.setOnClickListener(this);
@@ -130,7 +134,7 @@ public class UserInfoFragment extends ContentFragment implements
 			btn_back.setVisibility(View.GONE);
 			btn_chat.setVisibility(View.GONE);
 			btn_add_friend.setVisibility(View.GONE);
-		} else {
+		} else {//来自他人则根据策略显示
 			initTopBarForLeft(mRootView, "详细资料");
 			iv_nickarraw.setVisibility(View.INVISIBLE);
 			iv_arraw.setVisibility(View.INVISIBLE);
@@ -139,7 +143,7 @@ public class UserInfoFragment extends ContentFragment implements
 			btn_chat.setOnClickListener(this);
 			if (from.equals("add")) {// 从附近的人列表添加好友--因为获取附近的人的方法里面有是否显示好友的情况，因此在这里需要判断下这个用户是否是自己的好友
 				if (AccountUserManager.getInstance().getContactList()
-						.containsKey(username)) {// 是好友
+						.containsKey(username)) {// 是好友，不显示加为好友an ni
 					// btn_chat.setVisibility(View.VISIBLE);
 					// btn_chat.setOnClickListener(this);
 					btn_back.setVisibility(View.VISIBLE);
@@ -253,6 +257,11 @@ public class UserInfoFragment extends ContentFragment implements
 			wmFragmentManager
 					.showFragment(WMFragmentManager.TYPE_UPDATE_USERINFO);
 			// addBlog();
+			break;
+		case R.id.btn_browse_footblog:
+			Bundle bundle2 = new Bundle();
+			bundle2.putSerializable(BundleTake.FootblogOfUser, user);
+			wmFragmentManager.showFragment(WMFragmentManager.TYPE_PERSONAL_FOOTBLOG,bundle2);
 			break;
 		case R.id.layout_gender:// 性别
 			showSexChooseDialog();

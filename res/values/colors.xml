@@ -32,5 +32,6 @@
     <color name="guide_color">#898989</color>
 
     <color name="common_bg">#fcfcfc</color>
-    
+     <color name="theme_color">#D95555</color>
+    <color name="second_color">#888888</color>
 </resources>

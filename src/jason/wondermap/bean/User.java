@@ -6,16 +6,21 @@ import cn.bmob.v3.datatype.BmobRelation;
 
 public class User extends BmobChatUser {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 发布的博客列表
 	 */
 	private BmobRelation blogs;
-	private BmobRelation favorite;//收藏
+	/**
+	 * 收藏的博客列表
+	 */
+	private BmobRelation favorite;
+	/**
+	 * 签名
+	 */
+	private String signature;
+
 	/**
 	 * 显示数据拼音的首字母
 	 */
@@ -94,6 +99,13 @@ public class User extends BmobChatUser {
 
 	public void setSortLetters(String sortLetters) {
 		this.sortLetters = sortLetters;
+	}
+	public String getSignature() {
+		return signature;
+	}
+
+	public void setSignature(String signature) {
+		this.signature = signature;
 	}
 
 }

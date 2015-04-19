@@ -11,7 +11,7 @@ public interface TencentShareConstants {
 
     String IMG_URL="http://t2.qpic.cn/mblogpic/357eac0bdbb308df7c30/120";
 
-    String TARGET_URL="http://yuanquan.bmob.cn";
+    String TARGET_URL="http://huodianditu.bmob.cn";
 
     String SUMMARY="专业小编团队每日推荐平价又时尚的宝贝~宝贝超赞，还包邮哦~";
 

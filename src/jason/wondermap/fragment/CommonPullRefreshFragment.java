@@ -1,12 +1,10 @@
 package jason.wondermap.fragment;
 
 import jason.wondermap.R;
-import jason.wondermap.adapter.AIContentAdapter;
+import jason.wondermap.adapter.BaseContentAdapter;
 import jason.wondermap.bean.Blog;
-import jason.wondermap.config.BundleTake;
+import jason.wondermap.bean.User;
 import jason.wondermap.config.WMapConstants;
-import jason.wondermap.dao.DatabaseUtil;
-import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.T;
 
@@ -15,9 +13,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,27 +23,26 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobDate;
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.listener.FindListener;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnLastItemVisibleListener;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.State;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
-public class QiangContentFragment extends RealFragment {
-
-	public static final String TAG = "QiangContentFragment";
-	private View contentView;
-	private int currentIndex;
+public abstract class CommonPullRefreshFragment extends ContentFragment {
+	String TAG = "CommonPullRefreshFragment";
 	private int pageNum;
-	private String lastItemTime;// 当前列表结尾的条目的创建时间，
+	private String lastItemTime;
 
-	private ArrayList<Blog> mListItems;
+	protected ViewGroup contentView;
+	protected ArrayList<Blog> mListItems;
 	private PullToRefreshListView mPullRefreshListView;
-	private AIContentAdapter mAdapter;
+	private BaseContentAdapter<Blog> mAdapter;
 	private ListView actualListView;
 
 	private TextView networkTips;
@@ -61,42 +55,18 @@ public class QiangContentFragment extends RealFragment {
 
 	private RefreshType mRefreshType = RefreshType.LOAD_MORE;
 
-	public static Fragment newInstance(int index) {
-		Fragment fragment = new QiangContentFragment();
-		Bundle args = new Bundle();
-		args.putInt("page", index);
-		fragment.setArguments(args);
-		return fragment;
-	}
-
-	private String getCurrentTime() {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String times = formatter.format(new Date(System.currentTimeMillis()));
-		return times;
+	@Override
+	protected View onCreateContentView(LayoutInflater inflater) {
+		contentView = (ViewGroup) inflater.inflate(R.layout.fragment_pullrefresh_common,
+				mContainer, false);
+		return contentView;
 	}
 
 	@Override
-	public void onAttach(Activity activity) {
-		// TODO Auto-generated method stub
-		super.onAttach(activity);
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-		currentIndex = getArguments().getInt("page");
+	protected void onInitView() {
 		pageNum = 0;
 		lastItemTime = getCurrentTime();
-		L.i(TAG, "curent time:" + lastItemTime);
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-
-		contentView = inflater.inflate(R.layout.fragment_qiangcontent, null);
+		initTopBar();
 		mPullRefreshListView = (PullToRefreshListView) contentView
 				.findViewById(R.id.pull_refresh_list);
 		networkTips = (TextView) contentView.findViewById(R.id.networkTips);
@@ -116,7 +86,6 @@ public class QiangContentFragment extends RealFragment {
 										| DateUtils.FORMAT_ABBREV_ALL);
 						refreshView.getLoadingLayoutProxy()
 								.setLastUpdatedLabel(label);
-						mPullRefreshListView.setMode(Mode.BOTH);
 						pullFromUser = true;
 						mRefreshType = RefreshType.REFRESH;
 						pageNum = 0;
@@ -144,38 +113,39 @@ public class QiangContentFragment extends RealFragment {
 
 		actualListView = mPullRefreshListView.getRefreshableView();
 		mListItems = new ArrayList<Blog>();
-		mAdapter = new AIContentAdapter(mContext, mListItems);
+		mAdapter = getAdapter();
 		actualListView.setAdapter(mAdapter);
+
 		if (mListItems.size() == 0) {
 			fetchData();
 		}
-		mPullRefreshListView.setState(State.RELEASE_TO_REFRESH, true);
 		actualListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Bundle bundle = new Bundle();
-				bundle.putSerializable(BundleTake.CommentItemData,
-						mListItems.get(position - 1));
-				BaseFragment.getWMFragmentManager().showFragment(
-						WMFragmentManager.TYPE_FOOTBLOG_COMMENT, bundle);
+				// TODO Auto-generated method stub
+				onListItemClick(parent, view, position, id);
 			}
 		});
-		return contentView;
+	}
+
+	private String getCurrentTime() {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String times = formatter.format(new Date(System.currentTimeMillis()));
+		return times;
 	}
 
 	public void fetchData() {
 		setState(LOADING);
+		User user = BmobUser.getCurrentUser(mContext, User.class);
 		BmobQuery<Blog> query = new BmobQuery<Blog>();
+		query.addWhereRelatedTo("favorite", new BmobPointer(user));
 		query.order("-createdAt");
-		// query.setCachePolicy(CachePolicy.NETWORK_ONLY);
 		query.setLimit(WMapConstants.NUMBERS_PER_PAGE);
 		BmobDate date = new BmobDate(new Date(System.currentTimeMillis()));
 		query.addWhereLessThan("createdAt", date);
-		L.i(TAG, "SIZE:" + WMapConstants.NUMBERS_PER_PAGE * pageNum);
 		query.setSkip(WMapConstants.NUMBERS_PER_PAGE * (pageNum++));
-		L.i(TAG, "SIZE:" + WMapConstants.NUMBERS_PER_PAGE * pageNum);
 		query.include("author");
 		query.findObjects(getActivity(), new FindListener<Blog>() {
 
@@ -188,18 +158,29 @@ public class QiangContentFragment extends RealFragment {
 						mListItems.clear();
 					}
 					if (list.size() < WMapConstants.NUMBERS_PER_PAGE) {
-						L.i(TAG, "已加载完所有数据~");
-					}
-					if (AccountUserManager.getInstance().getCurrentUser() != null) {
-						list = DatabaseUtil.getInstance(mContext).setFav(list);
+						T.showShort(mContext, "已加载完所有数据~");
 					}
 					mListItems.addAll(list);
 					mAdapter.notifyDataSetChanged();
 
+					L.i(TAG, "DD"
+							+ (mListItems.get(mListItems.size() - 1) == null));
 					setState(LOADING_COMPLETED);
 					mPullRefreshListView.onRefreshComplete();
 				} else {
-					T.showShort(getActivity(), "暂无更多数据~");
+					T.showShort(mContext, "暂无更多数据~");
+					if (list.size() == 0 && mListItems.size() == 0) {
+
+						networkTips.setText("暂无收藏。快去首页收藏几个把~");
+						setState(LOADING_FAILED);
+						pageNum--;
+						mPullRefreshListView.onRefreshComplete();
+
+						L.i(TAG,
+								"SIZE:" + list.size() + "ssssize"
+										+ mListItems.size());
+						return;
+					}
 					pageNum--;
 					setState(LOADING_COMPLETED);
 					mPullRefreshListView.onRefreshComplete();
@@ -256,4 +237,12 @@ public class QiangContentFragment extends RealFragment {
 		}
 	}
 
+	public abstract BaseContentAdapter<Blog> getAdapter();
+
+	public abstract void onListItemClick(AdapterView<?> parent, View view,
+			int position, long id);
+
+	protected void initTopBar() {
+
+	}
 }
