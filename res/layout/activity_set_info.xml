@@ -10,186 +10,176 @@
         android:id="@+id/common_actionbar"
         layout="@layout/include_action_bar" />
 
-    <RelativeLayout
-        android:id="@+id/layout_head"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/about_top_bg"
-        android:minHeight="80dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" >
-
-        <TextView
-            style="@style/Smile.TextView._Black"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="@string/add_avator" />
+        android:layout_height="match_parent" >
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            android:orientation="vertical"
+            android:padding="@dimen/userinfo_fragment_layout_pading" >
 
-            <ImageView
-                android:id="@+id/iv_set_avator"
-                style="@style/Smile.ImageView"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:padding="5dp"
-                android:src="@drawable/head" />
+            <RelativeLayout
+                android:id="@+id/layout_head"
+                style="@style/Userinfo.Item"
+                android:minHeight="@dimen/userinfo_fragment_userhead_item_minheight" >
 
-            <ImageView
-                android:id="@+id/iv_arraw"
-                style="@style/Smile.ImageView"
-                android:layout_width="20dp"
-                android:contentDescription="@string/action_settings"
-                android:src="@drawable/register_bottom_arrow" />
+                <TextView
+                    android:id="@+id/user_icon_tips"
+                    style="@style/Userinfo.Item.Textview"
+                    android:text="@string/add_avator" />
+
+                <ImageView
+                    android:id="@+id/iv_set_avator"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="#eeeeee"
+                    android:gravity="center_vertical"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/user_icon_default_main" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#eeeeee" />
+
+            <RelativeLayout
+                android:id="@+id/layout_nick"
+                style="@style/Userinfo.Item" >
+
+                <TextView
+                    android:id="@+id/user_nick_tips"
+                    style="@style/Userinfo.Item.Textview"
+                    android:text="@string/add_nick" />
+
+                <TextView
+                    android:id="@+id/tv_set_nick"
+                    style="@style/Userinfo.Item.Textview"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/add_nick" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#eeeeee" />
+
+            <RelativeLayout
+                android:id="@+id/layout_name"
+                style="@style/Userinfo.Item"
+                android:clickable="false" >
+
+                <TextView
+                    android:id="@+id/user_name_tips"
+                    style="@style/Userinfo.Item.Textview"
+                    android:text="@string/add_name" />
+
+                <TextView
+                    android:id="@+id/tv_set_name"
+                    style="@style/Userinfo.Item.Textview"
+                    android:layout_alignParentRight="true"
+                    android:text="点击登录" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#eeeeee" />
+
+            <RelativeLayout
+                android:id="@+id/layout_gender"
+                style="@style/Userinfo.Item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    style="@style/Userinfo.Item.Textview"
+                    android:text="@string/add_gender" />
+
+                <CheckBox
+                    android:id="@+id/tv_set_gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:button="@drawable/selector_sex_choice"
+                    android:checked="true"
+                    android:enabled="false"
+                    android:scaleType="centerInside" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/user_sign"
+                style="@style/Userinfo.Item" >
+
+                <TextView
+                    android:id="@+id/user_sign_tips"
+                    style="@style/Userinfo.Item.Textview"
+                    android:text="@string/userinfo_fragment_signs" />
+
+                <TextView
+                    android:id="@+id/user_sign_text"
+                    style="@style/Userinfo.Item.Textview"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="100dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="@string/userinfo_fragment_edit" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btn_browse_footblog"
+                style="@style/Smile.Button.theme"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/browse_footblog"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/btn_add_friend"
+                style="@style/Smile.Button.theme"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/add_friend"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_chat"
+                style="@style/Smile.Button.theme"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/chat" />
+
+            <Button
+                android:id="@+id/btn_back"
+                style="@style/Smile.Button.logout"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/blacklist" />
+
+            <RelativeLayout
+                android:id="@+id/layout_black_tips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:visibility="gone" >
+
+                <TextView
+                    style="@style/Smile.TextView._Black"
+                    android:layout_centerInParent="true"
+                    android:text="@string/black_tips"
+                    android:textSize="14sp" />
+            </RelativeLayout>
         </LinearLayout>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/layout_nick"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/about_mid_bg"
-        android:padding="10dp" >
-
-        <TextView
-            style="@style/Smile.TextView._Black"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="@string/add_nick" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/tv_set_nick"
-                style="@style/Smile.TextView._Black"
-                android:drawablePadding="10dp" />
-
-            <ImageView
-                android:id="@+id/iv_nickarraw"
-                style="@style/Smile.ImageView"
-                android:layout_width="20dp"
-                android:contentDescription="@string/action_settings"
-                android:src="@drawable/register_bottom_arrow" />
-        </LinearLayout>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/layout_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/about_mid_bg"
-        android:padding="10dp" >
-
-        <TextView
-            style="@style/Smile.TextView._Black"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="@string/add_name" />
-
-        <TextView
-            android:id="@+id/tv_set_name"
-            style="@style/Smile.TextView._Black"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:drawablePadding="10dp" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/layout_gender"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/about_mid_bg"
-        android:padding="10dp" >
-
-        <TextView
-            style="@style/Smile.TextView._Black"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="@string/add_gender" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:id="@+id/tv_set_gender"
-                style="@style/Smile.TextView._Black"
-                android:layout_marginRight="20dp"
-                android:drawablePadding="10dp" />
-        </LinearLayout>
-    </RelativeLayout>
-
-    <Button
-        android:id="@+id/btn_browse_footblog"
-        style="@style/Smile.Button.theme"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:layout_marginRight="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="@string/browse_footblog"
-        android:visibility="visible" />
-
-    <Button
-        android:id="@+id/btn_add_friend"
-        style="@style/Smile.Button.theme"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:layout_marginRight="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="@string/add_friend"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/btn_chat"
-        style="@style/Smile.Button.theme"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:layout_marginRight="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="@string/chat" />
-
-    <Button
-        android:id="@+id/btn_back"
-        style="@style/Smile.Button.logout"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginLeft="@dimen/activity_vertical_margin"
-        android:layout_marginRight="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="@string/blacklist" />
-
-    <RelativeLayout
-        android:id="@+id/layout_black_tips"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="10dp"
-        android:visibility="gone" >
-
-        <TextView
-            style="@style/Smile.TextView._Black"
-            android:layout_centerInParent="true"
-            android:text="@string/black_tips"
-            android:textSize="14sp" />
-    </RelativeLayout>
+    </ScrollView>
 
 </LinearLayout>

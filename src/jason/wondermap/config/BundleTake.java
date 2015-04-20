@@ -8,6 +8,8 @@ public class BundleTake {
 	// 个人资料 携带用户名
 	public static final String BundlePurposeAdd = "add";// 查看用户资料，可能想加为好友
 	public static final String CommentItemUserName = "user_name";// 通过用户名加载资料
-	//个人足迹页 携带用户user
+	// 个人足迹页 携带用户user
 	public static final String FootblogOfUser = "user";
+	// 修改信息页 携带要修改的信息项 昵称？签名？
+	public static final String InfoToEdit = "info";
 }

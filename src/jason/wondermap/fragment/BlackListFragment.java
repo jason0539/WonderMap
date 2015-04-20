@@ -59,7 +59,7 @@ public class BlackListFragment extends ContentFragment implements
 	 */
 	public void showRemoveBlackDialog(final int position,
 			final BmobChatUser user) {
-		DialogTips dialog = new DialogTips(mContext, "移出黑名单", "你确定将"
+		DialogTips dialog = new DialogTips(getActivity(), "移出黑名单", "你确定将"
 				+ user.getUsername() + "移出黑名单吗?", "确定", true, true);
 		// 设置成功事件
 		dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {

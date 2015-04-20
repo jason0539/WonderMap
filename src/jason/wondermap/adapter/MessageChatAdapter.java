@@ -5,6 +5,7 @@ import jason.wondermap.adapter.base.BaseListAdapter;
 import jason.wondermap.adapter.base.ViewHolder;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.WMFragmentManager;
+import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.utils.FaceTextUtils;
 import jason.wondermap.utils.ImageLoadOptions;
 import jason.wondermap.utils.L;
@@ -157,8 +158,6 @@ public class MessageChatAdapter extends BaseListAdapter<BmobMsg> {
 		if (avatar != null && !avatar.equals("")) {// 加载头像-为了不每次都加载头像
 			ImageLoader.getInstance().displayImage(avatar, iv_avatar,
 					ImageLoadOptions.getOptions(), animateFirstListener);
-		} else {
-			iv_avatar.setImageResource(R.drawable.head);
 		}
 
 		iv_avatar.setOnClickListener(new OnClickListener() {
@@ -178,6 +177,7 @@ public class MessageChatAdapter extends BaseListAdapter<BmobMsg> {
 				} else {
 					Bundle bundle = new Bundle();
 					bundle.putString(UserInfo.FROM, "me");
+					bundle.putString(UserInfo.USER_NAME, item.getBelongUsername());
 					BaseFragment.getWMFragmentManager().showFragment(
 							WMFragmentManager.TYPE_USERINFO, bundle);
 				}

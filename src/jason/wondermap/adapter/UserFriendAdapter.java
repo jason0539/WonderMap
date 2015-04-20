@@ -90,9 +90,7 @@ public class UserFriendAdapter extends BaseAdapter implements SectionIndexer {
 
 		if (!TextUtils.isEmpty(avatar)) {
 			ImageLoader.getInstance().displayImage(avatar, viewHolder.avatar, ImageLoadOptions.getOptions());
-		} else {
-			viewHolder.avatar.setImageDrawable(ct.getResources().getDrawable(R.drawable.head));
-		}
+		} 
 		viewHolder.name.setText(name);
 
 		// 根据position获取分类的首字母的Char ascii值

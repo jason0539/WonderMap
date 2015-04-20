@@ -38,7 +38,6 @@ public class User extends BmobChatUser {
 	 */
 	private BmobGeoPoint location;//
 
-	private Integer hight;
 
 	public BmobRelation getFavorite() {
 		return favorite;
@@ -56,13 +55,6 @@ public class User extends BmobChatUser {
 		this.blog = blog;
 	}
 
-	public Integer getHight() {
-		return hight;
-	}
-
-	public void setHight(Integer hight) {
-		this.hight = hight;
-	}
 
 	public BmobRelation getBlogs() {
 		return blogs;
@@ -100,6 +92,7 @@ public class User extends BmobChatUser {
 	public void setSortLetters(String sortLetters) {
 		this.sortLetters = sortLetters;
 	}
+
 	public String getSignature() {
 		return signature;
 	}

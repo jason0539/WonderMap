@@ -3,6 +3,7 @@ package jason.wondermap.fragment;
 import jason.wondermap.LoginActivity;
 import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
+import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.utils.SharePreferenceUtil;
 import jason.wondermap.utils.UserInfo;
 import android.content.Intent;
@@ -18,7 +19,7 @@ import android.widget.TextView;
 import cn.bmob.im.BmobUserManager;
 
 public class MineFragment extends ContentFragment implements OnClickListener {
-	Button btn_logout;
+TextView btn_logout;
 	TextView tv_set_name;
 	RelativeLayout layout_info, rl_switch_notification, rl_switch_voice,
 			rl_switch_vibrate, layout_blacklist, layout_feedback,layout_favourite;
@@ -73,7 +74,7 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 		view2 = (View) mRootView.findViewById(R.id.view2);
 
 		tv_set_name = (TextView) mRootView.findViewById(R.id.tv_set_name);
-		btn_logout = (Button) mRootView.findViewById(R.id.btn_logout);
+		btn_logout = (TextView) mRootView.findViewById(R.id.btn_logout);
 
 		// 初始化
 		boolean isAllowNotify = mSharedUtil.isAllowPushNotify();
@@ -136,6 +137,7 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 		case R.id.layout_info:// 启动到个人资料页面
 			Bundle bundle = new Bundle();
 			bundle.putString(UserInfo.FROM, "me");
+			bundle.putString(UserInfo.USER_NAME,AccountUserManager.getInstance().getCurrentUserName());
 			wmFragmentManager.showFragment(WMFragmentManager.TYPE_USERINFO,
 					bundle);
 			break;

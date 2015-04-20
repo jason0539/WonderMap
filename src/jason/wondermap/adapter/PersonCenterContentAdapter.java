@@ -91,7 +91,7 @@ public class PersonCenterContentAdapter extends BaseContentAdapter<Blog> {
 			avatarUrl = user.getAvatar();
 		}
 		ImageLoader.getInstance().displayImage(avatarUrl, viewHolder.userLogo,
-				ActivityUtil.getOptions(R.drawable.user_icon_default_main),
+				ActivityUtil.getOptions(R.drawable.default_head),
 				new SimpleImageLoadingListener() {
 
 					@Override

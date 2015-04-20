@@ -19,7 +19,7 @@
             android:layout_gravity="center_vertical"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/head" />
+            android:src="@drawable/default_head" />
 
         <TextView
             android:id="@+id/tv_recent_name"

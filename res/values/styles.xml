@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -213,6 +213,30 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:textStyle">normal</item>
+    </style>
+    <!-- 个人信息页 -->
+    <style name="Userinfo"></style>
+
+    <style name="Userinfo.Item">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/selector_settings_item_down</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">8dp</item>
+    </style>
+
+    <style name="Userinfo.Item.Textview" parent="TextTheme.tipstheme">
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingTop">8dp</item>
+    </style>
+    <!-- 设置页 -->
+    <style name="SetFragment"></style>
+
+    <style name="SetFragment.Item" parent="Userinfo.Item">
+        <item name="android:padding">10dp</item>
     </style>
 
 </resources>

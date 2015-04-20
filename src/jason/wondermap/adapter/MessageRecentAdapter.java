@@ -59,8 +59,6 @@ public class MessageRecentAdapter extends ArrayAdapter<BmobRecent> implements Fi
 		String avatar = item.getAvatar();
 		if(avatar!=null&& !avatar.equals("")){
 			ImageLoader.getInstance().displayImage(avatar, iv_recent_avatar, ImageLoadOptions.getOptions());
-		}else{
-			iv_recent_avatar.setImageResource(R.drawable.head);
 		}
 		
 		tv_recent_name.setText(item.getUserName());

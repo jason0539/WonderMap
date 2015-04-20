@@ -109,6 +109,7 @@ public class PushMsgSendManager {
 	private PushMsgSendManager() {
 		pushManager = new BmobPushManager<MyMessageReceiver>(
 				WonderMapApplication.getInstance());
+		failReSendTimer = new Timer();
 	}
 
 	private static PushMsgSendManager instance = null;

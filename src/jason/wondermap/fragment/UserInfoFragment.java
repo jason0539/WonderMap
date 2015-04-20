@@ -1,15 +1,12 @@
 package jason.wondermap.fragment;
 
 import jason.wondermap.R;
-import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.Blog;
 import jason.wondermap.bean.User;
 import jason.wondermap.config.BundleTake;
 import jason.wondermap.config.WMapConstants;
 import jason.wondermap.manager.AccountUserManager;
-import jason.wondermap.manager.FootblogManager;
 import jason.wondermap.utils.CollectionUtils;
-import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.ImageLoadOptions;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.PhotoUtil;
@@ -28,7 +25,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -36,13 +32,11 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -65,19 +59,22 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 /**
  * 资料页面
  * 
- * @author liuzhenhui
+ * @author liuzhenhui 目前策略是，自己只显示“查看足迹” 好友显示“查看足迹，发起会话，黑名单”
+ *         陌生人显示“查看足迹，加为好友，发起会话” 因为陌生人添加黑名单有问题，这里先设定陌生人不能加入黑名单
  * 
  */
 public class UserInfoFragment extends ContentFragment implements
 		OnClickListener {
-	TextView tv_set_name, tv_set_nick, tv_set_gender;
-	ImageView iv_set_avator, iv_arraw, iv_nickarraw;
+	TextView tv_set_name, tv_set_nick, tv_user_signs;
+	CheckBox tv_set_gender;
+	ImageView iv_set_avator;
 	LinearLayout layout_all;
 
-	Button btn_chat, btn_back, btn_add_friend,btn_browse_footblog;
-	RelativeLayout layout_head, layout_nick, layout_gender, layout_black_tips;
+	Button btn_chat, btn_black, btn_add_friend, btn_browse_footblog;
+	RelativeLayout layout_head, layout_nick, layout_gender, layout_signs,
+			layout_black_tips;
 	BmobUserManager userManager;
-
+	boolean isMyself, isFriends, isStranger;
 	String from = "";
 	String username = "";
 	User user;
@@ -92,7 +89,7 @@ public class UserInfoFragment extends ContentFragment implements
 		// getActivity().getWindow().getDecorView()
 		// .setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 		// }
-		userManager = BmobUserManager.getInstance(mContext);
+		userManager = AccountUserManager.getInstance().getUserManager();
 		mRootView = (ViewGroup) inflater.inflate(R.layout.activity_set_info,
 				mContainer, false);
 		from = mShowBundle.getString(UserInfo.FROM);
@@ -104,69 +101,66 @@ public class UserInfoFragment extends ContentFragment implements
 	protected void onInitView() {
 		layout_all = (LinearLayout) mRootView.findViewById(R.id.layout_all);
 		iv_set_avator = (ImageView) mRootView.findViewById(R.id.iv_set_avator);
-		iv_arraw = (ImageView) mRootView.findViewById(R.id.iv_arraw);
-		iv_nickarraw = (ImageView) mRootView.findViewById(R.id.iv_nickarraw);
 		tv_set_name = (TextView) mRootView.findViewById(R.id.tv_set_name);
 		tv_set_nick = (TextView) mRootView.findViewById(R.id.tv_set_nick);
+		tv_user_signs = (TextView) mRootView.findViewById(R.id.user_sign_text);
 		layout_head = (RelativeLayout) mRootView.findViewById(R.id.layout_head);
 		layout_nick = (RelativeLayout) mRootView.findViewById(R.id.layout_nick);
 		layout_gender = (RelativeLayout) mRootView
 				.findViewById(R.id.layout_gender);
+		layout_signs = (RelativeLayout) mRootView.findViewById(R.id.user_sign);
 		// 黑名单提示语
 		layout_black_tips = (RelativeLayout) mRootView
 				.findViewById(R.id.layout_black_tips);
-		tv_set_gender = (TextView) mRootView.findViewById(R.id.tv_set_gender);
+		tv_set_gender = (CheckBox) mRootView.findViewById(R.id.tv_set_gender);
 		btn_chat = (Button) mRootView.findViewById(R.id.btn_chat);
-		btn_back = (Button) mRootView.findViewById(R.id.btn_back);
+		btn_black = (Button) mRootView.findViewById(R.id.btn_back);
 		btn_add_friend = (Button) mRootView.findViewById(R.id.btn_add_friend);
-		btn_browse_footblog = (Button) mRootView.findViewById(R.id.btn_browse_footblog);
+		btn_browse_footblog = (Button) mRootView
+				.findViewById(R.id.btn_browse_footblog);
 		btn_browse_footblog.setOnClickListener(this);
 		btn_add_friend.setEnabled(false);
 		btn_chat.setEnabled(false);
-		btn_back.setEnabled(false);
-		if (from.equals("me")) {//查看自己的个人信息
-			initTopBarForLeft(mRootView, "个人资料");
+		btn_black.setEnabled(false);
+		// if (from.equals("me")) {// 查看自己的个人信息
+		if (username.equals(AccountUserManager.getInstance()
+				.getCurrentUserName())) {
+			isMyself = true;
+			tv_set_gender.setEnabled(true);
+			initTopBarForLeft(mRootView, "我的资料");
 			layout_head.setOnClickListener(this);
 			layout_nick.setOnClickListener(this);
-			layout_gender.setOnClickListener(this);
-			iv_nickarraw.setVisibility(View.VISIBLE);
-			iv_arraw.setVisibility(View.VISIBLE);
-			btn_back.setVisibility(View.GONE);
+			// layout_gender.setOnClickListener(this);
+			tv_set_gender.setOnClickListener(this);
+			layout_signs.setOnClickListener(this);
+			btn_black.setVisibility(View.GONE);
 			btn_chat.setVisibility(View.GONE);
 			btn_add_friend.setVisibility(View.GONE);
-		} else {//来自他人则根据策略显示
+		} else {// 来自他人则根据策略显示
 			initTopBarForLeft(mRootView, "详细资料");
-			iv_nickarraw.setVisibility(View.INVISIBLE);
-			iv_arraw.setVisibility(View.INVISIBLE);
 			// 不管对方是不是你的好友，均可以发送消息--BmobIM_V1.1.2修改
 			btn_chat.setVisibility(View.VISIBLE);
 			btn_chat.setOnClickListener(this);
-			if (from.equals("add")) {// 从附近的人列表添加好友--因为获取附近的人的方法里面有是否显示好友的情况，因此在这里需要判断下这个用户是否是自己的好友
-				if (AccountUserManager.getInstance().getContactList()
-						.containsKey(username)) {// 是好友，不显示加为好友an ni
-					// btn_chat.setVisibility(View.VISIBLE);
-					// btn_chat.setOnClickListener(this);
-					btn_back.setVisibility(View.VISIBLE);
-					btn_back.setOnClickListener(this);
-				} else {
-					// btn_chat.setVisibility(View.GONE);
-					btn_back.setVisibility(View.GONE);
-					btn_add_friend.setVisibility(View.VISIBLE);
-					btn_add_friend.setOnClickListener(this);
-				}
-			} else {// 查看他人
+			if (AccountUserManager.getInstance().getContactList()
+					.containsKey(username)) {// 是好友，不显示加为好友
+				isFriends = true;
 				// btn_chat.setVisibility(View.VISIBLE);
 				// btn_chat.setOnClickListener(this);
-				btn_back.setVisibility(View.VISIBLE);
-				btn_back.setOnClickListener(this);
+				btn_black.setVisibility(View.VISIBLE);
+				btn_black.setOnClickListener(this);
+			} else {
+				isStranger = true;
+				// btn_chat.setVisibility(View.GONE);
+				btn_black.setVisibility(View.GONE);
+				btn_add_friend.setVisibility(View.VISIBLE);
+				btn_add_friend.setOnClickListener(this);
 			}
 			initOtherData(username);
 		}
 	}
 
-	private void initMeData() {
+	private void initMyData() {
 		User user = userManager.getCurrentUser(User.class);
-		BmobLog.i("hight = " + user.getHight() + ",sex= " + user.getSex());
 		initOtherData(user.getUsername());
 	}
 
@@ -185,7 +179,7 @@ public class UserInfoFragment extends ContentFragment implements
 				if (arg0 != null && arg0.size() > 0) {
 					user = arg0.get(0);
 					btn_chat.setEnabled(true);
-					btn_back.setEnabled(true);
+					btn_black.setEnabled(true);
 					btn_add_friend.setEnabled(true);
 					updateUser(user);
 				} else {
@@ -200,14 +194,20 @@ public class UserInfoFragment extends ContentFragment implements
 		refreshAvatar(user.getAvatar());
 		tv_set_name.setText(user.getUsername());
 		tv_set_nick.setText(user.getNick());
-		tv_set_gender.setText(user.getSex() == true ? "男" : "女");
-		// 检测是否为黑名单用户
-		if (from.equals("other")) {
+		String sign = user.getSignature();
+		if (sign != null && !sign.equals("")) {
+			tv_user_signs.setText(sign);
+		}
+		tv_set_gender.setChecked(user.getSex());
+		// 检测是否为黑名单用户,之后把陌生人这个去掉，只要不是自己，都能加入黑名单
+		if (!isMyself && !isStranger) {
 			if (BmobDB.create(mContext).isBlackUser(user.getUsername())) {
-				btn_back.setVisibility(View.GONE);
+				btn_black.setVisibility(View.GONE);
 				layout_black_tips.setVisibility(View.VISIBLE);
 			} else {
-				btn_back.setVisibility(View.VISIBLE);
+				btn_black.setVisibility(View.VISIBLE);
+				btn_black.setEnabled(true);
+				btn_black.setOnClickListener(this);
 				layout_black_tips.setVisibility(View.GONE);
 			}
 		}
@@ -224,7 +224,7 @@ public class UserInfoFragment extends ContentFragment implements
 			ImageLoader.getInstance().displayImage(avatar, iv_set_avator,
 					ImageLoadOptions.getOptions());
 		} else {
-			iv_set_avator.setImageResource(R.drawable.default_head);
+			// iv_set_avator.setImageResource(R.drawable.default_head);
 		}
 	}
 
@@ -232,8 +232,8 @@ public class UserInfoFragment extends ContentFragment implements
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		if (from.equals("me")) {
-			initMeData();
+		if (isMyself) {
+			initMyData();
 		}
 	}
 
@@ -254,19 +254,29 @@ public class UserInfoFragment extends ContentFragment implements
 			showAvatarPop();
 			break;
 		case R.id.layout_nick:
-			wmFragmentManager
-					.showFragment(WMFragmentManager.TYPE_UPDATE_USERINFO);
+			Bundle nickBundle = new Bundle();
+			nickBundle.putString(BundleTake.InfoToEdit, UserInfo.NICK);
+			wmFragmentManager.showFragment(
+					WMFragmentManager.TYPE_UPDATE_USERINFO, nickBundle);
 			// addBlog();
+			break;
+		case R.id.user_sign:
+			Bundle sign = new Bundle();
+			sign.putString(BundleTake.InfoToEdit, UserInfo.SIGN);
+			wmFragmentManager.showFragment(
+					WMFragmentManager.TYPE_UPDATE_USERINFO, sign);
 			break;
 		case R.id.btn_browse_footblog:
 			Bundle bundle2 = new Bundle();
 			bundle2.putSerializable(BundleTake.FootblogOfUser, user);
-			wmFragmentManager.showFragment(WMFragmentManager.TYPE_PERSONAL_FOOTBLOG,bundle2);
+			wmFragmentManager.showFragment(
+					WMFragmentManager.TYPE_PERSONAL_FOOTBLOG, bundle2);
 			break;
-		case R.id.layout_gender:// 性别
-			showSexChooseDialog();
+		case R.id.tv_set_gender:// 性别
+			updateInfo(tv_set_gender.isChecked());
 			break;
 		case R.id.btn_back:// 黑名单
+			L.d("点击黑名单");
 			showBlackDialog(user.getUsername());
 			break;
 		case R.id.btn_add_friend:// 添加好友
@@ -280,21 +290,6 @@ public class UserInfoFragment extends ContentFragment implements
 
 	String[] sexs = new String[] { "男", "女" };
 
-	private void showSexChooseDialog() {
-		new AlertDialog.Builder(getActivity())
-				.setTitle("单选框")
-				.setIcon(android.R.drawable.ic_dialog_info)
-				.setSingleChoiceItems(sexs, user.getSex() ? 0 : 1,
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,
-									int which) {
-								BmobLog.i("点击的是" + sexs[which]);
-								updateInfo(which);
-								dialog.dismiss();
-							}
-						}).setNegativeButton("取消", null).show();
-	}
-
 	/**
 	 * 修改资料 updateInfo
 	 * 
@@ -302,20 +297,15 @@ public class UserInfoFragment extends ContentFragment implements
 	 * @return void
 	 * @throws
 	 */
-	private void updateInfo(int which) {
+	private void updateInfo(boolean which) {
 		final User u = new User();
-		if (which == 0) {
-			u.setSex(true);
-		} else {
-			u.setSex(false);
-		}
+		u.setSex(which);
 		updateUserData(u, new UpdateListener() {
 
 			@Override
 			public void onSuccess() {
 				// TODO Auto-generated method stub
 				ShowToast("修改成功");
-				tv_set_gender.setText(u.getSex() == true ? "男" : "女");
 			}
 
 			@Override
@@ -365,11 +355,6 @@ public class UserInfoFragment extends ContentFragment implements
 	/**
 	 * 显示黑名单提示框
 	 * 
-	 * @Title: showBlackDialog
-	 * @Description: TODO
-	 * @param
-	 * @return void
-	 * @throws
 	 */
 	private void showBlackDialog(final String username) {
 		DialogTips dialog = new DialogTips(getActivity(), "加入黑名单",
@@ -383,7 +368,7 @@ public class UserInfoFragment extends ContentFragment implements
 					public void onSuccess() {
 						// TODO Auto-generated method stub
 						ShowToast("黑名单添加成功!");
-						btn_back.setVisibility(View.GONE);
+						btn_black.setVisibility(View.GONE);
 						layout_black_tips.setVisibility(View.VISIBLE);
 						// 重新设置下内存中保存的好友列表
 						AccountUserManager.getInstance().setContactList(
@@ -409,22 +394,38 @@ public class UserInfoFragment extends ContentFragment implements
 	PopupWindow avatorPop;
 
 	public String filePath = "";
+	AlertDialog albumDialog;
+	String dateTime;
 
 	private void showAvatarPop() {
-		View view = LayoutInflater.from(mContext).inflate(
-				R.layout.pop_showavator, null);
-		layout_choose = (RelativeLayout) view.findViewById(R.id.layout_choose);
-		layout_photo = (RelativeLayout) view.findViewById(R.id.layout_photo);
-		layout_photo.setOnClickListener(new OnClickListener() {
+		albumDialog = new AlertDialog.Builder(getActivity()).create();
+		albumDialog.setCanceledOnTouchOutside(true);
+		View v = LayoutInflater.from(mContext).inflate(
+				R.layout.dialog_usericon, null);
+		albumDialog.show();
+		albumDialog.setContentView(v);
+		albumDialog.getWindow().setGravity(Gravity.CENTER);
+
+		TextView albumPic = (TextView) v.findViewById(R.id.album_pic);
+		TextView cameraPic = (TextView) v.findViewById(R.id.camera_pic);
+		albumPic.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				ShowLog("点击拍照");
+				albumDialog.dismiss();
+				Intent intent = new Intent(Intent.ACTION_PICK, null);
+				intent.setDataAndType(
+						MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+				startActivityForResult(intent,
+						WMapConstants.REQUESTCODE_UPLOADAVATAR_LOCATION);
+			}
+		});
+		cameraPic.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				layout_choose.setBackgroundColor(getResources().getColor(
-						R.color.base_color_text_white));
-				layout_photo.setBackgroundDrawable(getResources().getDrawable(
-						R.drawable.pop_bg_press));
+				albumDialog.dismiss();
 				File dir = new File(WMapConstants.MyAvatarDir);
 				if (!dir.exists()) {
 					dir.mkdirs();
@@ -441,45 +442,6 @@ public class UserInfoFragment extends ContentFragment implements
 						WMapConstants.REQUESTCODE_UPLOADAVATAR_CAMERA);
 			}
 		});
-		layout_choose.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				ShowLog("点击相册");
-				layout_photo.setBackgroundColor(getResources().getColor(
-						R.color.base_color_text_white));
-				layout_choose.setBackgroundDrawable(getResources().getDrawable(
-						R.drawable.pop_bg_press));
-				Intent intent = new Intent(Intent.ACTION_PICK, null);
-				intent.setDataAndType(
-						MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-				startActivityForResult(intent,
-						WMapConstants.REQUESTCODE_UPLOADAVATAR_LOCATION);
-			}
-		});
-
-		avatorPop = new PopupWindow(view, CommonUtils.getScreenWidth(), 600);
-		avatorPop.setTouchInterceptor(new OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-					avatorPop.dismiss();
-					return true;
-				}
-				return false;
-			}
-		});
-
-		avatorPop.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
-		avatorPop.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
-		avatorPop.setTouchable(true);
-		avatorPop.setFocusable(true);
-		avatorPop.setOutsideTouchable(true);
-		avatorPop.setBackgroundDrawable(new BitmapDrawable());
-		// 动画效果 从底部弹起
-		avatorPop.setAnimationStyle(R.style.Animations_GrowFromBottom);
-		avatorPop.showAtLocation(layout_all, Gravity.BOTTOM, 0, 0);
 	}
 
 	/**
@@ -672,7 +634,7 @@ public class UserInfoFragment extends ContentFragment implements
 		// relation.add(blog);
 		// user.setBlogs(relation);
 		final Blog blog = new Blog();
-//		blog.setBrief("你好");
+		// blog.setBrief("你好");
 		blog.save(mContext, new SaveListener() {
 
 			@Override

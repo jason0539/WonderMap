@@ -104,6 +104,10 @@ public class AccountUserManager {
 		return userManager.getCurrentUserName();
 	}
 
+	public BmobUserManager getUserManager() {
+		return userManager;
+	}
+
 	/**
 	 * 用于登陆或者自动登陆情况下的用户资料及好友资料的检测更新
 	 */
