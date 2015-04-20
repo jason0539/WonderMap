@@ -90,7 +90,7 @@ public class PersonalFootblogFragment extends ContentFragment implements
 
 		mPullToRefreshListView = (PullToRefreshListView) mRootViewGroup
 				.findViewById(R.id.pull_refresh_list_personal);
-		mUser = FootblogManager.getInstance().getCurrentBlog().getAuthor();
+		mUser = (User) mShowBundle.getSerializable(BundleTake.FootblogOfUser);
 
 		updatePersonalInfo(mUser);
 

@@ -46,7 +46,6 @@ public class WMapConstants {
 	public static final int REQUESTCODE_TAKE_LOCATION = 0x000003;// 位置
 	public static final String EXTRA_STRING = "extra_string";
 
-	public static final String ACTION_REGISTER_SUCCESS_FINISH = "register.success.finish";// 注册成功之后登陆页面退出
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝bmob移植 end＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝图片移植 start＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	public static final int NUMBERS_PER_PAGE = 15;//每次请求返回评论条数

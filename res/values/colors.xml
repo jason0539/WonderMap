@@ -23,15 +23,25 @@
     <color name="text_gray">#969696</color>
     <color name="transparent">#00000000</color>
     <color name="msg_chat_bg">#eceff4</color>
-    
     <color name="theme_bg_color">#f0f2f5</color>
     <color name="color_theme">#489cfa</color>
     <color name="c_f98800">#ed4e23</color>
-    
     <color name="dialog_color_title">#f82c22</color>
     <color name="guide_color">#898989</color>
-
     <color name="common_bg">#fcfcfc</color>
-     <color name="theme_color">#D95555</color>
+    <color name="theme_color">#D95555</color>
     <color name="second_color">#888888</color>
+    <!-- progress bar in loginactivity -->
+    <integer-array name="gplus_colors">
+        <item>@color/gplus_color_1</item>
+        <item>@color/gplus_color_2</item>
+        <item>@color/gplus_color_3</item>
+        <item>@color/gplus_color_4</item>
+    </integer-array>
+
+    <color name="gplus_color_1">#3e802f</color>
+    <color name="gplus_color_2">#427fed</color>
+    <color name="gplus_color_3">#b23424</color>
+    <color name="gplus_color_4">#f4b400</color>
+
 </resources>

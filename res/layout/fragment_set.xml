@@ -35,7 +35,6 @@
                     style="@style/Smile.TextView._Black"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
                     android:drawablePadding="10dp"
                     android:drawableRight="@drawable/register_bottom_arrow" />
             </RelativeLayout>
@@ -60,7 +59,6 @@
                     style="@style/Smile.TextView._Black"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
                     android:drawablePadding="10dp"
                     android:drawableRight="@drawable/register_bottom_arrow" />
             </RelativeLayout>
@@ -86,7 +84,6 @@
                     style="@style/Smile.TextView._Black"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
                     android:drawablePadding="10dp"
                     android:drawableRight="@drawable/register_bottom_arrow" />
             </RelativeLayout>
@@ -112,7 +109,6 @@
                     style="@style/Smile.TextView._Black"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
                     android:drawablePadding="10dp"
                     android:drawableRight="@drawable/register_bottom_arrow" />
             </RelativeLayout>
@@ -139,7 +135,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
                     android:button="@drawable/selector_setting_choice"
                     android:checked="true"
                     android:clickable="false" />
@@ -167,7 +162,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
                     android:button="@drawable/selector_setting_choice"
                     android:checked="true"
                     android:clickable="false" />
@@ -196,7 +190,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
                     android:button="@drawable/selector_setting_choice"
                     android:checked="true"
                     android:clickable="false" />

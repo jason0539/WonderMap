@@ -126,9 +126,11 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 					// .startActivity(intent);
 					return;
 				}
-				FootblogManager.getInstance().setCurrentQiangYu(entity);
+				Bundle bundle = new Bundle();
+				bundle.putSerializable(BundleTake.FootblogOfUser,
+						entity.getAuthor());
 				BaseFragment.getWMFragmentManager().showFragment(
-						WMFragmentManager.TYPE_PERSONAL_FOOTBLOG);
+						WMFragmentManager.TYPE_PERSONAL_FOOTBLOG, bundle);
 			}
 		});
 		viewHolder.userName.setText(entity.getAuthor().getUsername());

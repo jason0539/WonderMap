@@ -181,7 +181,17 @@
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
     </style>
-    <!--  -->
+    <!-- progressbar -->
+    <style name="ProgressBar.Horizontal" parent="@android:style/Widget.ProgressBar.Horizontal"></style>
+
+    <style name="GPlusProgressBar" parent="ProgressBar.Horizontal">
+        <item name="spb_stroke_separator_length">12dp</item>
+        <item name="spb_sections_count">4</item>
+        <item name="spb_speed">0.7</item>
+        <item name="spb_interpolator">spb_interpolator_linear</item>
+        <item name="spb_colors">@array/gplus_colors</item>
+    </style>
+
     <style name="TextTheme">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -238,5 +248,6 @@
     <style name="SetFragment.Item" parent="Userinfo.Item">
         <item name="android:padding">10dp</item>
     </style>
+
 
 </resources>

@@ -81,20 +81,6 @@ public class AccountUserManager {
 		}
 	}
 
-	public void login(User user, final SaveListener saveListener) {
-		userManager.login(user, new SaveListener() {
-
-			@Override
-			public void onSuccess() {
-				saveListener.onSuccess();
-			}
-
-			@Override
-			public void onFailure(int arg0, String arg1) {
-				saveListener.onFailure(arg0, arg1);
-			}
-		});
-	}
 
 	public BmobUser getCurrentUser() {
 		return userManager.getCurrentUser();
