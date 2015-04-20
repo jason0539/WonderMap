@@ -10,6 +10,7 @@ import jason.wondermap.dao.DatabaseUtil;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.manager.AccountUserManager;
+import jason.wondermap.manager.FootblogManager;
 import jason.wondermap.sns.TencentShare;
 import jason.wondermap.sns.TencentShareEntity;
 import jason.wondermap.utils.ActivityUtil;
@@ -125,18 +126,9 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 					// .startActivity(intent);
 					return;
 				}
-				// 登陆用户点击头像， 跳转到用户资料界面，显示“查看他的足迹”，点击进入个人所有足迹界面
-				Bundle bundle = new Bundle();
-				bundle.putString(UserInfo.FROM, "add");
-				bundle.putString(UserInfo.USER_NAME, viewHolder.userName
-						.getText().toString());
+				FootblogManager.getInstance().setCurrentQiangYu(entity);
 				BaseFragment.getWMFragmentManager().showFragment(
-						WMFragmentManager.TYPE_USERINFO, bundle);
-				// FootblogManager.getInstance().setCurrentQiangYu(entity);
-				// Intent intent = new Intent();
-				// intent.setClass(MyApplication.getInstance().getTopActivity(),
-				// PersonalActivity.class);
-				// mContext.startActivity(intent);
+						WMFragmentManager.TYPE_PERSONAL_FOOTBLOG);
 			}
 		});
 		viewHolder.userName.setText(entity.getAuthor().getUsername());

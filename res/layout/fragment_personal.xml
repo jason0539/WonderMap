@@ -43,7 +43,7 @@
             android:layout_below="@id/personl_name"
             android:layout_margin="4dip"
             android:layout_toRightOf="@id/personal_icon"
-            android:text="面朝大海，春暖花开"
+            android:text="这个人很懒，什么都没写。"
             android:textColor="#FFFFFF" />
 
         <ImageView

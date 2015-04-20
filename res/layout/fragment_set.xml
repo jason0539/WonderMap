@@ -133,25 +133,16 @@
                     android:layout_centerVertical="true"
                     android:text="@string/set_notify" />
 
-                <ImageView
-                    android:id="@+id/iv_open_notification"
+                <CheckBox
+                    android:id="@+id/ck_set_notification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/on"
-                    android:visibility="visible" />
-
-                <ImageView
-                    android:id="@+id/iv_close_notification"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/off"
-                    android:visibility="invisible" />
+                    android:button="@drawable/selector_setting_choice"
+                    android:checked="true"
+                    android:clickable="false" />
             </RelativeLayout>
 
             <View
@@ -170,25 +161,16 @@
                     android:layout_centerVertical="true"
                     android:text="@string/set_voice" />
 
-                <ImageView
-                    android:id="@+id/iv_open_voice"
+                <CheckBox
+                    android:id="@+id/ck_set_voice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/on"
-                    android:visibility="visible" />
-
-                <ImageView
-                    android:id="@+id/iv_close_voice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/off"
-                    android:visibility="invisible" />
+                    android:button="@drawable/selector_setting_choice"
+                    android:checked="true"
+                    android:clickable="false" />
             </RelativeLayout>
 
             <View
@@ -208,25 +190,16 @@
                     android:layout_centerVertical="true"
                     android:text="@string/set_vibrate" />
 
-                <ImageView
-                    android:id="@+id/iv_open_vibrate"
+                <CheckBox
+                    android:id="@+id/ck_set_vibrate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/on"
-                    android:visibility="visible" />
-
-                <ImageView
-                    android:id="@+id/iv_close_vibrate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/off"
-                    android:visibility="invisible" />
+                    android:button="@drawable/selector_setting_choice"
+                    android:checked="true"
+                    android:clickable="false" />
             </RelativeLayout>
 
             <View

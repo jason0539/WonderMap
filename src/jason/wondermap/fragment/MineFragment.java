@@ -12,24 +12,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cn.bmob.im.BmobUserManager;
 
 public class MineFragment extends ContentFragment implements OnClickListener {
-TextView btn_logout;
-	TextView tv_set_name;
-	RelativeLayout layout_info, rl_switch_notification, rl_switch_voice,
-			rl_switch_vibrate, layout_blacklist, layout_feedback,layout_favourite;
-
-	ImageView iv_open_notification, iv_close_notification, iv_open_voice,
-			iv_close_voice, iv_open_vibrate, iv_close_vibrate;
-
-	View view1, view2;
-	SharePreferenceUtil mSharedUtil;
-	ViewGroup mRootView;
+	private TextView btn_logout;
+	private TextView tv_set_name;
+	private RelativeLayout layout_info, layout_blacklist, layout_feedback,
+			layout_favourite, layout_switch_notification, layout_switch_voice,
+			layout_switch_vibrate;
+	private CheckBox ck_notify, ck_voice, ck_vibrate;
+	private View view1, view2;
+	private SharePreferenceUtil mSharedUtil;
+	private ViewGroup mRootView;
 
 	@Override
 	protected View onCreateContentView(LayoutInflater inflater) {
@@ -40,85 +39,28 @@ TextView btn_logout;
 
 	@Override
 	protected void onInitView() {
+		findViews();
+		setListenter();
 		mSharedUtil = WonderMapApplication.getInstance().getSpUtil();
 		initTopBarForLeft(mRootView, "设置");
-		// 黑名单列表
-		layout_blacklist = (RelativeLayout) mRootView
-				.findViewById(R.id.layout_blacklist);
-		layout_favourite = (RelativeLayout) mRootView.findViewById(R.id.layout_favourite);
-		layout_feedback = (RelativeLayout) mRootView
-				.findViewById(R.id.layout_feedback);
-		layout_info = (RelativeLayout) mRootView.findViewById(R.id.layout_info);
-		rl_switch_notification = (RelativeLayout) mRootView
-				.findViewById(R.id.rl_switch_notification);
-		rl_switch_voice = (RelativeLayout) mRootView
-				.findViewById(R.id.rl_switch_voice);
-		rl_switch_vibrate = (RelativeLayout) mRootView
-				.findViewById(R.id.rl_switch_vibrate);
-		rl_switch_notification.setOnClickListener(this);
-		rl_switch_voice.setOnClickListener(this);
-		rl_switch_vibrate.setOnClickListener(this);
+		refreshView();
+	}
 
-		iv_open_notification = (ImageView) mRootView
-				.findViewById(R.id.iv_open_notification);
-		iv_close_notification = (ImageView) mRootView
-				.findViewById(R.id.iv_close_notification);
-		iv_open_voice = (ImageView) mRootView.findViewById(R.id.iv_open_voice);
-		iv_close_voice = (ImageView) mRootView
-				.findViewById(R.id.iv_close_voice);
-		iv_open_vibrate = (ImageView) mRootView
-				.findViewById(R.id.iv_open_vibrate);
-		iv_close_vibrate = (ImageView) mRootView
-				.findViewById(R.id.iv_close_vibrate);
-		view1 = (View) mRootView.findViewById(R.id.view1);
-		view2 = (View) mRootView.findViewById(R.id.view2);
-
-		tv_set_name = (TextView) mRootView.findViewById(R.id.tv_set_name);
-		btn_logout = (TextView) mRootView.findViewById(R.id.btn_logout);
-
-		// 初始化
+	private void refreshView() {
 		boolean isAllowNotify = mSharedUtil.isAllowPushNotify();
-
-		if (isAllowNotify) {
-			iv_open_notification.setVisibility(View.VISIBLE);
-			iv_close_notification.setVisibility(View.INVISIBLE);
-		} else {
-			iv_open_notification.setVisibility(View.INVISIBLE);
-			iv_close_notification.setVisibility(View.VISIBLE);
-		}
+		ck_notify.setChecked(isAllowNotify);
 		boolean isAllowVoice = mSharedUtil.isAllowVoice();
-		if (isAllowVoice) {
-			iv_open_voice.setVisibility(View.VISIBLE);
-			iv_close_voice.setVisibility(View.INVISIBLE);
-		} else {
-			iv_open_voice.setVisibility(View.INVISIBLE);
-			iv_close_voice.setVisibility(View.VISIBLE);
-		}
+		ck_voice.setChecked(isAllowVoice);
 		boolean isAllowVibrate = mSharedUtil.isAllowVibrate();
-		if (isAllowVibrate) {
-			iv_open_vibrate.setVisibility(View.VISIBLE);
-			iv_close_vibrate.setVisibility(View.INVISIBLE);
-		} else {
-			iv_open_vibrate.setVisibility(View.INVISIBLE);
-			iv_close_vibrate.setVisibility(View.VISIBLE);
+		ck_vibrate.setChecked(isAllowVibrate);
+		tv_set_name.setText(AccountUserManager.getInstance()
+				.getCurrentUserName());
+		if (!isAllowNotify) {
+			layout_switch_vibrate.setVisibility(View.GONE);
+			layout_switch_voice.setVisibility(View.GONE);
+			view1.setVisibility(View.GONE);
+			view2.setVisibility(View.GONE);
 		}
-		btn_logout.setOnClickListener(this);
-		layout_info.setOnClickListener(this);
-		layout_blacklist.setOnClickListener(this);
-		layout_favourite.setOnClickListener(this);
-		layout_feedback.setOnClickListener(this);
-		initData();
-	}
-
-	private void initData() {
-		tv_set_name.setText(BmobUserManager.getInstance(getActivity())
-				.getCurrentUser().getUsername());
-	}
-
-	@Override
-	public void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
 	}
 
 	@Override
@@ -136,8 +78,8 @@ TextView btn_logout;
 			break;
 		case R.id.layout_info:// 启动到个人资料页面
 			Bundle bundle = new Bundle();
-			bundle.putString(UserInfo.FROM, "me");
-			bundle.putString(UserInfo.USER_NAME,AccountUserManager.getInstance().getCurrentUserName());
+			bundle.putString(UserInfo.USER_NAME, AccountUserManager
+					.getInstance().getCurrentUserName());
 			wmFragmentManager.showFragment(WMFragmentManager.TYPE_USERINFO,
 					bundle);
 			break;
@@ -147,45 +89,39 @@ TextView btn_logout;
 			startActivity(new Intent(getActivity(), LoginActivity.class));
 			break;
 		case R.id.rl_switch_notification:
-			if (iv_open_notification.getVisibility() == View.VISIBLE) {
-				iv_open_notification.setVisibility(View.INVISIBLE);
-				iv_close_notification.setVisibility(View.VISIBLE);
+			if (ck_notify.isChecked()) {
+				ck_notify.setChecked(false);
 				mSharedUtil.setPushNotifyEnable(false);
-				rl_switch_vibrate.setVisibility(View.GONE);
-				rl_switch_voice.setVisibility(View.GONE);
+				layout_switch_vibrate.setVisibility(View.GONE);
+				layout_switch_voice.setVisibility(View.GONE);
 				view1.setVisibility(View.GONE);
 				view2.setVisibility(View.GONE);
 			} else {
-				iv_open_notification.setVisibility(View.VISIBLE);
-				iv_close_notification.setVisibility(View.INVISIBLE);
+				ck_notify.setChecked(true);
 				mSharedUtil.setPushNotifyEnable(true);
-				rl_switch_vibrate.setVisibility(View.VISIBLE);
-				rl_switch_voice.setVisibility(View.VISIBLE);
+				layout_switch_vibrate.setVisibility(View.VISIBLE);
+				layout_switch_voice.setVisibility(View.VISIBLE);
 				view1.setVisibility(View.VISIBLE);
 				view2.setVisibility(View.VISIBLE);
 			}
 
 			break;
 		case R.id.rl_switch_voice:
-			if (iv_open_voice.getVisibility() == View.VISIBLE) {
-				iv_open_voice.setVisibility(View.INVISIBLE);
-				iv_close_voice.setVisibility(View.VISIBLE);
+			if (ck_voice.isChecked()) {
+				ck_voice.setChecked(false);
 				mSharedUtil.setAllowVoiceEnable(false);
 			} else {
-				iv_open_voice.setVisibility(View.VISIBLE);
-				iv_close_voice.setVisibility(View.INVISIBLE);
+				ck_voice.setChecked(true);
 				mSharedUtil.setAllowVoiceEnable(true);
 			}
 
 			break;
 		case R.id.rl_switch_vibrate:
-			if (iv_open_vibrate.getVisibility() == View.VISIBLE) {
-				iv_open_vibrate.setVisibility(View.INVISIBLE);
-				iv_close_vibrate.setVisibility(View.VISIBLE);
+			if (ck_vibrate.isChecked()) {
+				ck_vibrate.setChecked(false);
 				mSharedUtil.setAllowVibrateEnable(false);
 			} else {
-				iv_open_vibrate.setVisibility(View.VISIBLE);
-				iv_close_vibrate.setVisibility(View.INVISIBLE);
+				ck_vibrate.setChecked(true);
 				mSharedUtil.setAllowVibrateEnable(true);
 			}
 			break;
@@ -193,14 +129,38 @@ TextView btn_logout;
 		}
 	}
 
-	public void onPause() {
-		super.onPause();
-	};
+	private void findViews() {
+		layout_blacklist = (RelativeLayout) mRootView
+				.findViewById(R.id.layout_blacklist);
+		layout_favourite = (RelativeLayout) mRootView
+				.findViewById(R.id.layout_favourite);
+		layout_feedback = (RelativeLayout) mRootView
+				.findViewById(R.id.layout_feedback);
+		layout_info = (RelativeLayout) mRootView.findViewById(R.id.layout_info);
+		layout_switch_notification = (RelativeLayout) mRootView
+				.findViewById(R.id.rl_switch_notification);
+		layout_switch_voice = (RelativeLayout) mRootView
+				.findViewById(R.id.rl_switch_voice);
+		layout_switch_vibrate = (RelativeLayout) mRootView
+				.findViewById(R.id.rl_switch_vibrate);
+		view1 = (View) mRootView.findViewById(R.id.view1);
+		view2 = (View) mRootView.findViewById(R.id.view2);
+		tv_set_name = (TextView) mRootView.findViewById(R.id.tv_set_name);
+		btn_logout = (TextView) mRootView.findViewById(R.id.btn_logout);
+		ck_notify = (CheckBox) mRootView.findViewById(R.id.ck_set_notification);
+		ck_voice = (CheckBox) mRootView.findViewById(R.id.ck_set_voice);
+		ck_vibrate = (CheckBox) mRootView.findViewById(R.id.ck_set_vibrate);
+	}
 
-	@Override
-	public void onDestroyView() {
-		// 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
-		super.onDestroyView();
+	private void setListenter() {
+		btn_logout.setOnClickListener(this);
+		layout_info.setOnClickListener(this);
+		layout_blacklist.setOnClickListener(this);
+		layout_favourite.setOnClickListener(this);
+		layout_feedback.setOnClickListener(this);
+		layout_switch_notification.setOnClickListener(this);
+		layout_switch_voice.setOnClickListener(this);
+		layout_switch_vibrate.setOnClickListener(this);
 	}
 
 }

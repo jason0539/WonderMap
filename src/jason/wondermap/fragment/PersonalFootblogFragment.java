@@ -10,6 +10,7 @@ import jason.wondermap.manager.FootblogManager;
 import jason.wondermap.utils.ImageLoadOptions;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.T;
+import jason.wondermap.utils.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +90,7 @@ public class PersonalFootblogFragment extends ContentFragment implements
 
 		mPullToRefreshListView = (PullToRefreshListView) mRootViewGroup
 				.findViewById(R.id.pull_refresh_list_personal);
-		mUser = (User) mShowBundle.getSerializable(BundleTake.FootblogOfUser);
+		mUser = FootblogManager.getInstance().getCurrentBlog().getAuthor();
 
 		updatePersonalInfo(mUser);
 
@@ -192,7 +193,11 @@ public class PersonalFootblogFragment extends ContentFragment implements
 
 	private void updatePersonalInfo(User user) {
 		personalName.setText(user.getUsername());
-		personalSign.setText(user.getSignature());
+		String signString = user.getSignature();
+		if (signString != null && !signString.equals("")) {
+			personalSign.setText(signString);
+		}
+
 		if (user.getAvatar() != null) {
 			// ImageLoader.getInstance().displayImage(
 			// user.getAvatar().getFileUrl(),
@@ -285,6 +290,10 @@ public class PersonalFootblogFragment extends ContentFragment implements
 				// TODO 点击前往个人信息页面，可以修改个人信息，修改之后返回本页，自动刷新资料
 				// L.i(TAG, "current user edit...");
 			}
+			Bundle bundle = new Bundle();
+			bundle.putString(UserInfo.USER_NAME, mUser.getUsername());
+			wmFragmentManager.showFragment(WMFragmentManager.TYPE_USERINFO,
+					bundle);
 			break;
 		case R.id.personl_title:
 

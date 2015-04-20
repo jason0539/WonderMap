@@ -38,7 +38,6 @@ public class User extends BmobChatUser {
 	 */
 	private BmobGeoPoint location;//
 
-
 	public BmobRelation getFavorite() {
 		return favorite;
 	}
@@ -54,7 +53,6 @@ public class User extends BmobChatUser {
 	public void setBlog(Blog blog) {
 		this.blog = blog;
 	}
-
 
 	public BmobRelation getBlogs() {
 		return blogs;
