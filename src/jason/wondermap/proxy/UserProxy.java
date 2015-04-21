@@ -2,9 +2,15 @@ package jason.wondermap.proxy;
 
 import jason.wondermap.bean.User;
 import jason.wondermap.utils.L;
+import jason.wondermap.utils.UserInfo;
+
+import java.util.List;
+
 import android.content.Context;
 import cn.bmob.v3.BmobInstallation;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.ResetPasswordListener;
 import cn.bmob.v3.listener.SaveListener;
 
@@ -18,15 +24,15 @@ public class UserProxy {
 		this.mContext = context;
 	}
 
-	public void register(String userName, String password, String email) {
+	public void register(String email, String password) {
 		// 由于每个应用的注册所需的资料都不一样，故IM sdk未提供注册方法，用户可按照bmod SDK的注册方式进行注册。
 		// 注册的时候需要注意两点：1、User表中绑定设备id和type，2、设备表中绑定username字段
 		final User user = new User();
-		user.setUsername(userName);
-		user.setPassword(password);
 		user.setEmail(email);
+		user.setPassword(password);
+		user.setUsername(email);
 		user.setSex(true);
-		user.setSignature("这个家伙很懒，什么也没说。");
+		user.setSignature("这个家伙很懒，什么也没说");
 		user.setDeviceType("android");
 		user.setInstallId(BmobInstallation.getInstallationId(mContext));// 用户与设备绑定
 		user.signUp(mContext, new SaveListener() {
@@ -43,7 +49,6 @@ public class UserProxy {
 
 			@Override
 			public void onFailure(int arg0, String msg) {
-				// TODO Auto-generated method stub
 				if (signUpLister != null) {
 					signUpLister.onSignUpFailure(msg);
 				} else {
@@ -51,18 +56,6 @@ public class UserProxy {
 				}
 			}
 		});
-	}
-
-	public interface ISignUpListener {
-		void onSignUpSuccess(User user);
-
-		void onSignUpFailure(String msg);
-	}
-
-	private ISignUpListener signUpLister;
-
-	public void setOnSignUpListener(ISignUpListener signUpLister) {
-		this.signUpLister = signUpLister;
 	}
 
 	public User getCurrentUser() {
@@ -79,25 +72,56 @@ public class UserProxy {
 		return null;
 	}
 
-	public void login(String userName, String password) {
-		final BmobUser user = new BmobUser();
-		user.setUsername(userName);
-		user.setPassword(password);
-		user.login(mContext, new SaveListener() {
-
+	public void login(String email, final String password) {
+		BmobQuery<BmobUser> query = new BmobQuery<BmobUser>();
+		query.addWhereEqualTo(UserInfo.EMAIL, email);
+		query.findObjects(mContext, new FindListener<BmobUser>() {
+			// 查询邮箱成功
 			@Override
-			public void onSuccess() {
-				// TODO Auto-generated method stub
-				if (loginListener != null) {
-					loginListener.onLoginSuccess();
+			public void onSuccess(List<BmobUser> object) {
+				String userName = null;
+				if (object.size() > 0 && object.get(0) != null
+						&& !object.get(0).getUsername().equals("")) {
+					userName = object.get(0).getUsername();
+					final BmobUser user = new BmobUser();
+					user.setUsername(userName);
+					user.setPassword(password);
+					user.login(mContext, new SaveListener() {
+						// 登陆成功
+						@Override
+						public void onSuccess() {
+							if (loginListener != null) {
+								loginListener.onLoginSuccess();
+							} else {
+								L.i(TAG,
+										"login listener is null,you must set one!");
+							}
+						}
+
+						// 登陆失败
+						@Override
+						public void onFailure(int arg0, String msg) {
+							if (loginListener != null) {
+								loginListener.onLoginFailure(msg);
+							} else {
+								L.i(TAG,
+										"login listener is null,you must set one!");
+							}
+						}
+					});
 				} else {
-					L.i(TAG, "login listener is null,you must set one!");
+					if (loginListener != null) {
+						loginListener.onLoginFailure("邮箱不存在，请重试");
+					} else {
+						L.i(TAG, "login listener is null,you must set one!");
+					}
 				}
+
 			}
 
+			// 查询邮箱失败
 			@Override
-			public void onFailure(int arg0, String msg) {
-				// TODO Auto-generated method stub
+			public void onError(int code, String msg) {
 				if (loginListener != null) {
 					loginListener.onLoginFailure(msg);
 				} else {
@@ -107,21 +131,8 @@ public class UserProxy {
 		});
 	}
 
-	public interface ILoginListener {
-		void onLoginSuccess();
-
-		void onLoginFailure(String msg);
-	}
-
-	private ILoginListener loginListener;
-
-	public void setOnLoginListener(ILoginListener loginListener) {
-		this.loginListener = loginListener;
-	}
-
 	public void logout() {
 		BmobUser.logOut(mContext);
-		L.i(TAG, "logout result:" + (null == getCurrentUser()));
 	}
 
 	public void resetPassword(String email) {
@@ -149,6 +160,20 @@ public class UserProxy {
 		});
 	}
 
+	// 登陆监听
+	public interface ILoginListener {
+		void onLoginSuccess();
+
+		void onLoginFailure(String msg);
+	}
+
+	private ILoginListener loginListener;
+
+	public void setOnLoginListener(ILoginListener loginListener) {
+		this.loginListener = loginListener;
+	}
+
+	// 重设密码监听
 	public interface IResetPasswordListener {
 		void onResetSuccess();
 
@@ -162,6 +187,18 @@ public class UserProxy {
 		this.resetPasswordListener = resetPasswordListener;
 	}
 
+	// 注册监听
+	public interface ISignUpListener {
+		void onSignUpSuccess(User user);
+
+		void onSignUpFailure(String msg);
+	}
+
+	private ISignUpListener signUpLister;
+
+	public void setOnSignUpListener(ISignUpListener signUpLister) {
+		this.signUpLister = signUpLister;
+	}
 	// public void update(String... args) {
 	// User user = getCurrentUser();
 	// user.setUsername(args[0]);

@@ -5,6 +5,7 @@ public class UserInfo {
 	public static final String AVATAR = "avatar";
 	public static final String NICK = "nick";
 	public static final String SIGN ="sign";
+	public static final String EMAIL ="email";
 	public static final String USER_NAME = "user_name";
 	public static final String OBJECT_ID = "object_id";
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝页面跳转来源＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝

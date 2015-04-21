@@ -32,20 +32,19 @@ import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
 public class LoginActivity extends FragmentActivity implements OnClickListener,
 		ILoginListener, ISignUpListener, IResetPasswordListener {
-	String TAG = "LoginActivity";
-	TextView loginTitle;
-	TextView registerTitle;
-	TextView resetPassword;
-	TextView qqLogin;
+	private TextView loginTitle;
+	private TextView registerTitle;
+	private TextView resetPassword;
+	private TextView qqLogin;
 
-	DeletableEditText userNameInput;
-	DeletableEditText userPasswordInput;
-	DeletableEditText userEmailInput;
+	private DeletableEditText userPasswordInput;
+	private DeletableEditText userEmailInput;
+	private DeletableEditText userPasswordRepeat;
 
-	Button registerButton;
-	SmoothProgressBar progressbar;
-	UserProxy userProxy;
-	Context mContext;
+	private Button registerButton;
+	private SmoothProgressBar progressbar;
+	private UserProxy userProxy;
+	private Context mContext;
 
 	private enum UserOperation {
 		LOGIN, REGISTER, RESET_PASSWORD
@@ -76,7 +75,7 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 	public void onSignUpFailure(String msg) {
 		// TODO Auto-generated method stub
 		dimissProgressbar();
-		T.showShort(mContext, "注册失败。请确认网络连接后再重试。");
+		T.showShort(mContext, "邮箱已存在");
 	}
 
 	@Override
@@ -115,37 +114,6 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 		switch (v.getId()) {
 		case R.id.register:
 			if (operation == UserOperation.LOGIN) {
-				if (TextUtils.isEmpty(userNameInput.getText())) {
-					userNameInput.setShakeAnimation();
-					Toast.makeText(mContext, "请输入用户名", Toast.LENGTH_SHORT)
-							.show();
-					return;
-				}
-				if (TextUtils.isEmpty(userPasswordInput.getText())) {
-					userPasswordInput.setShakeAnimation();
-					Toast.makeText(mContext, "请输入密码", Toast.LENGTH_SHORT)
-							.show();
-					return;
-				}
-
-				userProxy.setOnLoginListener(this);
-				progressbar.setVisibility(View.VISIBLE);
-				userProxy.login(userNameInput.getText().toString().trim(),
-						userPasswordInput.getText().toString().trim());
-
-			} else if (operation == UserOperation.REGISTER) {
-				if (TextUtils.isEmpty(userNameInput.getText())) {
-					userNameInput.setShakeAnimation();
-					Toast.makeText(mContext, "请输入用户名", Toast.LENGTH_SHORT)
-							.show();
-					return;
-				}
-				if (TextUtils.isEmpty(userPasswordInput.getText())) {
-					userPasswordInput.setShakeAnimation();
-					Toast.makeText(mContext, "请输入密码", Toast.LENGTH_SHORT)
-							.show();
-					return;
-				}
 				if (TextUtils.isEmpty(userEmailInput.getText())) {
 					userEmailInput.setShakeAnimation();
 					Toast.makeText(mContext, "请输入邮箱地址", Toast.LENGTH_SHORT)
@@ -158,11 +126,57 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 							.show();
 					return;
 				}
+				if (TextUtils.isEmpty(userPasswordInput.getText())) {
+					userPasswordInput.setShakeAnimation();
+					Toast.makeText(mContext, "请输入密码", Toast.LENGTH_SHORT)
+							.show();
+					return;
+				}
+
+				userProxy.setOnLoginListener(this);
+				progressbar.setVisibility(View.VISIBLE);
+				userProxy.login(userEmailInput.getText().toString().trim(),
+						userPasswordInput.getText().toString().trim());
+
+			} else if (operation == UserOperation.REGISTER) {
+				if (TextUtils.isEmpty(userEmailInput.getText())) {
+					userEmailInput.setShakeAnimation();
+					Toast.makeText(mContext, "请输入邮箱地址", Toast.LENGTH_SHORT)
+							.show();
+					return;
+				}
+				if (!StringUtils.isValidEmail(userEmailInput.getText())) {
+					userEmailInput.setShakeAnimation();
+					Toast.makeText(mContext, "邮箱格式不正确", Toast.LENGTH_SHORT)
+							.show();
+					return;
+				}
+				if (TextUtils.isEmpty(userPasswordInput.getText())) {
+					userPasswordInput.setShakeAnimation();
+					Toast.makeText(mContext, "请输入密码", Toast.LENGTH_SHORT)
+							.show();
+					return;
+				}
+				if (TextUtils.isEmpty(userPasswordRepeat.getText())) {
+					userPasswordRepeat.setShakeAnimation();
+					Toast.makeText(mContext, "请确认密码", Toast.LENGTH_SHORT)
+							.show();
+					return;
+				}
+				String password = userPasswordInput.getText().toString().trim();
+				String repeatPassword = userPasswordRepeat.getText().toString()
+						.trim();
+				if (!password.equals(repeatPassword)) {
+					userPasswordRepeat.setShakeAnimation();
+					userPasswordInput.setShakeAnimation();
+					Toast.makeText(mContext, "两次输入的密码不一致", Toast.LENGTH_SHORT)
+							.show();
+					return;
+				}
 				userProxy.setOnSignUpListener(this);
 				progressbar.setVisibility(View.VISIBLE);
-				userProxy.register(userNameInput.getText().toString().trim(),
-						userPasswordInput.getText().toString().trim(),
-						userEmailInput.getText().toString().trim());
+				userProxy.register(userEmailInput.getText().toString().trim(),
+						userPasswordInput.getText().toString().trim());
 			} else {
 				if (TextUtils.isEmpty(userEmailInput.getText())) {
 					userEmailInput.setShakeAnimation();
@@ -197,7 +211,7 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 			break;
 		case R.id.tv_qq:
 			// qq登陆
-//			loginByQQ();
+			// loginByQQ();
 			break;
 		default:
 			break;
@@ -259,9 +273,8 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 			resetPassword.setPadding(16, 16, 16, 16);
 			resetPassword.setGravity(Gravity.CENTER);
 
-			userNameInput.setVisibility(View.VISIBLE);
 			userPasswordInput.setVisibility(View.VISIBLE);
-			userEmailInput.setVisibility(View.GONE);
+			userPasswordRepeat.setVisibility(View.GONE);
 			registerButton.setText("登录");
 		} else if (op == UserOperation.REGISTER) {
 			loginTitle.setTextColor(Color.parseColor("#888888"));
@@ -279,8 +292,8 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 			resetPassword.setPadding(16, 16, 16, 16);
 			resetPassword.setGravity(Gravity.CENTER);
 
-			userNameInput.setVisibility(View.VISIBLE);
 			userPasswordInput.setVisibility(View.VISIBLE);
+			userPasswordRepeat.setVisibility(View.VISIBLE);
 			userEmailInput.setVisibility(View.VISIBLE);
 			registerButton.setText("注册");
 		} else {
@@ -299,16 +312,10 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 			resetPassword.setPadding(16, 16, 16, 16);
 			resetPassword.setGravity(Gravity.CENTER);
 
-			userNameInput.setVisibility(View.GONE);
 			userPasswordInput.setVisibility(View.GONE);
+			userPasswordRepeat.setVisibility(View.GONE);
 			userEmailInput.setVisibility(View.VISIBLE);
 			registerButton.setText("找回密码");
-		}
-	}
-
-	private void dimissProgressbar() {
-		if (progressbar != null && progressbar.isShown()) {
-			progressbar.setVisibility(View.GONE);
 		}
 	}
 
@@ -318,8 +325,8 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 		registerTitle = (TextView) findViewById(R.id.register_menu);
 		resetPassword = (TextView) findViewById(R.id.reset_password_menu);
 		qqLogin = (TextView) findViewById(R.id.tv_qq);
-		userNameInput = (DeletableEditText) findViewById(R.id.user_name_input);
 		userPasswordInput = (DeletableEditText) findViewById(R.id.user_password_input);
+		userPasswordRepeat = (DeletableEditText) findViewById(R.id.user_password_input_repeat);
 		userEmailInput = (DeletableEditText) findViewById(R.id.user_email_input);
 		registerButton = (Button) findViewById(R.id.register);
 		progressbar = (SmoothProgressBar) findViewById(R.id.sm_progressbar);
@@ -330,6 +337,12 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 		resetPassword.setOnClickListener(this);
 		registerButton.setOnClickListener(this);
 		qqLogin.setOnClickListener(this);
+	}
+
+	private void dimissProgressbar() {
+		if (progressbar != null && progressbar.isShown()) {
+			progressbar.setVisibility(View.GONE);
+		}
 	}
 
 	private void toast(String msg) {
