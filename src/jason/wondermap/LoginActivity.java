@@ -73,7 +73,6 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 	public void onSignUpSuccess(User bu) {
 		AccountUserManager.getInstance().updateUserInfos();
 		dimissProgressbar();
-		// TODO 绑定用户名称在设置之后
 		T.showShort(mContext, "注册成功");
 		// 前往设置资料页
 		Intent intent = new Intent(LoginActivity.this, MainActivity.class);

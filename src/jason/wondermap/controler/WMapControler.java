@@ -295,7 +295,7 @@ public class WMapControler {
 		mMapView = mapView;
 		mBaiduMap = mMapView.getMap();
 		mBaiduMap.setOnMarkerClickListener(onMarkerClickListener);//
-		// 用户的marker点击监听 TODO 本来有的，移植代码后注释掉的
+		// 用户的marker点击监听 
 		mCurrentMode = LocationMode.NORMAL;
 		mCurrentMarker = null;// null则为默认
 		mBaiduMap.setMyLocationEnabled(true); // 开启定位图层

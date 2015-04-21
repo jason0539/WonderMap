@@ -131,8 +131,8 @@ public class FootblogCommentFragment extends ContentFragment implements
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-//				T.showShort(mContext, "po" + position);
-				//之后假如@功能，评论中可以@
+				// T.showShort(mContext, "po" + position);
+				// 之后假如@功能，评论中可以@
 			}
 		});
 		commentList.setCacheColorHint(0);
@@ -155,7 +155,6 @@ public class FootblogCommentFragment extends ContentFragment implements
 	}
 
 	private void initMoodView(Blog mood2) {
-		// TODO Auto-generated method stub
 		if (mood2 == null) {
 			return;
 		}
@@ -312,23 +311,10 @@ public class FootblogCommentFragment extends ContentFragment implements
 
 	private void onClickUserLogo() {
 		// 跳转到个人信息界面
-		User currentUser = BmobUser.getCurrentUser(mContext, User.class);
-		if (currentUser != null) {// 已登录
-			Bundle bundle = new Bundle();
-			bundle.putString(UserInfo.USER_ID,
-					currentUser.getObjectId());
-			BaseFragment.getWMFragmentManager().showFragment(
-					WMFragmentManager.TYPE_USERINFO, bundle);
-		} else {// 未登录
-			T.showShort(mContext, "请先登录。");
-			Activity mainActivity = BaseFragment.getMainActivity();
-			mainActivity.startActivity(new Intent(mainActivity,
-					LoginActivity.class));
-			mainActivity.finish();
-			// Intent intent = new Intent();
-			// intent.setClass(this, RegisterAndLoginActivity.class);
-			// startActivityForResult(intent, Constant.GO_SETTINGS);
-		}
+		Bundle bundle = new Bundle();
+		bundle.putString(UserInfo.USER_ID, qiangYu.getAuthor().getObjectId());
+		BaseFragment.getWMFragmentManager().showFragment(
+				WMFragmentManager.TYPE_USERINFO, bundle);
 	}
 
 	private void fetchData() {
@@ -336,7 +322,6 @@ public class FootblogCommentFragment extends ContentFragment implements
 	}
 
 	private void onClickLoadMore() {
-		// TODO Auto-generated method stub
 		fetchData();
 	}
 

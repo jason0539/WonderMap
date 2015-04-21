@@ -46,8 +46,6 @@ public class MapUserManager {
 			L.d(WModel.EnsureEveryoneOnMap, "添加用户" + nameString);
 			MapUser u = CommonUtils.HelloMsgToUser(msg);
 			addUser(u);
-			// WonderMapApplication.getInstance().getUserDB().addUser(u);
-			// 存入或更新好友，暂时不做好友功能
 			T.showShort(WonderMapApplication.getInstance(), u.getName() + "加入");
 		}
 	}
@@ -91,16 +89,14 @@ public class MapUserManager {
 	 */
 	private void updateUser(MapUser alreadExitsUser, JSONObject msg) {
 		MapUser oldUser = alreadExitsUser;
-		// oldUser.setChannelId(msg.getChannelId());
-		// oldUser.setGroup(msg.getGroup());
-		// oldUser.setHeadIcon(msg.getHeadIcon());
 		double lat = Double.valueOf(BmobJsonUtil.getString(msg,
 				(UserInfo.LATITUDE)));
 		double lng = Double.valueOf(BmobJsonUtil.getString(msg,
 				UserInfo.LONGTITUDE));
+		String username = BmobJsonUtil.getString(msg, UserInfo.USER_NAME);
+		oldUser.setName(username);
 		oldUser.setLat(lat);
 		oldUser.setLng(lng);
-		// oldUser.setNick(msg.getNick());
 		WMapControler.getInstance().updateUserPosition(oldUser);
 	}
 

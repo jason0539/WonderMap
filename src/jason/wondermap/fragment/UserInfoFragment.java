@@ -121,7 +121,6 @@ public class UserInfoFragment extends ContentFragment implements
 			@Override
 			public void onSuccess(List<User> object) {
 				if (object != null && object.size() > 0) {
-					// TODO 强制转换不知有没有问题
 					user = object.get(0);
 					username = user.getUsername();
 					updateUser(user);

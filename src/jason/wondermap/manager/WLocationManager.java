@@ -21,7 +21,7 @@ import com.baidu.mapapi.map.MyLocationData;
 public class WLocationManager {
 	public final String PREF_LATITUDE = "latitude";// 经度
 	public final String PREF_LONGTITUDE = "longtitude";// 经度
-	private final int LOCATION_SCAN_SPAN = 30 * 1000;// 定位间隔1秒
+	private final int LOCATION_SCAN_SPAN = 30 * 1000;// 定位间隔30秒
 	private WonderMapApplication mApplication;
 	private SharedPreferences preferences;
 	private SharedPreferences.Editor editor;
@@ -77,6 +77,9 @@ public class WLocationManager {
 				isFirstLoc = false;
 				WMapControler.getInstance().moveToLoc(latitude, longtitude);
 				// hello消息发送
+				PushMsgSendManager.getInstance().sayHello();
+			} else {
+				// 每隔一段时间更新一次位置，以后陌生人不更新，好友实时更新
 				PushMsgSendManager.getInstance().sayHello();
 			}
 		}

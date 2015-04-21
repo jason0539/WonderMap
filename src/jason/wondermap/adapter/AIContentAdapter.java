@@ -94,7 +94,7 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 		}
 		String avatarUrl = null;
 		if (user.getAvatar() != null) {
-			avatarUrl = user.getAvatar();// TODO 原来user存的是图片，目前放的是连接，不止有没有影响
+			avatarUrl = user.getAvatar();
 		}
 		ImageLoader.getInstance().displayImage(avatarUrl, viewHolder.userLogo,
 				ActivityUtil.getOptions(R.drawable.user_icon_default_main),

@@ -144,12 +144,18 @@ public class BaseFragment extends Fragment {
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝移植过来的标题－－－－－－－－－－－－－－－－－－－－－－
 	Toast mToast;
-	/** 打Log
-	  */
-	public void ShowLog(String msg){
+
+	/**
+	 * 打Log
+	 */
+	public void ShowLog(String msg) {
 		BmobLog.i(msg);
 	}
+
 	public void ShowToast(String text) {
+		if (text == null || text.equals("")) {
+			return;
+		}
 		if (mToast == null) {
 			mToast = Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT);
 		} else {
@@ -179,8 +185,9 @@ public class BaseFragment extends Fragment {
 	/**
 	 * 只有title initTopBarLayoutByTitle
 	 */
-	public void initTopBarForOnlyTitle(ViewGroup rootGroup,String titleName) {
-		mHeaderLayout = (HeaderLayout)rootGroup.findViewById(R.id.common_actionbar);
+	public void initTopBarForOnlyTitle(ViewGroup rootGroup, String titleName) {
+		mHeaderLayout = (HeaderLayout) rootGroup
+				.findViewById(R.id.common_actionbar);
 		mHeaderLayout.init(HeaderStyle.DEFAULT_TITLE);
 		mHeaderLayout.setDefaultTitle(titleName);
 	}
@@ -188,9 +195,10 @@ public class BaseFragment extends Fragment {
 	/**
 	 * 初始化标题栏-带左右按钮
 	 */
-	public void initTopBarForBoth(ViewGroup rootView,String titleName, int rightDrawableId,
-			onRightImageButtonClickListener listener) {
-		mHeaderLayout = (HeaderLayout)rootView.findViewById(R.id.common_actionbar);
+	public void initTopBarForBoth(ViewGroup rootView, String titleName,
+			int rightDrawableId, onRightImageButtonClickListener listener) {
+		mHeaderLayout = (HeaderLayout) rootView
+				.findViewById(R.id.common_actionbar);
 		mHeaderLayout.init(HeaderStyle.TITLE_DOUBLE_IMAGEBUTTON);
 		mHeaderLayout.setTitleAndLeftImageButton(titleName,
 				R.drawable.base_action_bar_back_bg_selector,
@@ -198,42 +206,49 @@ public class BaseFragment extends Fragment {
 		mHeaderLayout.setTitleAndRightImageButton(titleName, rightDrawableId,
 				listener);
 	}
-	public void initTopBarForBoth(ViewGroup rootView,String titleName, int rightDrawableId,String text,
+
+	public void initTopBarForBoth(ViewGroup rootView, String titleName,
+			int rightDrawableId, String text,
 			onRightImageButtonClickListener listener) {
-		mHeaderLayout = (HeaderLayout)rootView.findViewById(R.id.common_actionbar);
+		mHeaderLayout = (HeaderLayout) rootView
+				.findViewById(R.id.common_actionbar);
 		mHeaderLayout.init(HeaderStyle.TITLE_DOUBLE_IMAGEBUTTON);
 		mHeaderLayout.setTitleAndLeftImageButton(titleName,
 				R.drawable.base_action_bar_back_bg_selector,
 				new OnLeftButtonClickListener());
-		mHeaderLayout.setTitleAndRightButton(titleName, rightDrawableId,text,
+		mHeaderLayout.setTitleAndRightButton(titleName, rightDrawableId, text,
 				listener);
 	}
+
 	/**
 	 * 只有左边按钮和Title initTopBarLayout
 	 * 
 	 * @throws
 	 */
-	public void initTopBarForLeft(ViewGroup rootView,String titleName) {
-		mHeaderLayout = (HeaderLayout)rootView.findViewById(R.id.common_actionbar);
+	public void initTopBarForLeft(ViewGroup rootView, String titleName) {
+		mHeaderLayout = (HeaderLayout) rootView
+				.findViewById(R.id.common_actionbar);
 		mHeaderLayout.init(HeaderStyle.TITLE_LIFT_IMAGEBUTTON);
 		mHeaderLayout.setTitleAndLeftImageButton(titleName,
 				R.drawable.base_action_bar_back_bg_selector,
 				new OnLeftButtonClickListener());
 	}
-	
-	/** 右边+title
-	  * initTopBarForRight
-	  * @return void
-	  * @throws
-	  */
-	public void initTopBarForRight(ViewGroup rootView,String titleName,int rightDrawableId,
-			onRightImageButtonClickListener listener) {
-		mHeaderLayout = (HeaderLayout)rootView.findViewById(R.id.common_actionbar);
+
+	/**
+	 * 右边+title initTopBarForRight
+	 * 
+	 * @return void
+	 * @throws
+	 */
+	public void initTopBarForRight(ViewGroup rootView, String titleName,
+			int rightDrawableId, onRightImageButtonClickListener listener) {
+		mHeaderLayout = (HeaderLayout) rootView
+				.findViewById(R.id.common_actionbar);
 		mHeaderLayout.init(HeaderStyle.TITLE_RIGHT_IMAGEBUTTON);
 		mHeaderLayout.setTitleAndRightImageButton(titleName, rightDrawableId,
 				listener);
 	}
-	
+
 	// 左边按钮的点击事件
 	public class OnLeftButtonClickListener implements
 			onLeftImageButtonClickListener {
@@ -243,26 +258,31 @@ public class BaseFragment extends Fragment {
 			wmFragmentManager.back(null);
 		}
 	}
+
 	public void hideSoftInputView() {
-		InputMethodManager manager = ((InputMethodManager) mContext.getSystemService(Activity.INPUT_METHOD_SERVICE));
+		InputMethodManager manager = ((InputMethodManager) mContext
+				.getSystemService(Activity.INPUT_METHOD_SERVICE));
 		if (getActivity().getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
 			if (getActivity().getCurrentFocus() != null)
-				manager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+				manager.hideSoftInputFromWindow(getActivity().getCurrentFocus()
+						.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 		}
 	}
-	/** 显示下线的对话框
-	  * showOfflineDialog
-	  * @return void
-	  * @throws
-	  */
+
+	/**
+	 * 显示下线的对话框 showOfflineDialog
+	 * 
+	 * @return void
+	 * @throws
+	 */
 	public void showOfflineDialog(final Context context) {
-		DialogTips dialog = new DialogTips(mContext,"您的账号已在其他设备上登录!", "重新登录");
+		DialogTips dialog = new DialogTips(mContext, "您的账号已在其他设备上登录!", "重新登录");
 		// 设置成功事件
 		dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialogInterface, int userId) {
 				WonderMapApplication.getInstance().logout();
 				startActivity(new Intent(context, LoginActivity.class));
-//				finish();
+				// finish();
 				dialogInterface.dismiss();
 			}
 		});

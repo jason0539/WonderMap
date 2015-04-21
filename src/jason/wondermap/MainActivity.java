@@ -185,7 +185,7 @@ public class MainActivity extends FragmentActivity {
 		L.d(WModel.MainActivity, "onResume");
 		mMapView.onResume();
 		// 确保所有用户都在地图上显示出来,activity进入onPause之后marker都消失了
-		MapUserManager.getInstance().onResumeAllUsersOnMap();// TODO 本来有的，注释掉了。
+		MapUserManager.getInstance().onResumeAllUsersOnMap();
 		super.onResume();
 	}
 
