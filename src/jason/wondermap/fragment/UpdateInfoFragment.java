@@ -190,9 +190,6 @@ public class UpdateInfoFragment extends ContentFragment {
 												public void onSuccess() {
 													// 修改成功直接返回
 													ShowToast("修改成功");
-													PushMsgSendManager
-															.getInstance()
-															.sayHello();
 													wmFragmentManager
 															.back(null);
 												}

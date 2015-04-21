@@ -1,7 +1,6 @@
 package jason.wondermap.fragment;
 
 import jason.wondermap.R;
-import jason.wondermap.bean.Blog;
 import jason.wondermap.bean.User;
 import jason.wondermap.config.BundleTake;
 import jason.wondermap.config.WMapConstants;
@@ -43,13 +42,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.BmobUserManager;
+import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.config.BmobConfig;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.im.util.BmobLog;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.PushListener;
-import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
@@ -74,6 +74,7 @@ public class UserInfoFragment extends ContentFragment implements
 			layout_signs, layout_black_tips, layout_name;
 	private BmobUserManager userManager;
 	boolean isMyself, isNeedToEdit, isFriends, isStranger;
+	private String userid = "";
 	private String username = "";
 	private User user;
 	private ViewGroup mRootView;
@@ -83,15 +84,15 @@ public class UserInfoFragment extends ContentFragment implements
 		userManager = AccountUserManager.getInstance().getUserManager();
 		mRootView = (ViewGroup) inflater.inflate(R.layout.activity_set_info,
 				mContainer, false);
-		username = mShowBundle.getString(UserInfo.USER_NAME);
+		// TODO username改为objectid
+		userid = mShowBundle.getString(UserInfo.USER_ID);
 		return mRootView;
 	}
 
 	@Override
 	protected void onInitView() {
 		findviews();
-		if (username.equals(AccountUserManager.getInstance()
-				.getCurrentUserName())) {
+		if (userid.equals(AccountUserManager.getInstance().getCurrentUserid())) {
 			isMyself = true;
 			if (mShowBundle.containsKey(BundleTake.NeedToEditInfo)) {
 				isNeedToEdit = true;
@@ -102,40 +103,45 @@ public class UserInfoFragment extends ContentFragment implements
 			initMyData();
 		} else {// 来自他人则根据策略显示
 			if (AccountUserManager.getInstance().getContactList()
-					.containsKey(username)) {// 是好友，不显示加为好友
+					.containsKey(userid)) {// 是好友，不显示加为好友
 				isFriends = true;
 				viewForFriends();
 			} else {
 				isStranger = true;
 				viewForStrangers();
 			}
-			initOtherData(username);
+			initOtherData(userid);
 		}
 	}
 
-	private void initOtherData(String name) {
-		userManager.queryUser(name, new FindListener<User>() {
-
+	private void initOtherData(String id) {
+		BmobQuery<User> query = new BmobQuery<User>();
+		query.addWhereEqualTo("objectId", id);
+		query.findObjects(mContext, new FindListener<User>() {
 			@Override
-			public void onError(int arg0, String arg1) {
-				ShowLog("Error" + arg1);
-			}
-
-			@Override
-			public void onSuccess(List<User> arg0) {
-				// TODO Auto-generated method stub
-				if (arg0 != null && arg0.size() > 0) {
-					user = arg0.get(0);
+			public void onSuccess(List<User> object) {
+				if (object != null && object.size() > 0) {
+					// TODO 强制转换不知有没有问题
+					user = object.get(0);
+					username = user.getUsername();
 					updateUser(user);
 				} else {
-					ShowLog("onSuccess 查无此人");
+					ShowLog("该用户不存在");
 				}
 			}
+
+			@Override
+			public void onError(int code, String msg) {
+				// TODO Auto-generated method stub
+				ShowLog("获取用户信息失败" + msg);
+			}
 		});
+
 	}
 
 	private void initMyData() {
 		user = AccountUserManager.getInstance().getCurrentUser();
+		username = user.getUsername();
 		updateUser(user);
 	}
 
@@ -191,7 +197,7 @@ public class UserInfoFragment extends ContentFragment implements
 			Bundle bundle = new Bundle();
 			bundle.putString(UserInfo.AVATAR, user.getAvatar());
 			bundle.putString(UserInfo.USER_NAME, user.getUsername());
-			bundle.putString(UserInfo.OBJECT_ID, user.getObjectId());
+			bundle.putString(UserInfo.USER_ID, user.getObjectId());
 			wmFragmentManager.showFragment(WMFragmentManager.TYPE_CHAT, bundle);
 			break;
 		case R.id.layout_head:

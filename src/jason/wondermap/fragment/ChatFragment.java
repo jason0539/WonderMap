@@ -139,7 +139,7 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 		targetUser = new BmobChatUser();
 		targetUser.setAvatar(mShowBundle.getString(UserInfo.AVATAR));
 		targetUser.setUsername(mShowBundle.getString(UserInfo.USER_NAME));
-		targetUser.setObjectId(mShowBundle.getString(UserInfo.OBJECT_ID));
+		targetUser.setObjectId(mShowBundle.getString(UserInfo.USER_ID));
 		targetId = targetUser.getObjectId();
 		MsgPagerNum = 0;
 		BmobLog.i("聊天对象：" + targetUser.getUsername() + ",targetId = "
@@ -165,8 +165,8 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 		BmobDB.create(mContext).resetUnread(targetId);
 		// 清空消息未读数-这个要在刷新之后
 		MyMessageReceiver.mNewNum = 0;
-		if(mBackBundle != null){
-//		if (mBackBundle.containsKey(UserInfo.INTENT)) {
+		if (mBackBundle != null) {
+			// if (mBackBundle.containsKey(UserInfo.INTENT)) {
 			// case WMapConstants.REQUESTCODE_TAKE_LOCATION:// 地理位置
 			double latitude = mBackBundle.getDouble(UserInfo.X, 0);// 维度
 			double longtitude = mBackBundle.getDouble(UserInfo.Y, 0);// 经度
@@ -244,7 +244,7 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 						cursor.moveToFirst();
 						int columnIndex = cursor.getColumnIndex("_data");
 						String localSelectPath = cursor.getString(columnIndex);
-						L.d(WModel.ImageShow, "选取的照片路径"+localSelectPath);
+						L.d(WModel.ImageShow, "选取的照片路径" + localSelectPath);
 						cursor.close();
 						if (localSelectPath == null
 								|| localSelectPath.equals("null")) {
@@ -480,8 +480,8 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 	 * 显示重发按钮 showResendDialog
 	 */
 	public void showResendDialog(final View parentV, View v, final Object values) {
-		DialogTips dialog = new DialogTips(getActivity(), "确定重发该消息", "确定", "取消",
-				"提示", true);
+		DialogTips dialog = new DialogTips(getActivity(), "确定重发该消息", "确定",
+				"取消", "提示", true);
 		// 设置成功事件
 		dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialogInterface, int userId) {
@@ -913,7 +913,8 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 		// BmobConstants.REQUESTCODE_TAKE_LOCATION);
 		Bundle bundle = new Bundle();
 		bundle.putString(UserInfo.TYPE, "select");
-		wmFragmentManager.showFragment(WMFragmentManager.TYPE_LOCATION_MAP, bundle);
+		wmFragmentManager.showFragment(WMFragmentManager.TYPE_LOCATION_MAP,
+				bundle);
 	}
 
 	private String localCameraPath = "";// 拍照后得到的图片地址

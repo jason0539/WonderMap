@@ -20,7 +20,7 @@ public class CollectionUtils {
 	}
 
 	/**
-	 * list转map 以用户名为key
+	 * list转map 以id为key
 	 * 
 	 * @return Map<String,BmobChatUser>
 	 * @throws
@@ -28,7 +28,7 @@ public class CollectionUtils {
 	public static Map<String, BmobChatUser> list2map(List<BmobChatUser> users) {
 		Map<String, BmobChatUser> friends = new HashMap<String, BmobChatUser>();
 		for (BmobChatUser user : users) {
-			friends.put(user.getUsername(), user);
+			friends.put(user.getObjectId(), user);
 		}
 		return friends;
 	}

@@ -140,6 +140,9 @@ public class AccountUserManager {
 	public BmobUserManager getUserManager() {
 		return userManager;
 	}
+	public String getCurrentUserid(){
+		return userManager.getCurrentUserObjectId();
+	}
 
 	public void updateCurrentUserSex(boolean se, UpdateListener listener) {
 		if (getCurrentUser() == null) {

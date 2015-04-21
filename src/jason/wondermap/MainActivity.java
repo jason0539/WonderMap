@@ -60,8 +60,8 @@ public class MainActivity extends FragmentActivity {
 		if (isNeedTo) {
 			L.d(WModel.NeedToEditInfo, "需要确认信息");
 			Bundle bundle = new Bundle();
-			bundle.putString(UserInfo.USER_NAME, AccountUserManager
-					.getInstance().getCurrentUserName());
+			bundle.putString(UserInfo.USER_ID, AccountUserManager
+					.getInstance().getCurrentUserid());
 			bundle.putBoolean(BundleTake.NeedToEditInfo, true);
 			fragmentManager.showFragment(WMFragmentManager.TYPE_USERINFO,
 					bundle);

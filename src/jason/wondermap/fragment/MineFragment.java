@@ -85,8 +85,8 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 			break;
 		case R.id.layout_info:// 启动到个人资料页面
 			Bundle bundle = new Bundle();
-			bundle.putString(UserInfo.USER_NAME, AccountUserManager
-					.getInstance().getCurrentUserName());
+			bundle.putString(UserInfo.USER_ID, AccountUserManager
+					.getInstance().getCurrentUserid());
 			wmFragmentManager.showFragment(WMFragmentManager.TYPE_USERINFO,
 					bundle);
 			break;

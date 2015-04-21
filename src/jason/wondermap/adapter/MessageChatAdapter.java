@@ -169,15 +169,13 @@ public class MessageChatAdapter extends BaseListAdapter<BmobMsg> {
 						|| getItemViewType(position) == TYPE_RECEIVER_LOCATION
 						|| getItemViewType(position) == TYPE_RECEIVER_VOICE) {
 					Bundle bundle = new Bundle();
-					bundle.putString(UserInfo.FROM, "other");
-					bundle.putString(UserInfo.USER_NAME,
-							item.getBelongUsername());
+					bundle.putString(UserInfo.USER_ID,
+							item.getBelongId());
 					BaseFragment.getWMFragmentManager().showFragment(
 							WMFragmentManager.TYPE_USERINFO, bundle);
 				} else {
 					Bundle bundle = new Bundle();
-					bundle.putString(UserInfo.FROM, "me");
-					bundle.putString(UserInfo.USER_NAME, item.getBelongUsername());
+					bundle.putString(UserInfo.USER_ID, item.getBelongId());
 					BaseFragment.getWMFragmentManager().showFragment(
 							WMFragmentManager.TYPE_USERINFO, bundle);
 				}

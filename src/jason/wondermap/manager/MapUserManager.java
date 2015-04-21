@@ -29,21 +29,21 @@ public class MapUserManager {
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	public void addUserFromPushMsg(JSONObject msg) {
-		String userName = BmobJsonUtil.getString(msg, UserInfo.USER_NAME);
-		if (userName.equals(BmobUserManager.getInstance(
-				WonderMapApplication.getInstance()).getCurrentUserName())) {// 自己的消息忽略
+		String userId = BmobJsonUtil.getString(msg, UserInfo.USER_ID);
+		String nameString = BmobJsonUtil.getString(msg, UserInfo.USER_NAME);
+		if (userId.equals(AccountUserManager.getInstance().getCurrentUserid())) {// 自己的消息忽略
 			return;
 		}
-		MapUser alreadExitsUser = getUser(userName);
+		MapUser alreadExitsUser = getUser(userId);
 		// 添加过则更新位置
 		if (alreadExitsUser != null) {
-			L.d(WModel.EnsureEveryoneOnMap, "更新位置" + userName);
+			L.d(WModel.EnsureEveryoneOnMap, "更新位置" + nameString);
 			updateUser(alreadExitsUser, msg);
-			L.d(userName + "已经添加过，更新位置");
+			L.d(nameString + "已经添加过，更新位置");
 		}
 		// 没添加则添加
 		else {
-			L.d(WModel.EnsureEveryoneOnMap, "添加用户" + userName);
+			L.d(WModel.EnsureEveryoneOnMap, "添加用户" + nameString);
 			MapUser u = CommonUtils.HelloMsgToUser(msg);
 			addUser(u);
 			// WonderMapApplication.getInstance().getUserDB().addUser(u);
@@ -107,9 +107,9 @@ public class MapUserManager {
 	/**
 	 * 查找指定的用户
 	 */
-	private MapUser getUser(String name) {
+	private MapUser getUser(String id) {
 		for (MapUser usr : mapUsers) {
-			if (usr.getName().equals(name)) {
+			if (usr.getObjectId().equals(id)) {
 				return usr;
 			}
 		}

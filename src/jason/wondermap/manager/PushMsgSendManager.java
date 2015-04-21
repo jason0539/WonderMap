@@ -33,6 +33,8 @@ public class PushMsgSendManager {
 		if (CommonUtils.isNetworkAvailable(WonderMapApplication.getInstance())) {// 如果网络可用
 			Map<String, String> map = new HashMap<String, String>();
 			map.put(UserInfo.TAG, UserInfo.HELLO);
+			map.put(UserInfo.USER_ID, AccountUserManager.getInstance()
+					.getCurrentUserid());
 			map.put(UserInfo.USER_NAME, AccountUserManager.getInstance()
 					.getCurrentUserName());
 			map.put(UserInfo.LATITUDE, WLocationManager.getInstance()
@@ -68,6 +70,8 @@ public class PushMsgSendManager {
 		if (CommonUtils.isNetworkAvailable(WonderMapApplication.getInstance())) {// 如果网络可用
 			Map<String, String> map = new HashMap<String, String>();
 			map.put(UserInfo.TAG, UserInfo.WORLD);
+			map.put(UserInfo.USER_ID, AccountUserManager.getInstance()
+					.getCurrentUserid());
 			map.put(UserInfo.USER_NAME, AccountUserManager.getInstance()
 					.getCurrentUserName());
 			map.put(UserInfo.LATITUDE, WLocationManager.getInstance()

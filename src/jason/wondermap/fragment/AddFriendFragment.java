@@ -175,8 +175,7 @@ public class AddFriendFragment extends ContentFragment implements
 		// TODO Auto-generated method stub
 		BmobChatUser user = (BmobChatUser) adapter.getItem(position - 1);
 		Bundle bundle = new Bundle();
-		bundle.putString(UserInfo.FROM, "add");
-		bundle.putString(UserInfo.USER_NAME, user.getUsername());
+		bundle.putString(UserInfo.USER_ID, user.getObjectId());
 		wmFragmentManager.showFragment(WMFragmentManager.TYPE_USERINFO, bundle);
 	}
 

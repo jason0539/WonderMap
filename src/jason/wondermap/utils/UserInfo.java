@@ -7,7 +7,7 @@ public class UserInfo {
 	public static final String SIGN ="sign";
 	public static final String EMAIL ="email";
 	public static final String USER_NAME = "user_name";
-	public static final String OBJECT_ID = "object_id";
+	public static final String USER_ID = "user_id";
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝页面跳转来源＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	public static final String FROM = "from";
 	public static final String TYPE = "type";

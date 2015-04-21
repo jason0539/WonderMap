@@ -74,11 +74,12 @@ public class CommonUtils {
 	 */
 	public static MapUser HelloMsgToUser(JSONObject msg) {
 		String name = BmobJsonUtil.getString(msg, UserInfo.USER_NAME);
+		String id = BmobJsonUtil.getString(msg, UserInfo.USER_ID);
 		double lat = Double.valueOf(BmobJsonUtil.getString(msg,
 				UserInfo.LATITUDE));
 		double lng = Double.valueOf(BmobJsonUtil.getString(msg,
 				UserInfo.LONGTITUDE));
-		MapUser user = new MapUser(name, lat, lng);
+		MapUser user = new MapUser(id,name, lat, lng);
 		return user;
 	}
 

@@ -15,6 +15,7 @@ import jason.wondermap.utils.ActivityUtil;
 import jason.wondermap.utils.ImageLoadOptions;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.T;
+import jason.wondermap.utils.UserInfo;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -314,9 +315,8 @@ public class FootblogCommentFragment extends ContentFragment implements
 		User currentUser = BmobUser.getCurrentUser(mContext, User.class);
 		if (currentUser != null) {// 已登录
 			Bundle bundle = new Bundle();
-			bundle.putString(BundleTake.BundleFrom, BundleTake.BundlePurposeAdd);
-			bundle.putString(BundleTake.CommentItemUserName,
-					currentUser.getUsername());
+			bundle.putString(UserInfo.USER_ID,
+					currentUser.getObjectId());
 			BaseFragment.getWMFragmentManager().showFragment(
 					WMFragmentManager.TYPE_USERINFO, bundle);
 		} else {// 未登录

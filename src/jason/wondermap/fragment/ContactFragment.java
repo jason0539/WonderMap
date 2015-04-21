@@ -360,8 +360,7 @@ public class ContactFragment extends ContentFragment implements
 		User user = (User) userAdapter.getItem(position - 1);
 		// 先进入好友的详细资料页面
 		Bundle bundle = new Bundle();
-		bundle.putString(UserInfo.FROM, "other");
-		bundle.putString(UserInfo.USER_NAME, user.getUsername());
+		bundle.putString(UserInfo.USER_ID, user.getObjectId());
 		wmFragmentManager.showFragment(WMFragmentManager.TYPE_USERINFO, bundle);
 	}
 
@@ -405,7 +404,7 @@ public class ContactFragment extends ContentFragment implements
 				ShowToast("删除成功");
 				// 删除内存
 				AccountUserManager.getInstance().getContactList()
-						.remove(user.getUsername());
+						.remove(user.getObjectId());
 				// 更新界面
 				getActivity().runOnUiThread(new Runnable() {
 					public void run() {

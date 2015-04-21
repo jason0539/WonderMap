@@ -224,13 +224,13 @@ public class WMapControler {
 	private void onMyMapMarkerClick(final MapUser user, Marker marker) {
 		Button button = new Button(WonderMapApplication.getInstance());
 		button.setBackgroundResource(R.drawable.popup);
+		//TODO 点击之后实时获取用户姓名，有可能用户有更改
 		button.setText(user.getName());
 		OnInfoWindowClickListener listener = null;
 		listener = new OnInfoWindowClickListener() {
 			public void onInfoWindowClick() {
 				Bundle bundle = new Bundle();
-				bundle.putString(UserInfo.FROM, "add");
-				bundle.putString(UserInfo.USER_NAME, user.getName());
+				bundle.putString(UserInfo.USER_ID, user.getObjectId());
 				BaseFragment.getWMFragmentManager().showFragment(
 						WMFragmentManager.TYPE_USERINFO, bundle);
 			}

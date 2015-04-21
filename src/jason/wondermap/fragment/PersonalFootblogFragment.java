@@ -291,7 +291,7 @@ public class PersonalFootblogFragment extends ContentFragment implements
 				// L.i(TAG, "current user edit...");
 			}
 			Bundle bundle = new Bundle();
-			bundle.putString(UserInfo.USER_NAME, mUser.getUsername());
+			bundle.putString(UserInfo.USER_ID, mUser.getObjectId());
 			wmFragmentManager.showFragment(WMFragmentManager.TYPE_USERINFO,
 					bundle);
 			break;
