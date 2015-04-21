@@ -24,52 +24,57 @@ public class UserProxy {
 		this.mContext = context;
 	}
 
-	public void register(String email, String password) {
+	public void register(final String email, final String password) {
 		// 由于每个应用的注册所需的资料都不一样，故IM sdk未提供注册方法，用户可按照bmod SDK的注册方式进行注册。
 		// 注册的时候需要注意两点：1、User表中绑定设备id和type，2、设备表中绑定username字段
-		final User user = new User();
-		user.setEmail(email);
-		user.setPassword(password);
-		user.setUsername(email);
-		user.setSex(true);
-		user.setSignature("这个家伙很懒，什么也没说");
-		user.setDeviceType("android");
-		user.setInstallId(BmobInstallation.getInstallationId(mContext));// 用户与设备绑定
-		user.signUp(mContext, new SaveListener() {
-
+		BmobQuery<BmobUser> query = new BmobQuery<BmobUser>();
+		query.addWhereEqualTo(UserInfo.EMAIL, email);
+		query.findObjects(mContext, new FindListener<BmobUser>() {
 			@Override
-			public void onSuccess() {
-				// TODO Auto-generated method stub
-				if (signUpLister != null) {
-					signUpLister.onSignUpSuccess(user);
+			public void onSuccess(List<BmobUser> object) {
+				if (object.size() <= 0) {
+					final User user = new User();
+					user.setEmail(email);
+					user.setPassword(password);
+					user.setUsername(email);
+					user.setSex(true);
+					user.setSignature("这个家伙很懒，什么也没说");
+					user.setDeviceType("android");
+					user.setInstallId(BmobInstallation
+							.getInstallationId(mContext));// 用户与设备绑定
+					user.signUp(mContext, new SaveListener() {
+
+						@Override
+						public void onSuccess() {
+							if (signUpLister != null) {
+								signUpLister.onSignUpSuccess(user);
+							} else {
+								L.i(TAG,
+										"signup listener is null,you must set one!");
+							}
+						}
+
+						@Override
+						public void onFailure(int arg0, String msg) {
+							if (signUpLister != null) {
+								signUpLister.onSignUpFailure(msg);
+							} else {
+								L.i(TAG,
+										"signup listener is null,you must set one!");
+							}
+						}
+					});
 				} else {
-					L.i(TAG, "signup listener is null,you must set one!");
+					signUpLister.onSignUpFailure("邮箱已存在");
 				}
 			}
 
 			@Override
-			public void onFailure(int arg0, String msg) {
-				if (signUpLister != null) {
-					signUpLister.onSignUpFailure(msg);
-				} else {
-					L.i(TAG, "signup listener is null,you must set one!");
-				}
+			public void onError(int code, String msg) {
+				signUpLister.onSignUpFailure("注册失败，请重试");
 			}
 		});
-	}
 
-	public User getCurrentUser() {
-		User user = BmobUser.getCurrentUser(mContext, User.class);
-		if (user != null) {
-			L.i(TAG, "本地用户信息" + user.getObjectId() + "-" + user.getUsername()
-					+ "-" + user.getSessionToken() + "-" + user.getCreatedAt()
-					+ "-" + user.getUpdatedAt() + "-" + user.getSignature()
-					+ "-" + user.getSex());
-			return user;
-		} else {
-			L.i(TAG, "本地用户为null,请登录。");
-		}
-		return null;
 	}
 
 	public void login(String email, final String password) {
@@ -131,26 +136,50 @@ public class UserProxy {
 		});
 	}
 
-	public void logout() {
-		BmobUser.logOut(mContext);
-	}
-
-	public void resetPassword(String email) {
-		BmobUser.resetPassword(mContext, email, new ResetPasswordListener() {
-
+	public void resetPassword(final String email) {
+		BmobQuery<BmobUser> query = new BmobQuery<BmobUser>();
+		query.addWhereEqualTo(UserInfo.EMAIL, email);
+		query.findObjects(mContext, new FindListener<BmobUser>() {
 			@Override
-			public void onSuccess() {
-				// TODO Auto-generated method stub
-				if (resetPasswordListener != null) {
-					resetPasswordListener.onResetSuccess();
+			public void onSuccess(List<BmobUser> object) {
+				if (object.size() > 0) {
+					BmobUser.resetPassword(mContext, email,
+							new ResetPasswordListener() {
+
+								@Override
+								public void onSuccess() {
+									// TODO Auto-generated method stub
+									if (resetPasswordListener != null) {
+										resetPasswordListener.onResetSuccess();
+									} else {
+										L.i(TAG,
+												"reset listener is null,you must set one!");
+									}
+								}
+
+								@Override
+								public void onFailure(int arg0, String msg) {
+									// TODO Auto-generated method stub
+									if (resetPasswordListener != null) {
+										resetPasswordListener
+												.onResetFailure(msg);
+									} else {
+										L.i(TAG,
+												"reset listener is null,you must set one!");
+									}
+								}
+							});
 				} else {
-					L.i(TAG, "reset listener is null,you must set one!");
+					if (resetPasswordListener != null) {
+						resetPasswordListener.onResetFailure("该邮箱还没有注册过");
+					} else {
+						L.i(TAG, "reset listener is null,you must set one!");
+					}
 				}
 			}
 
 			@Override
-			public void onFailure(int arg0, String msg) {
-				// TODO Auto-generated method stub
+			public void onError(int code, String msg) {
 				if (resetPasswordListener != null) {
 					resetPasswordListener.onResetFailure(msg);
 				} else {
