@@ -1,14 +1,18 @@
 package jason.wondermap;
 
+import jason.wondermap.bean.User;
+import jason.wondermap.config.BundleTake;
 import jason.wondermap.controler.WMapControler;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.ContentFragment;
 import jason.wondermap.fragment.WMFragmentManager;
+import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.manager.ChatMessageManager;
 import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.L;
+import jason.wondermap.utils.UserInfo;
 import jason.wondermap.utils.WModel;
 import jason.wondermap.view.dialog.DialogTips;
 import android.content.DialogInterface;
@@ -21,6 +25,9 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+
+import cn.bmob.im.BmobUserManager;
+import cn.bmob.im.bean.BmobChatUser;
 
 import com.baidu.mapapi.map.MapView;
 
@@ -44,6 +51,23 @@ public class MainActivity extends FragmentActivity {
 		ChatMessageManager.getInstance();// 开始接收消息
 		// 添加检查log，上传到服务器
 		CommonUtils.checkCrashLog();
+		checkIsNeedToConfirmInfo();
+	}
+
+	private void checkIsNeedToConfirmInfo() {
+		boolean isNeedTo = !AccountUserManager.getInstance().getUserManager()
+				.getCurrentUser(User.class).isInfoIsSet();
+		if (isNeedTo) {
+			L.d(WModel.NeedToEditInfo, "需要确认信息");
+			Bundle bundle = new Bundle();
+			bundle.putString(UserInfo.USER_NAME, AccountUserManager
+					.getInstance().getCurrentUserName());
+			bundle.putBoolean(BundleTake.NeedToEditInfo, true);
+			fragmentManager.showFragment(WMFragmentManager.TYPE_USERINFO,
+					bundle);
+		} else {
+			L.d(WModel.NeedToEditInfo, "不需要确认");
+		}
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝

@@ -139,7 +139,6 @@ public class RecentFragment extends ContentFragment implements
 		// 组装聊天对象
 		Bundle bundle = new Bundle();
 		bundle.putString(UserInfo.AVATAR, recent.getAvatar());
-		bundle.putString(UserInfo.NICK, recent.getNick());
 		bundle.putString(UserInfo.USER_NAME, recent.getUserName());
 		bundle.putString(UserInfo.OBJECT_ID, recent.getTargetid());
 		wmFragmentManager.showFragment(WMFragmentManager.TYPE_CHAT, bundle);

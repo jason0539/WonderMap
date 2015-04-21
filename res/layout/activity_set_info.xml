@@ -48,30 +48,8 @@
                 android:background="#eeeeee" />
 
             <RelativeLayout
-                android:id="@+id/layout_nick"
-                style="@style/Userinfo.Item" >
-
-                <TextView
-                    android:id="@+id/user_nick_tips"
-                    style="@style/Userinfo.Item.Textview"
-                    android:text="@string/add_nick" />
-
-                <TextView
-                    android:id="@+id/tv_set_nick"
-                    style="@style/Userinfo.Item.Textview"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/add_nick" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="#eeeeee" />
-
-            <RelativeLayout
                 android:id="@+id/layout_name"
-                style="@style/Userinfo.Item"
-                android:clickable="false" >
+                style="@style/Userinfo.Item" >
 
                 <TextView
                     android:id="@+id/user_name_tips"
@@ -81,8 +59,7 @@
                 <TextView
                     android:id="@+id/tv_set_name"
                     style="@style/Userinfo.Item.Textview"
-                    android:layout_alignParentRight="true"
-                    android:text="点击登录" />
+                    android:layout_alignParentRight="true" />
             </RelativeLayout>
 
             <View
@@ -108,9 +85,34 @@
                     android:layout_centerVertical="true"
                     android:button="@drawable/selector_sex_choice"
                     android:checked="true"
-                    android:enabled="false"
+                    android:clickable="false"
                     android:scaleType="centerInside" />
             </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#eeeeee" />
+
+            <RelativeLayout
+                android:id="@+id/layout_age"
+                style="@style/Userinfo.Item" >
+
+                <TextView
+                    android:id="@+id/user_age_tips"
+                    style="@style/Userinfo.Item.Textview"
+                    android:text="@string/add_age" />
+
+                <TextView
+                    android:id="@+id/tv_set_age"
+                    style="@style/Userinfo.Item.Textview"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#eeeeee" />
 
             <RelativeLayout
                 android:id="@+id/user_sign"
@@ -131,6 +133,24 @@
                     android:text="@string/userinfo_fragment_edit" />
             </RelativeLayout>
 
+            <TextView
+                android:id="@+id/tv_editinfo_tips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:gravity="center_horizontal"
+                android:visibility="gone"
+                android:text="@string/confirm_info_tips" />
+
+            <Button
+                android:id="@+id/btn_confirm_info"
+                style="@style/Smile.Button.theme"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/confirm_info"
+                android:visibility="gone" />
+
             <Button
                 android:id="@+id/btn_browse_footblog"
                 style="@style/Smile.Button.theme"
@@ -138,7 +158,7 @@
                 android:layout_height="45dp"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:text="@string/browse_footblog"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/btn_add_friend"
@@ -155,7 +175,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:text="@string/chat" />
+                android:text="@string/chat"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/btn_back"
@@ -163,7 +184,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:text="@string/blacklist" />
+                android:text="@string/blacklist"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:id="@+id/layout_black_tips"

@@ -1,6 +1,7 @@
 package jason.wondermap;
 
 import jason.wondermap.bean.User;
+import jason.wondermap.config.BundleTake;
 import jason.wondermap.config.WMapConfig;
 import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.proxy.UserProxy;
@@ -70,18 +71,19 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 
 	@Override
 	public void onSignUpSuccess(User bu) {
+		AccountUserManager.getInstance().updateUserInfos();
 		dimissProgressbar();
-		AccountUserManager.getInstance().getUserManager()
-				.bindInstallationForRegister(bu.getUsername());
+		// TODO 绑定用户名称在设置之后
 		T.showShort(mContext, "注册成功");
-		operation = UserOperation.LOGIN;
-		updateLayout(operation);
-		registerButton.performClick();
+		// 前往设置资料页
+		Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+		intent.putExtra(BundleTake.NeedToEditInfo, true);
+		startActivity(intent);
+		finish();
 	}
 
 	@Override
 	public void onSignUpFailure(String msg) {
-		// TODO Auto-generated method stub
 		dimissProgressbar();
 		T.showShort(mContext, "邮箱已存在");
 	}
@@ -367,7 +369,7 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 		registerTitle = (TextView) findViewById(R.id.register_menu);
 		resetPassword = (TextView) findViewById(R.id.reset_password_menu);
 		qqLogin = (TextView) findViewById(R.id.tv_qq);
-		wbLogin = (TextView)findViewById(R.id.tv_weibo);
+		wbLogin = (TextView) findViewById(R.id.tv_weibo);
 		userPasswordInput = (DeletableEditText) findViewById(R.id.user_password_input);
 		userPasswordRepeat = (DeletableEditText) findViewById(R.id.user_password_input_repeat);
 		userEmailInput = (DeletableEditText) findViewById(R.id.user_email_input);

@@ -138,7 +138,6 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 		// 组装聊天对象
 		targetUser = new BmobChatUser();
 		targetUser.setAvatar(mShowBundle.getString(UserInfo.AVATAR));
-		targetUser.setNick(mShowBundle.getString(UserInfo.NICK));
 		targetUser.setUsername(mShowBundle.getString(UserInfo.USER_NAME));
 		targetUser.setObjectId(mShowBundle.getString(UserInfo.OBJECT_ID));
 		targetId = targetUser.getObjectId();

@@ -46,6 +46,13 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 		refreshView();
 	}
 
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		refreshView();
+	}
+
 	private void refreshView() {
 		boolean isAllowNotify = mSharedUtil.isAllowPushNotify();
 		ck_notify.setChecked(isAllowNotify);

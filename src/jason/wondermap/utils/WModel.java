@@ -10,4 +10,5 @@ public class WModel {
 	public static String CrashUpload = "CrashUpload";
 	public static String clickUseless = "clickUseless";
 	public static String PublishBlog = "PublishBlog";
+	public static String NeedToEditInfo ="NeedToEditInfo";
 }

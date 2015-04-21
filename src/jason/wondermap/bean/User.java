@@ -32,6 +32,24 @@ public class User extends BmobChatUser {
 	private boolean sex;
 
 	private Blog blog;
+	private int age;// 年龄
+	private boolean infoIsSet;// 个人信息是否设置完成
+
+	public boolean isInfoIsSet() {
+		return infoIsSet;
+	}
+
+	public void setInfoIsSet(boolean infoIsSet) {
+		this.infoIsSet = infoIsSet;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
 
 	/**
 	 * 地理坐标

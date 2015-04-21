@@ -38,7 +38,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -65,103 +64,53 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  */
 public class UserInfoFragment extends ContentFragment implements
 		OnClickListener {
-	TextView tv_set_name, tv_set_nick, tv_user_signs;
-	CheckBox tv_set_gender;
-	ImageView iv_set_avator;
-	LinearLayout layout_all;
+	private TextView tv_set_name, tv_set_age, tv_user_signs, tv_editinfo_tips;
+	private CheckBox tv_set_gender;
+	private ImageView iv_set_avator;
 
-	Button btn_chat, btn_black, btn_add_friend, btn_browse_footblog;
-	RelativeLayout layout_head, layout_nick, layout_gender, layout_signs,
-			layout_black_tips;
-	BmobUserManager userManager;
-	boolean isMyself, isFriends, isStranger;
-	String from = "";
-	String username = "";
-	User user;
+	private Button btn_chat, btn_black, btn_add_friend, btn_browse_footblog,
+			btn_confirm_info;
+	private RelativeLayout layout_head, layout_age, layout_gender,
+			layout_signs, layout_black_tips, layout_name;
+	private BmobUserManager userManager;
+	boolean isMyself, isNeedToEdit, isFriends, isStranger;
+	private String username = "";
+	private User user;
 	private ViewGroup mRootView;
 
 	@Override
 	protected View onCreateContentView(LayoutInflater inflater) {
-		// 因为魅族手机下面有三个虚拟的导航按钮，需要将其隐藏掉，不然会遮掉拍照和相册两个按钮，且在setContentView之前调用才能生效
-		// 加了之后，第一次点击会无效，所有点击都得两次才生效
-		// int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-		// if (currentapiVersion >= 14) {
-		// getActivity().getWindow().getDecorView()
-		// .setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-		// }
 		userManager = AccountUserManager.getInstance().getUserManager();
 		mRootView = (ViewGroup) inflater.inflate(R.layout.activity_set_info,
 				mContainer, false);
-		from = mShowBundle.getString(UserInfo.FROM);
 		username = mShowBundle.getString(UserInfo.USER_NAME);
 		return mRootView;
 	}
 
 	@Override
 	protected void onInitView() {
-		layout_all = (LinearLayout) mRootView.findViewById(R.id.layout_all);
-		iv_set_avator = (ImageView) mRootView.findViewById(R.id.iv_set_avator);
-		tv_set_name = (TextView) mRootView.findViewById(R.id.tv_set_name);
-		tv_set_nick = (TextView) mRootView.findViewById(R.id.tv_set_nick);
-		tv_user_signs = (TextView) mRootView.findViewById(R.id.user_sign_text);
-		layout_head = (RelativeLayout) mRootView.findViewById(R.id.layout_head);
-		layout_nick = (RelativeLayout) mRootView.findViewById(R.id.layout_nick);
-		layout_gender = (RelativeLayout) mRootView
-				.findViewById(R.id.layout_gender);
-		layout_signs = (RelativeLayout) mRootView.findViewById(R.id.user_sign);
-		// 黑名单提示语
-		layout_black_tips = (RelativeLayout) mRootView
-				.findViewById(R.id.layout_black_tips);
-		tv_set_gender = (CheckBox) mRootView.findViewById(R.id.tv_set_gender);
-		btn_chat = (Button) mRootView.findViewById(R.id.btn_chat);
-		btn_black = (Button) mRootView.findViewById(R.id.btn_back);
-		btn_add_friend = (Button) mRootView.findViewById(R.id.btn_add_friend);
-		btn_browse_footblog = (Button) mRootView
-				.findViewById(R.id.btn_browse_footblog);
-		btn_browse_footblog.setOnClickListener(this);
-		btn_add_friend.setEnabled(false);
-		btn_chat.setEnabled(false);
-		btn_black.setEnabled(false);
-		// if (from.equals("me")) {// 查看自己的个人信息
+		findviews();
 		if (username.equals(AccountUserManager.getInstance()
 				.getCurrentUserName())) {
 			isMyself = true;
-			tv_set_gender.setEnabled(true);
-			initTopBarForLeft(mRootView, "我的资料");
-			layout_head.setOnClickListener(this);
-			layout_nick.setOnClickListener(this);
-			// layout_gender.setOnClickListener(this);
-			tv_set_gender.setOnClickListener(this);
-			layout_signs.setOnClickListener(this);
-			btn_black.setVisibility(View.GONE);
-			btn_chat.setVisibility(View.GONE);
-			btn_add_friend.setVisibility(View.GONE);
+			if (mShowBundle.containsKey(BundleTake.NeedToEditInfo)) {
+				isNeedToEdit = true;
+				viewForConfirmInfo();
+			} else {
+				viewForMyself();
+			}
+			initMyData();
 		} else {// 来自他人则根据策略显示
-			initTopBarForLeft(mRootView, "详细资料");
-			// 不管对方是不是你的好友，均可以发送消息--BmobIM_V1.1.2修改
-			btn_chat.setVisibility(View.VISIBLE);
-			btn_chat.setOnClickListener(this);
 			if (AccountUserManager.getInstance().getContactList()
 					.containsKey(username)) {// 是好友，不显示加为好友
 				isFriends = true;
-				// btn_chat.setVisibility(View.VISIBLE);
-				// btn_chat.setOnClickListener(this);
-				btn_black.setVisibility(View.VISIBLE);
-				btn_black.setOnClickListener(this);
+				viewForFriends();
 			} else {
 				isStranger = true;
-				// btn_chat.setVisibility(View.GONE);
-				btn_black.setVisibility(View.GONE);
-				btn_add_friend.setVisibility(View.VISIBLE);
-				btn_add_friend.setOnClickListener(this);
+				viewForStrangers();
 			}
 			initOtherData(username);
 		}
-	}
-
-	private void initMyData() {
-		User user = userManager.getCurrentUser(User.class);
-		initOtherData(user.getUsername());
 	}
 
 	private void initOtherData(String name) {
@@ -169,8 +118,7 @@ public class UserInfoFragment extends ContentFragment implements
 
 			@Override
 			public void onError(int arg0, String arg1) {
-				// TODO Auto-generated method stub
-				ShowLog("onError onError:" + arg1);
+				ShowLog("Error" + arg1);
 			}
 
 			@Override
@@ -178,9 +126,6 @@ public class UserInfoFragment extends ContentFragment implements
 				// TODO Auto-generated method stub
 				if (arg0 != null && arg0.size() > 0) {
 					user = arg0.get(0);
-					btn_chat.setEnabled(true);
-					btn_black.setEnabled(true);
-					btn_add_friend.setEnabled(true);
 					updateUser(user);
 				} else {
 					ShowLog("onSuccess 查无此人");
@@ -189,11 +134,16 @@ public class UserInfoFragment extends ContentFragment implements
 		});
 	}
 
+	private void initMyData() {
+		user = AccountUserManager.getInstance().getCurrentUser();
+		updateUser(user);
+	}
+
 	private void updateUser(User user) {
 		// 更改
 		refreshAvatar(user.getAvatar());
 		tv_set_name.setText(user.getUsername());
-		tv_set_nick.setText(user.getNick());
+		tv_set_age.setText(user.getAge() + "岁");
 		String sign = user.getSignature();
 		if (sign != null && !sign.equals("")) {
 			tv_user_signs.setText(sign);
@@ -206,8 +156,6 @@ public class UserInfoFragment extends ContentFragment implements
 				layout_black_tips.setVisibility(View.VISIBLE);
 			} else {
 				btn_black.setVisibility(View.VISIBLE);
-				btn_black.setEnabled(true);
-				btn_black.setOnClickListener(this);
 				layout_black_tips.setVisibility(View.GONE);
 			}
 		}
@@ -215,25 +163,19 @@ public class UserInfoFragment extends ContentFragment implements
 
 	/**
 	 * 更新头像 refreshAvatar
-	 * 
-	 * @return void
-	 * @throws
 	 */
 	private void refreshAvatar(String avatar) {
 		if (avatar != null && !avatar.equals("")) {
 			ImageLoader.getInstance().displayImage(avatar, iv_set_avator,
 					ImageLoadOptions.getOptions());
-		} else {
-			// iv_set_avator.setImageResource(R.drawable.default_head);
 		}
 	}
 
 	@Override
 	public void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 		if (isMyself) {
-			initMyData();
+			initMyData();// 修改完之后接着刷新
 		}
 	}
 
@@ -242,10 +184,12 @@ public class UserInfoFragment extends ContentFragment implements
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.btn_chat:// 发起聊天
-			L.d(WModel.clickUseless, "点击发起会话");
+			if (user == null) {
+				ShowToast("正在加载信息，请稍等");
+				return;
+			}
 			Bundle bundle = new Bundle();
 			bundle.putString(UserInfo.AVATAR, user.getAvatar());
-			bundle.putString(UserInfo.NICK, user.getNick());
 			bundle.putString(UserInfo.USER_NAME, user.getUsername());
 			bundle.putString(UserInfo.OBJECT_ID, user.getObjectId());
 			wmFragmentManager.showFragment(WMFragmentManager.TYPE_CHAT, bundle);
@@ -253,9 +197,9 @@ public class UserInfoFragment extends ContentFragment implements
 		case R.id.layout_head:
 			showAvatarPop();
 			break;
-		case R.id.layout_nick:
+		case R.id.layout_age:
 			Bundle nickBundle = new Bundle();
-			nickBundle.putString(BundleTake.InfoToEdit, UserInfo.NICK);
+			nickBundle.putString(BundleTake.InfoToEdit, UserInfo.AGE);
 			wmFragmentManager.showFragment(
 					WMFragmentManager.TYPE_UPDATE_USERINFO, nickBundle);
 			// addBlog();
@@ -272,8 +216,14 @@ public class UserInfoFragment extends ContentFragment implements
 			wmFragmentManager.showFragment(
 					WMFragmentManager.TYPE_PERSONAL_FOOTBLOG, bundle2);
 			break;
-		case R.id.tv_set_gender:// 性别
-			updateInfo(tv_set_gender.isChecked());
+		case R.id.layout_gender:// 性别
+			if (tv_set_gender.isChecked()) {
+				tv_set_gender.setChecked(false);
+				updateSex(false);
+			} else {
+				tv_set_gender.setChecked(true);
+				updateSex(true);
+			}
 			break;
 		case R.id.btn_back:// 黑名单
 			L.d("点击黑名单");
@@ -282,48 +232,67 @@ public class UserInfoFragment extends ContentFragment implements
 		case R.id.btn_add_friend:// 添加好友
 			addFriend();
 			break;
+		case R.id.btn_confirm_info:
+			confirmInfo();
+			break;
+		case R.id.layout_name:
+			Bundle name = new Bundle();
+			name.putString(BundleTake.InfoToEdit, UserInfo.USER_NAME);
+			wmFragmentManager.showFragment(
+					WMFragmentManager.TYPE_UPDATE_USERINFO, name);
+			break;
 		default:
 			break;
 		}
 		L.d(WModel.clickUseless, "click");
 	}
 
-	String[] sexs = new String[] { "男", "女" };
+	/**
+	 * 确认信息
+	 */
+	private void confirmInfo() {
+		AccountUserManager.getInstance().confirmCurrentUserInfo(
+				new UpdateListener() {
+
+					@Override
+					public void onSuccess() {
+						ShowToast("信息已确认,进入地图");
+						AccountUserManager
+								.getInstance()
+								.getUserManager()
+								.bindInstallationForRegister(
+										AccountUserManager.getInstance()
+												.getCurrentUserName());
+						wmFragmentManager.back(null);
+					}
+
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						ShowToast("确认失败，请重试");
+					}
+				});
+	}
 
 	/**
 	 * 修改资料 updateInfo
-	 * 
-	 * @Title: updateInfo
-	 * @return void
-	 * @throws
 	 */
-	private void updateInfo(boolean which) {
-		final User u = new User();
-		u.setSex(which);
-		updateUserData(u, new UpdateListener() {
+	private void updateSex(boolean which) {
+		AccountUserManager.getInstance().updateCurrentUserSex(which,
+				new UpdateListener() {
+					@Override
+					public void onSuccess() {
+						ShowToast("修改成功");
+					}
 
-			@Override
-			public void onSuccess() {
-				// TODO Auto-generated method stub
-				ShowToast("修改成功");
-			}
-
-			@Override
-			public void onFailure(int arg0, String arg1) {
-				// TODO Auto-generated method stub
-				ShowToast("onFailure:" + arg1);
-			}
-		});
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						ShowToast("修改失败" + arg1);
+					}
+				});
 	}
 
 	/**
 	 * 添加好友请求
-	 * 
-	 * @Title: addFriend
-	 * @Description: TODO
-	 * @param
-	 * @return void
-	 * @throws
 	 */
 	private void addFriend() {
 		final ProgressDialog progress = new ProgressDialog(getActivity());
@@ -354,19 +323,16 @@ public class UserInfoFragment extends ContentFragment implements
 
 	/**
 	 * 显示黑名单提示框
-	 * 
 	 */
 	private void showBlackDialog(final String username) {
 		DialogTips dialog = new DialogTips(getActivity(), "加入黑名单",
 				"加入黑名单，你将不再收到对方的消息，确定要继续吗？", "确定", true, true);
 		dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialogInterface, int userId) {
-				// 添加到黑名单列表
 				userManager.addBlack(username, new UpdateListener() {
 
 					@Override
 					public void onSuccess() {
-						// TODO Auto-generated method stub
 						ShowToast("黑名单添加成功!");
 						btn_black.setVisibility(View.GONE);
 						layout_black_tips.setVisibility(View.VISIBLE);
@@ -378,7 +344,6 @@ public class UserInfoFragment extends ContentFragment implements
 
 					@Override
 					public void onFailure(int arg0, String arg1) {
-						// TODO Auto-generated method stub
 						ShowToast("黑名单添加失败:" + arg1);
 					}
 				});
@@ -424,7 +389,6 @@ public class UserInfoFragment extends ContentFragment implements
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				albumDialog.dismiss();
 				File dir = new File(WMapConstants.MyAvatarDir);
 				if (!dir.exists()) {
@@ -446,8 +410,6 @@ public class UserInfoFragment extends ContentFragment implements
 
 	/**
 	 * @Title: startImageAction
-	 * @return void
-	 * @throws
 	 */
 	private void startImageAction(Uri uri, int outputX, int outputY,
 			int requestCode, boolean isCrop) {
@@ -477,7 +439,6 @@ public class UserInfoFragment extends ContentFragment implements
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (requestCode) {
 		case WMapConstants.REQUESTCODE_UPLOADAVATAR_CAMERA:// 拍照修改头像
@@ -547,7 +508,6 @@ public class UserInfoFragment extends ContentFragment implements
 
 			@Override
 			public void onSuccess() {
-				// TODO Auto-generated method stub
 				String url = bmobFile.getFileUrl(mContext);
 				// 更新BmobUser对象
 				updateUserAvatar(url);
@@ -568,23 +528,19 @@ public class UserInfoFragment extends ContentFragment implements
 	}
 
 	private void updateUserAvatar(final String url) {
-		User u = new User();
-		u.setAvatar(url);
-		updateUserData(u, new UpdateListener() {
-			@Override
-			public void onSuccess() {
-				// TODO Auto-generated method stub
-				ShowToast("头像更新成功！");
-				// 更新头像
-				refreshAvatar(url);
-			}
+		AccountUserManager.getInstance().updateCurrentUserAvatar(url,
+				new UpdateListener() {
+					@Override
+					public void onSuccess() {
+						ShowToast("头像更新成功！");
+						refreshAvatar(url);
+					}
 
-			@Override
-			public void onFailure(int code, String msg) {
-				// TODO Auto-generated method stub
-				ShowToast("头像更新失败：" + msg);
-			}
-		});
+					@Override
+					public void onFailure(int code, String msg) {
+						ShowToast("头像更新失败：" + msg);
+					}
+				});
 	}
 
 	String path;
@@ -619,59 +575,91 @@ public class UserInfoFragment extends ContentFragment implements
 		}
 	}
 
-	/**
-	 * 测试关联关系是否可用
-	 * 
-	 * @Title: addBlog
-	 * @Description: TODO
-	 * @param
-	 * @return void
-	 * @throws
-	 */
-	public void addBlog() {
-		// BmobRelation relation = new BmobRelation();
-		// blog.setObjectId("c7a9ca9c0c");
-		// relation.add(blog);
-		// user.setBlogs(relation);
-		final Blog blog = new Blog();
-		// blog.setBrief("你好");
-		blog.save(mContext, new SaveListener() {
-
-			@Override
-			public void onSuccess() {
-				// TODO Auto-generated method stub
-				BmobLog.i("blog保存成功");
-				User u = new User();
-				u.setBlog(blog);
-				updateUserData(u, new UpdateListener() {
-
-					@Override
-					public void onSuccess() {
-						// TODO Auto-generated method stub
-						BmobLog.i("user更新成功");
-					}
-
-					@Override
-					public void onFailure(int code, String msg) {
-						// TODO Auto-generated method stub
-						BmobLog.i("code = " + code + ",msg = " + msg);
-					}
-				});
-
-			}
-
-			@Override
-			public void onFailure(int arg0, String arg1) {
-				// TODO Auto-generated method stub
-
-			}
-		});
+	@Override
+	public boolean onBackPressed() {
+		if (isNeedToEdit) {
+			return true;
+		}
+		return super.onBackPressed();
 	}
 
-	private void updateUserData(User user, UpdateListener listener) {
-		User current = (User) userManager.getCurrentUser(User.class);
-		user.setObjectId(current.getObjectId());
-		user.update(mContext, listener);
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝UI显示策略＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	private void viewForConfirmInfo() {
+		initTopBarForOnlyTitle(mRootView, "编辑资料");// 标题，没有返回键
+		btn_confirm_info.setVisibility(View.VISIBLE);// 显示确认资料键
+		tv_editinfo_tips.setVisibility(View.VISIBLE);// 显示确认资料键
+		layout_name.setEnabled(true);
+		layout_age.setEnabled(true);
+		layout_head.setEnabled(true);
+		layout_gender.setEnabled(true);
+		layout_signs.setEnabled(true);
+	}
+
+	private void viewForMyself() {
+		initTopBarForLeft(mRootView, "我的资料");
+		btn_browse_footblog.setVisibility(View.VISIBLE);
+		layout_age.setEnabled(true);
+		layout_head.setEnabled(true);
+		layout_gender.setEnabled(true);
+		layout_signs.setEnabled(true);
+	}
+
+	private void viewForFriends() {
+		initTopBarForLeft(mRootView, "详细资料");
+		btn_chat.setVisibility(View.VISIBLE);
+		btn_black.setVisibility(View.VISIBLE);
+		btn_browse_footblog.setVisibility(View.VISIBLE);
+	}
+
+	private void viewForStrangers() {
+		initTopBarForLeft(mRootView, "详细资料");
+		btn_chat.setVisibility(View.VISIBLE);
+		btn_browse_footblog.setVisibility(View.VISIBLE);
+		btn_add_friend.setVisibility(View.VISIBLE);
+	}
+
+	private void findviews() {
+		iv_set_avator = (ImageView) mRootView.findViewById(R.id.iv_set_avator);
+		tv_set_gender = (CheckBox) mRootView.findViewById(R.id.tv_set_gender);
+		tv_set_name = (TextView) mRootView.findViewById(R.id.tv_set_name);
+		tv_set_age = (TextView) mRootView.findViewById(R.id.tv_set_age);
+		tv_user_signs = (TextView) mRootView.findViewById(R.id.user_sign_text);
+		layout_head = (RelativeLayout) mRootView.findViewById(R.id.layout_head);
+		layout_age = (RelativeLayout) mRootView.findViewById(R.id.layout_age);
+		layout_gender = (RelativeLayout) mRootView
+				.findViewById(R.id.layout_gender);
+		layout_signs = (RelativeLayout) mRootView.findViewById(R.id.user_sign);
+		layout_name = (RelativeLayout) mRootView.findViewById(R.id.layout_name);
+		// 黑名单提示语
+		layout_black_tips = (RelativeLayout) mRootView
+				.findViewById(R.id.layout_black_tips);
+		btn_chat = (Button) mRootView.findViewById(R.id.btn_chat);
+		btn_black = (Button) mRootView.findViewById(R.id.btn_back);
+		btn_add_friend = (Button) mRootView.findViewById(R.id.btn_add_friend);
+		btn_confirm_info = (Button) mRootView
+				.findViewById(R.id.btn_confirm_info);
+		tv_editinfo_tips = (TextView) mRootView
+				.findViewById(R.id.tv_editinfo_tips);
+		btn_browse_footblog = (Button) mRootView
+				.findViewById(R.id.btn_browse_footblog);
+		// 监听器
+		layout_head.setOnClickListener(this);
+		layout_name.setOnClickListener(this);
+		layout_gender.setOnClickListener(this);
+		layout_age.setOnClickListener(this);
+		layout_signs.setOnClickListener(this);
+		btn_browse_footblog.setOnClickListener(this);
+		btn_confirm_info.setOnClickListener(this);
+		btn_add_friend.setOnClickListener(this);
+		btn_black.setOnClickListener(this);
+		btn_chat.setOnClickListener(this);
+		// 不可用
+		layout_age.setEnabled(false);
+		layout_head.setEnabled(false);
+		layout_gender.setEnabled(false);
+		layout_age.setEnabled(false);
+		layout_name.setEnabled(false);
+		layout_signs.setEnabled(false);
 	}
 
 }

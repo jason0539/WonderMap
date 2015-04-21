@@ -205,7 +205,6 @@ public class UserProxy {
 	// 重设密码监听
 	public interface IResetPasswordListener {
 		void onResetSuccess();
-
 		void onResetFailure(String msg);
 	}
 

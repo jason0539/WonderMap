@@ -1,16 +1,28 @@
 package jason.wondermap.fragment;
 
 import jason.wondermap.R;
-import jason.wondermap.bean.User;
+import jason.wondermap.WonderMapApplication;
 import jason.wondermap.config.BundleTake;
+import jason.wondermap.manager.AccountUserManager;
+import jason.wondermap.manager.PushMsgSendManager;
+import jason.wondermap.manager.WLocationManager;
+import jason.wondermap.utils.L;
 import jason.wondermap.utils.UserInfo;
 import jason.wondermap.view.HeaderLayout.onRightImageButtonClickListener;
+
+import java.util.List;
+
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import cn.bmob.im.BmobUserManager;
+import cn.bmob.im.bean.BmobChatUser;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 /**
@@ -22,6 +34,7 @@ import cn.bmob.v3.listener.UpdateListener;
 public class UpdateInfoFragment extends ContentFragment {
 	EditText et_edit_info;
 	TextView tv_edit_info;
+	TextView tv_edit_tips_name;
 	ViewGroup mRootView;
 	BmobUserManager userManager;
 	String infoToEdit;
@@ -40,12 +53,16 @@ public class UpdateInfoFragment extends ContentFragment {
 		infoToEdit = mShowBundle.getString(BundleTake.InfoToEdit);
 		if (infoToEdit != null && infoToEdit.equals(UserInfo.SIGN)) {
 			toEditInfo = Info.sign;
-		} else if (infoToEdit != null && infoToEdit.equals(UserInfo.NICK)) {
-			toEditInfo = Info.nick;
+		} else if (infoToEdit != null && infoToEdit.equals(UserInfo.AGE)) {
+			toEditInfo = Info.age;
+		} else if (infoToEdit != null && infoToEdit.equals(UserInfo.USER_NAME)) {
+			toEditInfo = Info.name;
 		}
 		userManager = BmobUserManager.getInstance(mContext);
 		et_edit_info = (EditText) mRootView.findViewById(R.id.et_edit_info);
 		tv_edit_info = (TextView) mRootView.findViewById(R.id.tv_edit_info);
+		tv_edit_tips_name = (TextView) mRootView
+				.findViewById(R.id.tv_updateinfo_nametips);
 		switch (toEditInfo) {
 		case sign:
 			et_edit_info.setHint("请输入签名");
@@ -65,10 +82,30 @@ public class UpdateInfoFragment extends ContentFragment {
 						}
 					});
 			break;
-		case nick:
-			et_edit_info.setHint("请输入昵称");
-			tv_edit_info.setText("昵称");
-			initTopBarForBoth(mRootView, "修改昵称",
+		case age:
+			et_edit_info.setHint("请输入年龄");
+			tv_edit_info.setText("年龄");
+			initTopBarForBoth(mRootView, "修改年龄",
+					R.drawable.base_action_bar_true_bg_selector,
+					new onRightImageButtonClickListener() {
+
+						@Override
+						public void onClick() {
+							String nick = et_edit_info.getText().toString();
+							if (nick.equals("")
+									|| !TextUtils.isDigitsOnly(nick)) {
+								ShowToast("请正确填写年龄!");
+								return;
+							}
+							updateAge(nick);
+						}
+					});
+			break;
+		case name:
+			et_edit_info.setHint("请输入名字");
+			tv_edit_info.setText("名字");
+			tv_edit_tips_name.setVisibility(View.VISIBLE);
+			initTopBarForBoth(mRootView, "修改名字",
 					R.drawable.base_action_bar_true_bg_selector,
 					new onRightImageButtonClickListener() {
 
@@ -76,13 +113,12 @@ public class UpdateInfoFragment extends ContentFragment {
 						public void onClick() {
 							String nick = et_edit_info.getText().toString();
 							if (nick.equals("")) {
-								ShowToast("请填写昵称!");
+								ShowToast("请填写名字!");
 								return;
 							}
-							updateNick(nick);
+							updateName(nick);
 						}
 					});
-			break;
 		default:
 			break;
 		}
@@ -91,48 +127,89 @@ public class UpdateInfoFragment extends ContentFragment {
 	/**
 	 * 修改资料 updateInfo
 	 */
-	private void updateNick(String nick) {
-		final User user = userManager.getCurrentUser(User.class);
-		User u = new User();
-		u.setNick(nick);
-		u.setObjectId(user.getObjectId());
-		u.update(mContext, new UpdateListener() {
+	private void updateAge(String nick) {
+		AccountUserManager.getInstance().updateCurrentUserAge(nick,
+				new UpdateListener() {
 
-			@Override
-			public void onSuccess() {
-				// 修改成功直接返回
-				wmFragmentManager.back(null);
-			}
+					@Override
+					public void onSuccess() {
+						// 修改成功直接返回
+						ShowToast("修改成功");
+						wmFragmentManager.back(null);
+					}
 
-			@Override
-			public void onFailure(int arg0, String arg1) {
-				// TODO Auto-generated method stub
-				ShowToast("onFailure:" + arg1);
-			}
-		});
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						ShowToast("修改失败" + arg1);
+					}
+				});
 	}
 
 	private void updateSign(String signString) {
-		final User user = userManager.getCurrentUser(User.class);
-		User u = new User();
-		u.setSignature(signString);
-		u.setObjectId(user.getObjectId());
-		u.update(mContext, new UpdateListener() {
+		AccountUserManager.getInstance().updateCurrentUserSign(signString,
+				new UpdateListener() {
 
-			@Override
-			public void onSuccess() {
-				// 修改成功直接返回
-				wmFragmentManager.back(null);
-			}
+					@Override
+					public void onSuccess() {
+						// 修改成功直接返回
+						ShowToast("修改成功");
+						wmFragmentManager.back(null);
+					}
 
-			@Override
-			public void onFailure(int arg0, String arg1) {
-				ShowToast("修改失败:" + arg1);
-			}
-		});
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						ShowToast("修改失败:" + arg1);
+					}
+				});
+	}
+
+	/**
+	 * 修改资料 updateInfo
+	 */
+	private void updateName(final String nick) {
+		AccountUserManager.getInstance().getUserManager()
+				.queryUserByName(nick, new FindListener<BmobChatUser>() {
+
+					@Override
+					public void onError(int arg0, String arg1) {
+
+					}
+
+					@Override
+					public void onSuccess(List<BmobChatUser> arg0) {
+						// 用户名可能已经被人使用
+						if (arg0.size() > 0) {
+							ShowToast("用户名已被抢占，请换一个重试");
+						} else {
+							// 用户名无人使用才进行更改
+							AccountUserManager.getInstance()
+									.updateCurrentUserName(nick,
+											new UpdateListener() {
+
+												@Override
+												public void onSuccess() {
+													// 修改成功直接返回
+													ShowToast("修改成功");
+													PushMsgSendManager
+															.getInstance()
+															.sayHello();
+													wmFragmentManager
+															.back(null);
+												}
+
+												@Override
+												public void onFailure(int arg0,
+														String arg1) {
+													ShowToast("修改失败，请稍后重试");
+												}
+											});
+						}
+					}
+				});
+
 	}
 
 	enum Info {
-		nick, sign
+		age, sign, name
 	};
 }

@@ -12,4 +12,6 @@ public class BundleTake {
 	public static final String FootblogOfUser = "user";
 	// 修改信息页 携带要修改的信息项 昵称？签名？
 	public static final String InfoToEdit = "info";
+	//注册成功之后，前往MainActivity携带是否需要填写资料
+	public static final String NeedToEditInfo = "need_to_edit_info";
 }

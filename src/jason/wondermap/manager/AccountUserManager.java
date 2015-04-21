@@ -17,10 +17,8 @@ import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.config.BmobConfig;
 import cn.bmob.im.db.BmobDB;
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
 /**
@@ -81,19 +79,6 @@ public class AccountUserManager {
 		}
 	}
 
-
-	public BmobUser getCurrentUser() {
-		return userManager.getCurrentUser();
-	}
-
-	public String getCurrentUserName() {
-		return userManager.getCurrentUserName();
-	}
-
-	public BmobUserManager getUserManager() {
-		return userManager;
-	}
-
 	/**
 	 * 用于登陆或者自动登陆情况下的用户资料及好友资料的检测更新
 	 */
@@ -124,15 +109,14 @@ public class AccountUserManager {
 
 	/**
 	 * 更新自己的经纬度信息
-	 * 
-	 * @param bmobGeoPoint
 	 */
 	public void updateUserLocation(BmobGeoPoint bmobGeoPoint) {
-		User u = (User) userManager.getCurrentUser(User.class);
-		final User user = new User();
+		if (getCurrentUser() == null) {
+			return;
+		}
+		User user = getCurrentUser();
 		user.setLocation(bmobGeoPoint);
-		user.setObjectId(u.getObjectId());
-		user.update(WonderMapApplication.getInstance(), new UpdateListener() {
+		user.update(mApplication, new UpdateListener() {
 			@Override
 			public void onSuccess() {
 				L.d("更新经纬度信息到服务器成功");
@@ -143,6 +127,75 @@ public class AccountUserManager {
 				L.d("更新经纬度信息到服务器失败");
 			}
 		});
+	}
+
+	public User getCurrentUser() {
+		return userManager.getCurrentUser(User.class);
+	}
+
+	public String getCurrentUserName() {
+		return userManager.getCurrentUserName();
+	}
+
+	public BmobUserManager getUserManager() {
+		return userManager;
+	}
+
+	public void updateCurrentUserSex(boolean se, UpdateListener listener) {
+		if (getCurrentUser() == null) {
+			return;
+		}
+		User user = getCurrentUser();
+		user.setSex(se);
+		user.update(mApplication, listener);
+	}
+
+	public void updateCurrentUserName(String name, UpdateListener listener) {
+		if (getCurrentUser() == null) {
+			return;
+		}
+		User user = getCurrentUser();
+		user.setUsername(name);
+		user.update(mApplication, listener);
+	}
+
+	public void updateCurrentUserAge(String age, UpdateListener listener) {
+		if (getCurrentUser() == null) {
+			return;
+		}
+		User currUser = getCurrentUser();
+
+		currUser.setAge(Integer.valueOf(age));
+		currUser.update(mApplication, listener);
+	}
+
+	public void updateCurrentUserSign(String sign, UpdateListener listener) {
+		if (getCurrentUser() == null) {
+			return;
+		}
+		User currUser = getCurrentUser();
+
+		currUser.setSignature(sign);
+		currUser.update(mApplication, listener);
+	}
+
+	public void confirmCurrentUserInfo(UpdateListener listener) {
+		if (getCurrentUser() == null) {
+			return;
+		}
+		User currUser = getCurrentUser();
+
+		currUser.setInfoIsSet(true);
+		currUser.update(mApplication, listener);
+	}
+
+	public void updateCurrentUserAvatar(String url, UpdateListener listener) {
+		if (getCurrentUser() == null) {
+			return;
+		}
+		User currUser = getCurrentUser();
+		currUser.setAvatar(url);
+		currUser.update(mApplication, listener);
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝

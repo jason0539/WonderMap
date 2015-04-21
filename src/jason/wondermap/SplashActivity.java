@@ -51,7 +51,7 @@ public class SplashActivity extends Activity {
 			// 每次自动登陆的时候就需要更新下当前位置和好友的资料，因为好友的头像，昵称啥的是经常变动的
 			AccountUserManager.getInstance().updateUserInfos();
 			mHandler.sendEmptyMessageDelayed(GO_HOME, 2000);
-		} else {
+		} else {// 前往登陆
 			mHandler.sendEmptyMessageDelayed(GO_LOGIN, 2000);
 		}
 	}
@@ -59,20 +59,16 @@ public class SplashActivity extends Activity {
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
+			Intent intent = null;
 			switch (msg.what) {
 			case GO_HOME:
-				Intent intent = new Intent(SplashActivity.this,
-						MainActivity.class);
-				startActivity(intent);
-				finish();
+				intent = new Intent(SplashActivity.this, MainActivity.class);
 				break;
 			case GO_LOGIN:
-				Intent intent2 = new Intent(SplashActivity.this,
-						LoginActivity.class);
-				startActivity(intent2);
-				finish();
+				intent = new Intent(SplashActivity.this, LoginActivity.class);
 				break;
 			}
+			startActivity(intent);
 			finish();
 		}
 	};

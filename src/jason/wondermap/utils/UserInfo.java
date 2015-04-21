@@ -3,7 +3,7 @@ package jason.wondermap.utils;
 public class UserInfo {
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝用户信息，方便传送时存储键值对＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	public static final String AVATAR = "avatar";
-	public static final String NICK = "nick";
+	public static final String AGE="age";
 	public static final String SIGN ="sign";
 	public static final String EMAIL ="email";
 	public static final String USER_NAME = "user_name";

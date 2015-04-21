@@ -37,8 +37,8 @@
     <string name="xlistview_footer_hint_normal">查看更多</string>
     <string name="xlistview_footer_hint_ready">松开载入更多</string>
     <string name="add_avator">头像</string>
-    <string name="add_nick">昵称</string>
-    <string name="add_name">账号</string>
+    <string name="add_age">年龄</string>
+    <string name="add_name">名字</string>
     <string name="add_name_hint">请输入昵称&#8230;</string>
     <string name="add_gender">性别</string>
     <string name="set_notify">接收新消息通知</string>
@@ -58,6 +58,8 @@
     <string name="chat">发起会话</string>
     <string name="add_friend">添加好友</string>
     <string name="browse_footblog">查看足迹</string>
+    <string name="confirm_info">确认资料</string>
+    <string name="confirm_info_tips">请点击编辑以上资料，完成后确认</string>
     <string name="send_state">已读</string>
     <string name="longclick_speak">长按说话</string>
     <string name="picture">照片</string>
@@ -75,6 +77,6 @@
     <string name="show_notice">\t\t\t\t\t自V1.0.6版本开始，应用源码中将不再公开ApplicationId,开发者请自行到官网申请。\n\t\t\t\t\t申请成功之后在应用程序启动页(SplashActivity)进行初始化操作!</string>
     <!-- 个人信息页 -->
     <string name="userinfo_fragment_signs">个性签名</string>
-    <string name="userinfo_fragment_edit">这个家伙很懒，什么也没写。。</string>
+    <string name="userinfo_fragment_edit">这个家伙很懒，什么也没写</string>
 
 </resources>
