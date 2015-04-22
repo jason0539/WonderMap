@@ -23,8 +23,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.baidu.android.bbalbs.common.a.b;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;

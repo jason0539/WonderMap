@@ -154,7 +154,7 @@ public class ChatMessageManager implements EventListener {
 			boolean isAllowVibrate = WonderMapApplication.getInstance()
 					.getSpUtil().isAllowVibrate();
 			BmobNotifyManager.getInstance(mContext).showNotify(isAllow,
-					isAllowVibrate, R.drawable.ic_launcher, tickerText,
+					isAllowVibrate, R.drawable.ic_app_icon, tickerText,
 					message.getFromname(), tickerText.toString(),
 					MainActivity.class);
 			// 此处应该为NewFriendActivity

@@ -63,6 +63,8 @@
                     android:layout_toRightOf="@id/user_name_tips"
                     android:layout_marginLeft="16dp"
                     android:ellipsize="end"
+                    android:gravity="right"
+                    android:text="名字测试"
                     android:singleLine="true" />
             </RelativeLayout>
 

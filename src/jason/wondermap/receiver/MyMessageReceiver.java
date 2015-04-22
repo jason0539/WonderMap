@@ -266,7 +266,7 @@ public class MyMessageReceiver extends BroadcastReceiver {
 	 */
 	public void showMsgNotify(Context context, BmobMsg msg) {
 		// 更新通知栏
-		int icon = R.drawable.ic_launcher;
+		int icon = R.drawable.ic_app_icon;
 		String trueMsg = "";
 		if (msg.getMsgType() == BmobConfig.TYPE_TEXT
 				&& msg.getContent().contains("\\ue")) {
@@ -312,7 +312,7 @@ public class MyMessageReceiver extends BroadcastReceiver {
 				&& currentUser.getObjectId().equals(toId)) {
 			// 同时提醒通知,原来点击后跳转到好友添加请求页面，之后调整。／／NewFriendActivity
 			BmobNotifyManager.getInstance(context).showNotify(isAllowVoice,
-					isAllowVibrate, R.drawable.ic_launcher, ticker, username,
+					isAllowVibrate, R.drawable.ic_app_icon, ticker, username,
 					ticker.toString(), MainActivity.class);
 		}
 	}

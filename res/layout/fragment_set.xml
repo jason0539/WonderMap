@@ -41,6 +41,8 @@
                     android:drawablePadding="10dp"
                     android:drawableRight="@drawable/register_bottom_arrow"
                     android:ellipsize="end"
+                    android:text="名字测试"
+                    android:gravity="right"
                     android:singleLine="true" />
             </RelativeLayout>
 

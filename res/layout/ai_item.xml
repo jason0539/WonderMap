@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_alignTop="@id/user_logo"
             android:layout_marginLeft="8dip"
-            android:layout_toLeftOf="@+id/item_action_distance"
+            android:layout_marginRight="4dp"
             android:layout_toRightOf="@id/user_logo"
             android:ellipsize="end"
             android:gravity="center_vertical"
@@ -37,14 +37,17 @@
         <CheckBox
             android:id="@+id/blog_item_user_sex"
             style="@style/TextTheme"
+            android:layout_alignBottom="@+id/user_logo"
             android:layout_alignLeft="@id/user_name"
             android:layout_below="@+id/user_name"
             android:button="@drawable/selector_sex_checkbox"
             android:gravity="center" />
+        <!-- 年龄 -->
 
         <TextView
             android:id="@+id/blog_item_user_age"
             style="@style/FootblogTopTextview"
+            android:layout_alignBottom="@+id/user_logo"
             android:layout_below="@+id/user_name"
             android:layout_toRightOf="@+id/blog_item_user_sex"
             android:text="22" />
@@ -53,25 +56,25 @@
         <TextView
             android:id="@+id/item_action_distance"
             style="@style/FootblogTopTextview"
-            android:layout_alignTop="@id/user_logo"
+            android:layout_alignBottom="@id/user_logo"
             android:layout_toLeftOf="@+id/blog_item_view"
             android:text="12km" />
-        <!-- 时间 -->
 
         <View
             android:id="@+id/blog_item_view"
             android:layout_width="1px"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/item_action_date"
+            android:layout_alignBottom="@id/user_logo"
             android:layout_alignTop="@+id/item_action_date"
             android:layout_toLeftOf="@+id/item_action_date"
             android:background="#888888" />
+        <!-- 时间 -->
 
         <TextView
             android:id="@+id/item_action_date"
             style="@style/FootblogTopTextview"
+            android:layout_alignBottom="@id/user_logo"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@id/user_logo"
             android:text="2天前" />
     </RelativeLayout>
     <!-- 文字内容 -->

@@ -441,7 +441,7 @@ public final class ActivityUtil {
 		shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
 				context.getString(R.string.app_name));
 		ShortcutIconResource resource = Intent.ShortcutIconResource
-				.fromContext(context, R.drawable.ic_launcher);
+				.fromContext(context, R.drawable.ic_app_icon);
 		shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, resource);
 		// 是否允许重复创建
 		shortcut.putExtra("duplicate", false);

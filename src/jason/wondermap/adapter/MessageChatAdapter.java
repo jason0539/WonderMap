@@ -74,8 +74,8 @@ public class MessageChatAdapter extends BaseListAdapter<BmobMsg> {
 				.getCurrentUserObjectId();
 
 		options = new DisplayImageOptions.Builder()
-				.showImageForEmptyUri(R.drawable.ic_launcher)
-				.showImageOnFail(R.drawable.ic_launcher)
+				.showImageForEmptyUri(R.drawable.ic_app_icon)
+				.showImageOnFail(R.drawable.ic_app_icon)
 				.resetViewBeforeLoading(true).cacheOnDisc(true)
 				.cacheInMemory(true).imageScaleType(ImageScaleType.EXACTLY)
 				.bitmapConfig(Bitmap.Config.RGB_565).considerExifParams(true)
