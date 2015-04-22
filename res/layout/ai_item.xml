@@ -2,117 +2,155 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dip" 
     android:background="#FFFFFF"
-    android:descendantFocusability="blocksDescendants"  
-    >
-           
-    <ImageView 
-        android:id="@+id/user_logo"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+    android:descendantFocusability="blocksDescendants"
+    android:padding="8dip" >
+
+    <RelativeLayout
+        android:id="@+id/blog_item_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <!-- 头像 -->
+
+        <ImageView
+            android:id="@+id/user_logo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/user_icon_default_main" />
+        <!-- 名字 -->
+
+        <TextView
+            android:id="@+id/user_name"
+            style="@style/TextTheme"
+            android:layout_width="wrap_content"
+            android:layout_alignTop="@id/user_logo"
+            android:layout_marginLeft="8dip"
+            android:layout_toLeftOf="@+id/item_action_distance"
+            android:layout_toRightOf="@id/user_logo"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="岁月抚伤山东发送到发送到发送地方" />
+
+        <CheckBox
+            android:id="@+id/blog_item_user_sex"
+            style="@style/TextTheme"
+            android:layout_alignLeft="@id/user_name"
+            android:layout_below="@+id/user_name"
+            android:button="@drawable/selector_sex_checkbox"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/blog_item_user_age"
+            style="@style/FootblogTopTextview"
+            android:layout_below="@+id/user_name"
+            android:layout_toRightOf="@+id/blog_item_user_sex"
+            android:text="22" />
+        <!-- 距离 -->
+
+        <TextView
+            android:id="@+id/item_action_distance"
+            style="@style/FootblogTopTextview"
+            android:layout_alignTop="@id/user_logo"
+            android:layout_toLeftOf="@+id/blog_item_view"
+            android:text="12km" />
+        <!-- 时间 -->
+
+        <View
+            android:id="@+id/blog_item_view"
+            android:layout_width="1px"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/item_action_date"
+            android:layout_alignTop="@+id/item_action_date"
+            android:layout_toLeftOf="@+id/item_action_date"
+            android:background="#888888" />
+
+        <TextView
+            android:id="@+id/item_action_date"
+            style="@style/FootblogTopTextview"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/user_logo"
+            android:text="2天前" />
+    </RelativeLayout>
+    <!-- 文字内容 -->
+
+    <TextView
+        android:id="@+id/content_text"
+        style="@style/TextTheme"
+        android:layout_alignLeft="@id/blog_item_top"
+        android:layout_below="@id/blog_item_top"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:text="十年之前，我不认识你 你不属于我，我们还是一样，陪在一个陌生人左右，走过渐渐熟悉的街头;十年之后，我们是朋友， 还可以问候，只是那种温柔，再也找不到拥抱的理由，情人最后难免沦为朋友。" />
+
+    <ImageView
+        android:id="@+id/content_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/content_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="8dip"
+        android:layout_marginRight="8dip"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
         android:scaleType="centerInside"
-        android:src="@drawable/user_icon_default_main"
-        />
-	<TextView 
-	    android:id="@+id/user_name"
-		style="@style/TextTheme"
-		android:layout_toRightOf="@id/user_logo"
-	    android:text="岁月抚伤"
-	    android:gravity="center_vertical"
-	    android:layout_alignTop="@id/user_logo"
-	    android:layout_alignBottom="@id/user_logo"
-	    android:layout_marginLeft="8dip"
-	    />
-	<ImageView 
-	    android:id="@+id/item_action_fav"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentRight="true"
-	    android:scaleType="centerInside"
-	    android:src="@drawable/ic_action_fav_normal"
-	    android:layout_alignTop="@id/user_logo"
-	    android:layout_alignBottom="@id/user_logo"
-	    />
-	<TextView 
-	    android:id="@+id/content_text"
-	    style="@style/TextTheme"
-	    android:text="十年之前，我不认识你 你不属于我，我们还是一样，陪在一个陌生人左右，走过渐渐熟悉的街头;十年之后，我们是朋友， 还可以问候，只是那种温柔，再也找不到拥抱的理由，情人最后难免沦为朋友。"
-	    android:layout_below="@id/user_logo"
-	    android:layout_margin="4dp"
-	    />
-	<ImageView 
-	    android:id="@+id/content_image"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:scaleType="centerInside"
-	    android:src="@drawable/bg_pic_loading"
-	    android:layout_below="@id/content_text"
-	    android:layout_centerHorizontal="true"
-	    android:layout_marginLeft="4dip"
-	    android:layout_marginRight="4dip"
-	    android:visibility="visible"
-	    android:paddingTop="8dp"
-	    android:paddingBottom="8dp"
-	    />
-	<TextView 
-	    android:id="@+id/item_action_comment"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentRight="true"
-	    android:layout_below="@id/content_image"
-	    android:drawableLeft="@drawable/ic_action_comment"
-	    android:gravity="center"
-	    android:text="评论"
-	    android:textColor="#888888"
-	    android:layout_marginTop="4dip"
-	    android:layout_marginBottom="4dip"
-	    android:layout_marginLeft="8dip"
-	    android:layout_marginRight="8dip"
-	    />
-	<TextView 
-	    android:id="@+id/item_action_share"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_toLeftOf="@id/item_action_comment"
-	    android:layout_below="@id/content_image"
-	    android:drawableLeft="@drawable/ic_action_share"
-	    android:text="分享"
-	    android:textColor="#888888"
-	    android:gravity="center"
-	    android:layout_marginTop="4dip"
-	    android:layout_marginBottom="4dip"
-	    android:layout_marginLeft="8dip"
-	    android:layout_marginRight="8dip"
-	    />
-	<TextView 
-	    android:id="@+id/item_action_hate"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_toLeftOf="@id/item_action_share"
-	    android:layout_below="@id/content_image"
-	    android:drawableLeft="@drawable/action_hate"
-	    android:text="100"
-	    android:layout_marginTop="4dip"
-	    android:layout_marginBottom="4dip"
-	    android:layout_marginLeft="8dip"
-	    android:layout_marginRight="8dip"
-	    android:gravity="center"
-	    android:visibility="gone"
-	    />
-	<TextView 
-	    android:id="@+id/item_action_love"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_toLeftOf="@id/item_action_hate"
-	    android:layout_below="@id/content_image"
-	    android:drawableLeft="@drawable/ic_action_love"
-	    android:text="985赞"
-	    android:textColor="#888888"
-	    android:layout_marginTop="4dip"
-	    android:layout_marginBottom="4dip"
-	    android:layout_marginLeft="8dip"
-	    android:layout_marginRight="8dip"
-	    android:gravity="center"
-	    />
+        android:src="@drawable/bg_pic_loading"
+        android:visibility="visible" />
+
+    <RelativeLayout
+        android:id="@+id/blog_item_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/content_image" >
+
+        <TextView
+            android:id="@+id/item_action_address"
+            style="@style/FootblogBottomTextview"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="0dp"
+            android:text="山东" />
+        <!-- 收藏 -->
+
+        <ImageView
+            android:id="@+id/item_action_fav"
+            style="@style/FootblogBottomTextview"
+            android:layout_toLeftOf="@+id/item_action_love"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_action_fav_normal" />
+        <!-- 赞 -->
+
+        <TextView
+            android:id="@+id/item_action_love"
+            style="@style/FootblogBottomTextview"
+            android:layout_toLeftOf="@+id/item_action_hate"
+            android:drawableLeft="@drawable/ic_action_love" />
+        <!-- 踩 -->
+
+        <TextView
+            android:id="@+id/item_action_hate"
+            style="@style/FootblogBottomTextview"
+            android:layout_toLeftOf="@+id/item_action_comment"
+            android:drawableLeft="@drawable/action_hate"
+            android:text="100"
+            android:visibility="gone" />
+        <!-- 评论 -->
+
+        <TextView
+            android:id="@+id/item_action_comment"
+            style="@style/FootblogBottomTextview"
+            android:layout_toLeftOf="@+id/item_action_share"
+            android:drawableLeft="@drawable/ic_action_comment" />
+        <!-- 分享 -->
+
+        <TextView
+            android:id="@+id/item_action_share"
+            style="@style/FootblogBottomTextview"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="2dp"
+            android:drawableLeft="@drawable/ic_action_share" />
+    </RelativeLayout>
+
 </RelativeLayout>

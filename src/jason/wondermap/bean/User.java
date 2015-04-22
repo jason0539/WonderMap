@@ -7,7 +7,10 @@ import cn.bmob.v3.datatype.BmobRelation;
 public class User extends BmobChatUser {
 
 	private static final long serialVersionUID = 1L;
-
+	/**
+	 * 地理坐标
+	 */
+	private BmobGeoPoint location;//
 	/**
 	 * 发布的博客列表
 	 */
@@ -50,11 +53,6 @@ public class User extends BmobChatUser {
 	public void setAge(int age) {
 		this.age = age;
 	}
-
-	/**
-	 * 地理坐标
-	 */
-	private BmobGeoPoint location;//
 
 	public BmobRelation getFavorite() {
 		return favorite;

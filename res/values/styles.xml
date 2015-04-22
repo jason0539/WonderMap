@@ -249,6 +249,26 @@
     <style name="SetFragment.Item" parent="Userinfo.Item">
         <item name="android:padding">10dp</item>
     </style>
+    <!-- 足迹卡片 -->
+    <style name="FootblogBottomTextview">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">4dip</item>
+        <item name="android:layout_marginLeft">8dip</item>
+        <item name="android:layout_marginRight">8dip</item>
+        <item name="android:layout_marginTop">4dip</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#888888</item>
+    </style>
 
+    <style name="FootblogTopTextview">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">4dip</item>
+        <item name="android:layout_marginLeft">4dip</item>
+        <item name="android:layout_marginRight">4dip</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#888888</item>
+    </style>
 
 </resources>

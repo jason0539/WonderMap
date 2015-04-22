@@ -26,6 +26,12 @@ import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 
+/**
+ * 发送位置和位置浏览
+ * 
+ * @author liuzhenhui
+ * 
+ */
 public class LocationFragment extends ContentFragment implements
 		OnGetGeoCoderResultListener {
 	private GeoCoder mSearch = null;
@@ -112,43 +118,6 @@ public class LocationFragment extends ContentFragment implements
 		}
 	}
 
-	/**
-	 * 定位SDK监听函数
-	 */
-	public class MyLocationListenner implements BDLocationListener {
-
-		@Override
-		public void onReceiveLocation(BDLocation location) {
-
-			lastLocation = location;
-
-			BmobLog.i("lontitude = " + location.getLongitude() + ",latitude = "
-					+ location.getLatitude() + ",地址 = "
-					+ lastLocation.getAddrStr());
-
-			MyLocationData locData = new MyLocationData.Builder()
-					.accuracy(location.getRadius())
-					// 此处设置开发者获取到的方向信息，顺时针0-360
-					.direction(100).latitude(location.getLatitude())
-					.longitude(location.getLongitude()).build();
-			// mBaiduMap.setMyLocationData(locData);
-			LatLng ll = new LatLng(location.getLatitude(),
-					location.getLongitude());
-			String address = location.getAddrStr();
-			if (address != null && !address.equals("")) {
-				lastLocation.setAddrStr(address);
-			} else {
-				// 反Geo搜索
-				mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(ll));
-			}
-			// 显示在地图上
-			MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
-			// mBaiduMap.animateMapStatus(u);
-			// 设置按钮可点击
-		}
-
-	}
-
 	@Override
 	public void onGetGeoCodeResult(GeoCodeResult arg0) {
 
@@ -167,7 +136,6 @@ public class LocationFragment extends ContentFragment implements
 	@Override
 	public void onPause() {
 		super.onPause();
-		lastLocation = null;
 	}
 
 	public void onResume() {

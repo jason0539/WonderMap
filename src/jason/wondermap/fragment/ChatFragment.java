@@ -178,6 +178,7 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 			} else {
 				ShowToast("无法获取到您的位置信息!");
 			}
+			mBackBundle = null;
 		}
 	}
 

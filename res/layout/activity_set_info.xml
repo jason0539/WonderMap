@@ -59,7 +59,11 @@
                 <TextView
                     android:id="@+id/tv_set_name"
                     style="@style/Userinfo.Item.Textview"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"
+                    android:layout_toRightOf="@id/user_name_tips"
+                    android:layout_marginLeft="16dp"
+                    android:ellipsize="end"
+                    android:singleLine="true" />
             </RelativeLayout>
 
             <View
@@ -139,8 +143,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:gravity="center_horizontal"
-                android:visibility="gone"
-                android:text="@string/confirm_info_tips" />
+                android:text="@string/confirm_info_tips"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/btn_confirm_info"

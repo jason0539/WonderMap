@@ -25,6 +25,7 @@
                 android:minHeight="50dp" >
 
                 <TextView
+                    android:id="@+id/tv_set_name_tips"
                     style="@style/Smile.TextView._Black"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
@@ -35,8 +36,12 @@
                     style="@style/Smile.TextView._Black"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/tv_set_name_tips"
                     android:drawablePadding="10dp"
-                    android:drawableRight="@drawable/register_bottom_arrow" />
+                    android:drawableRight="@drawable/register_bottom_arrow"
+                    android:ellipsize="end"
+                    android:singleLine="true" />
             </RelativeLayout>
 
             <View
