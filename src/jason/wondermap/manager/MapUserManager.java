@@ -58,6 +58,7 @@ public class MapUserManager {
 				"ensureAllUsersOnMap into,user count = " + mapUsers.size());
 		ArrayList<MapUser> arrayList = new ArrayList<MapUser>(mapUsers);
 		mapUsers.clear();
+		WMapControler.getInstance().clearMarker();//先把所有marker清除掉
 		for (MapUser user : arrayList) {
 			L.d(WModel.EnsureEveryoneOnMap, "userId is " + user.getName());
 			addUser(user);

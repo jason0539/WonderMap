@@ -173,7 +173,9 @@ public class WMapControler {
 		OverlayOptions oo = new MarkerOptions().position(ll).icon(bd);
 		return (Marker) (mBaiduMap.addOverlay(oo));
 	}
-
+	public void clearMarker(){
+		mBaiduMap.clear();
+	}
 	/**
 	 * 添加用户在地图上的地标
 	 * 

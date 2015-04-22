@@ -34,7 +34,8 @@ public class MapHomeFragment extends ContentFragment {
 	@Override
 	protected View onCreateContentView(LayoutInflater inflater) {
 		L.d(TAG + ":onCreateContentView");
-		mRootView = (ViewGroup) inflater.inflate(R.layout.fragment_map_home, null);
+		mRootView = (ViewGroup) inflater.inflate(R.layout.fragment_map_home,
+				null);
 		return mRootView;
 	}
 
@@ -70,6 +71,8 @@ public class MapHomeFragment extends ContentFragment {
 		L.d(TAG + ":onResume");
 		// 确保消息未读数量正确
 		bottomBar.onResume();
+		// 确保所有用户都在地图上显示出来,activity进入onPause之后marker都消失了
+		MapUserManager.getInstance().onResumeAllUsersOnMap();
 		super.onResume();
 	}
 
