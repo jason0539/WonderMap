@@ -171,6 +171,8 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 			double latitude = mBackBundle.getDouble(UserInfo.X, 0);// 维度
 			double longtitude = mBackBundle.getDouble(UserInfo.Y, 0);// 经度
 			String address = mBackBundle.getString(UserInfo.ADDRESS);
+			L.d("latitude s " + latitude);
+			L.d("address is " + address);
 			if (address != null && !address.equals("")) {
 				sendLocationMessage(address, latitude, longtitude);
 			} else {

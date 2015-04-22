@@ -23,7 +23,6 @@ public class MapHomeFragment extends ContentFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		L.d(TAG + ":onCreateView");
-		// TODO Auto-generated method stub
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 		if (view != null) {
 			view.setClickable(false); // 允许地图可点击

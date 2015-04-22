@@ -7,6 +7,7 @@ import jason.wondermap.bean.User;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.manager.MapUserManager;
+import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.UserInfo;
 
@@ -61,7 +62,7 @@ public class WMapControler {
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝地图动作控制＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	/**
 	 * 处理缩放 sdk 缩放级别范围： [3.0,19.0]，越大越详细
 	 */
@@ -121,16 +122,13 @@ public class WMapControler {
 		}
 		// mode - 定位图层显示方式, 默认为 LocationMode.NORMAL 普通态
 		// enableDirection - 是否允许显示方向信息
-		// customMarker - 设置用户自定义定位图标，可以为 null
+		// customMarker - 设置用户自定义定位图标，null则使用默认图标
 		mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
 				mCurrentMode, true, mCurrentMarker));
 	}
 
 	/**
-	 * 自定义定位图标的样式
-	 * 
-	 * @param id
-	 *            R.drawable.icon_geo，传入null则恢复默认
+	 * 自定义定位图标的样式 R.drawable.icon_geo，传入null则恢复默认
 	 */
 	public void changeLocationMarker(int id) {
 		// 修改为自定义marker
@@ -139,6 +137,11 @@ public class WMapControler {
 				mCurrentMode, true, mCurrentMarker));
 	}
 
+	/**
+	 * 设置当前定位到的位置
+	 * 
+	 * @param myLocData
+	 */
 	public void setMyLocationData(MyLocationData myLocData) {
 		if (mBaiduMap == null) {
 			L.d("mBaiduMap is null");
@@ -147,21 +150,42 @@ public class WMapControler {
 		mBaiduMap.setMyLocationData(myLocData);
 	}
 
+	/**
+	 * 地图移动到指定位置
+	 * 
+	 * @param lat
+	 * @param lng
+	 */
 	public void moveToLoc(double lat, double lng) {
 		LatLng ll = new LatLng(lat, lng);
 		MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(ll, 19);// 默认以当前坐标为中心，最大化显示
 		mBaiduMap.animateMapStatus(u);
 	}
 
+	public void moveToMylocation() {
+		moveToLoc(WLocationManager.getInstance().getLatitude(),
+				WLocationManager.getInstance().getLongtitude());
+	}
+
 	/**
-	 * 地图上面显示marker，指定图标
+	 * 设置地图显示位置
+	 * 
+	 * @param latlng
+	 */
+	public void setMapStatus(LatLng latlng) {
+		mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(latlng));
+	}
+
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝Marker相关＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	/**
+	 * 地图上面显示marker，默认图标
 	 */
 	public Marker addMarker(double lat, double lng) {
-		BitmapDescriptor bd = BitmapDescriptorFactory
-				.fromResource(R.drawable.icon_gcoding);
-		LatLng ll = new LatLng(lat, lng);
-		OverlayOptions oo = new MarkerOptions().position(ll).icon(bd);
-		return (Marker) (mBaiduMap.addOverlay(oo));
+		return addMarker(lat, lng, R.drawable.icon_gcoding);
+	}
+
+	public Marker addMarker(LatLng latLng) {
+		return addMarker(latLng.latitude, latLng.longitude);
 	}
 
 	/**
@@ -173,9 +197,12 @@ public class WMapControler {
 		OverlayOptions oo = new MarkerOptions().position(ll).icon(bd);
 		return (Marker) (mBaiduMap.addOverlay(oo));
 	}
-	public void clearMarker(){
+
+	public void clearMarker() {
 		mBaiduMap.clear();
 	}
+
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝MapUser相关＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	/**
 	 * 添加用户在地图上的地标
 	 * 
@@ -193,14 +220,16 @@ public class WMapControler {
 	 * @param oldUser
 	 */
 	public void updateUserPosition(MapUser oldUser) {
-		L.d("updateUserPosition lat :" + oldUser.getLat() + ",lng :"
+		L.d(oldUser.getName() + "的新位置 lat :" + oldUser.getLat() + ",lng :"
 				+ oldUser.getLng());
 		Marker marker = oldUser.getMarker();
-		L.d("updateUserPosition position :" + marker.getPosition());
 		marker.setPosition(new LatLng(oldUser.getLat(), oldUser.getLng()));
 		mBaiduMap.hideInfoWindow();
 	}
 
+	/**
+	 * 添加的Marker点击事件监听器
+	 */
 	OnMarkerClickListener onMarkerClickListener = new OnMarkerClickListener() {
 
 		@Override
@@ -226,7 +255,7 @@ public class WMapControler {
 	private void onMyMapMarkerClick(final MapUser user, Marker marker) {
 		Button button = new Button(WonderMapApplication.getInstance());
 		button.setBackgroundResource(R.drawable.popup);
-		//TODO 点击之后实时获取用户姓名，有可能用户有更改
+		// TODO 点击之后实时获取用户姓名，有可能用户有更改
 		button.setText(user.getName());
 		OnInfoWindowClickListener listener = null;
 		listener = new OnInfoWindowClickListener() {
@@ -242,9 +271,9 @@ public class WMapControler {
 		mBaiduMap.showInfoWindow(mInfoWindow);
 	}
 
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝点击事件相关＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	/**
 	 * 监听地图的各种触摸事件，之后应该实现为多个回调都可以接收到事件，暂时不使用
-	 * 
 	 */
 	public void setOnMapTouchListener(OnMapTouchListener listener) {
 		mBaiduMap.setOnMapTouchListener(listener);
@@ -297,11 +326,16 @@ public class WMapControler {
 		mMapView = mapView;
 		mBaiduMap = mMapView.getMap();
 		mBaiduMap.setOnMarkerClickListener(onMarkerClickListener);//
-		// 用户的marker点击监听 
+		// 用户的marker点击监听
 		mCurrentMode = LocationMode.NORMAL;
 		mCurrentMarker = null;// null则为默认
 		mBaiduMap.setMyLocationEnabled(true); // 开启定位图层
 		initListener();
+	}
+
+	public void unInit() {
+		// 关闭定位图层
+		mBaiduMap.setMyLocationEnabled(false);
 	}
 
 	// 初始化默认监听
@@ -352,11 +386,6 @@ public class WMapControler {
 				updateMapState();
 			}
 		});
-	}
-
-	public void unInit() {
-		// 关闭定位图层
-		mBaiduMap.setMyLocationEnabled(false);
 	}
 
 	private static WMapControler instance = null;

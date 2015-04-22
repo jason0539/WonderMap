@@ -169,8 +169,7 @@ public class MessageChatAdapter extends BaseListAdapter<BmobMsg> {
 						|| getItemViewType(position) == TYPE_RECEIVER_LOCATION
 						|| getItemViewType(position) == TYPE_RECEIVER_VOICE) {
 					Bundle bundle = new Bundle();
-					bundle.putString(UserInfo.USER_ID,
-							item.getBelongId());
+					bundle.putString(UserInfo.USER_ID, item.getBelongId());
 					BaseFragment.getWMFragmentManager().showFragment(
 							WMFragmentManager.TYPE_USERINFO, bundle);
 				} else {
@@ -270,9 +269,10 @@ public class MessageChatAdapter extends BaseListAdapter<BmobMsg> {
 		case BmobConfig.TYPE_LOCATION:// 位置信息
 			try {
 				if (text != null && !text.equals("")) {
+					// 河北省秦皇岛市海港区文体西路&119.559908&39.927354
 					String address = text.split("&")[0];
-					final String latitude = text.split("&")[1];// 维度
-					final String longtitude = text.split("&")[2];// 经度
+					final String longtitude = text.split("&")[1];// 维度
+					final String latitude = text.split("&")[2];// 经度
 					tv_location.setText(address);
 					tv_location.setOnClickListener(new OnClickListener() {
 
@@ -395,10 +395,10 @@ public class MessageChatAdapter extends BaseListAdapter<BmobMsg> {
 		String text = item.getContent();
 		if (item.getBelongId().equals(currentObjectId)) {//
 			if (text.contains("&")) {
-//				showUrl = text.split("&")[0];
-				//test start
+				// showUrl = text.split("&")[0];
+				// test start
 				showUrl = text.substring(0, text.lastIndexOf("&"));
-				//test end
+				// test end
 			} else {
 				showUrl = text;
 			}
@@ -453,10 +453,10 @@ public class MessageChatAdapter extends BaseListAdapter<BmobMsg> {
 			// text.split("&")[0];没有考虑图片名称本来就带&的情况
 			String showUrl = "";
 			if (text.contains("&")) {
-				//test start
+				// test start
 				showUrl = text.substring(0, text.lastIndexOf("&"));
-				//test end
-//				showUrl = text.split("&")[0];
+				// test end
+				// showUrl = text.split("&")[0];
 				L.d(WModel.ImageShow, "split 操作之后" + showUrl);
 			} else {
 				showUrl = text;

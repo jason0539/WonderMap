@@ -11,6 +11,7 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.model.LatLng;
 
 /**
  * 用户位置管理类
@@ -28,6 +29,7 @@ public class WLocationManager {
 	private boolean isFirstLoc = true; // 是否首次定位,首次定为成功直接发送hello消息
 	private LocationClient mLocationClient;
 	private MyLocationListener mMyLocationListener;
+	private BDLocation lastBdLocation;
 
 	private double latitude;
 	private double longtitude;
@@ -45,6 +47,7 @@ public class WLocationManager {
 		option.setOpenGps(true);// 打开gps
 		option.setCoorType("bd09ll"); // 设置坐标类型
 		option.setScanSpan(LOCATION_SCAN_SPAN);// 设置扫描间隔
+		option.setIsNeedAddress(true);
 		mLocationClient.setLocOption(option);
 		mLocationClient.start();
 		PushMsgSendManager.getInstance().sayHello();
@@ -64,6 +67,7 @@ public class WLocationManager {
 		public void onReceiveLocation(BDLocation location) {
 			if (location == null)
 				return;
+			lastBdLocation = location;
 			// 收到新位置
 			latitude = location.getLatitude();
 			longtitude = location.getLongitude();
@@ -79,7 +83,6 @@ public class WLocationManager {
 				WMapControler.getInstance().moveToLoc(latitude, longtitude);
 			}
 		}
-
 	}
 
 	private void saveLocation() {
@@ -106,36 +109,6 @@ public class WLocationManager {
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * 获取经度
-	 */
-	private String getSavedLongtitude() {
-		String longtitude = preferences.getString(PREF_LONGTITUDE, "");
-		return longtitude.equals("") ? "0" : longtitude;
-	}
-
-	/**
-	 * 设置经度
-	 */
-	private void saveLongtitude(String lon) {
-		editor.putString(PREF_LONGTITUDE, lon).commit();
-	}
-
-	/**
-	 * 获取纬度
-	 */
-	private String getSavedLatitude() {
-		String latitude = preferences.getString(PREF_LATITUDE, "");
-		return latitude.equals("") ? "0" : latitude;
-	}
-
-	/**
-	 * 设置维度
-	 */
-	private void saveLatitude(String lat) {
-		editor.putString(PREF_LATITUDE, lat).commit();
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -175,4 +148,41 @@ public class WLocationManager {
 		return lastLongtitude;
 	}
 
+	public LatLng getMyLocation() {
+		return new LatLng(latitude, longtitude);
+	}
+	public BDLocation getBDLocation(){
+		return lastBdLocation;
+	}
+
+	// =＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝本地位置存取＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	/**
+	 * 获取经度
+	 */
+	private String getSavedLongtitude() {
+		String longtitude = preferences.getString(PREF_LONGTITUDE, "");
+		return longtitude.equals("") ? "0" : longtitude;
+	}
+
+	/**
+	 * 设置经度
+	 */
+	private void saveLongtitude(String lon) {
+		editor.putString(PREF_LONGTITUDE, lon).commit();
+	}
+
+	/**
+	 * 获取纬度
+	 */
+	private String getSavedLatitude() {
+		String latitude = preferences.getString(PREF_LATITUDE, "");
+		return latitude.equals("") ? "0" : latitude;
+	}
+
+	/**
+	 * 设置维度
+	 */
+	private void saveLatitude(String lat) {
+		editor.putString(PREF_LATITUDE, lat).commit();
+	}
 }
