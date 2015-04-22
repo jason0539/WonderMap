@@ -15,8 +15,7 @@ import com.baidu.mapapi.map.MyLocationData;
 /**
  * 用户位置管理类
  * 
- * @author liuzhenhui
- * 
+ * @author liuzhenhui 已经本地保存了上次位置，进入应用马上发送上次位置（假设还位于上次位置），等定位成功再判断是否需要发送新位置
  */
 public class WLocationManager {
 	public final String PREF_LATITUDE = "latitude";// 经度
@@ -26,7 +25,7 @@ public class WLocationManager {
 	private SharedPreferences preferences;
 	private SharedPreferences.Editor editor;
 
-	private boolean isFirstLoc = true; // 是否首次定位
+	private boolean isFirstLoc = true; // 是否首次定位,首次定为成功直接发送hello消息
 	private LocationClient mLocationClient;
 	private MyLocationListener mMyLocationListener;
 
@@ -34,6 +33,7 @@ public class WLocationManager {
 	private double longtitude;
 	private double lastLatitude;
 	private double lastLongtitude;
+	private boolean hasLocationChanged;
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	public void start() {
@@ -47,6 +47,7 @@ public class WLocationManager {
 		option.setScanSpan(LOCATION_SCAN_SPAN);// 设置扫描间隔
 		mLocationClient.setLocOption(option);
 		mLocationClient.start();
+		PushMsgSendManager.getInstance().sayHello();
 	}
 
 	public void stop() {
@@ -76,22 +77,20 @@ public class WLocationManager {
 			if (isFirstLoc) {// 第一次定位成功，移动地图，发送hello消息
 				isFirstLoc = false;
 				WMapControler.getInstance().moveToLoc(latitude, longtitude);
-				// hello消息发送
-				PushMsgSendManager.getInstance().sayHello();
-			} else {
-				// 每隔一段时间更新一次位置，以后陌生人不更新，好友实时更新
-				PushMsgSendManager.getInstance().sayHello();
 			}
 		}
 
 	}
 
 	private void saveLocation() {
-		// 位置有变化才更新
+		// 位置有变化才更新,
 		if (latitude != lastLatitude || longtitude != lastLongtitude) {
+			hasLocationChanged = true;
 			// 更新位置到服务器
 			AccountUserManager.getInstance().updateUserLocation(
 					new BmobGeoPoint(longtitude, latitude));
+			// 推送给其他人，每隔一段时间更新一次位置，以后陌生人不更新，好友实时更新
+			PushMsgSendManager.getInstance().sayHello();
 			// 保存到本地
 			saveLatitude(latitude + "");
 			saveLongtitude(longtitude + "");
@@ -101,7 +100,14 @@ public class WLocationManager {
 
 	}
 
-	// 本地存储经纬度的代码，之后考虑重构
+	public boolean isLocationChanged() {
+		if (hasLocationChanged) {
+			hasLocationChanged = false;
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * 获取经度
 	 */

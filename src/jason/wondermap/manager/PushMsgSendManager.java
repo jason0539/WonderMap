@@ -92,7 +92,7 @@ public class PushMsgSendManager {
 						@Override
 						public void run() {
 							L.i("resend msg...");
-							sayHello();
+							sayWorld();
 						}
 					}, 100);
 				}
