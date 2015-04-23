@@ -181,7 +181,6 @@ public class QiangContentFragment extends RealFragment {
 
 			@Override
 			public void onSuccess(List<Blog> list) {
-				// TODO Auto-generated method stub
 				L.i(TAG, "find success." + list.size());
 				if (list.size() != 0 && list.get(list.size() - 1) != null) {
 					if (mRefreshType == RefreshType.REFRESH) {
@@ -208,7 +207,6 @@ public class QiangContentFragment extends RealFragment {
 
 			@Override
 			public void onError(int arg0, String arg1) {
-				// TODO Auto-generated method stub
 				L.i(TAG, "find failed." + arg1);
 				pageNum--;
 				setState(LOADING_FAILED);

@@ -50,6 +50,7 @@
             android:layout_alignBottom="@+id/user_logo"
             android:layout_below="@+id/user_name"
             android:layout_toRightOf="@+id/blog_item_user_sex"
+            android:textColor="#2BA2E5"
             android:text="22" />
         <!-- 距离 -->
 

@@ -48,7 +48,7 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 	public static final int SAVE_FAVOURITE = 2;
 	public static final int NUMBERS_PER_PAGE = 15;// 每次请求返回评论条数
 	private Context mContext;
-
+//女生颜色#EC197D   男生#2BA2E5
 	public AIContentAdapter(Context context, List<Blog> list) {
 		super(context, list);
 		mContext = context;
@@ -56,7 +56,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 
 	@Override
 	public View getConvertView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
 		final ViewHolder viewHolder;
 		if (convertView == null) {
 			viewHolder = new ViewHolder();
@@ -103,7 +102,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 					@Override
 					public void onLoadingComplete(String imageUri, View view,
 							Bitmap loadedImage) {
-						// TODO Auto-generated method stub
 						super.onLoadingComplete(imageUri, view, loadedImage);
 					}
 
