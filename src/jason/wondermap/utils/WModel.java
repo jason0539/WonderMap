@@ -11,4 +11,5 @@ public class WModel {
 	public static String clickUseless = "clickUseless";
 	public static String PublishBlog = "PublishBlog";
 	public static String NeedToEditInfo ="NeedToEditInfo";
+	public static String mapMarkerLoad = "mapMarkerLoad";
 }

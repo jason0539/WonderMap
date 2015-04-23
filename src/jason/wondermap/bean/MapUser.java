@@ -3,49 +3,46 @@ package jason.wondermap.bean;
 import com.baidu.mapapi.map.Marker;
 
 public class MapUser {
-	private String objectId;
-	private String name;
-	private double lat;
-	private double lng;
+	private User user;
 	private Marker mMarker;
 
-	public MapUser(String id,String name, double lat, double lng) {
-		objectId = id;
-		this.name = name;
-		this.lat = lat;
-		this.lng = lng;
+	public MapUser(User u) {
+		user = u;
 	}
-
+	
 	public String getObjectId() {
-		return objectId;
+		return user.getObjectId();
 	}
 
 	public void setObjectId(String objectId) {
-		this.objectId = objectId;
+		user.setObjectId(objectId);
 	}
 
 	public String getName() {
-		return name;
+		return user.getUsername();
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		user.setUsername(name);
 	}
-
+	public String getAvatar(){
+		return user.getAvatar();
+	}
+	
 	public double getLat() {
-		return lat;
+		return user.getLat();
 	}
 
 	public void setLat(double lat) {
-		this.lat = lat;
+		user.setLat(lat);
 	}
 
 	public double getLng() {
-		return lng;
+		return user.getLng();
 	}
 
 	public void setLng(double lng) {
-		this.lng = lng;
+		user.setLng(lng);
 	}
 
 	public Marker getMarker() {

@@ -3,20 +3,22 @@ package jason.wondermap.controler;
 import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.MapUser;
-import jason.wondermap.bean.User;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.UserInfo;
+import jason.wondermap.view.MapMarkerView;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.view.MotionEvent;
-import android.widget.Button;
+import android.view.View;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BaiduMap.OnMapClickListener;
@@ -28,7 +30,6 @@ import com.baidu.mapapi.map.BaiduMap.OnMarkerClickListener;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
-import com.baidu.mapapi.map.InfoWindow.OnInfoWindowClickListener;
 import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
@@ -55,6 +56,7 @@ public class WMapControler {
 	private LatLng currentPt;// 当前触摸地点
 	private String touchType;// 触摸事件类型
 	private InfoWindow mInfoWindow;// 点击用户图标弹出窗
+	private MapMarkerView mapMarkerView;
 
 	private LocationMode mCurrentMode; // 定位模式（普通、跟随、罗盘）
 	private BitmapDescriptor mCurrentMarker;// 定位图标样式
@@ -177,6 +179,7 @@ public class WMapControler {
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝Marker相关＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+
 	/**
 	 * 地图上面显示marker，默认图标
 	 */
@@ -184,15 +187,18 @@ public class WMapControler {
 		return addMarker(lat, lng, R.drawable.icon_gcoding);
 	}
 
-	public Marker addMarker(LatLng latLng) {
-		return addMarker(latLng.latitude, latLng.longitude);
-	}
-
 	/**
 	 * 地图上面显示marker，指定图标
 	 */
 	public Marker addMarker(double lat, double lng, int icon) {
 		BitmapDescriptor bd = BitmapDescriptorFactory.fromResource(icon);
+		LatLng ll = new LatLng(lat, lng);
+		OverlayOptions oo = new MarkerOptions().position(ll).icon(bd);
+		return (Marker) (mBaiduMap.addOverlay(oo));
+	}
+
+	public Marker addMarker(double lat, double lng, View view) {
+		BitmapDescriptor bd = BitmapDescriptorFactory.fromView(view);
 		LatLng ll = new LatLng(lat, lng);
 		OverlayOptions oo = new MarkerOptions().position(ll).icon(bd);
 		return (Marker) (mBaiduMap.addOverlay(oo));
@@ -210,7 +216,8 @@ public class WMapControler {
 	 * @return 返回该用户的地标，唯一，位置变动则更新该地标位置
 	 */
 	public Marker addUser(MapUser user) {
-		Marker marker = addMarker(user.getLat(), user.getLng());
+		Marker marker = addMarker(user.getLat(), user.getLng(),
+				mapMarkerView.createView(user));
 		return marker;
 	}
 
@@ -235,15 +242,19 @@ public class WMapControler {
 		@Override
 		public boolean onMarkerClick(Marker mark) {
 			// 地图marker被点击，从WMapUserManager取出目前所有用户，判断点击的是那个
-			ArrayList<MapUser> mapUsers = MapUserManager.getInstance()
+			HashMap<String, MapUser> mapUsers = MapUserManager.getInstance()
 					.getMapUsers();
-			for (MapUser user : mapUsers) {
-				if (user.getMarker() == mark) {
-					onMyMapMarkerClick(user, mark);
+			Iterator<Entry<String, MapUser>> iterator = mapUsers.entrySet()
+					.iterator();
+			Entry<String, MapUser> entry;
+			while (iterator.hasNext()) {
+				entry = iterator.next();
+				if (entry.getValue().getMarker() == mark) {
+					onMyMapMarkerClick(entry.getValue(), mark);
 				}
 			}
 			return true;
-		}
+		};
 	};
 
 	/**
@@ -253,22 +264,11 @@ public class WMapControler {
 	 * @param marker
 	 */
 	private void onMyMapMarkerClick(final MapUser user, Marker marker) {
-		Button button = new Button(WonderMapApplication.getInstance());
-		button.setBackgroundResource(R.drawable.popup);
 		// TODO 点击之后实时获取用户姓名，有可能用户有更改
-		button.setText(user.getName());
-		OnInfoWindowClickListener listener = null;
-		listener = new OnInfoWindowClickListener() {
-			public void onInfoWindowClick() {
-				Bundle bundle = new Bundle();
-				bundle.putString(UserInfo.USER_ID, user.getObjectId());
-				BaseFragment.getWMFragmentManager().showFragment(
-						WMFragmentManager.TYPE_USERINFO, bundle);
-			}
-		};
-		mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(button),
-				marker.getPosition(), -47, listener);
-		mBaiduMap.showInfoWindow(mInfoWindow);
+		Bundle bundle = new Bundle();
+		bundle.putString(UserInfo.USER_ID, user.getObjectId());
+		BaseFragment.getWMFragmentManager().showFragment(
+				WMFragmentManager.TYPE_USERINFO, bundle);
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝点击事件相关＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -323,6 +323,7 @@ public class WMapControler {
 
 	public void init(MapView mapView) {
 		mContext = WonderMapApplication.getInstance();
+		mapMarkerView = new MapMarkerView();
 		mMapView = mapView;
 		mBaiduMap = mMapView.getMap();
 		mBaiduMap.setOnMarkerClickListener(onMarkerClickListener);//
@@ -399,4 +400,29 @@ public class WMapControler {
 		}
 		return instance;
 	}
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝废弃代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	// /**
+	// * 点击地图marker的事件处理
+	// *
+	// * @param user
+	// * @param marker
+	// */
+	// private void onMyMapMarkerClick(final MapUser user, Marker marker) {
+	// Button button = new Button(WonderMapApplication.getInstance());
+	// button.setBackgroundResource(R.drawable.popup);
+	// // TODO 点击之后实时获取用户姓名，有可能用户有更改
+	// button.setText(user.getName());
+	// OnInfoWindowClickListener listener = null;
+	// listener = new OnInfoWindowClickListener() {
+	// public void onInfoWindowClick() {
+	// Bundle bundle = new Bundle();
+	// bundle.putString(UserInfo.USER_ID, user.getObjectId());
+	// BaseFragment.getWMFragmentManager().showFragment(
+	// WMFragmentManager.TYPE_USERINFO, bundle);
+	// }
+	// };
+	// mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(button),
+	// marker.getPosition(), -47, listener);
+	// mBaiduMap.showInfoWindow(mInfoWindow);
+	// }
 }

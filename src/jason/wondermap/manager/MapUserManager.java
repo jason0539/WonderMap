@@ -3,6 +3,7 @@ package jason.wondermap.manager;
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.MapUser;
 import jason.wondermap.controler.WMapControler;
+import jason.wondermap.interfacer.MapUserTransferListener;
 import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.T;
@@ -10,9 +11,13 @@ import jason.wondermap.utils.UserInfo;
 import jason.wondermap.utils.WModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import org.json.JSONObject;
 
+import android.view.View;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.util.BmobJsonUtil;
 
@@ -25,7 +30,7 @@ import com.baidu.mapapi.map.Marker;
  * 
  */
 public class MapUserManager {
-	private ArrayList<MapUser> mapUsers = new ArrayList<MapUser>();
+	private HashMap<String, MapUser> mapUsers = new HashMap<String, MapUser>();
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	public void addUserFromPushMsg(JSONObject msg) {
@@ -44,9 +49,15 @@ public class MapUserManager {
 		// 没添加则添加
 		else {
 			L.d(WModel.EnsureEveryoneOnMap, "添加用户" + nameString);
-			MapUser u = CommonUtils.HelloMsgToUser(msg);
-			addUser(u);
-			T.showShort(WonderMapApplication.getInstance(), u.getName() + "加入");
+			CommonUtils.HelloMsgToUser(msg, new MapUserTransferListener() {
+
+				@Override
+				public void onSuccess(MapUser user) {
+					addUser(user);
+					T.showShort(WonderMapApplication.getInstance(),
+							user.getName() + "加入");					
+				}
+			});
 		}
 	}
 
@@ -56,14 +67,17 @@ public class MapUserManager {
 	public void onResumeAllUsersOnMap() {
 		L.d(WModel.EnsureEveryoneOnMap,
 				"ensureAllUsersOnMap into,user count = " + mapUsers.size());
-		ArrayList<MapUser> arrayList = new ArrayList<MapUser>(mapUsers);
+		HashMap<String, MapUser> users = new HashMap<String, MapUser>(mapUsers);
 		mapUsers.clear();
-		WMapControler.getInstance().clearMarker();//先把所有marker清除掉
-		for (MapUser user : arrayList) {
-			L.d(WModel.EnsureEveryoneOnMap, "userId is " + user.getName());
-			addUser(user);
+		WMapControler.getInstance().clearMarker();// 先把所有marker清除掉
+		Iterator<Entry<String, MapUser>> iterator = users.entrySet()
+				.iterator();
+		Entry<String, MapUser> entry;
+		while (iterator.hasNext()) {
+			entry = iterator.next();
+			addUser(entry.getValue());
 		}
-		arrayList = null;
+		users = null;
 	}
 
 	/**
@@ -71,7 +85,7 @@ public class MapUserManager {
 	 * 
 	 * @return
 	 */
-	public synchronized ArrayList<MapUser> getMapUsers() {
+	public synchronized HashMap<String, MapUser> getMapUsers() {
 		return mapUsers;
 	}
 
@@ -82,7 +96,7 @@ public class MapUserManager {
 	private void addUser(MapUser user) {
 		Marker marker = WMapControler.getInstance().addUser(user);
 		user.setMarker(marker);
-		mapUsers.add(user);
+		mapUsers.put(user.getObjectId(), user);
 	}
 
 	/**
@@ -105,10 +119,8 @@ public class MapUserManager {
 	 * 查找指定的用户
 	 */
 	private MapUser getUser(String id) {
-		for (MapUser usr : mapUsers) {
-			if (usr.getObjectId().equals(id)) {
-				return usr;
-			}
+		if (mapUsers.containsKey(id)) {
+			return mapUsers.get(id);
 		}
 		return null;
 	}

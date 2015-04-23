@@ -93,7 +93,7 @@ public class LocationFragment extends ContentFragment implements
 			L.d("lat :" + lat + ",lng:" + lng);
 			LatLng latlng = new LatLng(lat, lng);// 维度在前，经度在后
 			WMapControler.getInstance().setMapStatus(latlng);
-			WMapControler.getInstance().addMarker(latlng);
+			WMapControler.getInstance().addMarker(lat,lng);
 			// 显示当前位置图标
 			// OverlayOptions ooA = new MarkerOptions().position(latlng)
 			// .icon(bdgeo).zIndex(9);

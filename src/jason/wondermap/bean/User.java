@@ -1,5 +1,7 @@
 package jason.wondermap.bean;
 
+import com.nostra13.universalimageloader.core.assist.LoadedFrom;
+
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.datatype.BmobRelation;
@@ -10,7 +12,7 @@ public class User extends BmobChatUser {
 	/**
 	 * 地理坐标
 	 */
-	private BmobGeoPoint location;//
+	private BmobGeoPoint location = new BmobGeoPoint();//
 	/**
 	 * 发布的博客列表
 	 */
@@ -114,5 +116,16 @@ public class User extends BmobChatUser {
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
-
+	public double getLat(){
+		return location.getLatitude();
+	}
+	public void setLat(double d){
+		location.setLatitude(d);
+	}
+	public double getLng(){
+		return location.getLongitude();
+	}
+	public void setLng(double d){
+		location.setLongitude(d);
+	}
 }

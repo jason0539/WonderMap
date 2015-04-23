@@ -3,11 +3,12 @@ package jason.wondermap.utils;
 public class UserInfo {
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝用户信息，方便传送时存储键值对＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	public static final String AVATAR = "avatar";
-	public static final String AGE="age";
-	public static final String SIGN ="sign";
-	public static final String EMAIL ="email";
+	public static final String AGE = "age";
+	public static final String SIGN = "sign";
+	public static final String EMAIL = "email";
 	public static final String USER_NAME = "user_name";
 	public static final String USER_ID = "user_id";
+	public static final String OBJECT_ID = "objectId";
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝页面跳转来源＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	public static final String FROM = "from";
 	public static final String TYPE = "type";
@@ -21,7 +22,7 @@ public class UserInfo {
 	public static final String POSITION = "position";
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝hello world消息＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-	
+
 	public static final String TAG = "tag";
 	public static final String HELLO = "hello";
 	public static final String WORLD = "world";
