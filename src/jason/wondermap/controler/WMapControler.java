@@ -216,8 +216,8 @@ public class WMapControler {
 	 * @return 返回该用户的地标，唯一，位置变动则更新该地标位置
 	 */
 	public Marker addUser(MapUser user) {
-		Marker marker = addMarker(user.getLat(), user.getLng(),
-				mapMarkerView.createView(user));
+		View view = mapMarkerView.createView(user);
+		Marker marker = addMarker(user.getLat(), user.getLng(), view);
 		return marker;
 	}
 

@@ -9,6 +9,7 @@
         android:id="@+id/view_mapmarker_head"
         android:layout_width="20dp"
         android:layout_height="20dp"
+        android:scaleType="centerInside"
         android:src="@drawable/user_icon_default_main" />
 
     <TextView

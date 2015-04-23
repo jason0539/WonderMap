@@ -4,8 +4,11 @@ import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.MapUser;
 import jason.wondermap.bean.User;
 import jason.wondermap.fragment.BaseFragment;
+import jason.wondermap.interfacer.MapUserDownLoadHeadListener;
 import jason.wondermap.interfacer.MapUserTransferListener;
+import jason.wondermap.interfacer.OnMapMarkerViewListener;
 import jason.wondermap.manager.CrashLogManager;
+import jason.wondermap.view.MapMarkerView;
 
 import java.util.List;
 
@@ -15,6 +18,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
+import android.view.View;
 import cn.bmob.im.util.BmobJsonUtil;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
@@ -80,21 +84,20 @@ public class CommonUtils {
 	 */
 	public static void HelloMsgToUser(JSONObject msg,
 			final MapUserTransferListener listener) {
-		// String name = BmobJsonUtil.getString(msg, UserInfo.USER_NAME);
 		String id = BmobJsonUtil.getString(msg, UserInfo.USER_ID);
-		// double lat = Double.valueOf(BmobJsonUtil.getString(msg,
-		// UserInfo.LATITUDE));
-		// double lng = Double.valueOf(BmobJsonUtil.getString(msg,
-		// UserInfo.LONGTITUDE));
-		// MapUser user = new MapUser(id, name, lat, lng);
 		BmobQuery<User> query = new BmobQuery<User>();
 		query.addWhereEqualTo("objectId", id);
 		query.findObjects(WonderMapApplication.getInstance(),
 				new FindListener<User>() {
 					@Override
 					public void onSuccess(List<User> object) {
-						final MapUser user = new MapUser(object.get(0));
-						listener.onSuccess(user);
+						MapUser.createMapuser(object.get(0),new MapUserDownLoadHeadListener() {
+							
+							@Override
+							public void onSuccess(MapUser uMapUser) {
+								listener.onSuccess(uMapUser);
+							}
+						});
 					}
 
 					@Override
