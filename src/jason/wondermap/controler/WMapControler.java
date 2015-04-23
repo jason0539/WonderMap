@@ -177,6 +177,12 @@ public class WMapControler {
 	public void setMapStatus(LatLng latlng) {
 		mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(latlng));
 	}
+	public void setMapStatus(MapStatus status){
+		mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(status));
+	}
+	public MapStatus getMapStatus(){
+		return mBaiduMap.getMapStatus();
+	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝Marker相关＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 

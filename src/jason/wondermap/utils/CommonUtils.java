@@ -6,9 +6,7 @@ import jason.wondermap.bean.User;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.interfacer.MapUserDownLoadHeadListener;
 import jason.wondermap.interfacer.MapUserTransferListener;
-import jason.wondermap.interfacer.OnMapMarkerViewListener;
 import jason.wondermap.manager.CrashLogManager;
-import jason.wondermap.view.MapMarkerView;
 
 import java.util.List;
 
@@ -18,7 +16,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.DisplayMetrics;
-import android.view.View;
 import cn.bmob.im.util.BmobJsonUtil;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.listener.FindListener;
@@ -91,13 +88,17 @@ public class CommonUtils {
 				new FindListener<User>() {
 					@Override
 					public void onSuccess(List<User> object) {
-						MapUser.createMapuser(object.get(0),new MapUserDownLoadHeadListener() {
-							
-							@Override
-							public void onSuccess(MapUser uMapUser) {
-								listener.onSuccess(uMapUser);
-							}
-						});
+						if (object.size() <= 0) {
+							return;
+						}
+						MapUser.createMapuser(object.get(0),
+								new MapUserDownLoadHeadListener() {
+
+									@Override
+									public void onSuccess(MapUser uMapUser) {
+										listener.onSuccess(uMapUser);
+									}
+								});
 					}
 
 					@Override

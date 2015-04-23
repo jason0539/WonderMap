@@ -12,6 +12,12 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
+/**
+ * 地图上展示的用户
+ * 
+ * @author liuzhenhui
+ * 
+ */
 public class MapUser {
 	private User user;
 	private Marker mMarker;
@@ -20,7 +26,15 @@ public class MapUser {
 	public MapUser(User u) {
 		user = u;
 	}
-	public static void createMapuser(User u,final MapUserDownLoadHeadListener listener){
+
+	/**
+	 * 由于加载用户头像需要一定时间，采用监听器回调的方式
+	 * 
+	 * @param u
+	 * @param listener
+	 */
+	public static void createMapuser(User u,
+			final MapUserDownLoadHeadListener listener) {
 		final MapUser mapUser = new MapUser(u);
 		ImageLoader.getInstance().loadImage(mapUser.getAvatar(),
 				ImageLoadOptions.getOptions(), new ImageLoadingListener() {
@@ -44,12 +58,12 @@ public class MapUser {
 					}
 
 					@Override
-					public void onLoadingCancelled(String imageUri,
-							View view) {
+					public void onLoadingCancelled(String imageUri, View view) {
 
 					}
 				});
 	}
+
 	public String getObjectId() {
 		return user.getObjectId();
 	}

@@ -1,6 +1,5 @@
 package jason.wondermap.interfacer;
 
-import android.view.View;
 import jason.wondermap.bean.MapUser;
 
 public interface MapUserTransferListener {

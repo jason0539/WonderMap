@@ -4,6 +4,7 @@ import jason.wondermap.R;
 import jason.wondermap.adapter.base.BaseListAdapter;
 import jason.wondermap.adapter.base.ViewHolder;
 import jason.wondermap.bean.User;
+import jason.wondermap.bean.WMapGeoPoint;
 import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.ImageLoadOptions;
 
@@ -14,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -51,7 +51,7 @@ public class NearPeopleAdapter extends BaseListAdapter<User> {
 		} else {
 			iv_avatar.setImageResource(R.drawable.default_head);
 		}
-		BmobGeoPoint location = contract.getLocation();
+		WMapGeoPoint location = contract.getLocation();
 		String currentLat = String.valueOf(WLocationManager.getInstance().getLatitude());
 		String currentLong =String.valueOf(WLocationManager.getInstance().getLongtitude());
 		if (location != null && !currentLat.equals("")

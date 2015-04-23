@@ -1,10 +1,10 @@
 package jason.wondermap.manager;
 
 import jason.wondermap.WonderMapApplication;
+import jason.wondermap.bean.WMapGeoPoint;
 import jason.wondermap.controler.WMapControler;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -91,7 +91,7 @@ public class WLocationManager {
 			hasLocationChanged = true;
 			// 更新位置到服务器
 			AccountUserManager.getInstance().updateUserLocation(
-					new BmobGeoPoint(longtitude, latitude));
+					new WMapGeoPoint(longtitude, latitude));
 			// 推送给其他人，每隔一段时间更新一次位置，以后陌生人不更新，好友实时更新
 			PushMsgSendManager.getInstance().sayHello();
 			// 保存到本地

@@ -15,6 +15,7 @@ import cn.bmob.im.util.BmobLog;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
+import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MyLocationData;
@@ -34,6 +35,7 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
  */
 public class LocationFragment extends ContentFragment implements
 		OnGetGeoCoderResultListener {
+	private MapStatus lastMapStatus;
 	private GeoCoder mSearch = null;
 	private BDLocation lastLocation = null;
 	private ViewGroup mRootView;
@@ -58,6 +60,7 @@ public class LocationFragment extends ContentFragment implements
 	@Override
 	protected void onInitView() {
 		WMapControler.getInstance().clearMarker();
+		lastMapStatus = WMapControler.getInstance().getMapStatus();
 		initBaiduMap();
 	}
 
@@ -145,6 +148,8 @@ public class LocationFragment extends ContentFragment implements
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		WMapControler.getInstance().setMapStatus(lastMapStatus);
+		
 	}
 
 }
