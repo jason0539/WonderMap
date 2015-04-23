@@ -17,6 +17,15 @@ public class Blog extends BmobObject implements Serializable {
 	private String content;
 	private BmobFile Contentfigureurl;
 	private BmobGeoPoint location;
+	private BDLocation bdLocation;
+
+	public BDLocation getBdLocation() {
+		return bdLocation;
+	}
+
+	public void setBdLocation(BDLocation bdLocation) {
+		this.bdLocation = bdLocation;
+	}
 
 	private int love;
 	private int hate;

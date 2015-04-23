@@ -148,9 +148,10 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 		// 时间
 		viewHolder.blogDate.setText(BlogUtils.getTime(entity.getCreatedAt()));
 		// 地点
-		viewHolder.blogAddress.setText(BlogUtils.getAddress(entity.getLocation(),viewHolder.blogAddress));
+		viewHolder.blogAddress.setText(BlogUtils.getAddress(entity.getBdLocation()));
 		// 距离
-		 viewHolder.blogDistance.setText(BlogUtils.getDistance(entity.getLocation()));
+		viewHolder.blogDistance.setText(BlogUtils.getDistance(entity
+				.getLocation()));
 		// 文字内容
 		viewHolder.contentText.setText(entity.getContent());
 		if (null == entity.getContentfigureurl()) {

@@ -5,13 +5,31 @@ import jason.wondermap.manager.WLocationManager;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import android.widget.TextView;
 import cn.bmob.v3.datatype.BmobGeoPoint;
+
+import com.baidu.location.BDLocation;
 
 public class BlogUtils {
 	// 获取地点
-	public static String getAddress(BmobGeoPoint point, TextView tvAddress) {
-		return "";
+	public static String getAddress(BDLocation location) {
+		String pro = location.getProvince();
+		String city = location.getCity();
+		String district = location.getDistrict();
+		StringBuffer buffer = new StringBuffer();
+		if (pro != null && !pro.equals("")) {
+			buffer.append(pro.substring(0, pro.length()-1)).append("-");
+		}
+		if (city != null && !city.equals("")) {
+			buffer.append(city.substring(0, city.length()-1)).append("-");
+		}
+		if (district != null && !district.equals("")) {
+			buffer.append(district.substring(0, district.length()-1));
+		}
+		if (buffer.length() == 0) {
+			return "未知区域";
+		} else {
+			return buffer.toString();
+		}
 	}
 
 	// 获取距离

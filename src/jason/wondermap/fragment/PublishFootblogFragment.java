@@ -179,6 +179,7 @@ public class PublishFootblogFragment extends ContentFragment implements
 			blog.setContentfigureurl(figureFile);
 		}
 		blog.setLocation(WLocationManager.getInstance().getBmobGeoPoint());
+		blog.setBdLocation(WLocationManager.getInstance().getBDLocation());
 		blog.setLove(0);
 		blog.setHate(0);
 		blog.setShare(0);
