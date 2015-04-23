@@ -36,7 +36,6 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 public class LocationFragment extends ContentFragment implements
 		OnGetGeoCoderResultListener {
 	private MapStatus lastMapStatus;
-	private GeoCoder mSearch = null;
 	private BDLocation lastLocation = null;
 	private ViewGroup mRootView;
 
@@ -65,8 +64,7 @@ public class LocationFragment extends ContentFragment implements
 	}
 
 	private void initBaiduMap() {
-		mSearch = GeoCoder.newInstance();
-		mSearch.setOnGetGeoCodeResultListener(this);
+		WLocationManager.getInstance().setOnGetGeoCodeResultListener(this);
 		// 注册 SDK 广播监听者
 		String type = mShowBundle.getString(UserInfo.TYPE);
 		if (type.equals("select")) {// 选择发送位置
@@ -85,7 +83,7 @@ public class LocationFragment extends ContentFragment implements
 				lastLocation.setAddrStr(address);
 			} else {
 				// 反Geo搜索
-				mSearch.reverseGeoCode(new ReverseGeoCodeOption()
+				WLocationManager.getInstance().reverseGeoCode(new ReverseGeoCodeOption()
 						.location(new LatLng(lastLocation.getLatitude(),
 								lastLocation.getLongitude())));
 			}

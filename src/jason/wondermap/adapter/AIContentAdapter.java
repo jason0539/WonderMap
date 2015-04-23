@@ -10,13 +10,12 @@ import jason.wondermap.dao.DatabaseUtil;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.manager.AccountUserManager;
-import jason.wondermap.manager.FootblogManager;
 import jason.wondermap.sns.TencentShare;
 import jason.wondermap.sns.TencentShareEntity;
 import jason.wondermap.utils.ActivityUtil;
+import jason.wondermap.utils.BlogUtils;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.T;
-import jason.wondermap.utils.UserInfo;
 
 import java.util.List;
 
@@ -29,6 +28,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -43,12 +43,12 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 public class AIContentAdapter extends BaseContentAdapter<Blog> {
-
 	public static final String TAG = "AIContentAdapter";
 	public static final int SAVE_FAVOURITE = 2;
 	public static final int NUMBERS_PER_PAGE = 15;// 每次请求返回评论条数
 	private Context mContext;
-//女生颜色#EC197D   男生#2BA2E5
+
+	// 女生颜色#EC197D 男生#2BA2E5
 	public AIContentAdapter(Context context, List<Blog> list) {
 		super(context, list);
 		mContext = context;
@@ -64,6 +64,16 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 					.findViewById(R.id.user_name);
 			viewHolder.userLogo = (ImageView) convertView
 					.findViewById(R.id.user_logo);
+			viewHolder.userSex = (CheckBox) convertView
+					.findViewById(R.id.blog_item_user_sex);
+			viewHolder.userAge = (TextView) convertView
+					.findViewById(R.id.blog_item_user_age);
+			viewHolder.blogDistance = (TextView) convertView
+					.findViewById(R.id.blog_item_blog_distance);
+			viewHolder.blogDate = (TextView) convertView
+					.findViewById(R.id.blog_item_blog_date);
+			viewHolder.blogAddress = (TextView) convertView
+					.findViewById(R.id.blog_item_blog_address);
 			viewHolder.favMark = (ImageView) convertView
 					.findViewById(R.id.item_action_fav);
 			viewHolder.contentText = (TextView) convertView
@@ -91,23 +101,14 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 		if (user.getAvatar() == null) {
 			L.i("user", "USER avatar IS NULL");
 		}
+		// 头像
 		String avatarUrl = null;
 		if (user.getAvatar() != null) {
 			avatarUrl = user.getAvatar();
 		}
 		ImageLoader.getInstance().displayImage(avatarUrl, viewHolder.userLogo,
-				ActivityUtil.getOptions(R.drawable.user_icon_default_main),
-				new SimpleImageLoadingListener() {
-
-					@Override
-					public void onLoadingComplete(String imageUri, View view,
-							Bitmap loadedImage) {
-						super.onLoadingComplete(imageUri, view, loadedImage);
-					}
-
-				});
+				ActivityUtil.getOptions(R.drawable.user_icon_default_main));
 		viewHolder.userLogo.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				// 点击头像，如果未登陆则跳转到登陆页面
@@ -131,7 +132,26 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 						WMFragmentManager.TYPE_PERSONAL_FOOTBLOG, bundle);
 			}
 		});
-		viewHolder.userName.setText(entity.getAuthor().getUsername());
+		// 姓名
+		viewHolder.userName.setText(user.getUsername());
+		// 性别
+		boolean man = user.getSex();
+		if (!man) {
+			viewHolder.userSex.setChecked(false);
+			viewHolder.userAge.setTextColor(Color.parseColor("#EC197D"));
+		} else {
+			viewHolder.userSex.setChecked(true);
+			viewHolder.userAge.setTextColor(Color.parseColor("#2BA2E5"));
+		}
+		// 年龄
+		viewHolder.userAge.setText(user.getAge() + "");
+		// 时间
+		viewHolder.blogDate.setText(BlogUtils.getTime(entity.getCreatedAt()));
+		// 地点
+		viewHolder.blogAddress.setText(BlogUtils.getAddress(entity.getLocation(),viewHolder.blogAddress));
+		// 距离
+		 viewHolder.blogDistance.setText(BlogUtils.getDistance(entity.getLocation()));
+		// 文字内容
 		viewHolder.contentText.setText(entity.getContent());
 		if (null == entity.getContentfigureurl()) {
 			viewHolder.contentImage.setVisibility(View.GONE);
@@ -145,7 +165,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 											mContext), viewHolder.contentImage,
 							ActivityUtil.getOptions(R.drawable.bg_pic_loading),
 							new SimpleImageLoadingListener() {
-
 								@Override
 								public void onLoadingComplete(String imageUri,
 										View view, Bitmap loadedImage) {
@@ -164,7 +183,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 									viewHolder.contentImage
 											.setLayoutParams(layoutParams);
 								}
-
 							});
 		}
 		viewHolder.love.setText(entity.getLove() + "");
@@ -197,7 +215,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 					T.showShort(mContext, "您已赞过啦");
 					return;
 				}
-
 				if (DatabaseUtil.getInstance(mContext).isLoved(entity)) {
 					T.showShort(mContext, "您已赞过啦");
 					entity.setMyLove(true);
@@ -206,17 +223,14 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 					viewHolder.love.setText(entity.getLove() + "");
 					return;
 				}
-
 				entity.setLove(entity.getLove() + 1);
 				viewHolder.love.setTextColor(Color.parseColor("#D95555"));
 				viewHolder.love.setText(entity.getLove() + "");
-
 				entity.increment("love", 1);
 				if (entity.getMyFav()) {
 					entity.setMyFav(false);
 				}
 				entity.update(mContext, new UpdateListener() {
-
 					@Override
 					public void onSuccess() {
 						// TODO Auto-generated method stub
@@ -237,7 +251,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 			}
 		});
 		viewHolder.hate.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -245,7 +258,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 				viewHolder.hate.setText(entity.getHate() + "");
 				entity.increment("hate", 1);
 				entity.update(mContext, new UpdateListener() {
-
 					@Override
 					public void onSuccess() {
 						// TODO Auto-generated method stub
@@ -255,13 +267,11 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 					@Override
 					public void onFailure(int arg0, String arg1) {
 						// TODO Auto-generated method stub
-
 					}
 				});
 			}
 		});
 		viewHolder.share.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				// MyApplication.getInstance().getTopActivity()
@@ -273,7 +283,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 			}
 		});
 		viewHolder.comment.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -304,7 +313,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 				// mContext.startActivity(intent);
 			}
 		});
-
 		if (entity.getMyFav()) {
 			viewHolder.favMark
 					.setImageResource(R.drawable.ic_action_fav_choose);
@@ -313,14 +321,12 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 					.setImageResource(R.drawable.ic_action_fav_normal);
 		}
 		viewHolder.favMark.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				// 收藏
 				T.showShort(mContext, "收藏");
 				onClickFav(v, entity);
-
 			}
 		});
 		return convertView;
@@ -336,7 +342,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 			img = "http://www.codenow.cn/appwebsite/website/yyquan/uploads/53af6851d5d72.png";
 		}
 		String summary = qy.getContent();
-
 		String targetUrl = "http://huodianditu.bmob.cn";
 		TencentShareEntity entity = new TencentShareEntity(title, img,
 				targetUrl, summary, comment);
@@ -346,8 +351,14 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 	public static class ViewHolder {
 		public ImageView userLogo;
 		public TextView userName;
+		public CheckBox userSex;
+		public TextView userAge;
+		public TextView blogDistance;
+		public TextView blogDate;
+
 		public TextView contentText;
 		public ImageView contentImage;
+		public TextView blogAddress;
 
 		public ImageView favMark;
 		public TextView love;
@@ -361,7 +372,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 		User user = BmobUser.getCurrentUser(mContext, User.class);
 		if (user != null && user.getSessionToken() != null) {
 			BmobRelation favRelaton = new BmobRelation();
-
 			qiangYu.setMyFav(!qiangYu.getMyFav());
 			if (qiangYu.getMyFav()) {
 				((ImageView) v)
@@ -370,7 +380,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 				user.setFavorite(favRelaton);
 				T.showShort(mContext, "收藏成功。");
 				user.update(mContext, new UpdateListener() {
-
 					@Override
 					public void onSuccess() {
 						// TODO Auto-generated method stub
@@ -387,7 +396,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 						T.showShort(mContext, "收藏失败。请检查网络~" + arg0);
 					}
 				});
-
 			} else {
 				((ImageView) v)
 						.setImageResource(R.drawable.ic_action_fav_normal);
@@ -395,7 +403,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 				user.setFavorite(favRelaton);
 				T.showShort(mContext, "取消收藏。");
 				user.update(mContext, new UpdateListener() {
-
 					@Override
 					public void onSuccess() {
 						// TODO Auto-generated method stub
@@ -413,7 +420,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 					}
 				});
 			}
-
 		} else {
 			// 前往登录注册界面
 			T.showShort(mContext, "收藏前请先登录。");
@@ -437,7 +443,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 			query.order("createdAt");
 			query.setLimit(WMapConstants.NUMBERS_PER_PAGE);
 			query.findObjects(mContext, new FindListener<Blog>() {
-
 				@Override
 				public void onSuccess(List<Blog> data) {
 					// TODO Auto-generated method stub

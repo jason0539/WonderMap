@@ -41,6 +41,7 @@
             android:layout_alignLeft="@id/user_name"
             android:layout_below="@+id/user_name"
             android:button="@drawable/selector_sex_checkbox"
+            android:checked="true"
             android:gravity="center" />
         <!-- 年龄 -->
 
@@ -50,12 +51,12 @@
             android:layout_alignBottom="@+id/user_logo"
             android:layout_below="@+id/user_name"
             android:layout_toRightOf="@+id/blog_item_user_sex"
-            android:textColor="#2BA2E5"
-            android:text="22" />
+            android:text="22"
+            android:textColor="#2BA2E5" />
         <!-- 距离 -->
 
         <TextView
-            android:id="@+id/item_action_distance"
+            android:id="@+id/blog_item_blog_distance"
             style="@style/FootblogTopTextview"
             android:layout_alignBottom="@id/user_logo"
             android:layout_toLeftOf="@+id/blog_item_view"
@@ -66,13 +67,13 @@
             android:layout_width="1px"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/user_logo"
-            android:layout_alignTop="@+id/item_action_date"
-            android:layout_toLeftOf="@+id/item_action_date"
+            android:layout_alignTop="@+id/blog_item_blog_date"
+            android:layout_toLeftOf="@+id/blog_item_blog_date"
             android:background="#888888" />
         <!-- 时间 -->
 
         <TextView
-            android:id="@+id/item_action_date"
+            android:id="@+id/blog_item_blog_date"
             style="@style/FootblogTopTextview"
             android:layout_alignBottom="@id/user_logo"
             android:layout_alignParentRight="true"
@@ -110,7 +111,7 @@
         android:layout_below="@id/content_image" >
 
         <TextView
-            android:id="@+id/item_action_address"
+            android:id="@+id/blog_item_blog_address"
             style="@style/FootblogBottomTextview"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"

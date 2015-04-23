@@ -3,7 +3,6 @@ package jason.wondermap.manager;
 import jason.wondermap.LoginActivity;
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.User;
-import jason.wondermap.bean.WMapGeoPoint;
 import jason.wondermap.utils.CollectionUtils;
 import jason.wondermap.utils.L;
 
@@ -18,6 +17,7 @@ import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.config.BmobConfig;
 import cn.bmob.im.db.BmobDB;
+import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 
@@ -110,7 +110,7 @@ public class AccountUserManager {
 	/**
 	 * 更新自己的经纬度信息
 	 */
-	public void updateUserLocation(WMapGeoPoint point) {
+	public void updateUserLocation(BmobGeoPoint point) {
 		if (getCurrentUser() == null) {
 			return;
 		}

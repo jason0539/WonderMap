@@ -45,12 +45,10 @@ public class PersonCenterContentAdapter extends BaseContentAdapter<Blog> {
 
 	public PersonCenterContentAdapter(Context context, List<Blog> list) {
 		super(context, list);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public View getConvertView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
 		final ViewHolder viewHolder;
 		if (convertView == null) {
 			viewHolder = new ViewHolder();

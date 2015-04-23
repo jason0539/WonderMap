@@ -1,6 +1,7 @@
 package jason.wondermap.bean;
 
 import cn.bmob.im.bean.BmobChatUser;
+import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.datatype.BmobRelation;
 
 public class User extends BmobChatUser {
@@ -9,7 +10,7 @@ public class User extends BmobChatUser {
 	/**
 	 * 地理坐标
 	 */
-	private WMapGeoPoint location = new WMapGeoPoint();//
+	private BmobGeoPoint location = new BmobGeoPoint();//
 	/**
 	 * 发布的博客列表
 	 */
@@ -77,11 +78,11 @@ public class User extends BmobChatUser {
 		this.blogs = blogs;
 	}
 
-	public WMapGeoPoint getLocation() {
+	public BmobGeoPoint getLocation() {
 		return location;
 	}
 
-	public void setLocation(WMapGeoPoint location) {
+	public void setLocation(BmobGeoPoint location) {
 		this.location = location;
 	}
 

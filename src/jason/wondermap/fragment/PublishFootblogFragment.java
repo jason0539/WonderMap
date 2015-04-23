@@ -3,6 +3,8 @@ package jason.wondermap.fragment;
 import jason.wondermap.R;
 import jason.wondermap.bean.Blog;
 import jason.wondermap.bean.User;
+import jason.wondermap.manager.AccountUserManager;
+import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.CacheUtils;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.WModel;
@@ -169,23 +171,23 @@ public class PublishFootblogFragment extends ContentFragment implements
 
 	private void publishWithoutFigure(final String commitContent,
 			final BmobFile figureFile) {
-		User user = BmobUser.getCurrentUser(mContext, User.class);
-		final Blog qiangYu = new Blog();
-		qiangYu.setAuthor(user);
-		qiangYu.setContent(commitContent);
+		User user = AccountUserManager.getInstance().getCurrentUser();
+		final Blog blog = new Blog();
+		blog.setAuthor(user);
+		blog.setContent(commitContent);
 		if (figureFile != null) {
-			qiangYu.setContentfigureurl(figureFile);
+			blog.setContentfigureurl(figureFile);
 		}
-		qiangYu.setLove(0);
-		qiangYu.setHate(0);
-		qiangYu.setShare(0);
-		qiangYu.setComment(0);
-		qiangYu.setPass(true);
-		qiangYu.save(mContext, new SaveListener() {
+		blog.setLocation(WLocationManager.getInstance().getBmobGeoPoint());
+		blog.setLove(0);
+		blog.setHate(0);
+		blog.setShare(0);
+		blog.setComment(0);
+		blog.setPass(true);
+		blog.save(mContext, new SaveListener() {
 
 			@Override
 			public void onSuccess() {
-				// TODO Auto-generated method stub
 				ShowToast("发表成功");
 				// TODO 发表成功自动返回//应该带参数，成功则刷新
 				// setResult(RESULT_OK);
@@ -195,7 +197,6 @@ public class PublishFootblogFragment extends ContentFragment implements
 
 			@Override
 			public void onFailure(int arg0, String arg1) {
-				// TODO Auto-generated method stub
 				ShowToast("发表失败！" + arg1);
 			}
 		});
@@ -206,7 +207,6 @@ public class PublishFootblogFragment extends ContentFragment implements
 	@SuppressLint("NewApi")
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK) {
 			switch (requestCode) {

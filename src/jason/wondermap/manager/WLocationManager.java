@@ -1,10 +1,10 @@
 package jason.wondermap.manager;
 
 import jason.wondermap.WonderMapApplication;
-import jason.wondermap.bean.WMapGeoPoint;
 import jason.wondermap.controler.WMapControler;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import cn.bmob.v3.datatype.BmobGeoPoint;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -12,6 +12,9 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 
 /**
  * 用户位置管理类
@@ -30,6 +33,8 @@ public class WLocationManager {
 	private LocationClient mLocationClient;
 	private MyLocationListener mMyLocationListener;
 	private BDLocation lastBdLocation;
+	private BmobGeoPoint lastGeoPoint;
+	private GeoCoder mSearch = null;
 
 	private double latitude;
 	private double longtitude;
@@ -50,6 +55,7 @@ public class WLocationManager {
 		option.setIsNeedAddress(true);
 		mLocationClient.setLocOption(option);
 		mLocationClient.start();
+		mSearch = GeoCoder.newInstance();
 		PushMsgSendManager.getInstance().sayHello();
 	}
 
@@ -68,6 +74,8 @@ public class WLocationManager {
 			if (location == null)
 				return;
 			lastBdLocation = location;
+			lastGeoPoint = new BmobGeoPoint(location.getLongitude(),
+					location.getLatitude());
 			// 收到新位置
 			latitude = location.getLatitude();
 			longtitude = location.getLongitude();
@@ -90,8 +98,7 @@ public class WLocationManager {
 		if (latitude != lastLatitude || longtitude != lastLongtitude) {
 			hasLocationChanged = true;
 			// 更新位置到服务器
-			AccountUserManager.getInstance().updateUserLocation(
-					new WMapGeoPoint(longtitude, latitude));
+			AccountUserManager.getInstance().updateUserLocation(lastGeoPoint);
 			// 推送给其他人，每隔一段时间更新一次位置，以后陌生人不更新，好友实时更新
 			PushMsgSendManager.getInstance().sayHello();
 			// 保存到本地
@@ -109,6 +116,16 @@ public class WLocationManager {
 			return true;
 		}
 		return false;
+	}
+
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝GEO相关＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	public void setOnGetGeoCodeResultListener(
+			OnGetGeoCoderResultListener listener) {
+		mSearch.setOnGetGeoCodeResultListener(listener);
+	}
+
+	public void reverseGeoCode(ReverseGeoCodeOption option) {
+		mSearch.reverseGeoCode(option);
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -151,8 +168,13 @@ public class WLocationManager {
 	public LatLng getMyLocation() {
 		return new LatLng(latitude, longtitude);
 	}
-	public BDLocation getBDLocation(){
+
+	public BDLocation getBDLocation() {
 		return lastBdLocation;
+	}
+
+	public BmobGeoPoint getBmobGeoPoint() {
+		return lastGeoPoint;
 	}
 
 	// =＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝本地位置存取＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝

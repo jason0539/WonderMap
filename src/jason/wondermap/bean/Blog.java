@@ -2,8 +2,11 @@ package jason.wondermap.bean;
 
 import java.io.Serializable;
 
+import com.baidu.location.BDLocation;
+
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.datatype.BmobGeoPoint;
 import cn.bmob.v3.datatype.BmobRelation;
 
 public class Blog extends BmobObject implements Serializable {
@@ -13,6 +16,8 @@ public class Blog extends BmobObject implements Serializable {
 	private User author;
 	private String content;
 	private BmobFile Contentfigureurl;
+	private BmobGeoPoint location;
+
 	private int love;
 	private int hate;
 	private int share;
@@ -28,6 +33,14 @@ public class Blog extends BmobObject implements Serializable {
 
 	public void setRelation(BmobRelation relation) {
 		this.relation = relation;
+	}
+
+	public BmobGeoPoint getLocation() {
+		return location;
+	}
+
+	public void setLocation(BmobGeoPoint location) {
+		this.location = location;
 	}
 
 	public User getAuthor() {
