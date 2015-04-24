@@ -1,17 +1,14 @@
 package jason.wondermap.fragment;
 
 import jason.wondermap.R;
-import jason.wondermap.WonderMapApplication;
 import jason.wondermap.config.BundleTake;
 import jason.wondermap.manager.AccountUserManager;
-import jason.wondermap.manager.PushMsgSendManager;
-import jason.wondermap.manager.WLocationManager;
-import jason.wondermap.utils.L;
 import jason.wondermap.utils.UserInfo;
 import jason.wondermap.view.HeaderLayout.onRightImageButtonClickListener;
 
 import java.util.List;
 
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +17,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 
@@ -42,7 +37,6 @@ public class UpdateInfoFragment extends ContentFragment {
 
 	@Override
 	protected View onCreateContentView(LayoutInflater inflater) {
-		// TODO Auto-generated method stub
 		mRootView = (ViewGroup) inflater.inflate(
 				R.layout.activity_set_updateinfo, mContainer, false);
 		return mRootView;
@@ -84,6 +78,7 @@ public class UpdateInfoFragment extends ContentFragment {
 			break;
 		case age:
 			et_edit_info.setHint("请输入年龄");
+			et_edit_info.setInputType(InputType.TYPE_CLASS_NUMBER);
 			tv_edit_info.setText("年龄");
 			initTopBarForBoth(mRootView, "修改年龄",
 					R.drawable.base_action_bar_true_bg_selector,
@@ -93,7 +88,7 @@ public class UpdateInfoFragment extends ContentFragment {
 						public void onClick() {
 							String nick = et_edit_info.getText().toString();
 							if (nick.equals("")
-									|| !TextUtils.isDigitsOnly(nick)) {
+									|| !TextUtils.isDigitsOnly(nick)||nick.length()>2) {
 								ShowToast("请正确填写年龄!");
 								return;
 							}

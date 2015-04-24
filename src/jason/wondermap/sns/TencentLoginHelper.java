@@ -16,15 +16,18 @@ import java.util.Random;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.baidu.location.l;
-
 import android.content.Context;
-import android.os.Message;
 import cn.bmob.im.util.BmobJsonUtil;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.OtherLoginListener;
 import cn.bmob.v3.listener.UpdateListener;
 
+/**
+ * QQ登陆助手
+ * 
+ * @author liuzhenhui
+ * 
+ */
 public class TencentLoginHelper {
 	private Context mContext;
 	private QQLoginListener listener;
@@ -164,6 +167,10 @@ public class TencentLoginHelper {
 		return name;
 	}
 
+	/**
+	 * @param jsonObject
+	 * @return
+	 */
 	private boolean getQQSex(JSONObject jsonObject) {
 		String sex = BmobJsonUtil.getString(jsonObject, "gender");
 		if (("女").equals(sex)) {// 除了为女，其他所有情况都默认为男性

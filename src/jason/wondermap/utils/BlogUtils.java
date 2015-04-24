@@ -20,7 +20,8 @@ public class BlogUtils {
 			buffer.append(pro.substring(0, pro.length() - 1)).append("-");
 		}
 		if (city != null && !city.equals("")) {
-			buffer.append(city.substring(0, city.length() - 1)).append("-");
+			// buffer.append(city.substring(0, city.length() - 1)).append("-");
+			buffer.append(city.substring(0, city.length() - 1));
 		}
 		// if (district != null && !district.equals("")) {
 		// buffer.append(district.substring(0, district.length()-1));
@@ -34,14 +35,20 @@ public class BlogUtils {
 
 	// 获取距离
 	public static String getDistance(BmobGeoPoint point) {
-		double dis = point.distanceInKilometersTo(WLocationManager
-				.getInstance().getBmobGeoPoint());
+		BmobGeoPoint bmobGeoPoint = WLocationManager.getInstance()
+				.getBmobGeoPoint();
+		if (bmobGeoPoint.getLatitude() == 0 || bmobGeoPoint.getLongitude() == 0
+				|| point.getLatitude() == 0 || point.getLongitude() == 0) {
+			// 不管是我现在的地点还是对方发布足迹的地点，只要有一个位置不正确，就不计算距离
+			return "";
+		}
+		double dis = point.distanceInKilometersTo(bmobGeoPoint);
 		if (dis < 1) {
 			int distance = (int) (dis * 1000);
-			return distance + "米";
+			return "-" + distance + "米";
 		} else {
 			int distance = (int) dis;
-			return distance + "千米";
+			return "-" + distance + "千米";
 		}
 	}
 
