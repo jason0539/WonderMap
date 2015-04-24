@@ -38,7 +38,7 @@
                     android:layout_centerVertical="true"
                     android:background="#eeeeee"
                     android:gravity="center_vertical"
-                    android:scaleType="centerInside"
+                    android:scaleType="fitXY"
                     android:src="@drawable/user_icon_default_main" />
             </RelativeLayout>
 

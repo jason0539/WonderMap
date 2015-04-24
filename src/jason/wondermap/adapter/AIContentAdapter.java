@@ -332,13 +332,13 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 	}
 
 	private TencentShareEntity getQQShareEntity(Blog qy) {
-		String title = "这里好多美丽的风景";
-		String comment = "来领略最美的风景吧";
+		String title = "活点地图，随时随地看到你";
+		String comment = "快来加入活点地图,看看你的好友都在哪里干什么";
 		String img = null;
 		if (qy.getContentfigureurl() != null) {
 			img = qy.getContentfigureurl().getFileUrl(mContext);
 		} else {
-			img = "http://www.codenow.cn/appwebsite/website/yyquan/uploads/53af6851d5d72.png";
+			img = "http://file.bmob.cn/M00/69/6C/oYYBAFU5-R6AHUciAADjtQ_g_-8687.jpg";
 		}
 		String summary = qy.getContent();
 		String targetUrl = "http://huodianditu.bmob.cn";

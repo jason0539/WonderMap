@@ -12,4 +12,5 @@ public class WModel {
 	public static String PublishBlog = "PublishBlog";
 	public static String NeedToEditInfo ="NeedToEditInfo";
 	public static String mapMarkerLoad = "mapMarkerLoad";
+	public static String ThirdPlateLogin = "ThirdPlateLogin";
 }

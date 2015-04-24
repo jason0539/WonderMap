@@ -2,24 +2,25 @@ package jason.wondermap.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import android.annotation.SuppressLint;
 
 @SuppressLint("SimpleDateFormat")
 public class TimeUtil {
-	
+
 	public final static String FORMAT_YEAR = "yyyy";
 	public final static String FORMAT_MONTH_DAY = "MM月dd日";
-	
+
 	public final static String FORMAT_DATE = "yyyy-MM-dd";
 	public final static String FORMAT_TIME = "HH:mm";
 	public final static String FORMAT_MONTH_DAY_TIME = "MM月dd日  hh:mm";
-	
+
 	public final static String FORMAT_DATE_TIME = "yyyy-MM-dd HH:mm";
 	public final static String FORMAT_DATE1_TIME = "yyyy/MM/dd HH:mm";
 	public final static String FORMAT_DATE_TIME_SECOND = "yyyy/MM/dd HH:mm:ss";
-	
+
 	private static SimpleDateFormat sdf = new SimpleDateFormat();
 	private static final int YEAR = 365 * 24 * 60 * 60;// 年
 	private static final int MONTH = 30 * 24 * 60 * 60;// 月
@@ -72,68 +73,68 @@ public class TimeUtil {
 	}
 
 	// date类型转换为String类型
- 	// formatType格式为yyyy-MM-dd HH:mm:ss//yyyy年MM月dd日 HH时mm分ss秒
- 	// data Date类型的时间
- 	public static String dateToString(Date data, String formatType) {
- 		return new SimpleDateFormat(formatType).format(data);
- 	}
- 
- 	// long类型转换为String类型
- 	// currentTime要转换的long类型的时间
- 	// formatType要转换的string类型的时间格式
- 	public static String longToString(long currentTime, String formatType){
- 		String strTime="";
+	// formatType格式为yyyy-MM-dd HH:mm:ss//yyyy年MM月dd日 HH时mm分ss秒
+	// data Date类型的时间
+	public static String dateToString(Date data, String formatType) {
+		return new SimpleDateFormat(formatType).format(data);
+	}
+
+	// long类型转换为String类型
+	// currentTime要转换的long类型的时间
+	// formatType要转换的string类型的时间格式
+	public static String longToString(long currentTime, String formatType) {
+		String strTime = "";
 		Date date = longToDate(currentTime, formatType);// long类型转成Date类型
-		strTime = dateToString(date, formatType); // date类型转成String 
- 		return strTime;
- 	}
- 
- 	// string类型转换为date类型
- 	// strTime要转换的string类型的时间，formatType要转换的格式yyyy-MM-dd HH:mm:ss//yyyy年MM月dd日
- 	// HH时mm分ss秒，
- 	// strTime的时间格式必须要与formatType的时间格式相同
- 	public static Date stringToDate(String strTime, String formatType){
- 		SimpleDateFormat formatter = new SimpleDateFormat(formatType);
- 		Date date = null;
- 		try {
+		strTime = dateToString(date, formatType); // date类型转成String
+		return strTime;
+	}
+
+	// string类型转换为date类型
+	// strTime要转换的string类型的时间，formatType要转换的格式yyyy-MM-dd HH:mm:ss//yyyy年MM月dd日
+	// HH时mm分ss秒，
+	// strTime的时间格式必须要与formatType的时间格式相同
+	public static Date stringToDate(String strTime, String formatType) {
+		SimpleDateFormat formatter = new SimpleDateFormat(formatType);
+		Date date = null;
+		try {
 			date = formatter.parse(strTime);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
- 		return date;
- 	}
- 
- 	// long转换为Date类型
- 	// currentTime要转换的long类型的时间
- 	// formatType要转换的时间格式yyyy-MM-dd HH:mm:ss//yyyy年MM月dd日 HH时mm分ss秒
- 	public static Date longToDate(long currentTime, String formatType){
- 		Date dateOld = new Date(currentTime); // 根据long类型的毫秒数生命一个date类型的时间
- 		String sDateTime = dateToString(dateOld, formatType); // 把date类型的时间转换为string
- 		Date date = stringToDate(sDateTime, formatType); // 把String类型转换为Date类型
- 		return date;
- 	}
- 
- 	// string类型转换为long类型
- 	// strTime要转换的String类型的时间
- 	// formatType时间格式
- 	// strTime的时间格式和formatType的时间格式必须相同
- 	public static long stringToLong(String strTime, String formatType){
- 		Date date = stringToDate(strTime, formatType); // String类型转成date类型
- 		if (date == null) {
- 			return 0;
- 		} else {
- 			long currentTime = dateToLong(date); // date类型转成long类型
- 			return currentTime;
- 		}
- 	}
- 
- 	// date类型转换为long类型
- 	// date要转换的date类型的时间
- 	public static long dateToLong(Date date) {
- 		return date.getTime();
- 	}
-	 	
+		return date;
+	}
+
+	// long转换为Date类型
+	// currentTime要转换的long类型的时间
+	// formatType要转换的时间格式yyyy-MM-dd HH:mm:ss//yyyy年MM月dd日 HH时mm分ss秒
+	public static Date longToDate(long currentTime, String formatType) {
+		Date dateOld = new Date(currentTime); // 根据long类型的毫秒数生命一个date类型的时间
+		String sDateTime = dateToString(dateOld, formatType); // 把date类型的时间转换为string
+		Date date = stringToDate(sDateTime, formatType); // 把String类型转换为Date类型
+		return date;
+	}
+
+	// string类型转换为long类型
+	// strTime要转换的String类型的时间
+	// formatType时间格式
+	// strTime的时间格式和formatType的时间格式必须相同
+	public static long stringToLong(String strTime, String formatType) {
+		Date date = stringToDate(strTime, formatType); // String类型转成date类型
+		if (date == null) {
+			return 0;
+		} else {
+			long currentTime = dateToLong(date); // date类型转成long类型
+			return currentTime;
+		}
+	}
+
+	// date类型转换为long类型
+	// date要转换的date类型的时间
+	public static long dateToLong(Date date) {
+		return date.getTime();
+	}
+
 	public static String getTime(long time) {
 		SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm");
 		return format.format(new Date(time));
@@ -144,16 +145,18 @@ public class TimeUtil {
 		return format.format(new Date(time));
 	}
 
-	/** 获取聊天时间：因为sdk的时间默认到秒故应该乘1000
-	  * @Title: getChatTime
-	  * @Description: TODO
-	  * @param @param timesamp
-	  * @param @return 
-	  * @return String
-	  * @throws
-	  */
+	/**
+	 * 获取聊天时间：因为sdk的时间默认到秒故应该乘1000
+	 * 
+	 * @Title: getChatTime
+	 * @Description: TODO
+	 * @param @param timesamp
+	 * @param @return
+	 * @return String
+	 * @throws
+	 */
 	public static String getChatTime(long timesamp) {
-		long clearTime = timesamp*1000;
+		long clearTime = timesamp * 1000;
 		String result = "";
 		SimpleDateFormat sdf = new SimpleDateFormat("dd");
 		Date today = new Date(System.currentTimeMillis());
@@ -178,5 +181,20 @@ public class TimeUtil {
 		}
 
 		return result;
+	}
+
+	public static int getAgeFromYear(String yearStr) {
+		if (yearStr == null || yearStr.equals("")) {
+			return 0;
+		}
+		int year = 0;
+		try {
+			year = Integer.valueOf(yearStr);
+		} catch (Exception e) {
+			return 0;
+		}
+		Calendar calendar = Calendar.getInstance();
+		int age = calendar.get(Calendar.YEAR) - year;
+		return age;
 	}
 }

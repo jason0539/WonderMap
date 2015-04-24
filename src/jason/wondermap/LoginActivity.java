@@ -2,43 +2,35 @@ package jason.wondermap;
 
 import jason.wondermap.bean.User;
 import jason.wondermap.config.BundleTake;
-import jason.wondermap.config.WMapConfig;
+import jason.wondermap.interfacer.QQLoginListener;
 import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.proxy.UserProxy;
 import jason.wondermap.proxy.UserProxy.ILoginListener;
 import jason.wondermap.proxy.UserProxy.IResetPasswordListener;
 import jason.wondermap.proxy.UserProxy.ISignUpListener;
-import jason.wondermap.utils.HttpUtils;
+import jason.wondermap.sns.TencentLoginHelper;
 import jason.wondermap.utils.StringUtils;
 import jason.wondermap.utils.T;
 import jason.wondermap.view.DeletableEditText;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.listener.OtherLoginListener;
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
 public class LoginActivity extends FragmentActivity implements OnClickListener,
 		ILoginListener, ISignUpListener, IResetPasswordListener {
+	public static final int QQLoginSuccess = 11;
+
 	private TextView loginTitle;
 	private TextView registerTitle;
 	private TextView resetPassword;
@@ -62,7 +54,6 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		mContext = this;
 		setContentView(R.layout.activity_register);
@@ -91,7 +82,6 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 	public void onLoginSuccess() {
 		// 更新用户的地理位置以及好友的资料
 		AccountUserManager.getInstance().updateUserInfos();
-		dimissProgressbar();
 		Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 		startActivity(intent);
 		finish();
@@ -113,7 +103,6 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 
 	@Override
 	public void onResetFailure(String msg) {
-		// TODO Auto-generated method stub
 		dimissProgressbar();
 		T.showShort(mContext, "重置密码失败。请确认网络连接后再重试。");
 	}
@@ -231,70 +220,34 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 	}
 
 	private void loginByQQ() {
-		// 222222--appid,此为腾讯官方提供的AppID,个人开发者需要去QQ互联官网为自己的应用申请对应的AppId
-		BmobUser.qqLogin(LoginActivity.this, WMapConfig.qqAppId,
-				new OtherLoginListener() {
-
-					@Override
-					public void onSuccess(JSONObject userAuth) {
-						// TODO Auto-generated method stub
-						toast("QQ登陆成功返回:" + userAuth.toString());
-						Log.i("login", "QQ登陆成功返回:" + userAuth.toString());
-						// 下面则是返回的json字符
-						// {
-						// "qq": {
-						// "openid": "B4F5ABAD717CCC93ABF3BF28D4BCB03A",
-						// "access_token": "05636ED97BAB7F173CB237BA143AF7C9",
-						// "expires_in": 7776000
-						// }
-						// }
-						// 如果你想在登陆成功之后关联当前用户
-						getQQInfo();
-					}
-
-					@Override
-					public void onFailure(int code, String msg) {
-						// TODO Auto-generated method stub
-						toast("第三方登陆失败：" + msg);
-						dimissProgressbar();
-					}
-
-					@Override
-					public void onCancel() {
-						toast("取消登陆");
-						dimissProgressbar();
-					}
-				});
+		progressbar.setVisibility(View.VISIBLE);
+		TencentLoginHelper helper = new TencentLoginHelper(LoginActivity.this);
+		helper.login(qqLoginListener);
 	}
 
-	public void getQQInfo() {
-		// 若更换为自己的APPID后，仍然获取不到自己的用户信息，则需要
-		// 根据http://wiki.connect.qq.com/get_user_info提供的API文档，想要获取QQ用户的信息，则需要自己调用接口，传入对应的参数
-		new Thread() {
-			@Override
-			public void run() {
-				Map<String, String> params = new HashMap<String, String>();
-				params.put("access_token", "B8AABE9A6123EA498355F7AB7F58A3E5");// 此为QQ登陆成功之后返回access_token
-				params.put("openid", "31DA02BF9ADA7B78B9278D3DAAD39DD3");
-				params.put("oauth_consumer_key", WMapConfig.qqAppId);// oauth_consumer_key为申请QQ登录成功后，分配给应用的appid
-				params.put("format", "json");// 格式--非必填项
-				String result = HttpUtils.getRequest(
-						"https://graph.qq.com/user/get_user_info", params);
-				Log.d("login", "QQ的个人信息：" + result);
-				Message msg = new Message();
-				msg.obj = result;
-				handler.sendMessage(msg);
-			}
-		}.start();
-	}
+	QQLoginListener qqLoginListener = new QQLoginListener() {
+
+		@Override
+		public void onSuccess() {
+			handler.sendEmptyMessageDelayed(QQLoginSuccess, 500);
+		}
+
+		@Override
+		public void onFail(String errString) {
+			dimissProgressbar();
+			toast(errString);
+		}
+	};
 
 	Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
-			String result = (String) msg.obj;
-			if (result != null) {
+			switch (msg.what) {
+			case QQLoginSuccess:
 				onLoginSuccess();
-			} else {
+				break;
 
+			default:
+				break;
 			}
 		};
 	};

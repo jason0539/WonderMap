@@ -85,5 +85,6 @@ public class SharePreferenceUtil {
 		editor.putString(key, value);
 		editor.commit();
 	}
+	//＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝qq登陆，用来保存用户名等信息，确认信息的时候取出＝＝＝＝＝＝＝＝
 
 }

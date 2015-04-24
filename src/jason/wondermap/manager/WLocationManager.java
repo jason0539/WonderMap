@@ -71,7 +71,8 @@ public class WLocationManager {
 
 		@Override
 		public void onReceiveLocation(BDLocation location) {
-			if (location == null)
+			if (location == null || location.getLatitude() == 0
+					|| location.getLongitude() == 0)
 				return;
 			lastBdLocation = location;
 			lastGeoPoint = new BmobGeoPoint(location.getLongitude(),

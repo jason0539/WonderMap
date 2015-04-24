@@ -27,10 +27,10 @@ public class TencentShareEntity {
 
     /**
      * 设置动态分享参数
-     * @param title
-     * @param imgUrl
-     * @param targetUrl
-     * @param summary
+     * @param title 分享的标题
+     * @param imgUrl 分享的图片
+     * @param targetUrl 点击分享的跳转连接
+     * @param summary 分享的足迹内容
      */
     public TencentShareEntity(String title, String imgUrl, String targetUrl, String summary, String comment) {
         this.title=title;
