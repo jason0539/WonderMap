@@ -17,14 +17,14 @@ public class BlogUtils {
 		String district = location.getDistrict();
 		StringBuffer buffer = new StringBuffer();
 		if (pro != null && !pro.equals("")) {
-			buffer.append(pro.substring(0, pro.length()-1)).append("-");
+			buffer.append(pro.substring(0, pro.length() - 1)).append("-");
 		}
 		if (city != null && !city.equals("")) {
-			buffer.append(city.substring(0, city.length()-1)).append("-");
+			buffer.append(city.substring(0, city.length() - 1)).append("-");
 		}
-		if (district != null && !district.equals("")) {
-			buffer.append(district.substring(0, district.length()-1));
-		}
+		// if (district != null && !district.equals("")) {
+		// buffer.append(district.substring(0, district.length()-1));
+		// }
 		if (buffer.length() == 0) {
 			return "未知区域";
 		} else {
@@ -80,8 +80,7 @@ public class BlogUtils {
 	}
 
 	public static String getAgoTime(long l) {
-		SimpleDateFormat format = new SimpleDateFormat(
-				TimeUtil.FORMAT_MONTH_DAY_TIME);
+		SimpleDateFormat format = new SimpleDateFormat("MM月dd日  HH:mm");
 		return format.format(new Date(l));
 	}
 

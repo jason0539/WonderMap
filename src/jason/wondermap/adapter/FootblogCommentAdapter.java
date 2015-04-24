@@ -15,7 +15,6 @@ public class FootblogCommentAdapter  extends BaseContentAdapter<BlogComment>{
 
 	public FootblogCommentAdapter(Context context, List<BlogComment> list) {
 		super(context, list);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

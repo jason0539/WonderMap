@@ -93,7 +93,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		final Blog entity = dataList.get(position);
-		L.i("user", entity.toString());
 		User user = entity.getAuthor();
 		if (user == null) {
 			L.i("user", "USER IS NULL");
@@ -118,11 +117,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 					mainActivity.startActivity(new Intent(mainActivity,
 							LoginActivity.class));
 					mainActivity.finish();
-					// Intent intent = new Intent();
-					// intent.setClass(mContext,
-					// RegisterAndLoginActivity.class);
-					// MyApplication.getInstance().getTopActivity()
-					// .startActivity(intent);
 					return;
 				}
 				Bundle bundle = new Bundle();
@@ -148,12 +142,14 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 		// 时间
 		viewHolder.blogDate.setText(BlogUtils.getTime(entity.getCreatedAt()));
 		// 地点
-		viewHolder.blogAddress.setText(BlogUtils.getAddress(entity.getBdLocation()));
+		viewHolder.blogAddress.setText(BlogUtils.getAddress(entity
+				.getBdLocation()));
 		// 距离
 		viewHolder.blogDistance.setText(BlogUtils.getDistance(entity
 				.getLocation()));
 		// 文字内容
 		viewHolder.contentText.setText(entity.getContent());
+		//图片
 		if (null == entity.getContentfigureurl()) {
 			viewHolder.contentImage.setVisibility(View.GONE);
 		} else {
@@ -169,7 +165,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 								@Override
 								public void onLoadingComplete(String imageUri,
 										View view, Bitmap loadedImage) {
-									// TODO Auto-generated method stub
 									super.onLoadingComplete(imageUri, view,
 											loadedImage);
 									float[] cons = ActivityUtil
@@ -186,15 +181,15 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 								}
 							});
 		}
+		// 赞
 		viewHolder.love.setText(entity.getLove() + "");
-		L.i("love", entity.getMyLove() + "..");
 		if (entity.getMyLove()) {
 			viewHolder.love.setTextColor(Color.parseColor("#D95555"));
 		} else {
 			viewHolder.love.setTextColor(Color.parseColor("#000000"));
 		}
-		viewHolder.hate.setText(entity.getHate() + "");
 		viewHolder.love.setOnClickListener(new OnClickListener() {
+			//TODO 优化：这里收藏、点赞有关联，有本地存储，后期优化梳理逻辑
 			boolean oldFav = entity.getMyFav();
 
 			@Override
@@ -205,11 +200,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 					mainActivity.startActivity(new Intent(mainActivity,
 							LoginActivity.class));
 					mainActivity.finish();
-					// Intent intent = new Intent();
-					// intent.setClass(mContext,
-					// RegisterAndLoginActivity.class);
-					// MyApplication.getInstance().getTopActivity()
-					// .startActivity(intent);
 					return;
 				}
 				if (entity.getMyLove()) {
@@ -234,7 +224,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 				entity.update(mContext, new UpdateListener() {
 					@Override
 					public void onSuccess() {
-						// TODO Auto-generated method stub
 						entity.setMyLove(true);
 						entity.setMyFav(oldFav);
 						DatabaseUtil.getInstance(mContext).insertFav(entity);
@@ -251,6 +240,8 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 				});
 			}
 		});
+		// 踩
+		viewHolder.hate.setText(entity.getHate() + "");
 		viewHolder.hate.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -261,59 +252,46 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 				entity.update(mContext, new UpdateListener() {
 					@Override
 					public void onSuccess() {
-						// TODO Auto-generated method stub
 						T.showShort(mContext, "点踩成功~");
 					}
 
 					@Override
 					public void onFailure(int arg0, String arg1) {
-						// TODO Auto-generated method stub
 					}
 				});
 			}
 		});
+		//分享
 		viewHolder.share.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// MyApplication.getInstance().getTopActivity()
-				// share to sociaty
-				T.showShort(mContext, "分享给好友看哦~");
+				T.showShort(mContext, "分享给好友看看吧~");
 				final TencentShare tencentShare = new TencentShare(BaseFragment
 						.getMainActivity(), getQQShareEntity(entity));
 				tencentShare.shareToQQ();
 			}
 		});
+		//评论
+		viewHolder.comment.setText(entity.getComment()+"");
 		viewHolder.comment.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				// 评论
-				// MyApplication.getInstance().setCurrentQiangYu(entity);
 				if (AccountUserManager.getInstance().getCurrentUser() == null) {
 					T.showShort(mContext, "请先登录。");
 					Activity mainActivity = BaseFragment.getMainActivity();
 					mainActivity.startActivity(new Intent(mainActivity,
 							LoginActivity.class));
 					mainActivity.finish();
-					// Intent intent = new Intent();
-					// intent.setClass(mContext,
-					// RegisterAndLoginActivity.class);
-					// MyApplication.getInstance().getTopActivity()
-					// .startActivity(intent);
 					return;
 				}
 				Bundle bundle = new Bundle();
 				bundle.putSerializable(BundleTake.CommentItemData, entity);
 				BaseFragment.getWMFragmentManager().showFragment(
 						WMFragmentManager.TYPE_FOOTBLOG_COMMENT, bundle);
-				// 点击评论按钮进入评论页面
-				// Intent intent = new Intent();
-				// intent.setClass(MyApplication.getInstance().getTopActivity(),
-				// CommentActivity.class);
-				// intent.putExtra("data", entity);
-				// mContext.startActivity(intent);
 			}
 		});
+		//收藏
 		if (entity.getMyFav()) {
 			viewHolder.favMark
 					.setImageResource(R.drawable.ic_action_fav_choose);
@@ -324,8 +302,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 		viewHolder.favMark.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				// 收藏
 				T.showShort(mContext, "收藏");
 				onClickFav(v, entity);
 			}
@@ -369,7 +345,6 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 	}
 
 	private void onClickFav(View v, final Blog qiangYu) {
-		// TODO Auto-generated method stub
 		User user = BmobUser.getCurrentUser(mContext, User.class);
 		if (user != null && user.getSessionToken() != null) {
 			BmobRelation favRelaton = new BmobRelation();

@@ -55,21 +55,7 @@
             android:textColor="#2BA2E5" />
         <!-- 距离 -->
 
-        <TextView
-            android:id="@+id/blog_item_blog_distance"
-            style="@style/FootblogTopTextview"
-            android:layout_alignBottom="@id/user_logo"
-            android:layout_toLeftOf="@+id/blog_item_view"
-            android:text="12km" />
 
-        <View
-            android:id="@+id/blog_item_view"
-            android:layout_width="1px"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/user_logo"
-            android:layout_alignTop="@+id/blog_item_blog_date"
-            android:layout_toLeftOf="@+id/blog_item_blog_date"
-            android:background="#888888" />
         <!-- 时间 -->
 
         <TextView
@@ -87,7 +73,7 @@
         android:layout_alignLeft="@id/blog_item_top"
         android:layout_below="@id/blog_item_top"
         android:paddingBottom="8dp"
-        android:paddingTop="8dp"
+        android:paddingTop="16dp"
         android:text="十年之前，我不认识你 你不属于我，我们还是一样，陪在一个陌生人左右，走过渐渐熟悉的街头;十年之后，我们是朋友， 还可以问候，只是那种温柔，再也找不到拥抱的理由，情人最后难免沦为朋友。" />
 
     <ImageView
@@ -115,8 +101,29 @@
             style="@style/FootblogBottomTextview"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
+            android:layout_marginRight="0dp"
             android:layout_marginLeft="0dp"
             android:text="山东" />
+
+       <!--  <View
+            android:id="@+id/blog_item_view"
+            android:layout_width="1px"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/blog_item_blog_address"
+            android:layout_alignTop="@+id/blog_item_blog_address"
+            android:layout_toRightOf="@+id/blog_item_blog_address"
+            android:background="#888888" /> -->
+
+        <TextView
+            android:id="@+id/blog_item_blog_distance"
+            style="@style/FootblogBottomTextview"
+            android:layout_alignBottom="@id/blog_item_blog_address"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_toRightOf="@+id/blog_item_blog_address"
+            android:text="12km" />
+
         <!-- 收藏 -->
 
         <ImageView

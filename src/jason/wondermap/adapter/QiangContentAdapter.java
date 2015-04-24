@@ -10,12 +10,10 @@ public class QiangContentAdapter extends SmartFragmentStatePagerAdapter {
 
 	public QiangContentAdapter(FragmentManager fragmentManager) {
 		super(fragmentManager);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public Fragment getItem(int position) {
-		// TODO Auto-generated method stub
 		if(this.getRegisteredFragment(position)!=null){
 			return getRegisteredFragment(position);
 		}else{
