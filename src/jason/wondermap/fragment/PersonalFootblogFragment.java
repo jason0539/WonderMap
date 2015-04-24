@@ -1,7 +1,7 @@
 package jason.wondermap.fragment;
 
 import jason.wondermap.R;
-import jason.wondermap.adapter.PersonCenterContentAdapter;
+import jason.wondermap.adapter.AIContentAdapter;
 import jason.wondermap.bean.Blog;
 import jason.wondermap.bean.User;
 import jason.wondermap.config.BundleTake;
@@ -39,6 +39,10 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+/**
+ * @author liuzhenhui
+ * 
+ */
 public class PersonalFootblogFragment extends ContentFragment implements
 		OnClickListener {
 	private String TAG = "PersonalFootblogFragment";
@@ -53,7 +57,7 @@ public class PersonalFootblogFragment extends ContentFragment implements
 	private ListView mListView;
 
 	private ArrayList<Blog> mQiangYus;
-	private PersonCenterContentAdapter mAdapter;
+	private AIContentAdapter mAdapter;
 
 	private User mUser;
 
@@ -169,7 +173,7 @@ public class PersonalFootblogFragment extends ContentFragment implements
 				});
 		mListView = mPullToRefreshListView.getRefreshableView();
 		mQiangYus = new ArrayList<Blog>();
-		mAdapter = new PersonCenterContentAdapter(mContext, mQiangYus);
+		mAdapter = new AIContentAdapter(mContext, mQiangYus);
 		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -182,9 +186,10 @@ public class PersonalFootblogFragment extends ContentFragment implements
 				// intent.setClass(getActivity(), CommentActivity.class);
 				// intent.putExtra("data", mQiangYus.get(position - 1));
 				// startActivity(intent);
-				FootblogManager.getInstance().setCurrentBlog(mQiangYus.get(position - 1));
-				wmFragmentManager.showFragment(
-						WMFragmentManager.TYPE_FOOTBLOG_COMMENT);
+				FootblogManager.getInstance().setCurrentBlog(
+						mQiangYus.get(position - 1));
+				wmFragmentManager
+						.showFragment(WMFragmentManager.TYPE_FOOTBLOG_COMMENT);
 			}
 		});
 	}

@@ -38,6 +38,11 @@ import cn.bmob.v3.listener.UpdateListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+/**
+ * @author liuzhenhui
+ * 
+ */
+@Deprecated
 public class PersonCenterContentAdapter extends BaseContentAdapter<Blog> {
 
 	public static final String TAG = "AIContentAdapter";

@@ -43,6 +43,9 @@ import cn.bmob.v3.listener.UpdateListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+/**
+ * @author liuzhenhui 所有足迹卡片都用这一个适配器，之后可以考虑带参数进来，进行自定义响应事件
+ */
 public class AIContentAdapter extends BaseContentAdapter<Blog> {
 	public static final String TAG = "AIContentAdapter";
 	public static final int SAVE_FAVOURITE = 2;
@@ -56,7 +59,9 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 		mContext = context;
 	}
 
-	/**给足迹评论页使用的，在评论页面点击评论，应该弹出键盘
+	/**
+	 * 给足迹评论页使用的，在评论页面点击评论，应该弹出键盘
+	 * 
 	 * @param context
 	 * @param list
 	 * @param lClickListener
@@ -290,9 +295,9 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 		viewHolder.comment.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (outsideClickListener!=null) {
+				if (outsideClickListener != null) {
 					outsideClickListener.onClick(v);
-					return ;
+					return;
 				}
 				// 评论
 				if (AccountUserManager.getInstance().getCurrentUser() == null) {

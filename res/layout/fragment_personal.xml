@@ -53,7 +53,8 @@
             android:layout_alignParentRight="true"
             android:layout_alignTop="@id/personl_name"
             android:scaleType="centerInside"
-            android:src="@drawable/bg_go_settings" />
+            android:src="@drawable/bg_go_settings"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <TextView
