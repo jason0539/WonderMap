@@ -9,7 +9,7 @@ public class FootblogManager {
 		return currentBlog;
 	}
 
-	public void setCurrentQiangYu(Blog blog) {
+	public void setCurrentBlog(Blog blog) {
 		this.currentBlog = blog;
 	}
 

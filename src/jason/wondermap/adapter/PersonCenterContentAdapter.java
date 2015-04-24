@@ -105,7 +105,7 @@ public class PersonCenterContentAdapter extends BaseContentAdapter<Blog> {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				FootblogManager.getInstance().setCurrentQiangYu(entity);
+				FootblogManager.getInstance().setCurrentBlog(entity);
 				// User currentUser =
 				// BmobUser.getCurrentUser(mContext,User.class);
 				// if(currentUser != null){//已登录
@@ -238,7 +238,7 @@ public class PersonCenterContentAdapter extends BaseContentAdapter<Blog> {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				// 评论
-				FootblogManager.getInstance().setCurrentQiangYu(entity);
+				FootblogManager.getInstance().setCurrentBlog(entity);
 				// Intent intent = new Intent();
 				// intent.setClass(MyApplication.getInstance().getTopActivity(),
 				// CommentActivity.class);

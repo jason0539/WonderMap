@@ -182,11 +182,9 @@ public class PersonalFootblogFragment extends ContentFragment implements
 				// intent.setClass(getActivity(), CommentActivity.class);
 				// intent.putExtra("data", mQiangYus.get(position - 1));
 				// startActivity(intent);
-				Bundle bundle = new Bundle();
-				bundle.putSerializable(BundleTake.CommentItemData,
-						mQiangYus.get(position - 1));
+				FootblogManager.getInstance().setCurrentBlog(mQiangYus.get(position - 1));
 				wmFragmentManager.showFragment(
-						WMFragmentManager.TYPE_FOOTBLOG_COMMENT, bundle);
+						WMFragmentManager.TYPE_FOOTBLOG_COMMENT);
 			}
 		});
 	}

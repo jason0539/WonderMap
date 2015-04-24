@@ -10,6 +10,7 @@ import jason.wondermap.dao.DatabaseUtil;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.manager.AccountUserManager;
+import jason.wondermap.manager.FootblogManager;
 import jason.wondermap.sns.TencentShare;
 import jason.wondermap.sns.TencentShareEntity;
 import jason.wondermap.utils.ActivityUtil;
@@ -47,11 +48,24 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 	public static final int SAVE_FAVOURITE = 2;
 	public static final int NUMBERS_PER_PAGE = 15;// 每次请求返回评论条数
 	private Context mContext;
+	private OnClickListener outsideClickListener;
 
 	// 女生颜色#EC197D 男生#2BA2E5
 	public AIContentAdapter(Context context, List<Blog> list) {
 		super(context, list);
 		mContext = context;
+	}
+
+	/**给足迹评论页使用的，在评论页面点击评论，应该弹出键盘
+	 * @param context
+	 * @param list
+	 * @param lClickListener
+	 */
+	public AIContentAdapter(Context context, List<Blog> list,
+			OnClickListener lClickListener) {
+		super(context, list);
+		mContext = context;
+		outsideClickListener = lClickListener;
 	}
 
 	@Override
@@ -149,7 +163,7 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 				.getLocation()));
 		// 文字内容
 		viewHolder.contentText.setText(entity.getContent());
-		//图片
+		// 图片
 		if (null == entity.getContentfigureurl()) {
 			viewHolder.contentImage.setVisibility(View.GONE);
 		} else {
@@ -189,7 +203,7 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 			viewHolder.love.setTextColor(Color.parseColor("#000000"));
 		}
 		viewHolder.love.setOnClickListener(new OnClickListener() {
-			//TODO 优化：这里收藏、点赞有关联，有本地存储，后期优化梳理逻辑
+			// TODO 优化：这里收藏、点赞有关联，有本地存储，后期优化梳理逻辑
 			boolean oldFav = entity.getMyFav();
 
 			@Override
@@ -261,7 +275,7 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 				});
 			}
 		});
-		//分享
+		// 分享
 		viewHolder.share.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -271,11 +285,15 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 				tencentShare.shareToQQ();
 			}
 		});
-		//评论
-		viewHolder.comment.setText(entity.getComment()+"");
+		// 评论
+		viewHolder.comment.setText(entity.getComment() + "");
 		viewHolder.comment.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (outsideClickListener!=null) {
+					outsideClickListener.onClick(v);
+					return ;
+				}
 				// 评论
 				if (AccountUserManager.getInstance().getCurrentUser() == null) {
 					T.showShort(mContext, "请先登录。");
@@ -285,13 +303,12 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 					mainActivity.finish();
 					return;
 				}
-				Bundle bundle = new Bundle();
-				bundle.putSerializable(BundleTake.CommentItemData, entity);
+				FootblogManager.getInstance().setCurrentBlog(entity);
 				BaseFragment.getWMFragmentManager().showFragment(
-						WMFragmentManager.TYPE_FOOTBLOG_COMMENT, bundle);
+						WMFragmentManager.TYPE_FOOTBLOG_COMMENT);
 			}
 		});
-		//收藏
+		// 收藏
 		if (entity.getMyFav()) {
 			viewHolder.favMark
 					.setImageResource(R.drawable.ic_action_fav_choose);

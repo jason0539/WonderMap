@@ -7,6 +7,7 @@ import jason.wondermap.config.BundleTake;
 import jason.wondermap.config.WMapConstants;
 import jason.wondermap.dao.DatabaseUtil;
 import jason.wondermap.manager.AccountUserManager;
+import jason.wondermap.manager.FootblogManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.T;
 
@@ -155,11 +156,9 @@ public class QiangContentFragment extends RealFragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Bundle bundle = new Bundle();
-				bundle.putSerializable(BundleTake.CommentItemData,
-						mListItems.get(position - 1));
+				FootblogManager.getInstance().setCurrentBlog(mListItems.get(position - 1));
 				BaseFragment.getWMFragmentManager().showFragment(
-						WMFragmentManager.TYPE_FOOTBLOG_COMMENT, bundle);
+						WMFragmentManager.TYPE_FOOTBLOG_COMMENT);
 			}
 		});
 		return contentView;

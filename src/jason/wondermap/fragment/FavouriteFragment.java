@@ -4,6 +4,7 @@ import jason.wondermap.adapter.AIContentAdapter;
 import jason.wondermap.adapter.BaseContentAdapter;
 import jason.wondermap.bean.Blog;
 import jason.wondermap.config.BundleTake;
+import jason.wondermap.manager.FootblogManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,11 +23,8 @@ public class FavouriteFragment extends CommonPullRefreshFragment {
 	@Override
 	public void onListItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		Bundle bundle = new Bundle();
-		bundle.putSerializable(BundleTake.CommentItemData,
-				mListItems.get(position - 1));
-		wmFragmentManager.showFragment(WMFragmentManager.TYPE_FOOTBLOG_COMMENT,
-				bundle);
+		FootblogManager.getInstance().setCurrentBlog(mListItems.get(position - 1));
+		wmFragmentManager.showFragment(WMFragmentManager.TYPE_FOOTBLOG_COMMENT);
 	}
 
 }
