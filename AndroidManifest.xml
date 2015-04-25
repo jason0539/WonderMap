@@ -77,8 +77,8 @@
 
     <application
         android:name="jason.wondermap.WonderMapApplication"
-        android:icon="@drawable/ic_app_icon"
         android:allowBackup="true"
+        android:icon="@drawable/ic_app_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
@@ -109,7 +109,12 @@
         <!-- 地图服务验证 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="784FwY2gl6Wh4tIyWg639AGl" />
+            android:value="QOHuuTEiozH0tib8YO0t51Go" />
+        <!-- eclipse调试使用 -->
+        <!-- 784FwY2gl6Wh4tIyWg639AGl -->
+        
+        <!-- ant签名打包使用 -->
+        <!-- QOHuuTEiozH0tib8YO0t51Go -->
         <!-- BaiduMap end -->
 
 
