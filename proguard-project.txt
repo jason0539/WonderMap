@@ -96,3 +96,7 @@
 -libraryjars libs/BaiduLBS_Android.jar
 -keep class com.baidu.** { *; }
 -keep class vi.com.gdi.bgl.android.**{*;}
+#小米应用商店更新
+-keep public class jason.wondermap.R$*{
+    public static final int *;
+}

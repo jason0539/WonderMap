@@ -12,6 +12,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
+    <!-- 小米应用商店自动更新 -->
+    <uses-permission android:name="com.xiaomi.market.sdk.UPDATE" />
+
     <!-- Push SDK权限 -->
     <permission
         android:name="cn.bmob.permission.push"
@@ -112,7 +115,8 @@
             android:value="QOHuuTEiozH0tib8YO0t51Go" />
         <!-- eclipse调试使用 -->
         <!-- 784FwY2gl6Wh4tIyWg639AGl -->
-        
+
+
         <!-- ant签名打包使用 -->
         <!-- QOHuuTEiozH0tib8YO0t51Go -->
         <!-- BaiduMap end -->
@@ -154,7 +158,12 @@
                 <action android:name="cn.bmob.im.service.BmobPollService" />
             </intent-filter>
         </service>
-
+        <!-- 小米应用商店自动更新 -->
+        <receiver android:name="com.xiaomi.market.sdk.DownloadCompleteReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+            </intent-filter>
+        </receiver>
         <!-- QQ 分享 -->
         <!-- openqq -->
         <activity

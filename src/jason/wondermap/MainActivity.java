@@ -25,11 +25,13 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.Toast;
 
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 
 import com.baidu.mapapi.map.MapView;
+import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
 public class MainActivity extends FragmentActivity {
 	private WMFragmentManager fragmentManager;
@@ -43,6 +45,9 @@ public class MainActivity extends FragmentActivity {
 		L.d(WModel.MainActivity, "onCreate");
 		setContentView(R.layout.activity_main);
 		initView();
+		// 设置小米自动更新组件，仅wifi下更新
+		XiaomiUpdateAgent.setCheckUpdateOnlyWifi(true);
+		XiaomiUpdateAgent.update(this);
 		fragmentManager = new WMFragmentManager(this);
 		BaseFragment.initBeforeAll(this);
 		WMapControler.getInstance().init(mMapView);
@@ -60,8 +65,8 @@ public class MainActivity extends FragmentActivity {
 		if (isNeedTo) {
 			L.d(WModel.NeedToEditInfo, "需要确认信息");
 			Bundle bundle = new Bundle();
-			bundle.putString(UserInfo.USER_ID, AccountUserManager
-					.getInstance().getCurrentUserid());
+			bundle.putString(UserInfo.USER_ID, AccountUserManager.getInstance()
+					.getCurrentUserid());
 			bundle.putBoolean(BundleTake.NeedToEditInfo, true);
 			fragmentManager.showFragment(WMFragmentManager.TYPE_USERINFO,
 					bundle);
