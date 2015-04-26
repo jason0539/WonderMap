@@ -45,10 +45,10 @@ public class BlogUtils {
 		double dis = point.distanceInKilometersTo(bmobGeoPoint);
 		if (dis < 1) {
 			int distance = (int) (dis * 1000);
-			return "-" + distance + "米";
+			return "-" + distance + "m";
 		} else {
 			int distance = (int) dis;
-			return "-" + distance + "千米";
+			return "-" + distance + "km";
 		}
 	}
 

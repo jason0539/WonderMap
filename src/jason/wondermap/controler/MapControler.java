@@ -5,6 +5,7 @@ import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.MapUser;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.WMFragmentManager;
+import jason.wondermap.helper.MapStatusSaveHelper;
 import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.L;
@@ -55,6 +56,7 @@ import com.baidu.mapapi.model.LatLng;
  */
 public class MapControler {
 	private Context mContext;
+	private MapStatusSaveHelper statusSaveHelper;
 	private MapView mMapView;// 地图图层
 	private BaiduMap mBaiduMap;// 地图控制
 	private LatLng currentPt;// 当前触摸地点
@@ -70,71 +72,84 @@ public class MapControler {
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝地图动作控制＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	// －－－－－－－－－－－－－－－－－－－－－放大缩小控制===================================
-	public static final int Speed_Normal = 500;
+	public static final int Speed_Normal = 700;
 
 	/**
-	 * 处理缩放 sdk 缩放级别范围： [3.0,20.0]，越大越详细
+	 * 默认缩小3倍
 	 */
-	public void perfomZoom(float zoomLevel) {
-		perfomZoom(zoomLevel, Speed_Normal);
-	}
-
-	public void perfomZoom(float zoomlevel, int speed) {
-		if (zoomlevel < 3 || zoomlevel > 20) {
-			L.d("请输入正确的缩放级别");
-			return;
-		}
-		MapStatusUpdate u = MapStatusUpdateFactory.zoomTo(zoomlevel);
-		mBaiduMap.animateMapStatus(u, speed);
+	public void zoomOut() {
+		L.d(WModel.MapControl, "缩小");
+		float level = 0;
+		level = mBaiduMap.getMapStatus().zoom - 3;
+		zoomOut(level < 3 ? 3 : level);
 	}
 
 	/**
-	 * 指定中心，以指定速度，缩放到级别level
-	 * 
-	 * @param level
-	 * @param ll
-	 * @param speed
+	 * 缩小到指定级别
 	 */
-	public void performZoom(float level, LatLng ll, int speed) {
+	public void zoomOut(float level) {
+		zoomOut(mBaiduMap.getMapStatus().target, level);
+	}
+
+	/**
+	 * 以某点为中心缩放到指定级别
+	 */
+	public void zoomOut(LatLng latLng, float level) {
+		zoomOut(latLng, level, Speed_Normal);
+	}
+
+	/**
+	 * 指定中心，以指定速度，缩放到级别level,最后一级慢速
+	 */
+	public void zoomOut(LatLng latLng, final float level, int speed) {
 		if (level < 3 || level > 20) {
 			L.d("请输入正确的缩放级别");
 			return;
 		}
-		MapStatus ms = new Builder(mBaiduMap.getMapStatus()).target(ll)
+		MapStatus ms = new Builder(mBaiduMap.getMapStatus()).target(latLng)
 				.zoom(level).build();
 		MapStatusUpdate update = MapStatusUpdateFactory.newMapStatus(ms);
 		mBaiduMap.animateMapStatus(update, speed);
 	}
 
 	/**
-	 * 指定中心，以默认速度，缩放到级别level
-	 * 
-	 * @param level
-	 * @param ll
+	 * 默认放大3倍
 	 */
-	public void perfomZoom(float level, LatLng ll) {
-		performZoom(level, ll, Speed_Normal);
-	}
-
-	public void big(LatLng ll, float level) {
-		perfomZoom(level > 20 ? 20 : level, ll);
-	}
-
-	public void big(LatLng ll) {
-		float level = mBaiduMap.getMapStatus().zoom + 3;
-		perfomZoom(level > 20 ? 20 : level, ll);
-	}
-
-	public void big() {
+	public void zoomIn() {
+		if (mBaiduMap.getMapStatus().zoom == mBaiduMap.getMaxZoomLevel()) {
+			return;
+		}
 		L.d(WModel.MapControl, "放大");
-		float level = mBaiduMap.getMapStatus().zoom + 2;
-		perfomZoom(level > 20 ? 20 : level);
+		float level = mBaiduMap.getMapStatus().zoom + 3;
+		zoomIn(level > 20 ? 20 : level);
 	}
 
-	public void small() {
-		L.d(WModel.MapControl, "缩小");
-		float level = mBaiduMap.getMapStatus().zoom - 3;
-		perfomZoom(level < 3 ? 3 : level);
+	/**
+	 * 放大到指定级别
+	 */
+	public void zoomIn(float level) {
+		zoomIn(mBaiduMap.getMapStatus().target, level);
+	}
+
+	/**
+	 * 以某点为中心放大到指定级别
+	 */
+	public void zoomIn(LatLng latLng, float level) {
+		zoomIn(latLng, level, Speed_Normal);
+	}
+
+	/**
+	 * 指定中心，以指定速度，放大到级别level
+	 */
+	public void zoomIn(LatLng latLng, final float level, int speed) {
+		if (level < 3 || level > 20) {
+			L.d("请输入正确的缩放级别");
+			return;
+		}
+		MapStatus ms = new Builder(mBaiduMap.getMapStatus()).target(latLng)
+				.zoom(level).build();
+		MapStatusUpdate update = MapStatusUpdateFactory.newMapStatus(ms);
+		mBaiduMap.animateMapStatus(update, speed);
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝旋转控制＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -215,26 +230,6 @@ public class MapControler {
 	public static final int ZoomLevelMin = 3;
 
 	/**
-	 * 地图移动到指定位置
-	 * 
-	 * @param lat
-	 * @param lng
-	 */
-	public void moveToLoc(LatLng latLng, float level) {
-		MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(latLng, level);// 默认以当前坐标为中心，最大化显示
-		mBaiduMap.animateMapStatus(u, 500);
-	}
-
-	/**
-	 * 以当前缩放水平移动到指定地点
-	 * 
-	 * @param latLng
-	 */
-	public void moveToLoc(LatLng latLng) {
-		moveToLoc(latLng, mBaiduMap.getMapStatus().zoom);
-	}
-
-	/**
 	 * 移动到我的位置
 	 */
 	public void moveToMylocation() {
@@ -242,16 +237,32 @@ public class MapControler {
 				WLocationManager.getInstance().getLongtitude()));
 	}
 
-	public void moveToMylocationLongPress() {
-		moveToLoc(new LatLng(WLocationManager.getInstance().getLatitude(),
-				WLocationManager.getInstance().getLongtitude()), ZoomLevelMax);
-		new Timer().schedule(new TimerTask() {
+	/**
+	 * 以当前缩放水平移动到指定地点
+	 */
+	public void moveToLoc(LatLng latLng) {
+		moveToLoc(latLng, mBaiduMap.getMapStatus().zoom);
+	}
 
-			@Override
-			public void run() {
-				perfomZoom(ZoomLevelMax - 1, 2000);
-			}
-		}, 600);
+	/**
+	 * 地图移动到指定位置
+	 */
+	public void moveToLoc(LatLng latLng, float level) {
+		MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(latLng, level);// 默认以当前坐标为中心，最大化显示
+		mBaiduMap.animateMapStatus(u, Speed_Normal);
+	}
+
+	public void moveToMylocationLongPress() {
+		// 缩放水平在校级，则直接移动过去
+		if (mBaiduMap.getMapStatus().zoom > ZoomLevelSchool) {
+			moveToMylocation();
+		}
+		// 否则放大到校级并且移动到当前位置
+		else {
+			zoomIn(new LatLng(WLocationManager.getInstance().getLatitude(),
+					WLocationManager.getInstance().getLongtitude()),
+					ZoomLevelSchool);
+		}
 	}
 
 	/**
@@ -418,6 +429,7 @@ public class MapControler {
 		state += String.format("zoom=%.1f rotate=%d overlook=%d", ms.zoom,
 				(int) ms.rotate, (int) ms.overlook);
 		L.d(WModel.MapClick, state);
+		statusSaveHelper.save(ms);
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -438,7 +450,10 @@ public class MapControler {
 		mBaiduMap.setOnMarkerClickListener(onMarkerClickListener);//
 		mCurrentMode = LocationMode.NORMAL;
 		mCurrentMarker = null;// null则为默认
+		statusSaveHelper = new MapStatusSaveHelper();
 		initListener();
+		//恢复到上次的地图状态
+		mBaiduMap.animateMapStatus(statusSaveHelper.getStatus(mBaiduMap));
 	}
 
 	public void unInit() {
@@ -460,7 +475,7 @@ public class MapControler {
 			public void onMapClick(LatLng point) {
 				touchType = "单击";
 				currentPt = point;
-				updateMapState();
+				// updateMapState();
 			}
 
 			public boolean onMapPoiClick(MapPoi poi) {
@@ -471,22 +486,22 @@ public class MapControler {
 			public void onMapLongClick(LatLng point) {
 				touchType = "长按";
 				currentPt = point;
-				updateMapState();
+				// updateMapState();
 				float level = mBaiduMap.getMapStatus().zoom + 3;
-				big(point, level > ZoomLevelMax ? ZoomLevelMax : level);
+				zoomIn(point, level > ZoomLevelMax ? ZoomLevelMax : level);
 			}
 		});
 		mBaiduMap.setOnMapDoubleClickListener(new OnMapDoubleClickListener() {
 			public void onMapDoubleClick(LatLng point) {
 				touchType = "双击";
 				currentPt = point;
-				big(point);
-				updateMapState();
+				// zoomIn(point);
+				// updateMapState();
 			}
 		});
 		mBaiduMap.setOnMapStatusChangeListener(new OnMapStatusChangeListener() {
 			public void onMapStatusChangeStart(MapStatus status) {
-				updateMapState();
+				// updateMapState();
 			}
 
 			public void onMapStatusChangeFinish(MapStatus status) {
@@ -494,7 +509,7 @@ public class MapControler {
 			}
 
 			public void onMapStatusChange(MapStatus status) {
-				updateMapState();
+				// updateMapState();
 			}
 		});
 	}

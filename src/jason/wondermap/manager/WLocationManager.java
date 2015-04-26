@@ -29,7 +29,6 @@ public class WLocationManager {
 	private SharedPreferences preferences;
 	private SharedPreferences.Editor editor;
 
-	private boolean isFirstLoc = true; // 是否首次定位,首次定为成功直接发送hello消息
 	private LocationClient mLocationClient;
 	private MyLocationListener mMyLocationListener;
 	private BDLocation lastBdLocation;
@@ -87,10 +86,6 @@ public class WLocationManager {
 					.build();
 			MapControler.getInstance().setMyLocationData(locData);
 			saveLocation();// 保存当前位置
-			if (isFirstLoc) {// 第一次定位成功，移动地图，发送hello消息
-				isFirstLoc = false;
-				MapControler.getInstance().moveToLoc(new LatLng(latitude, longtitude));
-			}
 		}
 	}
 

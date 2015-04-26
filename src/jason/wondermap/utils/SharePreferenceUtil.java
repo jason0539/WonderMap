@@ -86,6 +86,14 @@ public class SharePreferenceUtil {
 		editor.putString(key, value);
 		editor.commit();
 	}
-	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝qq登陆，用来保存用户名等信息，确认信息的时候取出＝＝＝＝＝＝＝＝
 
+	// float
+	public float getValue(String key, float defaultValue) {
+		return mSharedPreferences.getFloat(key, defaultValue);
+	}
+	//float
+	public void setValue(String key, float value) {
+		editor.putFloat(key, value);
+		editor.commit();
+	}
 }
