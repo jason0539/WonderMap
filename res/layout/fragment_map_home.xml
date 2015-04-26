@@ -10,35 +10,44 @@
         android:id="@+id/common_actionbar"
         layout="@layout/include_action_bar" />
 
-    <TextView
+    <ImageView
         android:id="@+id/tv_maphome_location"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/main_bottom_bar"
         android:layout_alignParentLeft="true"
-        android:background="@color/theme_bg_color"
+        android:layout_margin="8dp"
+        android:background="@drawable/button_bg"
         android:gravity="center"
-        android:text="定" />
+        android:padding="5dp"
+        android:src="@drawable/map_location" />
 
-    <TextView
+    <ImageView
         android:id="@+id/tv_maphome_big"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_above="@+id/main_bottom_bar"
-        android:layout_toLeftOf="@+id/tv_maphome_small"
-        android:background="@color/theme_bg_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_maphome_small"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_toStartOf="@+id/tv_maphome_small"
+        android:background="@drawable/button_bg"
         android:gravity="center"
-        android:text="大" />
+        android:padding="6dp"
+        android:src="@drawable/map_zoom_in" />
 
-    <TextView
+    <ImageView
         android:id="@+id/tv_maphome_small"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/main_bottom_bar"
         android:layout_alignParentRight="true"
-        android:background="@color/theme_bg_color"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="1px"
+        android:background="@drawable/button_bg"
         android:gravity="center"
-        android:text="小" />
+        android:padding="6dp"
+        android:src="@drawable/map_zoom_out" />
 
     <FrameLayout
         android:id="@+id/main_bottom_bar"

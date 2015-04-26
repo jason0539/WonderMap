@@ -97,12 +97,12 @@ public class MapHomeFragment extends ContentFragment {
 			public boolean onLongClick(View v) {
 				switch (v.getId()) {
 				case R.id.tv_maphome_big:
-//					L.d(WModel.MapControl, "点击放大按钮");
-//					MapControler.getInstance().big();
+					// L.d(WModel.MapControl, "点击放大按钮");
+					// MapControler.getInstance().big();
 					break;
 				case R.id.tv_maphome_small:
-//					L.d(WModel.MapControl, "点击缩小按钮");
-//					MapControler.getInstance().small();
+					// L.d(WModel.MapControl, "点击缩小按钮");
+					// MapControler.getInstance().small();
 					break;
 				case R.id.tv_maphome_location:
 					L.d(WModel.MapControl, "点击定位按钮");
