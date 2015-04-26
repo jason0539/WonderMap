@@ -2,7 +2,7 @@ package jason.wondermap.manager;
 
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.MapUser;
-import jason.wondermap.controler.WMapControler;
+import jason.wondermap.controler.MapControler;
 import jason.wondermap.interfacer.MapUserTransferListener;
 import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.L;
@@ -69,7 +69,7 @@ public class MapUserManager {
 				"ensureAllUsersOnMap into,user count = " + mapUsers.size());
 		HashMap<String, MapUser> users = new HashMap<String, MapUser>(mapUsers);
 		mapUsers.clear();
-		WMapControler.getInstance().clearMarker();// 先把所有marker清除掉
+		MapControler.getInstance().clearMarker();// 先把所有marker清除掉
 		Iterator<Entry<String, MapUser>> iterator = users.entrySet()
 				.iterator();
 		Entry<String, MapUser> entry;
@@ -94,7 +94,7 @@ public class MapUserManager {
 	 * 向地图添加新用户，如果已经添加过则更新位置
 	 */
 	private void addUser(MapUser user) {
-		Marker marker = WMapControler.getInstance().addUser(user);
+		Marker marker = MapControler.getInstance().addUser(user);
 		user.setMarker(marker);
 		mapUsers.put(user.getObjectId(), user);
 	}
@@ -112,7 +112,7 @@ public class MapUserManager {
 		oldUser.setName(username);
 		oldUser.setLat(lat);
 		oldUser.setLng(lng);
-		WMapControler.getInstance().updateUserPosition(oldUser);
+		MapControler.getInstance().updateUserPosition(oldUser);
 	}
 
 	/**

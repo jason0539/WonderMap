@@ -13,4 +13,7 @@ public class WModel {
 	public static String NeedToEditInfo ="NeedToEditInfo";
 	public static String mapMarkerLoad = "mapMarkerLoad";
 	public static String ThirdPlateLogin = "ThirdPlateLogin";
+	public static String MapClick = "MapClick";
+	public static String MapControl = "MapControl";
+	
 }

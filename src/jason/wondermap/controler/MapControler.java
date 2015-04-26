@@ -9,10 +9,13 @@ import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.UserInfo;
+import jason.wondermap.utils.WModel;
 import jason.wondermap.view.MapMarkerView;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Map.Entry;
 
 import android.content.Context;
@@ -32,6 +35,7 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatus.Builder;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
@@ -49,13 +53,13 @@ import com.baidu.mapapi.model.LatLng;
  * @author liuzhenhui
  * 
  */
-public class WMapControler {
+public class MapControler {
 	private Context mContext;
 	private MapView mMapView;// 地图图层
 	private BaiduMap mBaiduMap;// 地图控制
 	private LatLng currentPt;// 当前触摸地点
 	private String touchType;// 触摸事件类型
-	private InfoWindow mInfoWindow;// 点击用户图标弹出窗
+	private InfoWindow mInfoWindow;// 点击用户图标弹出窗,暂时无用
 	private MapMarkerView mapMarkerView;
 
 	private LocationMode mCurrentMode; // 定位模式（普通、跟随、罗盘）
@@ -65,18 +69,75 @@ public class WMapControler {
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝地图动作控制＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	// －－－－－－－－－－－－－－－－－－－－－放大缩小控制===================================
+	public static final int Speed_Normal = 500;
+
 	/**
-	 * 处理缩放 sdk 缩放级别范围： [3.0,19.0]，越大越详细
+	 * 处理缩放 sdk 缩放级别范围： [3.0,20.0]，越大越详细
 	 */
 	public void perfomZoom(float zoomLevel) {
-		if (zoomLevel < 3 || zoomLevel > 19) {
+		perfomZoom(zoomLevel, Speed_Normal);
+	}
+
+	public void perfomZoom(float zoomlevel, int speed) {
+		if (zoomlevel < 3 || zoomlevel > 20) {
 			L.d("请输入正确的缩放级别");
 			return;
 		}
-		MapStatusUpdate u = MapStatusUpdateFactory.zoomTo(zoomLevel);
-		mBaiduMap.animateMapStatus(u);
+		MapStatusUpdate u = MapStatusUpdateFactory.zoomTo(zoomlevel);
+		mBaiduMap.animateMapStatus(u, speed);
 	}
 
+	/**
+	 * 指定中心，以指定速度，缩放到级别level
+	 * 
+	 * @param level
+	 * @param ll
+	 * @param speed
+	 */
+	public void performZoom(float level, LatLng ll, int speed) {
+		if (level < 3 || level > 20) {
+			L.d("请输入正确的缩放级别");
+			return;
+		}
+		MapStatus ms = new Builder(mBaiduMap.getMapStatus()).target(ll)
+				.zoom(level).build();
+		MapStatusUpdate update = MapStatusUpdateFactory.newMapStatus(ms);
+		mBaiduMap.animateMapStatus(update, speed);
+	}
+
+	/**
+	 * 指定中心，以默认速度，缩放到级别level
+	 * 
+	 * @param level
+	 * @param ll
+	 */
+	public void perfomZoom(float level, LatLng ll) {
+		performZoom(level, ll, Speed_Normal);
+	}
+
+	public void big(LatLng ll, float level) {
+		perfomZoom(level > 20 ? 20 : level, ll);
+	}
+
+	public void big(LatLng ll) {
+		float level = mBaiduMap.getMapStatus().zoom + 3;
+		perfomZoom(level > 20 ? 20 : level, ll);
+	}
+
+	public void big() {
+		L.d(WModel.MapControl, "放大");
+		float level = mBaiduMap.getMapStatus().zoom + 2;
+		perfomZoom(level > 20 ? 20 : level);
+	}
+
+	public void small() {
+		L.d(WModel.MapControl, "缩小");
+		float level = mBaiduMap.getMapStatus().zoom - 3;
+		perfomZoom(level < 3 ? 3 : level);
+	}
+
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝旋转控制＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	/**
 	 * 处理旋转 旋转角范围： -180 ~ 180 , 单位：度 逆时针旋转
 	 */
@@ -90,6 +151,7 @@ public class WMapControler {
 		mBaiduMap.animateMapStatus(u);
 	}
 
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝俯角控制＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	/**
 	 * 处理俯视 俯角范围： -45 ~ 0 , 单位： 度
 	 */
@@ -103,6 +165,7 @@ public class WMapControler {
 		mBaiduMap.animateMapStatus(u);
 	}
 
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝方向 罗盘 控制＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	/**
 	 * 转化图层的显示方式，普通、方向、罗盘
 	 * 
@@ -129,16 +192,7 @@ public class WMapControler {
 				mCurrentMode, true, mCurrentMarker));
 	}
 
-	/**
-	 * 自定义定位图标的样式 R.drawable.icon_geo，传入null则恢复默认
-	 */
-	public void changeLocationMarker(int id) {
-		// 修改为自定义marker
-		mCurrentMarker = BitmapDescriptorFactory.fromResource(id);
-		mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
-				mCurrentMode, true, mCurrentMarker));
-	}
-
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝显示位置控制＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	/**
 	 * 设置当前定位到的位置
 	 * 
@@ -152,21 +206,62 @@ public class WMapControler {
 		mBaiduMap.setMyLocationData(myLocData);
 	}
 
+	public static final int ZoomLevelMax = 20;
+	public static final int ZoomLevelSchool = 17;
+	public static final int ZoomLevelDistrict = 14;
+	public static final int ZoomLevelCity = 11;
+	public static final int ZoomLevelProvince = 7;
+	public static final int ZoomLevelCountry = 5;
+	public static final int ZoomLevelMin = 3;
+
 	/**
 	 * 地图移动到指定位置
 	 * 
 	 * @param lat
 	 * @param lng
 	 */
-	public void moveToLoc(double lat, double lng) {
-		LatLng ll = new LatLng(lat, lng);
-		MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(ll, 19);// 默认以当前坐标为中心，最大化显示
-		mBaiduMap.animateMapStatus(u);
+	public void moveToLoc(LatLng latLng, float level) {
+		MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(latLng, level);// 默认以当前坐标为中心，最大化显示
+		mBaiduMap.animateMapStatus(u, 500);
 	}
 
+	/**
+	 * 以当前缩放水平移动到指定地点
+	 * 
+	 * @param latLng
+	 */
+	public void moveToLoc(LatLng latLng) {
+		moveToLoc(latLng, mBaiduMap.getMapStatus().zoom);
+	}
+
+	/**
+	 * 移动到我的位置
+	 */
 	public void moveToMylocation() {
-		moveToLoc(WLocationManager.getInstance().getLatitude(),
-				WLocationManager.getInstance().getLongtitude());
+		moveToLoc(new LatLng(WLocationManager.getInstance().getLatitude(),
+				WLocationManager.getInstance().getLongtitude()));
+	}
+
+	public void moveToMylocationLongPress() {
+		moveToLoc(new LatLng(WLocationManager.getInstance().getLatitude(),
+				WLocationManager.getInstance().getLongtitude()), ZoomLevelMax);
+		new Timer().schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				perfomZoom(ZoomLevelMax - 1, 2000);
+			}
+		}, 600);
+	}
+
+	/**
+	 * 自定义定位图标的样式 R.drawable.icon_geo，传入null则恢复默认
+	 */
+	public void changeLocationMarker(int id) {
+		// 修改为自定义marker
+		mCurrentMarker = BitmapDescriptorFactory.fromResource(id);
+		mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
+				mCurrentMode, true, mCurrentMarker));
 	}
 
 	/**
@@ -177,10 +272,12 @@ public class WMapControler {
 	public void setMapStatus(LatLng latlng) {
 		mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(latlng));
 	}
-	public void setMapStatus(MapStatus status){
+
+	public void setMapStatus(MapStatus status) {
 		mBaiduMap.setMapStatus(MapStatusUpdateFactory.newMapStatus(status));
 	}
-	public MapStatus getMapStatus(){
+
+	public MapStatus getMapStatus() {
 		return mBaiduMap.getMapStatus();
 	}
 
@@ -320,7 +417,7 @@ public class WMapControler {
 		MapStatus ms = mBaiduMap.getMapStatus();
 		state += String.format("zoom=%.1f rotate=%d overlook=%d", ms.zoom,
 				(int) ms.rotate, (int) ms.overlook);
-		// L.d(state);
+		L.d(WModel.MapClick, state);
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -331,12 +428,16 @@ public class WMapControler {
 		mContext = WonderMapApplication.getInstance();
 		mapMarkerView = new MapMarkerView();
 		mMapView = mapView;
+		mMapView.showScaleControl(false);// 隐藏比例尺
+		mMapView.showZoomControls(false);// 隐藏缩放控件
+		mMapView.removeViewAt(1);// 隐藏百度logo
 		mBaiduMap = mMapView.getMap();
-		mBaiduMap.setOnMarkerClickListener(onMarkerClickListener);//
+		mBaiduMap.setMyLocationEnabled(true); // 开启定位图层
+		mBaiduMap.setMaxAndMinZoomLevel(20, (float) 4.5);
 		// 用户的marker点击监听
+		mBaiduMap.setOnMarkerClickListener(onMarkerClickListener);//
 		mCurrentMode = LocationMode.NORMAL;
 		mCurrentMarker = null;// null则为默认
-		mBaiduMap.setMyLocationEnabled(true); // 开启定位图层
 		initListener();
 	}
 
@@ -371,12 +472,15 @@ public class WMapControler {
 				touchType = "长按";
 				currentPt = point;
 				updateMapState();
+				float level = mBaiduMap.getMapStatus().zoom + 3;
+				big(point, level > ZoomLevelMax ? ZoomLevelMax : level);
 			}
 		});
 		mBaiduMap.setOnMapDoubleClickListener(new OnMapDoubleClickListener() {
 			public void onMapDoubleClick(LatLng point) {
 				touchType = "双击";
 				currentPt = point;
+				big(point);
 				updateMapState();
 			}
 		});
@@ -395,14 +499,14 @@ public class WMapControler {
 		});
 	}
 
-	private static WMapControler instance = null;
+	private static MapControler instance = null;
 
-	private WMapControler() {
+	private MapControler() {
 	}
 
-	public static WMapControler getInstance() {
+	public static MapControler getInstance() {
 		if (instance == null) {
-			instance = new WMapControler();
+			instance = new MapControler();
 		}
 		return instance;
 	}

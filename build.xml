@@ -124,7 +124,11 @@
 
         <copy
             file="bin/${ant.project.name}-release.apk"
-            tofile="apk/${ant.project.name}${time.dt}.apk" />
+            tofile="apk/${ant.project.name}${time.dt}/${ant.project.name}${time.dt}.apk" />
+
+        <copy
+            file="bin/proguard/mapping.txt"
+            tofile="apk/${ant.project.name}${time.dt}/mapping.txt" />
     </target>
 
 </project>

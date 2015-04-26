@@ -2,7 +2,7 @@ package jason.wondermap.fragment;
 
 import jason.wondermap.R;
 import jason.wondermap.config.WMapConstants;
-import jason.wondermap.controler.WMapControler;
+import jason.wondermap.controler.MapControler;
 import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.UserInfo;
@@ -58,8 +58,8 @@ public class LocationFragment extends ContentFragment implements
 
 	@Override
 	protected void onInitView() {
-		WMapControler.getInstance().clearMarker();
-		lastMapStatus = WMapControler.getInstance().getMapStatus();
+		MapControler.getInstance().clearMarker();
+		lastMapStatus = MapControler.getInstance().getMapStatus();
 		initBaiduMap();
 	}
 
@@ -76,7 +76,7 @@ public class LocationFragment extends ContentFragment implements
 							gotoChatPage();
 						}
 					});
-			WMapControler.getInstance().moveToMylocation();
+			MapControler.getInstance().moveToMylocation();
 			lastLocation = WLocationManager.getInstance().getBDLocation();
 			String address = lastLocation.getAddrStr();
 			if (address != null && !address.equals("")) {
@@ -93,8 +93,8 @@ public class LocationFragment extends ContentFragment implements
 			double lng = mShowBundle.getDouble(UserInfo.LONGTITUDE);
 			L.d("lat :" + lat + ",lng:" + lng);
 			LatLng latlng = new LatLng(lat, lng);// 维度在前，经度在后
-			WMapControler.getInstance().setMapStatus(latlng);
-			WMapControler.getInstance().addMarker(lat,lng);
+			MapControler.getInstance().setMapStatus(latlng);
+			MapControler.getInstance().addMarker(lat,lng);
 			// 显示当前位置图标
 			// OverlayOptions ooA = new MarkerOptions().position(latlng)
 			// .icon(bdgeo).zIndex(9);
@@ -146,7 +146,7 @@ public class LocationFragment extends ContentFragment implements
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		WMapControler.getInstance().setMapStatus(lastMapStatus);
+		MapControler.getInstance().setMapStatus(lastMapStatus);
 		
 	}
 

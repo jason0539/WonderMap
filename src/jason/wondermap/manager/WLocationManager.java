@@ -1,7 +1,7 @@
 package jason.wondermap.manager;
 
 import jason.wondermap.WonderMapApplication;
-import jason.wondermap.controler.WMapControler;
+import jason.wondermap.controler.MapControler;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import cn.bmob.v3.datatype.BmobGeoPoint;
@@ -85,11 +85,11 @@ public class WLocationManager {
 					// 此处设置开发者获取到的方向信息，顺时针0-360
 					.direction(100).latitude(latitude).longitude(longtitude)
 					.build();
-			WMapControler.getInstance().setMyLocationData(locData);
+			MapControler.getInstance().setMyLocationData(locData);
 			saveLocation();// 保存当前位置
 			if (isFirstLoc) {// 第一次定位成功，移动地图，发送hello消息
 				isFirstLoc = false;
-				WMapControler.getInstance().moveToLoc(latitude, longtitude);
+				MapControler.getInstance().moveToLoc(new LatLng(latitude, longtitude));
 			}
 		}
 	}

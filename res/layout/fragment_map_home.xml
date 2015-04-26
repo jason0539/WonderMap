@@ -10,6 +10,36 @@
         android:id="@+id/common_actionbar"
         layout="@layout/include_action_bar" />
 
+    <TextView
+        android:id="@+id/tv_maphome_location"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_above="@+id/main_bottom_bar"
+        android:layout_alignParentLeft="true"
+        android:background="@color/theme_bg_color"
+        android:gravity="center"
+        android:text="定" />
+
+    <TextView
+        android:id="@+id/tv_maphome_big"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_above="@+id/main_bottom_bar"
+        android:layout_toLeftOf="@+id/tv_maphome_small"
+        android:background="@color/theme_bg_color"
+        android:gravity="center"
+        android:text="大" />
+
+    <TextView
+        android:id="@+id/tv_maphome_small"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_above="@+id/main_bottom_bar"
+        android:layout_alignParentRight="true"
+        android:background="@color/theme_bg_color"
+        android:gravity="center"
+        android:text="小" />
+
     <FrameLayout
         android:id="@+id/main_bottom_bar"
         android:layout_width="match_parent"

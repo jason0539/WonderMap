@@ -2,7 +2,7 @@ package jason.wondermap;
 
 import jason.wondermap.bean.User;
 import jason.wondermap.config.BundleTake;
-import jason.wondermap.controler.WMapControler;
+import jason.wondermap.controler.MapControler;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.ContentFragment;
 import jason.wondermap.fragment.WMFragmentManager;
@@ -50,7 +50,7 @@ public class MainActivity extends FragmentActivity {
 		XiaomiUpdateAgent.update(this);
 		fragmentManager = new WMFragmentManager(this);
 		BaseFragment.initBeforeAll(this);
-		WMapControler.getInstance().init(mMapView);
+		MapControler.getInstance().init(mMapView);
 		WLocationManager.getInstance().start();// 开始定位,之后最好移到application里面，启动就完成
 		fragmentManager.showFragment(WMFragmentManager.TYPE_MAP_HOME, null);
 		ChatMessageManager.getInstance();// 开始接收消息
@@ -197,7 +197,7 @@ public class MainActivity extends FragmentActivity {
 		L.d(WModel.MainActivity, "onDestroy");
 		WLocationManager.getInstance().stop();
 		// 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
-		WMapControler.getInstance().unInit();
+		MapControler.getInstance().unInit();
 		mMapView.onDestroy();
 		mMapView = null;
 		super.onDestroy();
