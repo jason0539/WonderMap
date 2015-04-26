@@ -59,12 +59,13 @@ public class SharePreferenceUtil {
 	}
 
 	// 是否发生过crash，存储文件名
-	public String hasCrashLog() {
-		return mSharedPreferences.getString(SHARED_KEY_CRASH, "");
+	public boolean hasCrashLog() {
+		return mSharedPreferences.getBoolean(SHARED_KEY_CRASH, false);
 	}
 
-	public void setCrashLog(String name) {
-		editor.putString(SHARED_KEY_CRASH, name);
+	// 设置是否有crash文件，发生crash后设为true，上传完成设为false
+	public void setCrashLog(boolean hasCrash) {
+		editor.putBoolean(SHARED_KEY_CRASH, hasCrash);
 		editor.commit();
 	}
 
@@ -85,6 +86,6 @@ public class SharePreferenceUtil {
 		editor.putString(key, value);
 		editor.commit();
 	}
-	//＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝qq登陆，用来保存用户名等信息，确认信息的时候取出＝＝＝＝＝＝＝＝
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝qq登陆，用来保存用户名等信息，确认信息的时候取出＝＝＝＝＝＝＝＝
 
 }

@@ -4,9 +4,9 @@ import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.MapUser;
 import jason.wondermap.bean.User;
 import jason.wondermap.fragment.BaseFragment;
+import jason.wondermap.helper.CrashLogHelper;
 import jason.wondermap.interfacer.MapUserDownLoadHeadListener;
 import jason.wondermap.interfacer.MapUserTransferListener;
-import jason.wondermap.manager.CrashLogManager;
 
 import java.util.List;
 
@@ -52,7 +52,6 @@ public class CommonUtils {
 	}
 
 	private static NetworkInfo getNetworkInfo(Context context) {
-
 		ConnectivityManager cm = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		return cm.getActiveNetworkInfo();
@@ -73,7 +72,6 @@ public class CommonUtils {
 				.getMetrics(metric);
 		return metric.widthPixels;
 	}
-
 
 	/**
 	 * hello消息转换成MapUser
@@ -108,15 +106,29 @@ public class CommonUtils {
 				});
 	}
 
-	public static void checkCrashLog() {
-		String logName = WonderMapApplication.getInstance().getSpUtil()
-				.hasCrashLog();
-		if ("".equals(logName) || logName == null) {
-			L.d(WModel.CrashUpload, "没有crash");
-		} else {
-			CrashLogManager.getInstance().uploadLog(logName);
-			L.d(WModel.CrashUpload, "crash 文件");
-		}
+	/**
+	 * 检查是否有crash 日志信息需要上传，如果有且当前为wifi环境则上传
+	 * 
+	 * @param context
+	 */
+	public static void checkCrashLog(final Context context) {
+		new Thread() {
+			@Override
+			public void run() {
+				super.run();
+				if (!isWifi(context)) {// 仅wifi环境下上传
+					return;
+				}
+				if (WonderMapApplication.getInstance().getSpUtil()
+						.hasCrashLog()) {
+					CrashLogHelper crashLogManager = new CrashLogHelper();
+					crashLogManager.uploadLog();
+					L.d(WModel.CrashUpload, "存在crash 文件");
+				} else {
+					L.d(WModel.CrashUpload, "没有crash");
+				}
+			}
+		}.start();
 	}
 
 }

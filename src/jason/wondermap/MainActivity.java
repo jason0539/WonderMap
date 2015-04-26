@@ -55,7 +55,7 @@ public class MainActivity extends FragmentActivity {
 		fragmentManager.showFragment(WMFragmentManager.TYPE_MAP_HOME, null);
 		ChatMessageManager.getInstance();// 开始接收消息
 		// 添加检查log，上传到服务器
-		CommonUtils.checkCrashLog();
+		CommonUtils.checkCrashLog(this);
 		checkIsNeedToConfirmInfo();
 	}
 

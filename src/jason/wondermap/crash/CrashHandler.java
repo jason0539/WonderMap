@@ -2,6 +2,8 @@ package jason.wondermap.crash;
 
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.config.WMapConstants;
+import jason.wondermap.utils.L;
+import jason.wondermap.utils.WModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,7 +43,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 	private Map<String, String> infos = new HashMap<String, String>();
 
 	// 用于格式化日期,作为日志文件名的一部分
-	private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+	private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 	private String nameString;
 
 	/** 保证只有一个CrashHandler实例 */
@@ -102,7 +104,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 			@Override
 			public void run() {
 				Looper.prepare();
-				Toast.makeText(mContext, "很抱歉,程序出现异常,即将退出.", Toast.LENGTH_LONG)
+				Toast.makeText(mContext, "很抱歉,程序出现异常,正在收集日志，即将退出", Toast.LENGTH_LONG)
 						.show();
 				Looper.loop();
 			}
@@ -111,7 +113,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 		collectDeviceInfo(mContext);
 		// 保存日志文件
 		String fileName = saveCrashInfo2File(ex);
-		WonderMapApplication.getInstance().getSpUtil().setCrashLog(fileName);// 每次进入应用检查，是否有log，有则上传
+		WonderMapApplication.getInstance().getSpUtil().setCrashLog(true);// 每次进入应用检查，是否有log，有则上传
 		return true;
 	}
 
@@ -172,6 +174,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 		}
 		printWriter.close();
 		String result = writer.toString();
+		L.d(WModel.CrashUpload, result);
 		sb.append(result);
 		try {
 			long timestamp = System.currentTimeMillis();

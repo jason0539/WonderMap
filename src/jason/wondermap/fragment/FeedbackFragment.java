@@ -2,7 +2,7 @@ package jason.wondermap.fragment;
 
 import cn.bmob.v3.listener.SaveListener;
 import jason.wondermap.R;
-import jason.wondermap.manager.FeedbackManager;
+import jason.wondermap.helper.FeedbackHelper;
 import jason.wondermap.utils.T;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +15,7 @@ public class FeedbackFragment extends ContentFragment {
 	private ViewGroup mRootView;
 	private EditText mEditFeedbackContent;
 	private Button mBtnFeedbackCommit;
+	private FeedbackHelper feedbackHelper;
 
 	@Override
 	protected View onCreateContentView(LayoutInflater inflater) {
@@ -31,6 +32,7 @@ public class FeedbackFragment extends ContentFragment {
 				.findViewById(R.id.btn_feedback_commit);
 		mBtnFeedbackCommit.setOnClickListener(commitClickListener);
 		initTopBarForLeft(mRootView, "意见反馈");
+		feedbackHelper = new FeedbackHelper();
 	}
 
 	OnClickListener commitClickListener = new OnClickListener() {
@@ -41,7 +43,7 @@ public class FeedbackFragment extends ContentFragment {
 			if (contentString.equals("") || contentString == null) {
 				T.showShort(mContext, "不能为空哟");
 			} else {
-				FeedbackManager.getInstance().saveFeedbackMsg(contentString,
+				feedbackHelper.saveFeedbackMsg(contentString,
 						new SaveListener() {
 
 							@Override
@@ -59,4 +61,5 @@ public class FeedbackFragment extends ContentFragment {
 			}
 		}
 	};
+
 }

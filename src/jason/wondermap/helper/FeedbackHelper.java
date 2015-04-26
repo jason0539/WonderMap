@@ -1,7 +1,8 @@
-package jason.wondermap.manager;
+package jason.wondermap.helper;
 
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.FeedBack;
+import jason.wondermap.manager.AccountUserManager;
 import android.util.Log;
 import cn.bmob.v3.listener.SaveListener;
 
@@ -11,14 +12,14 @@ import cn.bmob.v3.listener.SaveListener;
  * @author liuzhenhui
  * 
  */
-public class FeedbackManager {
+public class FeedbackHelper {
 
 	/**
 	 * 保存反馈信息到Bmob云数据库中
 	 */
-	public void saveFeedbackMsg(String msg,final SaveListener listener) {
-		FeedBack feedback = new FeedBack(AccountUserManager
-				.getInstance().getCurrentUserName(), msg);
+	public void saveFeedbackMsg(String msg, final SaveListener listener) {
+		FeedBack feedback = new FeedBack(AccountUserManager.getInstance()
+				.getCurrentUser(), msg);
 		feedback.save(WonderMapApplication.getInstance(), new SaveListener() {
 
 			@Override
@@ -33,18 +34,5 @@ public class FeedbackManager {
 				listener.onFailure(code, arg0);
 			}
 		});
-	}
-
-	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-	public static FeedbackManager instance;
-
-	private FeedbackManager() {
-	}
-
-	public static FeedbackManager getInstance() {
-		if (instance == null) {
-			instance = new FeedbackManager();
-		}
-		return instance;
 	}
 }

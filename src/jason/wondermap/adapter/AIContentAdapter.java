@@ -332,8 +332,8 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 	}
 
 	private TencentShareEntity getQQShareEntity(Blog qy) {
-		String title = "活点地图，随时随地看到你";
-		String comment = "快来加入活点地图,看看你的好友都在哪里干什么";
+		String title = "活点地图，随时随地看见TA";
+		String comment = "快来加入活点地图,看看TA在哪里";
 		String img = null;
 		if (qy.getContentfigureurl() != null) {
 			img = qy.getContentfigureurl().getFileUrl(mContext);

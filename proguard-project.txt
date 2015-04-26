@@ -91,6 +91,8 @@
 # 保证继承自BmobObject、BmobUser类的JavaBean不被混淆
 -keep class jason.wondermap.bean.Blog{*;}
 -keep class jason.wondermap.bean.BlogComment{*;}
+-keep class jason.wondermap.crash.CrashLogFile{*;}
+-keep class jason.wondermap.bean.FeedBack{*;}
 
 #Baidu Map SDK
 -libraryjars libs/BaiduLBS_Android.jar

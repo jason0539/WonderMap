@@ -1,26 +1,27 @@
 package jason.wondermap.crash;
 
+import jason.wondermap.bean.User;
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobFile;
 
 public class CrashLogFile extends BmobObject {
-	private String name;// 反馈者
+	private User author;// 反馈者
 	private BmobFile file;// 文件
 
 	public CrashLogFile() {
 	}
 
-	public CrashLogFile(String name, BmobFile file) {
-		this.name = name;
+	public CrashLogFile(User author, BmobFile file) {
+		this.author = author;
 		this.file = file;
 	}
 
-	public String getName() {
-		return name;
+	public User getAuthor() {
+		return author;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setAuthor(User author) {
+		this.author = author;
 	}
 
 	public BmobFile getFile() {

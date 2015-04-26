@@ -6,9 +6,9 @@ public class FeedBack extends BmobObject {
 	// 反馈内容
 	private String content;
 	// 联系方式
-	private String name;
+	private User name;
 
-	public FeedBack(String name, String content) {
+	public FeedBack(User name, String content) {
 		this.name = name;
 		this.content = content;
 	}
@@ -21,11 +21,11 @@ public class FeedBack extends BmobObject {
 		this.content = content;
 	}
 
-	public String getName() {
+	public User getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(User name) {
 		this.name = name;
 	}
 }
