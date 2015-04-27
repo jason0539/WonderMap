@@ -4,11 +4,12 @@ import jason.wondermap.MainActivity;
 import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.manager.AccountUserManager;
-import jason.wondermap.manager.PushMsgSendManager;
 import jason.wondermap.manager.MapUserManager;
+import jason.wondermap.manager.PushMsgSendManager;
 import jason.wondermap.utils.CollectionUtils;
 import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.L;
+import jason.wondermap.utils.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,14 +81,16 @@ public class MyMessageReceiver extends BroadcastReceiver {
 	 */
 	private void handleHelloMsg(JSONObject json) {
 		L.d("收到hello消息，回复world消息");
-		MapUserManager.getInstance().addUserFromPushMsg(json);// 更新地图
+		MapUserManager.getInstance().addUserFromUserId(
+				BmobJsonUtil.getString(json, UserInfo.USER_ID));// 更新地图
 		// 应该加上参数，只发送给hello用户
 		PushMsgSendManager.getInstance().sayWorld();
 	}
 
 	private void handleWorldMsg(JSONObject json) {
 		L.d("收到world消息");
-		MapUserManager.getInstance().addUserFromPushMsg(json);
+		MapUserManager.getInstance().addUserFromUserId(
+				BmobJsonUtil.getString(json, UserInfo.USER_ID));
 	}
 
 	/**
@@ -115,9 +118,9 @@ public class MyMessageReceiver extends BroadcastReceiver {
 						WonderMapApplication.getInstance().logout();
 					}
 				}
-			} else if (tag.equals("hello")) {
+			} else if (tag.equals(UserInfo.HELLO)) {
 				handleHelloMsg(jo);
-			} else if (tag.equals("world")) {
+			} else if (tag.equals(UserInfo.WORLD)) {
 				handleWorldMsg(jo);
 			} else {
 				L.d("聊天的正常消息");
@@ -200,15 +203,12 @@ public class MyMessageReceiver extends BroadcastReceiver {
 												@Override
 												public void onError(int arg0,
 														final String arg1) {
-													// TODO Auto-generated
-													// method stub
 
 												}
 
 												@Override
 												public void onSuccess(
 														List<BmobChatUser> arg0) {
-													// TODO Auto-generated
 													// method stub
 													// 保存到内存中
 													AccountUserManager

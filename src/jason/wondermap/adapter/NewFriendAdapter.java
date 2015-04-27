@@ -38,7 +38,6 @@ public class NewFriendAdapter extends BaseListAdapter<BmobInvitation> {
 
 	public NewFriendAdapter(Context context, List<BmobInvitation> list) {
 		super(context, list);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

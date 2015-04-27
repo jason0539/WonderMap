@@ -24,7 +24,7 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 public class WLocationManager {
 	public final String PREF_LATITUDE = "latitude";// 经度
 	public final String PREF_LONGTITUDE = "longtitude";// 经度
-	private final int LOCATION_SCAN_SPAN = 30 * 1000;// 定位间隔30秒
+	private final int LOCATION_SCAN_SPAN = 60 * 1000;// 定位间隔1分钟
 	private WonderMapApplication mApplication;
 	private SharedPreferences preferences;
 	private SharedPreferences.Editor editor;

@@ -4,11 +4,13 @@ import jason.wondermap.R;
 import jason.wondermap.controler.MapControler;
 import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.utils.L;
+import jason.wondermap.utils.T;
 import jason.wondermap.utils.WModel;
 import jason.wondermap.view.MainBottomBar;
 
 import java.util.Map;
 
+import B.t;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,6 +94,15 @@ public class MapHomeFragment extends ContentFragment {
 					MapControler.getInstance().changeMapType();
 					break;
 				case R.id.tv_maphome_friend:
+					if (MapUserManager.getInstance().isOnlyShowFriends()) {
+						T.showShort(getActivity(), "已切换到在线地图");
+						initTopBarForOnlyTitle(mRootView, "在线地图");
+						MapUserManager.getInstance().showAll();
+					} else {
+						T.showShort(getActivity(), "已切换到好友地图");
+						initTopBarForOnlyTitle(mRootView, "好友地图");
+						MapUserManager.getInstance().showFriends();
+					}
 					break;
 				default:
 					break;

@@ -24,6 +24,6 @@ public class UserInfo {
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝hello world消息＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
 	public static final String TAG = "tag";
-	public static final String HELLO = "hello";
-	public static final String WORLD = "world";
+	public static final String HELLO = "h";
+	public static final String WORLD = "w";
 }

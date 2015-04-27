@@ -74,39 +74,6 @@ public class CommonUtils {
 	}
 
 	/**
-	 * hello消息转换成MapUser
-	 * 
-	 * @param msg
-	 */
-	public static void HelloMsgToUser(JSONObject msg,
-			final MapUserTransferListener listener) {
-		String id = BmobJsonUtil.getString(msg, UserInfo.USER_ID);
-		BmobQuery<User> query = new BmobQuery<User>();
-		query.addWhereEqualTo("objectId", id);
-		query.findObjects(WonderMapApplication.getInstance(),
-				new FindListener<User>() {
-					@Override
-					public void onSuccess(List<User> object) {
-						if (object.size() <= 0) {
-							return;
-						}
-						MapUser.createMapuser(object.get(0),
-								new MapUserDownLoadHeadListener() {
-
-									@Override
-									public void onSuccess(MapUser uMapUser) {
-										listener.onSuccess(uMapUser);
-									}
-								});
-					}
-
-					@Override
-					public void onError(int code, String msg) {
-					}
-				});
-	}
-
-	/**
 	 * 检查是否有crash 日志信息需要上传，如果有且当前为wifi环境则上传
 	 * 
 	 * @param context

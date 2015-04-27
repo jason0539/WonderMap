@@ -343,6 +343,11 @@ public class MapControler {
 	 * @return 返回该用户的地标，唯一，位置变动则更新该地标位置
 	 */
 	public Marker addUser(MapUser user) {
+		if (mapMarkerView == null) {
+			L.d("mapMarkerView 时空指针");
+		}else if (user == null) {
+			L.d("user 时空指针");
+		}
 		View view = mapMarkerView.createView(user);
 		Marker marker = addMarker(user.getLat(), user.getLng(), view);
 		return marker;

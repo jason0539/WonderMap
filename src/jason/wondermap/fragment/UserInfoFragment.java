@@ -5,6 +5,7 @@ import jason.wondermap.bean.User;
 import jason.wondermap.config.BundleTake;
 import jason.wondermap.config.WMapConstants;
 import jason.wondermap.manager.AccountUserManager;
+import jason.wondermap.manager.PushMsgSendManager;
 import jason.wondermap.utils.CollectionUtils;
 import jason.wondermap.utils.ImageLoadOptions;
 import jason.wondermap.utils.L;
@@ -42,7 +43,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.BmobUserManager;
-import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.config.BmobConfig;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.im.util.BmobLog;
@@ -84,7 +84,6 @@ public class UserInfoFragment extends ContentFragment implements
 		userManager = AccountUserManager.getInstance().getUserManager();
 		mRootView = (ViewGroup) inflater.inflate(R.layout.activity_set_info,
 				mContainer, false);
-		// TODO username改为objectid
 		userid = mShowBundle.getString(UserInfo.USER_ID);
 		return mRootView;
 	}
@@ -135,7 +134,6 @@ public class UserInfoFragment extends ContentFragment implements
 				ShowLog("获取用户信息失败" + msg);
 			}
 		});
-
 	}
 
 	private void initMyData() {
@@ -268,6 +266,8 @@ public class UserInfoFragment extends ContentFragment implements
 								.bindInstallationForRegister(
 										AccountUserManager.getInstance()
 												.getCurrentUserName());
+						// 确认信息后马上sayhello，更新信息给对方
+						PushMsgSendManager.getInstance().sayHello();
 						wmFragmentManager.back(null);
 					}
 
@@ -537,6 +537,7 @@ public class UserInfoFragment extends ContentFragment implements
 				new UpdateListener() {
 					@Override
 					public void onSuccess() {
+						PushMsgSendManager.getInstance().sayHello();
 						ShowToast("头像更新成功！");
 						refreshAvatar(url);
 					}

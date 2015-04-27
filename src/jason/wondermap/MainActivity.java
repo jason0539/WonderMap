@@ -12,6 +12,7 @@ import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.L;
+import jason.wondermap.utils.T;
 import jason.wondermap.utils.UserInfo;
 import jason.wondermap.utils.WModel;
 import jason.wondermap.view.dialog.DialogTips;

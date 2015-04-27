@@ -3,6 +3,7 @@ package jason.wondermap.fragment;
 import jason.wondermap.R;
 import jason.wondermap.config.BundleTake;
 import jason.wondermap.manager.AccountUserManager;
+import jason.wondermap.manager.PushMsgSendManager;
 import jason.wondermap.utils.UserInfo;
 import jason.wondermap.view.HeaderLayout.onRightImageButtonClickListener;
 
@@ -184,6 +185,7 @@ public class UpdateInfoFragment extends ContentFragment {
 												@Override
 												public void onSuccess() {
 													// 修改成功直接返回
+													PushMsgSendManager.getInstance().sayHello();
 													ShowToast("修改成功");
 													wmFragmentManager
 															.back(null);

@@ -140,7 +140,8 @@ public class AccountUserManager {
 	public BmobUserManager getUserManager() {
 		return userManager;
 	}
-	public String getCurrentUserid(){
+
+	public String getCurrentUserid() {
 		return userManager.getCurrentUserObjectId();
 	}
 

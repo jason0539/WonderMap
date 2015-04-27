@@ -2,6 +2,7 @@ package jason.wondermap.manager;
 
 import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
+import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.receiver.MyMessageReceiver;
 import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.L;
@@ -35,12 +36,6 @@ public class PushMsgSendManager {
 			map.put(UserInfo.TAG, UserInfo.HELLO);
 			map.put(UserInfo.USER_ID, AccountUserManager.getInstance()
 					.getCurrentUserid());
-			map.put(UserInfo.USER_NAME, AccountUserManager.getInstance()
-					.getCurrentUserName());
-			map.put(UserInfo.LATITUDE, WLocationManager.getInstance()
-					.getLatitude() + "");
-			map.put(UserInfo.LONGTITUDE, WLocationManager.getInstance()
-					.getLongtitude() + "");
 			JSONObject jsonObject = new JSONObject(map);
 			pushManager.pushMessageAll(jsonObject, new PushListener() {
 				@Override
@@ -61,8 +56,7 @@ public class PushMsgSendManager {
 				}
 			});
 		} else {
-			T.showLong(WonderMapApplication.getInstance(),
-					R.string.network_tips);
+			T.showLong(BaseFragment.getMainActivity(), R.string.network_tips);
 		}
 	}
 
@@ -72,12 +66,6 @@ public class PushMsgSendManager {
 			map.put(UserInfo.TAG, UserInfo.WORLD);
 			map.put(UserInfo.USER_ID, AccountUserManager.getInstance()
 					.getCurrentUserid());
-			map.put(UserInfo.USER_NAME, AccountUserManager.getInstance()
-					.getCurrentUserName());
-			map.put(UserInfo.LATITUDE, WLocationManager.getInstance()
-					.getLatitude() + "");
-			map.put(UserInfo.LONGTITUDE, WLocationManager.getInstance()
-					.getLongtitude() + "");
 			JSONObject jsonObject = new JSONObject(map);
 			pushManager.pushMessageAll(jsonObject, new PushListener() {
 				@Override
@@ -98,8 +86,7 @@ public class PushMsgSendManager {
 				}
 			});
 		} else {
-			T.showLong(WonderMapApplication.getInstance(),
-					R.string.network_tips);
+			T.showLong(BaseFragment.getMainActivity(), R.string.network_tips);
 		}
 	}
 

@@ -50,4 +50,23 @@ public class CollectionUtils {
 		}
 		return users;
 	}
+
+	/**
+	 * map转arraylist
+	 * 
+	 * @Title: map2list
+	 * @return List<BmobChatUser>
+	 * @throws
+	 */
+	public static ArrayList<BmobChatUser> map2arrayList(
+			Map<String, BmobChatUser> maps) {
+		ArrayList<BmobChatUser> users = new ArrayList<BmobChatUser>();
+		Iterator<Entry<String, BmobChatUser>> iterator = maps.entrySet()
+				.iterator();
+		while (iterator.hasNext()) {
+			Entry<String, BmobChatUser> entry = iterator.next();
+			users.add(entry.getValue());
+		}
+		return users;
+	}
 }
