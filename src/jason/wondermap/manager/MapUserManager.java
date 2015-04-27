@@ -10,15 +10,12 @@ import jason.wondermap.utils.T;
 import jason.wondermap.utils.UserInfo;
 import jason.wondermap.utils.WModel;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
 import org.json.JSONObject;
 
-import android.view.View;
-import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.util.BmobJsonUtil;
 
 import com.baidu.mapapi.map.Marker;

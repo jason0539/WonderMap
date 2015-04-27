@@ -23,6 +23,32 @@
         android:src="@drawable/map_location" />
 
     <ImageView
+        android:id="@+id/tv_maphome_friend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tv_maphome_type"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="1px"
+        android:background="@drawable/button_bg"
+        android:gravity="center"
+        android:padding="5dp"
+        android:src="@drawable/map_home_convert" />
+
+    <ImageView
+        android:id="@+id/tv_maphome_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/common_actionbar"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/button_bg"
+        android:gravity="center"
+        android:padding="5dp"
+        android:src="@drawable/map_home_type" />
+
+    <ImageView
         android:id="@+id/tv_maphome_big"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

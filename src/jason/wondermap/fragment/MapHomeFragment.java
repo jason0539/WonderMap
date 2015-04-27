@@ -1,7 +1,6 @@
 package jason.wondermap.fragment;
 
 import jason.wondermap.R;
-import jason.wondermap.config.WMapConstants;
 import jason.wondermap.controler.MapControler;
 import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.utils.L;
@@ -25,6 +24,8 @@ public class MapHomeFragment extends ContentFragment {
 	private View locationView;
 	private View smallView;
 	private View bigView;
+	private View typeView;
+	private View friendView;
 	private ViewGroup mRootView;
 
 	@Override
@@ -55,6 +56,8 @@ public class MapHomeFragment extends ContentFragment {
 		locationView = mRootView.findViewById(R.id.tv_maphome_location);
 		smallView = mRootView.findViewById(R.id.tv_maphome_small);
 		bigView = mRootView.findViewById(R.id.tv_maphome_big);
+		typeView = mRootView.findViewById(R.id.tv_maphome_type);
+		friendView = mRootView.findViewById(R.id.tv_maphome_friend);
 		initListener();
 	}
 
@@ -62,7 +65,9 @@ public class MapHomeFragment extends ContentFragment {
 		locationView.setOnClickListener(getClickListener());
 		smallView.setOnClickListener(getClickListener());
 		bigView.setOnClickListener(getClickListener());
+		friendView.setOnClickListener(getClickListener());
 		locationView.setOnLongClickListener(getLongClickListener());
+		typeView.setOnClickListener(getClickListener());
 	}
 
 	private OnClickListener getClickListener() {
@@ -82,6 +87,11 @@ public class MapHomeFragment extends ContentFragment {
 				case R.id.tv_maphome_location:
 					L.d(WModel.MapControl, "点击定位按钮");
 					MapControler.getInstance().moveToMylocation();
+					break;
+				case R.id.tv_maphome_type:
+					MapControler.getInstance().changeMapType();
+					break;
+				case R.id.tv_maphome_friend:
 					break;
 				default:
 					break;

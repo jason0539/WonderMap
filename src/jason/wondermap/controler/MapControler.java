@@ -180,6 +180,19 @@ public class MapControler {
 		mBaiduMap.animateMapStatus(u);
 	}
 
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝视图控制＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	/**
+	 * 切换普通地图和卫星地图
+	 */
+	public void changeMapType() {
+		int type = mBaiduMap.getMapType();
+		if (type == BaiduMap.MAP_TYPE_NORMAL) {
+			mBaiduMap.setMapType(BaiduMap.MAP_TYPE_SATELLITE);
+		} else {
+			mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
+		}
+	}
+
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝方向 罗盘 控制＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	/**
 	 * 转化图层的显示方式，普通、方向、罗盘
@@ -452,7 +465,7 @@ public class MapControler {
 		mCurrentMarker = null;// null则为默认
 		statusSaveHelper = new MapStatusSaveHelper();
 		initListener();
-		//恢复到上次的地图状态
+		// 恢复到上次的地图状态
 		mBaiduMap.animateMapStatus(statusSaveHelper.getStatus(mBaiduMap));
 	}
 
