@@ -29,6 +29,7 @@
             android:drawablePadding="10dp"
             android:hint="@string/message_search_hint"
             android:paddingLeft="10dp"
+            android:visibility="gone"
             android:paddingRight="10dp"
             android:singleLine="true" />
 

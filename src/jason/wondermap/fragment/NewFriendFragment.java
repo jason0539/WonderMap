@@ -31,7 +31,7 @@ public class NewFriendFragment extends ContentFragment implements
 
 	@Override
 	protected void onInitView() {
-		initTopBarForLeft(mRootView, "新朋友");
+		initTopBarForLeft(mRootView, "好友请求");
 		listview = (ListView) mRootView.findViewById(R.id.list_newfriend);
 		listview.setOnItemLongClickListener(this);
 		adapter = new NewFriendAdapter(mContext, BmobDB.create(mContext)

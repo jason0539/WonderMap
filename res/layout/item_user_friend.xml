@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" 
-    >
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_settings_item_down" >
 
     <TextView
         android:id="@+id/alpha"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#e3e3e3"
+        android:background="@color/theme_bg_color"
         android:padding="2dp"
-        android:textSize="18sp"
-        android:textColor="@color/guide_color" 
-        />
+        android:textColor="@color/guide_color"
+        android:textSize="18sp" />
 
     <ImageView
         android:id="@+id/img_friend_avatar"

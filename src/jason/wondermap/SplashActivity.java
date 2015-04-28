@@ -2,9 +2,13 @@ package jason.wondermap;
 
 import jason.wondermap.config.WMapConfig;
 import jason.wondermap.manager.AccountUserManager;
+import jason.wondermap.utils.L;
+import jason.wondermap.view.dialog.DialogTips;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -26,6 +30,7 @@ public class SplashActivity extends Activity {
 	private static final int GO_LOGIN = 200;
 
 	private BaiduReceiver mReceiver;// 注册广播接收器，用于监听网络以及验证key
+	private DialogTips mExitAppDialog = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +50,6 @@ public class SplashActivity extends Activity {
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 		if (AccountUserManager.getInstance().getCurrentUser() != null) {
 			// 每次自动登陆的时候就需要更新下当前位置和好友的资料，因为好友的头像，昵称啥的是经常变动的
@@ -59,6 +63,11 @@ public class SplashActivity extends Activity {
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
+			// 检查是否显示提醒用户授权信息
+			if (!WonderMapApplication.getInstance().getSpUtil().hasAccept()) {
+				openUserAccessbleDialog(msg.what);
+				return;
+			}
 			Intent intent = null;
 			switch (msg.what) {
 			case GO_HOME:
@@ -72,6 +81,54 @@ public class SplashActivity extends Activity {
 			finish();
 		}
 	};
+
+	/**
+	 * 打开提醒用户授权窗口，仅小米应用商店需要
+	 * 
+	 * @param what
+	 */
+	public void openUserAccessbleDialog(final int what) {
+		mExitAppDialog = new DialogTips(SplashActivity.this, "活点地图服务条款",
+				getResources().getString(R.string.accept_tips), "接受", true,
+				true);
+		// 设置成功事件
+		mExitAppDialog
+				.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialogInterface,
+							int userId) {
+						WonderMapApplication.getInstance().getSpUtil()
+								.setAccept(true);
+						switch (what) {
+						case GO_HOME:
+							L.d("GO_HOME");
+							Intent intent = new Intent(SplashActivity.this,
+									MainActivity.class);
+							startActivity(intent);
+							finish();
+							break;
+						case GO_LOGIN:
+							L.d("GO_LOGIN");
+							Intent intent2 = new Intent(SplashActivity.this,
+									LoginActivity.class);
+							startActivity(intent2);
+							finish();
+							break;
+						}
+
+					}
+				});
+		mExitAppDialog.SetOnCancelListener(new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				finish();
+			}
+		});
+		mExitAppDialog.setIsFullScreen(true);
+		// 显示确认对话框
+		mExitAppDialog.show();
+
+	}
 
 	@Override
 	protected void onDestroy() {

@@ -2,6 +2,7 @@ package jason.wondermap.manager;
 
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.controler.MapControler;
+import jason.wondermap.utils.L;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import cn.bmob.v3.datatype.BmobGeoPoint;
@@ -135,6 +136,7 @@ public class WLocationManager {
 		editor = preferences.edit();
 		latitude = lastLatitude = Double.valueOf(getSavedLatitude());// 初始默认为上次位置
 		longtitude = lastLongtitude = Double.valueOf(getSavedLongtitude());
+		L.d("第一次获取到lat" + latitude + ";第一次lng" + longtitude);
 	}
 
 	public static WLocationManager getInstance() {
@@ -179,7 +181,7 @@ public class WLocationManager {
 	 */
 	private String getSavedLongtitude() {
 		String longtitude = preferences.getString(PREF_LONGTITUDE, "");
-		return longtitude.equals("") ? "39.916439" : longtitude;
+		return longtitude.equals("") ? "116.402724" : longtitude;
 	}
 
 	/**
@@ -194,7 +196,7 @@ public class WLocationManager {
 	 */
 	private String getSavedLatitude() {
 		String latitude = preferences.getString(PREF_LATITUDE, "");
-		return latitude.equals("") ? "116.402724" : latitude;
+		return latitude.equals("") ? "39.916439" : latitude;
 	}
 
 	/**

@@ -27,6 +27,7 @@ public class SharePreferenceUtil {
 	private String SHARED_KEY_VOICE = "shared_key_sound";
 	private String SHARED_KEY_VIBRATE = "shared_key_vibrate";
 	private String SHARED_KEY_CRASH = "shared_key_crash";
+	private String SHARED_KEY_ACCEPT = "shared_key_accept";
 
 	// 是否允许推送通知
 	public boolean isAllowPushNotify() {
@@ -70,6 +71,19 @@ public class SharePreferenceUtil {
 		editor.commit();
 	}
 
+	// 用户是否同意授权使用位置信息
+	public boolean hasAccept() {
+		boolean hasLog = mSharedPreferences
+				.getBoolean(SHARED_KEY_ACCEPT, false);
+		return hasLog;
+	}
+
+	// 设置用户是否同意授权
+	public void setAccept(boolean hasAccept) {
+		editor.putBoolean(SHARED_KEY_ACCEPT, hasAccept);
+		editor.commit();
+	}
+
 	// 第三方分享
 	// Delete
 	public void remove(String key) {
@@ -92,7 +106,8 @@ public class SharePreferenceUtil {
 	public float getValue(String key, float defaultValue) {
 		return mSharedPreferences.getFloat(key, defaultValue);
 	}
-	//float
+
+	// float
 	public void setValue(String key, float value) {
 		editor.putFloat(key, value);
 		editor.commit();

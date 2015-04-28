@@ -99,6 +99,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 		if (ex == null) {
 			return false;
 		}
+		WonderMapApplication.getInstance().getSpUtil().setCrashLog(true);// 每次进入应用检查，是否有log，有则上传
 		// 使用Toast来显示异常信息
 		new Thread() {
 			@Override
@@ -113,7 +114,6 @@ public class CrashHandler implements UncaughtExceptionHandler {
 		collectDeviceInfo(mContext);
 		// 保存日志文件
 		String fileName = saveCrashInfo2File(ex);
-		WonderMapApplication.getInstance().getSpUtil().setCrashLog(true);// 每次进入应用检查，是否有log，有则上传
 		return true;
 	}
 

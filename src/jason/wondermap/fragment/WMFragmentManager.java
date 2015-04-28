@@ -31,6 +31,7 @@ public class WMFragmentManager extends ContentFragmentManager implements
 	public final static int TYPE_FOOTBLOG_COMMENT = 0x0036;//足迹评论页
 	public final static int TYPE_FAVOURITE = 0x0037;//我的收藏
 	public final static int TYPE_PERSONAL_FOOTBLOG = 0x0038;//查看足迹
+	public final static int TYPE_FRIEND_RECOMMEND = 0x0039;//好友推荐
 
 	/** 前一个fragment 类型 ，即从哪个fragment跳转过来的 */
 	private int mPreviousFragmentType = TYPE_NONE;
@@ -102,6 +103,9 @@ public class WMFragmentManager extends ContentFragmentManager implements
 			break;
 		case TYPE_PERSONAL_FOOTBLOG:
 			fragment = new PersonalFootblogFragment();
+			break;
+		case TYPE_FRIEND_RECOMMEND:
+			fragment = new FriendRecommendFragment();
 			break;
 		}
 		return fragment;

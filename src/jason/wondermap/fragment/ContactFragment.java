@@ -1,7 +1,6 @@
 package jason.wondermap.fragment;
 
 import jason.wondermap.R;
-import jason.wondermap.WonderMapApplication;
 import jason.wondermap.adapter.UserFriendAdapter;
 import jason.wondermap.bean.User;
 import jason.wondermap.manager.AccountUserManager;
@@ -24,7 +23,6 @@ import java.util.Map;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -48,7 +46,6 @@ import android.widget.TextView;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.db.BmobDB;
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.UpdateListener;
 
 public class ContactFragment extends ContentFragment implements
@@ -212,6 +209,7 @@ public class ContactFragment extends ContentFragment implements
 	TextView tv_new_name;
 	LinearLayout layout_new;// 新朋友
 	LinearLayout layout_near;// 附近的人
+	LinearLayout layout_recommend;//好友推荐
 
 	private void initListView() {
 		list_friends = (ListView) mRootView.findViewById(R.id.list_friends);
@@ -220,6 +218,7 @@ public class ContactFragment extends ContentFragment implements
 		iv_msg_tips = (ImageView) headView.findViewById(R.id.iv_msg_tips);
 		layout_new = (LinearLayout) headView.findViewById(R.id.layout_new);
 		layout_near = (LinearLayout) headView.findViewById(R.id.layout_near);
+		layout_recommend = (LinearLayout)headView.findViewById(R.id.layout_recommend);
 		layout_new.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -235,6 +234,13 @@ public class ContactFragment extends ContentFragment implements
 			@Override
 			public void onClick(View arg0) {
 				wmFragmentManager.showFragment(WMFragmentManager.TYPE_NEAR_PEOPLE);
+			}
+		});
+		layout_recommend.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				wmFragmentManager.showFragment(WMFragmentManager.TYPE_FRIEND_RECOMMEND);
 			}
 		});
 

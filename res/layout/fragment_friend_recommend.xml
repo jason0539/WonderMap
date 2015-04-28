@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_bg_color"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/common_actionbar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        layout="@layout/include_action_bar" />
+
+    <ListView
+        android:id="@+id/lv_recommend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/common_actionbar" >
+    </ListView>
+
+    <TextView
+        android:id="@+id/lv_recommend_loadmore"
+        style="@style/TextTheme.tipstheme_second"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lv_recommend"
+        android:gravity="center"
+        android:padding="12dip"
+        android:text="加载更多好友"
+        android:textColor="@drawable/selector_load_more" />
+
+</RelativeLayout>

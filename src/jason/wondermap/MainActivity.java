@@ -8,11 +8,9 @@ import jason.wondermap.fragment.ContentFragment;
 import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.manager.ChatMessageManager;
-import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.L;
-import jason.wondermap.utils.T;
 import jason.wondermap.utils.UserInfo;
 import jason.wondermap.utils.WModel;
 import jason.wondermap.view.dialog.DialogTips;
@@ -26,10 +24,6 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.Toast;
-
-import cn.bmob.im.BmobUserManager;
-import cn.bmob.im.bean.BmobChatUser;
 
 import com.baidu.mapapi.map.MapView;
 import com.xiaomi.market.sdk.XiaomiUpdateAgent;
@@ -46,13 +40,13 @@ public class MainActivity extends FragmentActivity {
 		L.d(WModel.MainActivity, "onCreate");
 		setContentView(R.layout.activity_main);
 		initView();
+		fragmentManager = new WMFragmentManager(this);
+		BaseFragment.initBeforeAll(this);
 		// 设置小米自动更新组件，仅wifi下更新
 		XiaomiUpdateAgent.setCheckUpdateOnlyWifi(true);
 		XiaomiUpdateAgent.update(this);
-		fragmentManager = new WMFragmentManager(this);
-		BaseFragment.initBeforeAll(this);
-		MapControler.getInstance().init(mMapView);
 		WLocationManager.getInstance().start();// 开始定位,之后最好移到application里面，启动就完成
+		MapControler.getInstance().init(mMapView);
 		fragmentManager.showFragment(WMFragmentManager.TYPE_MAP_HOME, null);
 		ChatMessageManager.getInstance();// 开始接收消息
 		// 添加检查log，上传到服务器
