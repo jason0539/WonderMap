@@ -164,6 +164,7 @@
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
             </intent-filter>
         </receiver>
+
         <!-- QQ 分享 -->
         <!-- openqq -->
         <activity

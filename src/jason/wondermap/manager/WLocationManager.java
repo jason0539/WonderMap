@@ -179,7 +179,7 @@ public class WLocationManager {
 	 */
 	private String getSavedLongtitude() {
 		String longtitude = preferences.getString(PREF_LONGTITUDE, "");
-		return longtitude.equals("") ? "0" : longtitude;
+		return longtitude.equals("") ? "39.916439" : longtitude;
 	}
 
 	/**
@@ -194,7 +194,7 @@ public class WLocationManager {
 	 */
 	private String getSavedLatitude() {
 		String latitude = preferences.getString(PREF_LATITUDE, "");
-		return latitude.equals("") ? "0" : latitude;
+		return latitude.equals("") ? "116.402724" : latitude;
 	}
 
 	/**

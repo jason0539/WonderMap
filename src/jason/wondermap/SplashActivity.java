@@ -14,7 +14,6 @@ import android.widget.Toast;
 import cn.bmob.im.BmobChat;
 
 import com.baidu.mapapi.SDKInitializer;
-import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
 /**
  * 启动页 完成IM SDK初始化，检查更新好友信息到内存

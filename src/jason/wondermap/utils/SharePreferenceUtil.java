@@ -60,7 +60,8 @@ public class SharePreferenceUtil {
 
 	// 是否发生过crash，存储文件名
 	public boolean hasCrashLog() {
-		return mSharedPreferences.getBoolean(SHARED_KEY_CRASH, false);
+		boolean hasLog = mSharedPreferences.getBoolean(SHARED_KEY_CRASH, false);
+		return hasLog;
 	}
 
 	// 设置是否有crash文件，发生crash后设为true，上传完成设为false

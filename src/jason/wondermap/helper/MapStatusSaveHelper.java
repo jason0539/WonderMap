@@ -31,7 +31,7 @@ public class MapStatusSaveHelper {
 				.getInstance().getLatitude() + ""));
 		lng = Double.valueOf(spUtil.getValue(LNG, WLocationManager
 				.getInstance().getLongtitude() + ""));
-		zoom = spUtil.getValue(ZOOM, MapControler.ZoomLevelDistrict);
+		zoom = spUtil.getValue(ZOOM, MapControler.ZoomLevelMin);
 		rotate = spUtil.getValue(ROTATE, 0);
 		overlook = spUtil.getValue(OVERLOOK, 0);
 	}

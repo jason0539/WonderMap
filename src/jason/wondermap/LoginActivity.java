@@ -2,13 +2,14 @@ package jason.wondermap;
 
 import jason.wondermap.bean.User;
 import jason.wondermap.config.BundleTake;
-import jason.wondermap.interfacer.QQLoginListener;
+import jason.wondermap.interfacer.LoginListener;
 import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.proxy.UserProxy;
 import jason.wondermap.proxy.UserProxy.ILoginListener;
 import jason.wondermap.proxy.UserProxy.IResetPasswordListener;
 import jason.wondermap.proxy.UserProxy.ISignUpListener;
 import jason.wondermap.sns.TencentLoginHelper;
+import jason.wondermap.sns.WeiboLoginHelper;
 import jason.wondermap.utils.StringUtils;
 import jason.wondermap.utils.T;
 import jason.wondermap.view.DeletableEditText;
@@ -212,11 +213,17 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 			loginByQQ();
 			break;
 		case R.id.tv_weibo:
-			toast("敬请期待");
+			loginByWeibo();
 			break;
 		default:
 			break;
 		}
+	}
+
+	private void loginByWeibo() {
+		progressbar.setVisibility(View.VISIBLE);
+		WeiboLoginHelper helper = new WeiboLoginHelper(LoginActivity.this);
+		helper.login(qqLoginListener);
 	}
 
 	private void loginByQQ() {
@@ -225,7 +232,7 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 		helper.login(qqLoginListener);
 	}
 
-	QQLoginListener qqLoginListener = new QQLoginListener() {
+	LoginListener qqLoginListener = new LoginListener() {
 
 		@Override
 		public void onSuccess() {

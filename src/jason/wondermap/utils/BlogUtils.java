@@ -17,7 +17,7 @@ public class BlogUtils {
 		String district = location.getDistrict();
 		StringBuffer buffer = new StringBuffer();
 		if (pro != null && !pro.equals("")) {
-			buffer.append(pro.substring(0, pro.length() - 1)).append("-");
+			buffer.append(pro.substring(0, pro.length() - 1)).append("·");
 		}
 		if (city != null && !city.equals("")) {
 			// buffer.append(city.substring(0, city.length() - 1)).append("-");
@@ -45,10 +45,10 @@ public class BlogUtils {
 		double dis = point.distanceInKilometersTo(bmobGeoPoint);
 		if (dis < 1) {
 			int distance = (int) (dis * 1000);
-			return "-" + distance + "m";
+			return "·" + distance + "m";
 		} else {
 			int distance = (int) dis;
-			return "-" + distance + "km";
+			return "·" + distance + "km";
 		}
 	}
 
