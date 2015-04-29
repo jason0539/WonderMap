@@ -80,7 +80,7 @@ public class MapHomeFragment extends ContentFragment {
 				switch (v.getId()) {
 				case R.id.tv_maphome_big:
 					L.d(WModel.MapControl, "点击放大按钮");
-					MapControler.getInstance().zoomIn();
+					MapControler.getInstance().zoomIn(false);
 					break;
 				case R.id.tv_maphome_small:
 					L.d(WModel.MapControl, "点击缩小按钮");

@@ -3,7 +3,7 @@ package jason.wondermap.fragment;
 import jason.wondermap.R;
 import jason.wondermap.adapter.AIContentAdapter;
 import jason.wondermap.bean.Blog;
-import jason.wondermap.config.BundleTake;
+import jason.wondermap.bean.User;
 import jason.wondermap.config.WMapConstants;
 import jason.wondermap.dao.DatabaseUtil;
 import jason.wondermap.manager.AccountUserManager;
@@ -14,7 +14,10 @@ import jason.wondermap.utils.T;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -25,9 +28,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.listener.FindListener;
@@ -147,6 +152,9 @@ public class QiangContentFragment extends RealFragment {
 		mListItems = new ArrayList<Blog>();
 		mAdapter = new AIContentAdapter(mContext, mListItems);
 		actualListView.setAdapter(mAdapter);
+		View emptyView = BaseFragment.getMainActivity().getLayoutInflater()
+				.inflate(R.layout.view_footblog_empty, null);
+		actualListView.setEmptyView(emptyView);
 		if (mListItems.size() == 0) {
 			fetchData();
 		}
@@ -156,7 +164,8 @@ public class QiangContentFragment extends RealFragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				FootblogManager.getInstance().setCurrentBlog(mListItems.get(position - 1));
+				FootblogManager.getInstance().setCurrentBlog(
+						mListItems.get(position - 1));
 				BaseFragment.getWMFragmentManager().showFragment(
 						WMFragmentManager.TYPE_FOOTBLOG_COMMENT);
 			}
@@ -170,6 +179,13 @@ public class QiangContentFragment extends RealFragment {
 		query.order("-createdAt");
 		// query.setCachePolicy(CachePolicy.NETWORK_ONLY);
 		query.setLimit(WMapConstants.NUMBERS_PER_PAGE);
+		// 只看好友和自己
+		Map<String, BmobChatUser> friendsMap = new HashMap<String, BmobChatUser>(
+				AccountUserManager.getInstance().getContactList());
+		friendsMap.put(AccountUserManager.getInstance().getCurrentUserid(),
+				AccountUserManager.getInstance().getCurrentUser());
+		Set<String> friends = friendsMap.keySet();
+		query.addWhereContainedIn("author", friends);
 		BmobDate date = new BmobDate(new Date(System.currentTimeMillis()));
 		query.addWhereLessThan("createdAt", date);
 		L.i(TAG, "SIZE:" + WMapConstants.NUMBERS_PER_PAGE * pageNum);

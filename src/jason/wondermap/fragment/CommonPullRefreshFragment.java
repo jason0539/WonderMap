@@ -106,7 +106,6 @@ public abstract class CommonPullRefreshFragment extends ContentFragment {
 
 					@Override
 					public void onLastItemVisible() {
-						// TODO Auto-generated method stub
 
 					}
 				});
@@ -171,7 +170,7 @@ public abstract class CommonPullRefreshFragment extends ContentFragment {
 					T.showShort(mContext, "暂无更多数据~");
 					if (list.size() == 0 && mListItems.size() == 0) {
 
-						networkTips.setText("暂无收藏。快去首页收藏几个把~");
+						networkTips.setText("暂无收藏。快去足迹收藏几个把~");
 						setState(LOADING_FAILED);
 						pageNum--;
 						mPullRefreshListView.onRefreshComplete();

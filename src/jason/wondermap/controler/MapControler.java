@@ -63,6 +63,7 @@ public class MapControler {
 	private String touchType;// 触摸事件类型
 	private InfoWindow mInfoWindow;// 点击用户图标弹出窗,暂时无用
 	private MapMarkerView mapMarkerView;
+	private MapStatus mapStatus;
 
 	private LocationMode mCurrentMode; // 定位模式（普通、跟随、罗盘）
 	private BitmapDescriptor mCurrentMarker;// 定位图标样式
@@ -115,41 +116,96 @@ public class MapControler {
 	/**
 	 * 默认放大3倍
 	 */
-	public void zoomIn() {
+	public void zoomIn(boolean isCentreFirst) {
 		if (mBaiduMap.getMapStatus().zoom == mBaiduMap.getMaxZoomLevel()) {
 			return;
 		}
 		L.d(WModel.MapControl, "放大");
 		float level = mBaiduMap.getMapStatus().zoom + 3;
-		zoomIn(level > 20 ? 20 : level);
+		zoomIn(level > 20 ? 20 : level, isCentreFirst);
 	}
 
 	/**
 	 * 放大到指定级别
 	 */
-	public void zoomIn(float level) {
-		zoomIn(mBaiduMap.getMapStatus().target, level);
+	public void zoomIn(float level, boolean isCenterFirst) {
+		zoomIn(mBaiduMap.getMapStatus().target, level, isCenterFirst);
 	}
 
 	/**
 	 * 以某点为中心放大到指定级别
 	 */
-	public void zoomIn(LatLng latLng, float level) {
-		zoomIn(latLng, level, Speed_Normal);
+	public void zoomIn(LatLng latLng, float level, boolean isCenterFirst) {
+		zoomIn(latLng, level, Speed_Normal, isCenterFirst);
 	}
 
 	/**
-	 * 指定中心，以指定速度，放大到级别level
+	 * 指定中心，以指定速度，放大到级别level isCenterFirst是否需要先移动到指定点，再放大
 	 */
-	public void zoomIn(LatLng latLng, final float level, int speed) {
+	public void zoomIn(LatLng latLng, final float level, final int speed,
+			boolean isCenterFirst) {
 		if (level < 3 || level > 20) {
 			L.d("请输入正确的缩放级别");
 			return;
 		}
-		MapStatus ms = new Builder(mBaiduMap.getMapStatus()).target(latLng)
-				.zoom(level).build();
-		MapStatusUpdate update = MapStatusUpdateFactory.newMapStatus(ms);
-		mBaiduMap.animateMapStatus(update, speed);
+		if (isCenterFirst) {
+			LatLng temp = new LatLng(mBaiduMap.getMapStatus().target.latitude,
+					mBaiduMap.getMapStatus().target.longitude);
+			java.text.DecimalFormat df = new java.text.DecimalFormat("#.0000");
+			L.d(WModel.MapControl, "地图现状：lat－" + temp.latitude + "；lng－"
+					+ temp.longitude);
+			L.d(WModel.MapControl, "要求状态：lat－" + latLng.latitude + "；lng－"
+					+ latLng.longitude);
+			//如果已经位于中心，则直接缩放就可以，
+			if (df.format(temp.latitude).equals(df.format(latLng.latitude))
+					&& df.format(temp.longitude).equals(
+							df.format(latLng.longitude))) {
+				L.d(WModel.MapControl, "状态相同，直接缩放");
+				mapStatus = new Builder(mBaiduMap.getMapStatus()).zoom(level)
+						.build();
+				MapStatusUpdate update = MapStatusUpdateFactory
+						.newMapStatus(mapStatus);
+				mBaiduMap.animateMapStatus(update, speed);
+				return;
+			} else {
+				L.d(WModel.MapControl, "状态不同，直接缩放");
+				mapStatus = new Builder(mBaiduMap.getMapStatus())
+						.target(latLng).build();
+				MapStatusUpdate update = MapStatusUpdateFactory
+						.newMapStatus(mapStatus);
+				mBaiduMap.animateMapStatus(update, speed);
+				mBaiduMap
+						.setOnMapStatusChangeListener(new OnMapStatusChangeListener() {
+
+							@Override
+							public void onMapStatusChangeStart(MapStatus arg0) {
+
+							}
+
+							@Override
+							public void onMapStatusChangeFinish(MapStatus arg0) {
+								mapStatus = new Builder(mBaiduMap
+										.getMapStatus()).zoom(level).build();
+								MapStatusUpdate update = MapStatusUpdateFactory
+										.newMapStatus(mapStatus);
+								mBaiduMap.animateMapStatus(update, speed);
+								mBaiduMap.setOnMapStatusChangeListener(null);
+							}
+
+							@Override
+							public void onMapStatusChange(MapStatus arg0) {
+
+							}
+						});
+			}
+		} else {
+			mapStatus = new Builder(mBaiduMap.getMapStatus()).target(latLng)
+					.zoom(level).build();
+			MapStatusUpdate update = MapStatusUpdateFactory
+					.newMapStatus(mapStatus);
+			mBaiduMap.animateMapStatus(update, speed);
+		}
+
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝旋转控制＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -274,7 +330,7 @@ public class MapControler {
 		else {
 			zoomIn(new LatLng(WLocationManager.getInstance().getLatitude(),
 					WLocationManager.getInstance().getLongtitude()),
-					ZoomLevelSchool);
+					ZoomLevelSchool, true);
 		}
 	}
 
@@ -345,7 +401,7 @@ public class MapControler {
 	public Marker addUser(MapUser user) {
 		if (mapMarkerView == null) {
 			L.d("mapMarkerView 时空指针");
-		}else if (user == null) {
+		} else if (user == null) {
 			L.d("user 时空指针");
 		}
 		View view = mapMarkerView.createView(user);
@@ -506,7 +562,7 @@ public class MapControler {
 				currentPt = point;
 				// updateMapState();
 				float level = mBaiduMap.getMapStatus().zoom + 3;
-				zoomIn(point, level > ZoomLevelMax ? ZoomLevelMax : level);
+				zoomIn(point, level > ZoomLevelMax ? ZoomLevelMax : level, true);
 			}
 		});
 		mBaiduMap.setOnMapDoubleClickListener(new OnMapDoubleClickListener() {

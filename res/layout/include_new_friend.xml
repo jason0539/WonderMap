@@ -50,19 +50,11 @@
             android:textSize="20sp" />
     </LinearLayout>
 
-    <View
-        android:id="@+id/line"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/base_line_width_1"
-        android:layout_below="@id/layout_new"
-        android:background="@drawable/base_horizontal_line" >
-    </View>
-
     <LinearLayout
         android:id="@+id/layout_near"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/line"
+        android:layout_below="@id/layout_new"
         android:background="@drawable/selector_settings_item_down"
         android:clickable="true"
         android:orientation="horizontal" >
@@ -87,19 +79,11 @@
             android:textSize="20sp" />
     </LinearLayout>
 
-    <View
-        android:id="@+id/line2"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/base_line_width_1"
-        android:layout_below="@id/layout_near"
-        android:background="@drawable/base_horizontal_line" >
-    </View>
-
     <LinearLayout
         android:id="@+id/layout_recommend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/line2"
+        android:layout_below="@id/layout_near"
         android:background="@drawable/selector_settings_item_down"
         android:clickable="true"
         android:orientation="horizontal" >
