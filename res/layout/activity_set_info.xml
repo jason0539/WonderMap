@@ -60,8 +60,8 @@
                     android:id="@+id/tv_set_name"
                     style="@style/Userinfo.Item.Textview"
                     android:layout_alignParentRight="true"
-                    android:layout_toRightOf="@id/user_name_tips"
                     android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/user_name_tips"
                     android:ellipsize="end"
                     android:gravity="right"
                     android:singleLine="true" />
@@ -112,6 +112,36 @@
                     android:id="@+id/tv_set_age"
                     style="@style/Userinfo.Item.Textview"
                     android:layout_alignParentRight="true" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#eeeeee" />
+
+            <RelativeLayout
+                android:id="@+id/layout_phone_number"
+                style="@style/Userinfo.Item"
+                android:visibility="gone" >
+
+                <TextView
+                    android:id="@+id/user_phone_number_tips"
+                    style="@style/Userinfo.Item.Textview"
+                    android:text="@string/add_phone_number" />
+
+                <TextView
+                    android:id="@+id/tv_set_phone_number"
+                    style="@style/Userinfo.Item.Textview"
+                    android:layout_alignParentRight="true"
+                    android:text="18233563519" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/tv_set_phone_number"
+                    android:text="@string/phone_number_tips"
+                    android:textSize="10sp" />
             </RelativeLayout>
 
             <View

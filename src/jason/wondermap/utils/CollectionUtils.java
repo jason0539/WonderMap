@@ -1,5 +1,7 @@
 package jason.wondermap.utils;
 
+import jason.wondermap.bean.User;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -46,6 +48,23 @@ public class CollectionUtils {
 				.iterator();
 		while (iterator.hasNext()) {
 			Entry<String, BmobChatUser> entry = iterator.next();
+			users.add(entry.getValue());
+		}
+		return users;
+	}
+
+	/**
+	 * map转list
+	 * 
+	 * @Title: map2list
+	 * @return List<BmobChatUser>
+	 * @throws
+	 */
+	public static List<User> map2listOfUser(Map<String, User> maps) {
+		List<User> users = new ArrayList<User>();
+		Iterator<Entry<String, User>> iterator = maps.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Entry<String, User> entry = iterator.next();
 			users.add(entry.getValue());
 		}
 		return users;

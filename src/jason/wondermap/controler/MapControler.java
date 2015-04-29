@@ -151,7 +151,7 @@ public class MapControler {
 		if (isCenterFirst) {
 			LatLng temp = new LatLng(mBaiduMap.getMapStatus().target.latitude,
 					mBaiduMap.getMapStatus().target.longitude);
-			java.text.DecimalFormat df = new java.text.DecimalFormat("#.0000");
+			java.text.DecimalFormat df = new java.text.DecimalFormat("#.000");
 			L.d(WModel.MapControl, "地图现状：lat－" + temp.latitude + "；lng－"
 					+ temp.longitude);
 			L.d(WModel.MapControl, "要求状态：lat－" + latLng.latitude + "；lng－"
@@ -404,6 +404,7 @@ public class MapControler {
 		} else if (user == null) {
 			L.d("user 时空指针");
 		}
+		//TODO 这里可能报空指针，之后考虑把mapMarkerView这个类做成静态，
 		View view = mapMarkerView.createView(user);
 		Marker marker = addMarker(user.getLat(), user.getLng(), view);
 		return marker;

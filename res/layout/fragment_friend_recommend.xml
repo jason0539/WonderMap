@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/RelativeLayout1"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/theme_bg_color"
@@ -8,26 +8,27 @@
 
     <include
         android:id="@+id/common_actionbar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         layout="@layout/include_action_bar" />
 
     <ListView
-        android:id="@+id/lv_recommend"
+        android:id="@+id/list_recommend"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/common_actionbar" >
-    </ListView>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="@drawable/base_horizontal_line"
+        android:dividerHeight="1dp"
+        android:fadingEdgeLength="0dp"
+        android:fastScrollEnabled="true"
+        android:paddingBottom="10dp" />
 
-    <TextView
-        android:id="@+id/lv_recommend_loadmore"
-        style="@style/TextTheme.tipstheme_second"
+    <Button
+        android:id="@+id/btn_recommend_friend"
+        style="@style/Smile.Button.theme"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/lv_recommend"
-        android:gravity="center"
-        android:padding="12dip"
-        android:text="加载更多好友"
-        android:textColor="@drawable/selector_load_more" />
+        android:layout_height="45dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/recommend_friend" />
 
-</RelativeLayout>
+</LinearLayout>

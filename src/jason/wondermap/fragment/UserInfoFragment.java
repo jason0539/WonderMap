@@ -64,14 +64,15 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  */
 public class UserInfoFragment extends ContentFragment implements
 		OnClickListener {
-	private TextView tv_set_name, tv_set_age, tv_user_signs, tv_editinfo_tips;
+	private TextView tv_set_name, tv_set_age, tv_user_signs, tv_editinfo_tips,
+			tv_user_phone;
 	private CheckBox tv_set_gender;
 	private ImageView iv_set_avator;
 
 	private Button btn_chat, btn_black, btn_add_friend, btn_browse_footblog,
 			btn_confirm_info;
 	private RelativeLayout layout_head, layout_age, layout_gender,
-			layout_signs, layout_black_tips, layout_name;
+			layout_signs, layout_black_tips, layout_name, layout_phoneNumber;
 	private BmobUserManager userManager;
 	boolean isMyself, isNeedToEdit, isFriends, isStranger;
 	private String userid = "";
@@ -147,6 +148,10 @@ public class UserInfoFragment extends ContentFragment implements
 		refreshAvatar(user.getAvatar());
 		tv_set_name.setText(user.getUsername());
 		tv_set_age.setText(user.getAge() + "岁");
+		String phone = user.getPhone();
+		if (phone != null && !phone.equals("")) {
+			tv_user_phone.setText(phone);
+		}
 		String sign = user.getSignature();
 		if (sign != null && !sign.equals("")) {
 			tv_user_signs.setText(sign);
@@ -212,6 +217,12 @@ public class UserInfoFragment extends ContentFragment implements
 			sign.putString(BundleTake.InfoToEdit, UserInfo.SIGN);
 			wmFragmentManager.showFragment(
 					WMFragmentManager.TYPE_UPDATE_USERINFO, sign);
+			break;
+		case R.id.layout_phone_number:
+			Bundle phone = new Bundle();
+			phone.putString(BundleTake.InfoToEdit, UserInfo.USER_PHONENUMBER);
+			wmFragmentManager.showFragment(
+					WMFragmentManager.TYPE_UPDATE_USERINFO, phone);
 			break;
 		case R.id.btn_browse_footblog:
 			Bundle bundle2 = new Bundle();
@@ -300,6 +311,11 @@ public class UserInfoFragment extends ContentFragment implements
 	 * 添加好友请求
 	 */
 	private void addFriend() {
+		if (mContext==null||user==null) {
+			L.d("UserInfoFragment 中的addFriend 方法出现空指针");
+			ShowToast("请求失败，请重试");
+			return;
+		}
 		final ProgressDialog progress = new ProgressDialog(getActivity());
 		progress.setMessage("正在添加...");
 		progress.setCanceledOnTouchOutside(false);
@@ -311,7 +327,6 @@ public class UserInfoFragment extends ContentFragment implements
 
 					@Override
 					public void onSuccess() {
-						// TODO Auto-generated method stub
 						progress.dismiss();
 						ShowToast("发送请求成功，等待对方验证！");
 					}
@@ -589,8 +604,14 @@ public class UserInfoFragment extends ContentFragment implements
 		return super.onBackPressed();
 	}
 
+	private void fetchMyPhoneNumber() {
+		// TODO Auto-generated method stub
+
+	}
+
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝UI显示策略＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	private void viewForConfirmInfo() {
+		fetchMyPhoneNumber();
 		initTopBarForOnlyTitle(mRootView, "编辑资料");// 标题，没有返回键
 		btn_confirm_info.setVisibility(View.VISIBLE);// 显示确认资料键
 		tv_editinfo_tips.setVisibility(View.VISIBLE);// 显示确认资料键
@@ -599,6 +620,8 @@ public class UserInfoFragment extends ContentFragment implements
 		layout_head.setEnabled(true);
 		layout_gender.setEnabled(true);
 		layout_signs.setEnabled(true);
+		layout_phoneNumber.setVisibility(View.VISIBLE);
+		layout_phoneNumber.setEnabled(true);
 	}
 
 	private void viewForMyself() {
@@ -608,6 +631,8 @@ public class UserInfoFragment extends ContentFragment implements
 		layout_head.setEnabled(true);
 		layout_gender.setEnabled(true);
 		layout_signs.setEnabled(true);
+		layout_phoneNumber.setVisibility(View.VISIBLE);
+		layout_phoneNumber.setEnabled(true);
 	}
 
 	private void viewForFriends() {
@@ -630,11 +655,15 @@ public class UserInfoFragment extends ContentFragment implements
 		tv_set_name = (TextView) mRootView.findViewById(R.id.tv_set_name);
 		tv_set_age = (TextView) mRootView.findViewById(R.id.tv_set_age);
 		tv_user_signs = (TextView) mRootView.findViewById(R.id.user_sign_text);
+		tv_user_phone = (TextView) mRootView
+				.findViewById(R.id.tv_set_phone_number);
 		layout_head = (RelativeLayout) mRootView.findViewById(R.id.layout_head);
 		layout_age = (RelativeLayout) mRootView.findViewById(R.id.layout_age);
 		layout_gender = (RelativeLayout) mRootView
 				.findViewById(R.id.layout_gender);
 		layout_signs = (RelativeLayout) mRootView.findViewById(R.id.user_sign);
+		layout_phoneNumber = (RelativeLayout) mRootView
+				.findViewById(R.id.layout_phone_number);
 		layout_name = (RelativeLayout) mRootView.findViewById(R.id.layout_name);
 		// 黑名单提示语
 		layout_black_tips = (RelativeLayout) mRootView
@@ -654,6 +683,7 @@ public class UserInfoFragment extends ContentFragment implements
 		layout_gender.setOnClickListener(this);
 		layout_age.setOnClickListener(this);
 		layout_signs.setOnClickListener(this);
+		layout_phoneNumber.setOnClickListener(this);
 		btn_browse_footblog.setOnClickListener(this);
 		btn_confirm_info.setOnClickListener(this);
 		btn_add_friend.setOnClickListener(this);
@@ -666,6 +696,7 @@ public class UserInfoFragment extends ContentFragment implements
 		layout_age.setEnabled(false);
 		layout_name.setEnabled(false);
 		layout_signs.setEnabled(false);
+		layout_phoneNumber.setEnabled(false);
 	}
 
 }

@@ -43,6 +43,8 @@
     <string name="xlistview_footer_hint_ready">松开载入更多</string>
     <string name="add_avator">头像</string>
     <string name="add_age">年龄</string>
+    <string name="add_phone_number">手机</string>
+    <string name="phone_number_tips">(手机号仅本人可见，用来推荐好友，建议填写)</string>
     <string name="add_name">名字</string>
     <string name="add_name_hint">请输入昵称&#8230;</string>
     <string name="add_gender">性别</string>
@@ -62,6 +64,7 @@
     <string name="blacklist">黑名单</string>
     <string name="chat">发起会话</string>
     <string name="add_friend">添加好友</string>
+    <string name="recommend_friend">推荐给好友</string>
     <string name="browse_footblog">查看足迹</string>
     <string name="confirm_info">确认资料</string>
     <string name="confirm_info_tips">请点击编辑以上资料，完成后确认</string>

@@ -4,6 +4,7 @@ import jason.wondermap.R;
 import jason.wondermap.config.BundleTake;
 import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.manager.PushMsgSendManager;
+import jason.wondermap.utils.StringUtils;
 import jason.wondermap.utils.UserInfo;
 import jason.wondermap.view.HeaderLayout.onRightImageButtonClickListener;
 
@@ -52,6 +53,9 @@ public class UpdateInfoFragment extends ContentFragment {
 			toEditInfo = Info.age;
 		} else if (infoToEdit != null && infoToEdit.equals(UserInfo.USER_NAME)) {
 			toEditInfo = Info.name;
+		} else if (infoToEdit != null
+				&& infoToEdit.equals(UserInfo.USER_PHONENUMBER)) {
+			toEditInfo = Info.phone;
 		}
 		userManager = BmobUserManager.getInstance(mContext);
 		et_edit_info = (EditText) mRootView.findViewById(R.id.et_edit_info);
@@ -89,7 +93,8 @@ public class UpdateInfoFragment extends ContentFragment {
 						public void onClick() {
 							String nick = et_edit_info.getText().toString();
 							if (nick.equals("")
-									|| !TextUtils.isDigitsOnly(nick)||nick.length()>2) {
+									|| !TextUtils.isDigitsOnly(nick)
+									|| nick.length() > 2) {
 								ShowToast("请正确填写年龄!");
 								return;
 							}
@@ -113,6 +118,24 @@ public class UpdateInfoFragment extends ContentFragment {
 								return;
 							}
 							updateName(nick);
+						}
+					});
+		case phone:
+			et_edit_info.setHint("请输入手机号");
+			et_edit_info.setInputType(InputType.TYPE_CLASS_NUMBER);
+			tv_edit_info.setText("手机");
+			initTopBarForBoth(mRootView, "修改手机号",
+					R.drawable.base_action_bar_true_bg_selector,
+					new onRightImageButtonClickListener() {
+
+						@Override
+						public void onClick() {
+							String nick = et_edit_info.getText().toString();
+							if (!StringUtils.isPhoneNumber(nick)) {
+								ShowToast("请正确填写手机号!");
+								return;
+							}
+							updatePhone(nick);
 						}
 					});
 		default:
@@ -159,6 +182,24 @@ public class UpdateInfoFragment extends ContentFragment {
 				});
 	}
 
+	private void updatePhone(String signString) {
+		AccountUserManager.getInstance().updateCurrentUserPhone(signString,
+				new UpdateListener() {
+
+					@Override
+					public void onSuccess() {
+						// 修改成功直接返回
+						ShowToast("修改成功");
+						wmFragmentManager.back(null);
+					}
+
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						ShowToast("修改失败:" + arg1);
+					}
+				});
+	}
+
 	/**
 	 * 修改资料 updateInfo
 	 */
@@ -185,7 +226,9 @@ public class UpdateInfoFragment extends ContentFragment {
 												@Override
 												public void onSuccess() {
 													// 修改成功直接返回
-													PushMsgSendManager.getInstance().sayHello();
+													PushMsgSendManager
+															.getInstance()
+															.sayHello();
 													ShowToast("修改成功");
 													wmFragmentManager
 															.back(null);
@@ -204,6 +247,6 @@ public class UpdateInfoFragment extends ContentFragment {
 	}
 
 	enum Info {
-		age, sign, name
+		age, sign, name, phone
 	};
 }

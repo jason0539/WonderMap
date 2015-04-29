@@ -37,6 +37,15 @@ public class User extends BmobChatUser {
 	private Blog blog;
 	private int age;// 年龄
 	private boolean infoIsSet;// 个人信息是否设置完成
+	private String phone;
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
 	public boolean isInfoIsSet() {
 		return infoIsSet;

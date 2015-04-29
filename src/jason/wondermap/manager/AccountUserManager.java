@@ -183,6 +183,16 @@ public class AccountUserManager {
 		currUser.update(mApplication, listener);
 	}
 
+	public void updateCurrentUserPhone(String phone, UpdateListener listener) {
+		if (getCurrentUser() == null) {
+			return;
+		}
+		User currUser = getCurrentUser();
+
+		currUser.setPhone(phone);
+		currUser.update(mApplication, listener);
+	}
+
 	public void confirmCurrentUserInfo(UpdateListener listener) {
 		if (getCurrentUser() == null) {
 			return;

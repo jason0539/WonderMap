@@ -184,7 +184,7 @@ public class TimeUtil {
 	}
 
 	public static int getAgeFromYear(String yearStr) {
-		if (yearStr == null || yearStr.equals("")) {
+		if (yearStr == null || yearStr.equals("")||yearStr.equals("0")) {
 			return 0;
 		}
 		int year = 0;

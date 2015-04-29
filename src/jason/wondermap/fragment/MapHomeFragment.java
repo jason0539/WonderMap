@@ -69,6 +69,7 @@ public class MapHomeFragment extends ContentFragment {
 		bigView.setOnClickListener(getClickListener());
 		friendView.setOnClickListener(getClickListener());
 		locationView.setOnLongClickListener(getLongClickListener());
+		smallView.setOnLongClickListener(getLongClickListener());
 		typeView.setOnClickListener(getClickListener());
 	}
 
@@ -123,7 +124,7 @@ public class MapHomeFragment extends ContentFragment {
 					break;
 				case R.id.tv_maphome_small:
 					// L.d(WModel.MapControl, "点击缩小按钮");
-					// MapControler.getInstance().small();
+					 MapControler.getInstance().zoomOut(MapControler.ZoomLevelMin);
 					break;
 				case R.id.tv_maphome_location:
 					L.d(WModel.MapControl, "点击定位按钮");

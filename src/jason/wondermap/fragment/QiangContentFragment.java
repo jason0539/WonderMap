@@ -3,7 +3,6 @@ package jason.wondermap.fragment;
 import jason.wondermap.R;
 import jason.wondermap.adapter.AIContentAdapter;
 import jason.wondermap.bean.Blog;
-import jason.wondermap.bean.User;
 import jason.wondermap.config.WMapConstants;
 import jason.wondermap.dao.DatabaseUtil;
 import jason.wondermap.manager.AccountUserManager;
@@ -28,7 +27,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -173,13 +171,16 @@ public class QiangContentFragment extends RealFragment {
 		return contentView;
 	}
 
+	/**
+	 * 获取足迹数据，本来是直接获取的，4月29日，放到线程里面，暂时没发现问题中，之后要优化足迹页加载流畅度
+	 */
 	public void fetchData() {
 		setState(LOADING);
 		BmobQuery<Blog> query = new BmobQuery<Blog>();
 		query.order("-createdAt");
 		// query.setCachePolicy(CachePolicy.NETWORK_ONLY);
 		query.setLimit(WMapConstants.NUMBERS_PER_PAGE);
-		// 只看好友和自己
+		// TODO 只看好友和自己，好友数量足够多，可能会有问题，超过1024k请求限制
 		Map<String, BmobChatUser> friendsMap = new HashMap<String, BmobChatUser>(
 				AccountUserManager.getInstance().getContactList());
 		friendsMap.put(AccountUserManager.getInstance().getCurrentUserid(),

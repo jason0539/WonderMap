@@ -160,7 +160,6 @@ public class AddFriendFragment extends ContentFragment implements
 
 					@Override
 					public void onError(int arg0, String arg1) {
-						// TODO Auto-generated method stub
 						ShowLog("搜索更多用户出错:" + arg1);
 						mListView.setPullLoadEnable(false);
 						refreshLoad();
@@ -172,7 +171,6 @@ public class AddFriendFragment extends ContentFragment implements
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
-		// TODO Auto-generated method stub
 		BmobChatUser user = (BmobChatUser) adapter.getItem(position - 1);
 		Bundle bundle = new Bundle();
 		bundle.putString(UserInfo.USER_ID, user.getObjectId());

@@ -45,8 +45,9 @@ public class MainActivity extends FragmentActivity {
 		// 设置小米自动更新组件，仅wifi下更新
 		XiaomiUpdateAgent.setCheckUpdateOnlyWifi(true);
 		XiaomiUpdateAgent.update(this);
-		WLocationManager.getInstance().start();// 开始定位,之后最好移到application里面，启动就完成
+		// 要先初始化地图，否则定位开始了，网上加位置的时候markerView为空
 		MapControler.getInstance().init(mMapView);
+		WLocationManager.getInstance().start();// 开始定位,之后最好移到application里面，启动就完成
 		fragmentManager.showFragment(WMFragmentManager.TYPE_MAP_HOME, null);
 		ChatMessageManager.getInstance();// 开始接收消息
 		// 添加检查log，上传到服务器
@@ -131,18 +132,15 @@ public class MainActivity extends FragmentActivity {
 		return false;
 	}
 
-	/**
-	 * 退出应用
-	 */
 	public void exitApp() {
 		// 做一些销毁操作
 		finish();
-		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				android.os.Process.killProcess(android.os.Process.myPid());
-			}
-		}, 100);
+		// new Handler().post(new Runnable() {
+		// @Override
+		// public void run() {
+		android.os.Process.killProcess(android.os.Process.myPid());
+		// }
+		// });
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝内部实现＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -196,6 +194,7 @@ public class MainActivity extends FragmentActivity {
 		mMapView.onDestroy();
 		mMapView = null;
 		super.onDestroy();
+		android.os.Process.killProcess(android.os.Process.myPid());
 	}
 
 	@Override
