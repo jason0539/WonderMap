@@ -1,5 +1,6 @@
 package jason.wondermap.manager;
 
+import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.MapUser;
 import jason.wondermap.controler.MapControler;
 import jason.wondermap.interfacer.MapUserTransferListener;
@@ -28,6 +29,7 @@ import com.baidu.mapapi.map.Marker;
  * 
  */
 public class MapUserManager {
+	public static final String ShowFriendOrAll = "sp_fiend_or_all";
 	public static final int Period = 60 * 1000;// 每分钟更新一次好友信息
 	private boolean isFriend = false;
 	private Timer timer;
@@ -41,6 +43,8 @@ public class MapUserManager {
 	 */
 	public void showFriends() {
 		isFriend = true;
+		WonderMapApplication.getInstance().getSpUtil()
+				.setValue(ShowFriendOrAll, isFriend);
 		MapControler.getInstance().clearMarker();
 		// 第一次切换到好友地图，好友为空，则从内存读取出来，添加到地图
 		if (friendMapUsers.size() == 0) {
@@ -127,6 +131,8 @@ public class MapUserManager {
 	public void showAll() {
 		timer.cancel();
 		isFriend = false;
+		WonderMapApplication.getInstance().getSpUtil()
+				.setValue(ShowFriendOrAll, isFriend);
 		MapControler.getInstance().clearMarker();
 		onResumeAllUsersOnMap();
 	}
@@ -254,6 +260,11 @@ public class MapUserManager {
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	private MapUserManager() {
+		isFriend = WonderMapApplication.getInstance().getSpUtil()
+				.getValue(ShowFriendOrAll, false);
+		if (isFriend) {
+			showFriends();
+		}
 	}
 
 	private static MapUserManager instance = null;

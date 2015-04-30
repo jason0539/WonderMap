@@ -53,7 +53,12 @@ public class MapHomeFragment extends ContentFragment {
 	@Override
 	protected void onInitView() {
 		L.d(TAG + ":onInitView");
-		initTopBarForOnlyTitle(mRootView, "活点地图");
+		if (MapUserManager.getInstance().isOnlyShowFriends()) {
+			initTopBarForOnlyTitle(mRootView, "好友地图");
+		} else {
+			initTopBarForOnlyTitle(mRootView, "在线地图");
+		}
+
 		bottomBar = new MainBottomBar(
 				mRootView.findViewById(R.id.main_bottom_bar));
 		locationView = mRootView.findViewById(R.id.tv_maphome_location);

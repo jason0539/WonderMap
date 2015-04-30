@@ -157,4 +157,15 @@ public class SharePreferenceUtil {
 		editor.putFloat(key, value);
 		editor.commit();
 	}
+
+	// boolean
+	public boolean getValue(String key, boolean defaultValue) {
+		return mSharedPreferences.getBoolean(key, defaultValue);
+	}
+
+	// boolean
+	public void setValue(String key, boolean value) {
+		editor.putBoolean(key, value);
+		editor.commit();
+	}
 }
