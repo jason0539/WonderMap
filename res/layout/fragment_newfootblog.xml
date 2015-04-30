@@ -9,99 +9,74 @@
         android:id="@+id/common_actionbar"
         layout="@layout/include_action_bar" />
 
-    <EditText
-        android:id="@+id/edit_content"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/common_actionbar"
-        android:layout_margin="16dp"
-        android:background="@drawable/selector_edittext"
-        android:gravity="left|top"
-        android:hint="说说这段风景的故事吧"
-        android:inputType="textMultiLine"
-        android:minLines="8"
-        android:paddingLeft="4dip"
-        android:paddingRight="4dip" >
+        android:layout_height="match_parent"
+        android:layout_below="@id/common_actionbar" >
 
-        <requestFocus />
-    </EditText>
-
-    <RelativeLayout
-        android:id="@+id/pic_content"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/bg_pic_edit"
-        android:paddingTop="8dp" >
-
-        <View
-            android:id="@+id/view_helper"
-            android:layout_width="1dp"
-            android:layout_height="1dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="8dp"
-            android:background="#00000000" />
-
-        <LinearLayout
-            android:id="@+id/open_layout"
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_toLeftOf="@id/view_helper"
-            android:background="@drawable/selector_edit_pic"
-            android:gravity="center"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp" >
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/edit_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@drawable/selector_edittext"
+                android:gravity="left|top"
+                android:hint="说说这段风景的故事吧"
+                android:inputType="textMultiLine"
+                android:minLines="8"
+                android:paddingLeft="4dip"
+                android:paddingRight="4dip" >
+
+                <requestFocus />
+            </EditText>
 
             <ImageView
-                android:id="@+id/open_pic"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="@drawable/open_picture"
-                android:scaleType="centerInside" />
-
-            <TextView
-                android:id="@+id/open_pic_tips"
-                style="@style/TextTheme.tipstheme_second"
-                android:layout_width="wrap_content"
+                android:id="@+id/iv_publish_footblog_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dip"
-                android:gravity="center"
-                android:text="添加图片" />
-        </LinearLayout>
+                android:layout_alignLeft="@+id/edit_content"
+                android:layout_alignRight="@+id/edit_content"
+                android:layout_below="@id/edit_content"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ls"
+                android:visibility="visible" />
 
-        <LinearLayout
-            android:id="@+id/take_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@id/view_helper"
-            android:background="@drawable/selector_edit_pic"
-            android:gravity="center"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp" >
-
-            <ImageView
-                android:id="@+id/take_pic"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="@drawable/take_picture"
-                android:scaleType="centerInside" />
-
-            <TextView
-                android:id="@+id/take_pic_tips"
-                style="@style/TextTheme.tipstheme_second"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/pic_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dip"
-                android:gravity="center"
-                android:text="拍照添加" />
-        </LinearLayout>
-    </RelativeLayout>
+                android:layout_alignLeft="@+id/edit_content"
+                android:layout_alignRight="@+id/edit_content"
+                android:layout_below="@id/iv_publish_footblog_view"
+                android:orientation="horizontal"
+                android:paddingTop="8dp" >
+
+                <ImageView
+                    android:id="@+id/open_pic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_edit_pic"
+                    android:padding="16dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/open_picture" />
+
+                <ImageView
+                    android:id="@+id/take_pic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_edit_pic"
+                    android:padding="16dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/take_picture" />
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>

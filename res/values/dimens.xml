@@ -23,8 +23,8 @@
     <dimen name="score_item_height">100.0dip</dimen>
     <dimen name="message_top_height">70.0dip</dimen>
     <dimen name="margin_chat_top">5.0dip</dimen>
-    <!-- 活点地图 -->
-    <dimen name="main_bottombar_height">52dp</dimen>
+    <!-- 活点地图 原来高度52 -->
+    <dimen name="main_bottombar_height">70dp</dimen>
     <!-- 个人信息页面 -->
     <dimen name="userinfo_fragment_layout_pading">10dp</dimen>
     <dimen name="userinfo_fragment_userhead_item_minheight">80dp</dimen>

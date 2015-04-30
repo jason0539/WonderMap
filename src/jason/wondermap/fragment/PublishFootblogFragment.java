@@ -25,6 +25,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -52,11 +53,9 @@ public class PublishFootblogFragment extends ContentFragment implements
 	private ViewGroup mRootViewGroup;
 	EditText content;
 
-	LinearLayout openLayout;
-	LinearLayout takeLayout;
-
-	ImageView albumPic;
-	ImageView takePic;
+	ImageView openLayout;
+	ImageView takeLayout;
+	ImageView picView;
 	String dateTime;
 
 	@Override
@@ -72,21 +71,17 @@ public class PublishFootblogFragment extends ContentFragment implements
 				R.drawable.btn_footblog_publish_selector, newFootblogSend);
 		content = (EditText) mRootViewGroup.findViewById(R.id.edit_content);
 
-		openLayout = (LinearLayout) mRootViewGroup
-				.findViewById(R.id.open_layout);
-		takeLayout = (LinearLayout) mRootViewGroup
-				.findViewById(R.id.take_layout);
+		openLayout = (ImageView) mRootViewGroup.findViewById(R.id.open_pic);
+		takeLayout = (ImageView) mRootViewGroup.findViewById(R.id.take_pic);
 
-		albumPic = (ImageView) mRootViewGroup.findViewById(R.id.open_pic);
-		takePic = (ImageView) mRootViewGroup.findViewById(R.id.take_pic);
+		picView = (ImageView) mRootViewGroup
+				.findViewById(R.id.iv_publish_footblog_view);
 		getActivity().getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
 						| WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
 		openLayout.setOnClickListener(this);
 		takeLayout.setOnClickListener(this);
-		albumPic.setOnClickListener(this);
-		takePic.setOnClickListener(this);
 	}
 
 	onRightImageButtonClickListener newFootblogSend = new onRightImageButtonClickListener() {
@@ -110,7 +105,7 @@ public class PublishFootblogFragment extends ContentFragment implements
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
-		case R.id.open_layout:
+		case R.id.open_pic:
 			Date date1 = new Date(System.currentTimeMillis());
 			dateTime = date1.getTime() + "";
 			Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -118,7 +113,7 @@ public class PublishFootblogFragment extends ContentFragment implements
 					"image/*");
 			startActivityForResult(intent, REQUEST_CODE_ALBUM);
 			break;
-		case R.id.take_layout:
+		case R.id.take_pic:
 			Date date = new Date(System.currentTimeMillis());
 			dateTime = date.getTime() + "";
 			File f = new File(CacheUtils.getCacheDirectory(mContext, true,
@@ -233,8 +228,8 @@ public class PublishFootblogFragment extends ContentFragment implements
 							.lastIndexOf("."));
 					targeturl = saveToSdCard(bitmap, suffix);
 					L.d(WModel.PublishBlog, "targeturl:" + targeturl);
-					albumPic.setBackgroundDrawable(new BitmapDrawable(bitmap));
-					takeLayout.setVisibility(View.GONE);
+					picView.setImageBitmap(bitmap);
+					picView.setVisibility(View.VISIBLE);
 				}
 				break;
 			case REQUEST_CODE_CAMERA:
@@ -244,8 +239,8 @@ public class PublishFootblogFragment extends ContentFragment implements
 				if (file.exists()) {
 					Bitmap bitmap = compressImageFromFile(files);
 					targeturl = saveToSdCard(bitmap, ".jpg");
-					takePic.setBackgroundDrawable(new BitmapDrawable(bitmap));
-					openLayout.setVisibility(View.GONE);
+					picView.setImageBitmap(bitmap);
+					picView.setVisibility(View.VISIBLE);
 				} else {
 
 				}
