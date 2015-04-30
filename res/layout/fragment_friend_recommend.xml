@@ -27,8 +27,7 @@
         style="@style/Smile.Button.theme"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_margin="@dimen/activity_vertical_margin"
         android:text="@string/recommend_friend" />
 
 </LinearLayout>

@@ -5,18 +5,20 @@ import jason.wondermap.WonderMapApplication;
 import jason.wondermap.adapter.base.ViewHolder;
 import jason.wondermap.bean.User;
 import jason.wondermap.fragment.BaseFragment;
+import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.helper.PhoneRecommendHelper;
 import jason.wondermap.utils.CollectionUtils;
 import jason.wondermap.utils.ImageLoadOptions;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.T;
+import jason.wondermap.utils.UserInfo;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -68,6 +70,15 @@ public class RecommendFriendAdapter extends BaseAdapter {
 					null);
 		}
 		final User user = useridList.get(position);
+		convertView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Bundle bundle = new Bundle();
+				bundle.putString(UserInfo.USER_ID, user.getObjectId());
+				BaseFragment.getWMFragmentManager().showFragment(WMFragmentManager.TYPE_USERINFO, bundle);
+			}
+		});
 		TextView name = ViewHolder.get(convertView, R.id.name);
 		ImageView iv_avatar = ViewHolder.get(convertView, R.id.avatar);
 		TextView tv_localTextView = ViewHolder.get(convertView, R.id.localname);
@@ -89,7 +100,6 @@ public class RecommendFriendAdapter extends BaseAdapter {
 
 			@Override
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
 				final ProgressDialog progress = new ProgressDialog(BaseFragment
 						.getMainActivity());
 				progress.setMessage("正在添加...");
@@ -102,7 +112,6 @@ public class RecommendFriendAdapter extends BaseAdapter {
 
 									@Override
 									public void onSuccess() {
-										// TODO Auto-generated method stub
 										progress.dismiss();
 										T.showShort(mContext, "发送请求成功，等待对方验证!");
 									}

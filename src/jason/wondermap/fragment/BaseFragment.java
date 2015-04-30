@@ -31,14 +31,18 @@ public class BaseFragment extends Fragment {
 	protected static WMFragmentManager wmFragmentManager; // fragment管理器
 	protected boolean mViewCreated = false; // 视图生成标志，视图生成之后才能开始设置监听事件，在onInitView中
 	protected ViewGroup mContainer;
+	protected static LayoutInflater mInflater;
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	public static void initBeforeAll(MainActivity activity) {
 		mActivity = activity;
 		mContext = WonderMapApplication.getInstance();
 		wmFragmentManager = mActivity.getWMFragmentManager();
+		mInflater = mActivity.getLayoutInflater();
 	}
-
+	public static LayoutInflater getInflater(){
+		return mInflater;
+	}
 	public boolean canProcessUI() {
 		return isAdded();
 	}

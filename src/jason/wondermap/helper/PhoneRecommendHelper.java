@@ -2,6 +2,7 @@ package jason.wondermap.helper;
 
 import jason.wondermap.bean.User;
 import jason.wondermap.interfacer.PhoneNumberRecommendListener;
+import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.utils.CollectionUtils;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.StringUtils;
@@ -77,10 +78,30 @@ public class PhoneRecommendHelper {
 					}
 					if (CollectionUtils.isNotNull(list)) {
 						if (list.size() == 1) {
+							if (AccountUserManager.getInstance()
+									.getContactList()
+									.containsKey(list.get(0).getObjectId())
+									|| list.get(0)
+											.getObjectId()
+											.equals(AccountUserManager
+													.getInstance()
+													.getCurrentUserid())) {
+								// 已经是好友，或者查到的是自己，则跳过
+								return;
+							}
 							recommedFriends.put(list.get(0).getObjectId(),
 									list.get(0));
 						} else {
 							for (User user : list) {
+								if (AccountUserManager.getInstance()
+										.getContactList()
+										.containsKey(user.getObjectId())
+										|| user.getObjectId().equals(
+												AccountUserManager
+														.getInstance()
+														.getCurrentUserid())) {
+									continue;
+								}
 								recommedFriends.put(user.getObjectId(), user);
 							}
 						}

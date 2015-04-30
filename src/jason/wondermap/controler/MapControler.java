@@ -62,7 +62,6 @@ public class MapControler {
 	private LatLng currentPt;// 当前触摸地点
 	private String touchType;// 触摸事件类型
 	private InfoWindow mInfoWindow;// 点击用户图标弹出窗,暂时无用
-	private MapMarkerView mapMarkerView;
 	private MapStatus mapStatus;
 
 	private LocationMode mCurrentMode; // 定位模式（普通、跟随、罗盘）
@@ -399,13 +398,7 @@ public class MapControler {
 	 * @return 返回该用户的地标，唯一，位置变动则更新该地标位置
 	 */
 	public Marker addUser(MapUser user) {
-		if (mapMarkerView == null) {
-			L.d("mapMarkerView 时空指针");
-		} else if (user == null) {
-			L.d("user 时空指针");
-		}
-		//TODO 这里可能报空指针，之后考虑把mapMarkerView这个类做成静态，
-		View view = mapMarkerView.createView(user);
+		View view = MapMarkerView.createView(user);
 		Marker marker = addMarker(user.getLat(), user.getLng(), view);
 		return marker;
 	}
@@ -513,7 +506,6 @@ public class MapControler {
 
 	public void init(MapView mapView) {
 		mContext = WonderMapApplication.getInstance();
-		mapMarkerView = new MapMarkerView();
 		mMapView = mapView;
 		mMapView.showScaleControl(false);// 隐藏比例尺
 		mMapView.showZoomControls(false);// 隐藏缩放控件
