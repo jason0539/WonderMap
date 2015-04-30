@@ -195,6 +195,9 @@ public class PersonalFootblogFragment extends ContentFragment implements
 	}
 
 	private void updatePersonalInfo(User user) {
+		if (user ==null) {
+			L.d(PersonalFootblogFragment.class.getSimpleName()+"中updatePersonalInfo user 为空");
+		}
 		personalName.setText(user.getUsername());
 		String signString = user.getSignature();
 		if (signString != null && !signString.equals("")) {

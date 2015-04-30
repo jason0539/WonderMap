@@ -189,13 +189,12 @@ public class UserInfoFragment extends ContentFragment implements
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
+		if (user == null) {
+			ShowToast("正在加载信息，请稍等");
+			return;
+		}
 		switch (v.getId()) {
 		case R.id.btn_chat:// 发起聊天
-			if (user == null) {
-				ShowToast("正在加载信息，请稍等");
-				return;
-			}
 			Bundle bundle = new Bundle();
 			bundle.putString(UserInfo.AVATAR, user.getAvatar());
 			bundle.putString(UserInfo.USER_NAME, user.getUsername());
@@ -311,7 +310,7 @@ public class UserInfoFragment extends ContentFragment implements
 	 * 添加好友请求
 	 */
 	private void addFriend() {
-		if (mContext==null||user==null) {
+		if (mContext == null || user == null) {
 			L.d("UserInfoFragment 中的addFriend 方法出现空指针");
 			ShowToast("请求失败，请重试");
 			return;
@@ -572,6 +571,10 @@ public class UserInfoFragment extends ContentFragment implements
 	 * @param data
 	 */
 	private void saveCropAvator(Intent data) {
+		if (data == null) {
+			ShowToast("换张头像吧，这张好像有问题");
+			return;
+		}
 		Bundle extras = data.getExtras();
 		if (extras != null) {
 			Bitmap bitmap = extras.getParcelable("data");
