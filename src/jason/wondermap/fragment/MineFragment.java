@@ -85,14 +85,14 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 			break;
 		case R.id.layout_info:// 启动到个人资料页面
 			Bundle bundle = new Bundle();
-			bundle.putString(UserInfo.USER_ID, AccountUserManager
-					.getInstance().getCurrentUserid());
+			bundle.putString(UserInfo.USER_ID, AccountUserManager.getInstance()
+					.getCurrentUserid());
 			wmFragmentManager.showFragment(WMFragmentManager.TYPE_USERINFO,
 					bundle);
 			break;
 		case R.id.btn_logout:
 			WonderMapApplication.getInstance().logout();
-			getActivity().finish();
+			BaseFragment.getMainActivity().finish();
 			startActivity(new Intent(getActivity(), LoginActivity.class));
 			break;
 		case R.id.rl_switch_notification:

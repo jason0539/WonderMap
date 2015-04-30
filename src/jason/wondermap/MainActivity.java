@@ -170,7 +170,6 @@ public class MainActivity extends FragmentActivity {
 		// 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
 		MapControler.getInstance().unInit();
 		super.onDestroy();
-		android.os.Process.killProcess(android.os.Process.myPid());
 	}
 
 	@Override
