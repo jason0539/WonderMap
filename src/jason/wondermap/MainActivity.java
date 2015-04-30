@@ -1,24 +1,19 @@
 package jason.wondermap;
 
-import jason.wondermap.bean.User;
-import jason.wondermap.config.BundleTake;
 import jason.wondermap.controler.MapControler;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.ContentFragment;
 import jason.wondermap.fragment.WMFragmentManager;
-import jason.wondermap.manager.AccountUserManager;
+import jason.wondermap.helper.LaunchHelper;
 import jason.wondermap.manager.ChatMessageManager;
 import jason.wondermap.manager.WLocationManager;
-import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.L;
-import jason.wondermap.utils.UserInfo;
 import jason.wondermap.utils.WModel;
 import jason.wondermap.view.dialog.DialogTips;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -26,49 +21,30 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 
 import com.baidu.mapapi.map.MapView;
-import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
 public class MainActivity extends FragmentActivity {
 	private WMFragmentManager fragmentManager;
 	private View mForbidTouchView; // 禁止触摸的空视图
-	private DialogTips mExitAppDialog = null;
+	private DialogTips appDialog = null;
 	private MapView mMapView = null;
+	private LaunchHelper launchHelper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		L.d(WModel.MainActivity, "onCreate");
 		setContentView(R.layout.activity_main);
-		initView();
 		fragmentManager = new WMFragmentManager(this);
-		BaseFragment.initBeforeAll(this);
-		// 设置小米自动更新组件，仅wifi下更新
-		XiaomiUpdateAgent.setCheckUpdateOnlyWifi(true);
-		XiaomiUpdateAgent.update(this);
+		BaseFragment.initBeforeAll(this, fragmentManager);
+		initView();
 		// 要先初始化地图，否则定位开始了，网上加位置的时候markerView为空
 		MapControler.getInstance().init(mMapView);
 		WLocationManager.getInstance().start();// 开始定位,之后最好移到application里面，启动就完成
 		fragmentManager.showFragment(WMFragmentManager.TYPE_MAP_HOME, null);
 		ChatMessageManager.getInstance();// 开始接收消息
 		// 添加检查log，上传到服务器
-		CommonUtils.checkCrashLog(this);
-		checkIsNeedToConfirmInfo();
-	}
-
-	private void checkIsNeedToConfirmInfo() {
-		boolean isNeedTo = !AccountUserManager.getInstance().getUserManager()
-				.getCurrentUser(User.class).isInfoIsSet();
-		if (isNeedTo) {
-			L.d(WModel.NeedToEditInfo, "需要确认信息");
-			Bundle bundle = new Bundle();
-			bundle.putString(UserInfo.USER_ID, AccountUserManager.getInstance()
-					.getCurrentUserid());
-			bundle.putBoolean(BundleTake.NeedToEditInfo, true);
-			fragmentManager.showFragment(WMFragmentManager.TYPE_USERINFO,
-					bundle);
-		} else {
-			L.d(WModel.NeedToEditInfo, "不需要确认");
-		}
+		launchHelper = new LaunchHelper();
+		launchHelper.checkLaunch(this);
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -85,40 +61,42 @@ public class MainActivity extends FragmentActivity {
 			mForbidTouchView.setVisibility(View.GONE);
 	}
 
-	/**
-	 * 获取fragmentManager
-	 * 
-	 * @return
-	 */
-	public WMFragmentManager getWMFragmentManager() {
-		return fragmentManager;
+	public void showTips(int sourseid) {
+		appDialog = new DialogTips(this, "提示", getResources().getString(
+				sourseid), "知道了", false, true);
+		// 设置成功事件
+		appDialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialogInterface, int userId) {
+				appDialog.dismiss();
+			}
+		});
+		// 显示确认对话框
+		appDialog.show();
 	}
 
 	public void openExitAppDialog() {
-		mExitAppDialog = new DialogTips(this, "退出", getResources().getString(
+		appDialog = new DialogTips(this, "退出", getResources().getString(
 				R.string.exit_tips), "确定", true, true);
 		// 设置成功事件
-		mExitAppDialog
-				.SetOnSuccessListener(new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialogInterface,
-							int userId) {
-						exitApp();
-					}
-				});
+		appDialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialogInterface, int userId) {
+				exitApp();
+			}
+		});
 		// 显示确认对话框
-		mExitAppDialog.show();
+		appDialog.show();
 
-		mExitAppDialog.setOnDismissListener(new OnDismissListener() {
+		appDialog.setOnDismissListener(new OnDismissListener() {
 
 			@Override
 			public void onDismiss(DialogInterface dialog) {
-				mExitAppDialog = null;
+				appDialog = null;
 			}
 		});
 
-		if (!mExitAppDialog.isShowing()) {
+		if (!appDialog.isShowing()) {
 			try {
-				mExitAppDialog.show();
+				appDialog.show();
 			} catch (Exception e) {
 			}
 		}
@@ -126,7 +104,7 @@ public class MainActivity extends FragmentActivity {
 
 	/** 是否正在显示退出应用对话框 */
 	public boolean isShowingExitAppDialog() {
-		if (mExitAppDialog != null && mExitAppDialog.isShowing()) {
+		if (appDialog != null && appDialog.isShowing()) {
 			return true;
 		}
 		return false;
@@ -174,14 +152,14 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onPause() {
 		L.d(WModel.MainActivity, "onPause");
-		mMapView.onPause();
+		MapControler.getInstance().onPause();
 		super.onPause();
 	}
 
 	@Override
 	protected void onResume() {
 		L.d(WModel.MainActivity, "onResume");
-		mMapView.onResume();
+		MapControler.getInstance().onResume();
 		super.onResume();
 	}
 
@@ -191,21 +169,17 @@ public class MainActivity extends FragmentActivity {
 		WLocationManager.getInstance().stop();
 		// 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
 		MapControler.getInstance().unInit();
-		mMapView.onDestroy();
-		mMapView = null;
 		super.onDestroy();
 		android.os.Process.killProcess(android.os.Process.myPid());
 	}
 
 	@Override
 	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(arg0, arg1, arg2);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}

@@ -155,7 +155,7 @@ public class MapControler {
 					+ temp.longitude);
 			L.d(WModel.MapControl, "要求状态：lat－" + latLng.latitude + "；lng－"
 					+ latLng.longitude);
-			//如果已经位于中心，则直接缩放就可以，
+			// 如果已经位于中心，则直接缩放就可以，
 			if (df.format(temp.latitude).equals(df.format(latLng.latitude))
 					&& df.format(temp.longitude).equals(
 							df.format(latLng.longitude))) {
@@ -523,9 +523,18 @@ public class MapControler {
 		mBaiduMap.animateMapStatus(statusSaveHelper.getStatus(mBaiduMap));
 	}
 
+	public void onPause() {
+		mMapView.onPause();
+	}
+
+	public void onResume() {
+		mMapView.onResume();
+	}
+
 	public void unInit() {
 		// 关闭定位图层
 		mBaiduMap.setMyLocationEnabled(false);
+		mMapView.onDestroy();
 	}
 
 	// 初始化默认监听

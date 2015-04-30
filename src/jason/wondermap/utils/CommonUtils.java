@@ -3,10 +3,13 @@ package jason.wondermap.utils;
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.MapUser;
 import jason.wondermap.bean.User;
+import jason.wondermap.config.BundleTake;
 import jason.wondermap.fragment.BaseFragment;
+import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.helper.CrashLogHelper;
 import jason.wondermap.interfacer.MapUserDownLoadHeadListener;
 import jason.wondermap.interfacer.MapUserTransferListener;
+import jason.wondermap.manager.AccountUserManager;
 
 import java.util.List;
 
@@ -15,6 +18,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 import cn.bmob.im.util.BmobJsonUtil;
 import cn.bmob.v3.BmobQuery;
@@ -71,31 +75,6 @@ public class CommonUtils {
 		BaseFragment.getMainActivity().getWindowManager().getDefaultDisplay()
 				.getMetrics(metric);
 		return metric.widthPixels;
-	}
-
-	/**
-	 * 检查是否有crash 日志信息需要上传，如果有且当前为wifi环境则上传
-	 * 
-	 * @param context
-	 */
-	public static void checkCrashLog(final Context context) {
-		new Thread() {
-			@Override
-			public void run() {
-				super.run();
-				if (!isWifi(context)) {// 仅wifi环境下上传
-					return;
-				}
-				if (WonderMapApplication.getInstance().getSpUtil()
-						.hasCrashLog()) {
-					CrashLogHelper crashLogManager = new CrashLogHelper();
-					crashLogManager.uploadLog();
-					L.d(WModel.CrashUpload, "存在crash 文件");
-				} else {
-					L.d(WModel.CrashUpload, "没有crash");
-				}
-			}
-		}.start();
 	}
 
 }

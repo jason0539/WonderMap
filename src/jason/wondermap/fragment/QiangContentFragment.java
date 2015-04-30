@@ -150,8 +150,10 @@ public class QiangContentFragment extends RealFragment {
 		mListItems = new ArrayList<Blog>();
 		mAdapter = new AIContentAdapter(mContext, mListItems);
 		actualListView.setAdapter(mAdapter);
-		View emptyView = BaseFragment.getMainActivity().getLayoutInflater()
-				.inflate(R.layout.view_footblog_empty, null);
+		ViewGroup emptyView = (ViewGroup) BaseFragment.getInflater().inflate(
+				R.layout.view_footblog_empty, null);
+		TextView t = (TextView) emptyView.findViewById(R.id.tv_empty_tips);
+		t.setText(R.string.empty_tips_footblog);
 		actualListView.setEmptyView(emptyView);
 		if (mListItems.size() == 0) {
 			fetchData();
@@ -187,6 +189,12 @@ public class QiangContentFragment extends RealFragment {
 				AccountUserManager.getInstance().getCurrentUser());
 		Set<String> friends = friendsMap.keySet();
 		query.addWhereContainedIn("author", friends);
+//		BmobQuery<User> innerQuery = new BmobQuery<User>();
+//		innerQuery.addWhereRelatedTo("contacts", new BmobPointer(
+//				AccountUserManager.getInstance().getCurrentUser()));
+//		// innerQuery.
+//		query.addWhereMatchesQuery("author",
+//				BmobChatUser.class.getSimpleName(), innerQuery);
 		BmobDate date = new BmobDate(new Date(System.currentTimeMillis()));
 		query.addWhereLessThan("createdAt", date);
 		L.i(TAG, "SIZE:" + WMapConstants.NUMBERS_PER_PAGE * pageNum);
@@ -258,7 +266,7 @@ public class QiangContentFragment extends RealFragment {
 			if (mListItems.size() == 0) {
 				mPullRefreshListView.setVisibility(View.VISIBLE);
 				mPullRefreshListView.setMode(Mode.PULL_FROM_START);
-				networkTips.setVisibility(View.VISIBLE);
+				// networkTips.setVisibility(View.VISIBLE);
 			}
 			progressbar.setVisibility(View.GONE);
 			break;

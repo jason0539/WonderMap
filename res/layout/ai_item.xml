@@ -17,7 +17,7 @@
             android:id="@+id/user_logo"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:scaleType="centerInside"
+            android:scaleType="fitXY"
             android:src="@drawable/user_icon_default_main" />
         <!-- 名字 -->
 

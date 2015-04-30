@@ -23,11 +23,15 @@ public class SharePreferenceUtil {
 		editor = mSharedPreferences.edit();
 	}
 
-	private String SHARED_KEY_NOTIFY = "shared_key_notify";
-	private String SHARED_KEY_VOICE = "shared_key_sound";
-	private String SHARED_KEY_VIBRATE = "shared_key_vibrate";
-	private String SHARED_KEY_CRASH = "shared_key_crash";
-	private String SHARED_KEY_ACCEPT = "shared_key_accept";
+	private String SHARED_KEY_NOTIFY = "shared_key_notify";// 是否允许通知
+	private String SHARED_KEY_VOICE = "shared_key_sound";// 是否允许声音
+	private String SHARED_KEY_VIBRATE = "shared_key_vibrate";// 是否允许震动
+	private String SHARED_KEY_CRASH = "shared_key_crash";// 是否有crash日志信息
+	private String SHARED_KEY_ACCEPT = "shared_key_accept";// 接受用户协议，小米的
+	private String SHARED_KEY_LOCATION = "shared_key_location";
+	private String SHARED_KEY_SMALL = "shared_key_small";//
+	private String SHARED_KEY_MAPTYPE = "shared_key_maptype";//
+	private String SHARED_KEY_ALLORFRIEND = "shared_key_allorfriend";//
 
 	// 是否允许推送通知
 	public boolean isAllowPushNotify() {
@@ -81,6 +85,47 @@ public class SharePreferenceUtil {
 	// 设置用户是否同意授权
 	public void setAccept(boolean hasAccept) {
 		editor.putBoolean(SHARED_KEY_ACCEPT, hasAccept);
+		editor.commit();
+	}
+
+	// 第一次定位
+	public boolean isFirstLocation() {
+		return mSharedPreferences.getBoolean(SHARED_KEY_LOCATION, true);
+	}
+
+	public void setFirstLocation(boolean isChecked) {
+		editor.putBoolean(SHARED_KEY_LOCATION, isChecked);
+		editor.commit();
+	}
+
+	// 第一次卫星地图
+	public boolean isFirstChangeMapType() {
+		return mSharedPreferences.getBoolean(SHARED_KEY_MAPTYPE, true);
+	}
+
+	public void setFirstChangeMapType(boolean isChecked) {
+		editor.putBoolean(SHARED_KEY_MAPTYPE, isChecked);
+		editor.commit();
+	}
+
+	// 是否第一次切换好友
+	public boolean isFirstChangeFriends() {
+		return mSharedPreferences.getBoolean(SHARED_KEY_ALLORFRIEND, true);
+	}
+
+	public void setFirstChangeFriends(boolean isChecked) {
+		editor.putBoolean(SHARED_KEY_ALLORFRIEND, isChecked);
+		editor.commit();
+	}
+
+	// 是否第一次缩小
+
+	public boolean isFirstSmall() {
+		return mSharedPreferences.getBoolean(SHARED_KEY_SMALL, true);
+	}
+
+	public void setFirstSmall(boolean isChecked) {
+		editor.putBoolean(SHARED_KEY_SMALL, isChecked);
 		editor.commit();
 	}
 

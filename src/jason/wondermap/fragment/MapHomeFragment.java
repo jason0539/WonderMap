@@ -1,6 +1,7 @@
 package jason.wondermap.fragment;
 
 import jason.wondermap.R;
+import jason.wondermap.WonderMapApplication;
 import jason.wondermap.controler.MapControler;
 import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.utils.L;
@@ -85,16 +86,47 @@ public class MapHomeFragment extends ContentFragment {
 					break;
 				case R.id.tv_maphome_small:
 					L.d(WModel.MapControl, "点击缩小按钮");
+					if (WonderMapApplication.getInstance().getSpUtil()
+							.isFirstSmall()) {
+						BaseFragment.getMainActivity().showTips(
+								R.string.tips_maphome_small);
+						WonderMapApplication.getInstance().getSpUtil()
+								.setFirstSmall(false);
+					}
 					MapControler.getInstance().zoomOut();
 					break;
 				case R.id.tv_maphome_location:
 					L.d(WModel.MapControl, "点击定位按钮");
+					if (WonderMapApplication.getInstance().getSpUtil()
+							.isFirstLocation()) {
+						BaseFragment.getMainActivity().showTips(
+								R.string.tips_maphome_location);
+						WonderMapApplication.getInstance().getSpUtil()
+								.setFirstLocation(false);
+					}
+
 					MapControler.getInstance().moveToMylocation();
 					break;
 				case R.id.tv_maphome_type:
+					if (WonderMapApplication.getInstance().getSpUtil()
+							.isFirstChangeMapType()) {
+						BaseFragment.getMainActivity().showTips(
+								R.string.tips_maphome_maptype);
+						WonderMapApplication.getInstance().getSpUtil()
+								.setFirstChangeMapType(false);
+					}
+
 					MapControler.getInstance().changeMapType();
 					break;
 				case R.id.tv_maphome_friend:
+					if (WonderMapApplication.getInstance().getSpUtil()
+							.isFirstChangeFriends()) {
+						BaseFragment.getMainActivity().showTips(
+								R.string.tips_maphome_allorfriends);
+						WonderMapApplication.getInstance().getSpUtil()
+								.setFirstChangeFriends(false);
+					}
+
 					if (MapUserManager.getInstance().isOnlyShowFriends()) {
 						T.showShort(getActivity(), "已切换到在线地图");
 						initTopBarForOnlyTitle(mRootView, "在线地图");
@@ -124,7 +156,8 @@ public class MapHomeFragment extends ContentFragment {
 					break;
 				case R.id.tv_maphome_small:
 					// L.d(WModel.MapControl, "点击缩小按钮");
-					 MapControler.getInstance().zoomOut(MapControler.ZoomLevelMin);
+					MapControler.getInstance().zoomOut(
+							MapControler.ZoomLevelMin);
 					break;
 				case R.id.tv_maphome_location:
 					L.d(WModel.MapControl, "点击定位按钮");

@@ -87,5 +87,14 @@
     <!-- 个人信息页 -->
     <string name="userinfo_fragment_signs">个性签名</string>
     <string name="userinfo_fragment_edit">这个家伙很懒，什么也没写</string>
+    <!-- listview为空的提示 -->
+    <string name="empty_tips_footblog">"还没有足迹哟\n足迹页能看到好友和自己发布的足迹"</string>
+    <string name="empty_tips_recommend">"没有更多通讯录好友在用\n给好友推荐一下吧↓"</string>
+    <!-- 地图页控件说明 -->
+    <string name="tips_maphome_location">点击：视图平移到我的位置\n长按：平移并放大视图到我的位置\n记得有长按功能哦～</string>
+    <string name="tips_maphome_maptype">切换卫星地图和普通地图</string>
+    <string name="tips_maphome_allorfriends">切换地图显示类型\n好友地图：显示所有好友，无论是否在线\n在线地图：显示目前所有在线的人，包括陌生人和在线好友</string>
+    <string name="tips_maphome_big">点击：视图平移到我的位置\n长按：平移并放大视图到我的位置\n记得有长按功能哦～</string>
+    <string name="tips_maphome_small">还可以长按哦～\n长按可以直接缩放到全国视图\n试试吧</string>
 
 </resources>

@@ -76,7 +76,8 @@ public class RecommendFriendAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				Bundle bundle = new Bundle();
 				bundle.putString(UserInfo.USER_ID, user.getObjectId());
-				BaseFragment.getWMFragmentManager().showFragment(WMFragmentManager.TYPE_USERINFO, bundle);
+				BaseFragment.getWMFragmentManager().showFragment(
+						WMFragmentManager.TYPE_USERINFO, bundle);
 			}
 		});
 		TextView name = ViewHolder.get(convertView, R.id.name);

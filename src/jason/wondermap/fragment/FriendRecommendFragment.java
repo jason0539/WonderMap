@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class FriendRecommendFragment extends ContentFragment {
 	private ViewGroup mRootViewGroup;
@@ -68,6 +69,13 @@ public class FriendRecommendFragment extends ContentFragment {
 						adapter = new RecommendFriendAdapter(
 								phoneRecommendHelper);
 						listView.setAdapter(adapter);
+						if (recommedFriends.size()==0) {
+							ViewGroup emptyView = (ViewGroup) BaseFragment.getInflater().inflate(
+									R.layout.view_footblog_empty, null);
+							TextView t = (TextView) emptyView.findViewById(R.id.tv_empty_tips);
+							t.setText(R.string.empty_tips_recommend);
+							listView.addFooterView(emptyView);
+						}
 					}
 
 					@Override
