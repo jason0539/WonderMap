@@ -37,11 +37,14 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
+/**
+ * @author liuzhenhui
+ * 
+ */
 public class PublishFootblogFragment extends ContentFragment implements
 		OnClickListener {
 	private static final int REQUEST_CODE_ALBUM = 1;
@@ -66,7 +69,7 @@ public class PublishFootblogFragment extends ContentFragment implements
 	@Override
 	protected void onInitView() {
 		initTopBarForBoth(mRootViewGroup, "发布足迹",
-				R.drawable.btn_chat_send_selector, newFootblogSend);
+				R.drawable.btn_footblog_publish_selector, newFootblogSend);
 		content = (EditText) mRootViewGroup.findViewById(R.id.edit_content);
 
 		openLayout = (LinearLayout) mRootViewGroup

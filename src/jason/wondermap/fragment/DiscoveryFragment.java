@@ -26,7 +26,7 @@ public class DiscoveryFragment extends ContentFragment implements
 	@Override
 	protected void onInitView() {
 		initTopBarForBoth(mRootViewGroup, "足迹",
-				R.drawable.btn_chat_add_camera_selector,
+				R.drawable.btn_footblog_add_blog_selector,
 				editFootLogClickListener);
 		mViewPager = (ViewPager) mRootViewGroup.findViewById(R.id.viewpager);
 		mAdapter = new QiangContentAdapter(getActivity()
