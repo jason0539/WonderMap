@@ -273,10 +273,9 @@
     <!-- 底部Bar -->
     <style name="BottomBar">
         <item name="android:background">@android:color/white</item>
-        <item name="android:paddingTop">7dip</item>
+        <item name="android:padding">5dip</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:textColor">@drawable/tab_textcolor</item>
         <item name="android:scaleType">fitXY</item>
         <item name="android:paddingBottom">2dp</item>
         <item name="android:textSize">15sp</item>

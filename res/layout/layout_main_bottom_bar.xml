@@ -52,8 +52,7 @@
             android:id="@+id/btn_main_mine"
             style="@style/BottomBar"
             android:drawableTop="@drawable/tab_set_btn"
-            android:text="@string/mian_tab_set"
-            android:textColor="@drawable/tab_textcolor" />
+            android:text="@string/mian_tab_set" />
     </LinearLayout>
 
 </LinearLayout>

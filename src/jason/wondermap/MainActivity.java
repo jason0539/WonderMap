@@ -11,6 +11,7 @@ import jason.wondermap.utils.L;
 import jason.wondermap.utils.WModel;
 import jason.wondermap.view.dialog.DialogTips;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.os.Bundle;
@@ -67,6 +68,21 @@ public class MainActivity extends FragmentActivity {
 		// 设置成功事件
 		appDialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialogInterface, int userId) {
+				appDialog.dismiss();
+			}
+		});
+		// 显示确认对话框
+		appDialog.show();
+	}
+
+	public void showMessage(String msgString, OnClickListener onSuccessListener) {
+		appDialog = new DialogTips(this, "提示", msgString, "确定", true, true);
+		// 设置成功事件
+		appDialog.SetOnSuccessListener(onSuccessListener);
+		appDialog.SetOnCancelListener(new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
 				appDialog.dismiss();
 			}
 		});

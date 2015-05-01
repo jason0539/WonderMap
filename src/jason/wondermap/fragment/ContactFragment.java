@@ -100,7 +100,8 @@ public class ContactFragment extends ContentFragment implements
 				.getSystemService(Context.INPUT_METHOD_SERVICE);
 		characterParser = CharacterParser.getInstance();
 		pinyinComparator = new PinyinComparator();
-		initTopBarForBoth(mRootView,"联系人", R.drawable.base_action_bar_add_bg_selector,
+		initTopBarForBoth(mRootView, "联系人",
+				R.drawable.base_action_bar_add_bg_selector,
 				new onRightImageButtonClickListener() {
 
 					@Override
@@ -115,7 +116,8 @@ public class ContactFragment extends ContentFragment implements
 	}
 
 	private void initEditText() {
-		mClearEditText = (ClearEditText) mRootView.findViewById(R.id.et_msg_search);
+		mClearEditText = (ClearEditText) mRootView
+				.findViewById(R.id.et_msg_search);
 		// 根据输入框输入值的改变来过滤搜索
 		mClearEditText.addTextChangedListener(new TextWatcher() {
 
@@ -209,7 +211,7 @@ public class ContactFragment extends ContentFragment implements
 	TextView tv_new_name;
 	LinearLayout layout_new;// 新朋友
 	LinearLayout layout_near;// 附近的人
-	LinearLayout layout_recommend;//好友推荐
+	LinearLayout layout_recommend;// 好友推荐
 
 	private void initListView() {
 		list_friends = (ListView) mRootView.findViewById(R.id.list_friends);
@@ -218,7 +220,8 @@ public class ContactFragment extends ContentFragment implements
 		iv_msg_tips = (ImageView) headView.findViewById(R.id.iv_msg_tips);
 		layout_new = (LinearLayout) headView.findViewById(R.id.layout_new);
 		layout_near = (LinearLayout) headView.findViewById(R.id.layout_near);
-		layout_recommend = (LinearLayout)headView.findViewById(R.id.layout_recommend);
+		layout_recommend = (LinearLayout) headView
+				.findViewById(R.id.layout_recommend);
 		layout_new.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -233,14 +236,27 @@ public class ContactFragment extends ContentFragment implements
 
 			@Override
 			public void onClick(View arg0) {
-				wmFragmentManager.showFragment(WMFragmentManager.TYPE_NEAR_PEOPLE);
+				wmFragmentManager
+						.showFragment(WMFragmentManager.TYPE_NEAR_PEOPLE);
 			}
 		});
 		layout_recommend.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				wmFragmentManager.showFragment(WMFragmentManager.TYPE_FRIEND_RECOMMEND);
+				BaseFragment.getMainActivity().showMessage(
+						"进入后需要读取你的通讯录数据，仅用来推荐好友，是否进入",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								wmFragmentManager
+										.showFragment(WMFragmentManager.TYPE_FRIEND_RECOMMEND);
+
+							}
+
+						});
 			}
 		});
 

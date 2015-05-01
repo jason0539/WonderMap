@@ -32,7 +32,7 @@
     <string name="login_email">确认密码 </string>
     <string name="message_search_hint">搜索&#8230;</string>
     <string name="main_tab_recent">会话</string>
-    <string name="main_tab_contact">联系人</string>
+    <string name="main_tab_contact">好友</string>
     <string name="main_tab_footblog">足迹</string>
     <string name="mian_tab_set">设置</string>
     <string name="xlistview_header_hint_normal">下拉刷新</string>
