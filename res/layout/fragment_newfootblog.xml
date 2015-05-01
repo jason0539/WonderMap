@@ -42,7 +42,6 @@
                 android:layout_alignRight="@+id/edit_content"
                 android:layout_below="@id/edit_content"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ls"
                 android:visibility="visible" />
 
             <LinearLayout
