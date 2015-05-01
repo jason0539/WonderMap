@@ -98,7 +98,6 @@ public class QiangContentFragment extends RealFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 
 		contentView = inflater.inflate(R.layout.fragment_qiangcontent, null);
 		mPullRefreshListView = (PullToRefreshListView) contentView
@@ -112,7 +111,6 @@ public class QiangContentFragment extends RealFragment {
 					@Override
 					public void onPullDownToRefresh(
 							PullToRefreshBase<ListView> refreshView) {
-						// TODO Auto-generated method stub
 						String label = DateUtils.formatDateTime(getActivity(),
 								System.currentTimeMillis(),
 								DateUtils.FORMAT_SHOW_TIME
@@ -131,7 +129,6 @@ public class QiangContentFragment extends RealFragment {
 					@Override
 					public void onPullUpToRefresh(
 							PullToRefreshBase<ListView> refreshView) {
-						// TODO Auto-generated method stub
 						mRefreshType = RefreshType.LOAD_MORE;
 						fetchData();
 					}
@@ -141,7 +138,6 @@ public class QiangContentFragment extends RealFragment {
 
 					@Override
 					public void onLastItemVisible() {
-						// TODO Auto-generated method stub
 
 					}
 				});
@@ -173,79 +169,86 @@ public class QiangContentFragment extends RealFragment {
 		return contentView;
 	}
 
+	Runnable task = new Runnable() {
+		public void run() {
+			setState(LOADING);
+			BmobQuery<Blog> query = new BmobQuery<Blog>();
+			query.order("-createdAt");
+			// query.setCachePolicy(CachePolicy.NETWORK_ONLY);
+			query.setLimit(WMapConstants.NUMBERS_PER_PAGE);
+			// TODO 只看好友和自己，好友数量足够多，可能会有问题，超过1024k请求限制
+			// Map<String, BmobChatUser> friendsMap = new HashMap<String,
+			// BmobChatUser>(
+			// AccountUserManager.getInstance().getContactList());
+			// friendsMap.put(AccountUserManager.getInstance().getCurrentUserid(),
+			// AccountUserManager.getInstance().getCurrentUser());
+			// Set<String> friends = friendsMap.keySet();
+			// query.addWhereContainedIn("author", friends);
+			// 复杂查询http://docs.bmob.cn/android/developdoc/index.html?menukey=develop_doc&key=develop_android#index_%E5%E2pn
+			BmobQuery<User> innerFriendsQuery = new BmobQuery<User>();
+			innerFriendsQuery.addWhereRelatedTo("contacts", new BmobPointer(
+					AccountUserManager.getInstance().getCurrentUser()));
+			BmobQuery<User> innerMyselfQuery = new BmobQuery<User>();
+			innerMyselfQuery.addWhereEqualTo("objectId", AccountUserManager
+					.getInstance().getCurrentUserid());
+			List<BmobQuery<User>> queries = new ArrayList<BmobQuery<User>>();
+			queries.add(innerFriendsQuery);
+			queries.add(innerMyselfQuery);
+			BmobQuery<User> innerQuery = new BmobQuery<User>();
+			innerQuery.or(queries);
+			// innerQuery.
+			query.addWhereMatchesQuery("author", "_User", innerQuery);
+			BmobDate date = new BmobDate(new Date(System.currentTimeMillis()));
+			query.addWhereLessThan("createdAt", date);
+			L.i(TAG, "SIZE:" + WMapConstants.NUMBERS_PER_PAGE * pageNum);
+			query.setSkip(WMapConstants.NUMBERS_PER_PAGE * (pageNum++));
+			L.i(TAG, "SIZE:" + WMapConstants.NUMBERS_PER_PAGE * pageNum);
+			query.include("author");
+			query.findObjects(getActivity(), new FindListener<Blog>() {
+
+				@Override
+				public void onSuccess(List<Blog> list) {
+					L.d(WModel.PublishBlog, "find success." + list.size());
+					if (list.size() != 0 && list.get(list.size() - 1) != null) {
+						if (mRefreshType == RefreshType.REFRESH) {
+							mListItems.clear();
+						}
+						if (list.size() < WMapConstants.NUMBERS_PER_PAGE) {
+							L.i(TAG, "已加载完所有数据~");
+						}
+						if (AccountUserManager.getInstance().getCurrentUser() != null) {
+							list = DatabaseUtil.getInstance(mContext).setFav(
+									list);
+						}
+						mListItems.addAll(list);
+						mAdapter.notifyDataSetChanged();
+
+						setState(LOADING_COMPLETED);
+						mPullRefreshListView.onRefreshComplete();
+					} else {
+						T.showShort(getActivity(), "暂无更多数据~");
+						pageNum--;
+						setState(LOADING_COMPLETED);
+						mPullRefreshListView.onRefreshComplete();
+					}
+				}
+
+				@Override
+				public void onError(int arg0, String arg1) {
+					L.d(WModel.PublishBlog, arg0 + "find failed." + arg1);
+					pageNum--;
+					setState(LOADING_FAILED);
+					mPullRefreshListView.onRefreshComplete();
+				}
+			});
+		}
+	};
+
 	/**
 	 * 获取足迹数据，本来是直接获取的，4月29日，放到线程里面，暂时没发现问题中，之后要优化足迹页加载流畅度
 	 */
 	public void fetchData() {
-		setState(LOADING);
-		BmobQuery<Blog> query = new BmobQuery<Blog>();
-		query.order("-createdAt");
-		// query.setCachePolicy(CachePolicy.NETWORK_ONLY);
-		query.setLimit(WMapConstants.NUMBERS_PER_PAGE);
-		// TODO 只看好友和自己，好友数量足够多，可能会有问题，超过1024k请求限制
-		// Map<String, BmobChatUser> friendsMap = new HashMap<String,
-		// BmobChatUser>(
-		// AccountUserManager.getInstance().getContactList());
-		// friendsMap.put(AccountUserManager.getInstance().getCurrentUserid(),
-		// AccountUserManager.getInstance().getCurrentUser());
-		// Set<String> friends = friendsMap.keySet();
-		// query.addWhereContainedIn("author", friends);
-		// 复杂查询http://docs.bmob.cn/android/developdoc/index.html?menukey=develop_doc&key=develop_android#index_%E5%E2pn
-		BmobQuery<User> innerFriendsQuery = new BmobQuery<User>();
-		innerFriendsQuery.addWhereRelatedTo("contacts", new BmobPointer(
-				AccountUserManager.getInstance().getCurrentUser()));
-		BmobQuery<User> innerMyselfQuery = new BmobQuery<User>();
-		innerMyselfQuery.addWhereEqualTo("objectId", AccountUserManager
-				.getInstance().getCurrentUserid());
-		List<BmobQuery<User>> queries = new ArrayList<BmobQuery<User>>();
-		queries.add(innerFriendsQuery);
-		queries.add(innerMyselfQuery);
-		BmobQuery<User> innerQuery = new BmobQuery<User>();
-		innerQuery.or(queries);
-		// innerQuery.
-		query.addWhereMatchesQuery("author", "_User", innerQuery);
-		BmobDate date = new BmobDate(new Date(System.currentTimeMillis()));
-		query.addWhereLessThan("createdAt", date);
-		L.i(TAG, "SIZE:" + WMapConstants.NUMBERS_PER_PAGE * pageNum);
-		query.setSkip(WMapConstants.NUMBERS_PER_PAGE * (pageNum++));
-		L.i(TAG, "SIZE:" + WMapConstants.NUMBERS_PER_PAGE * pageNum);
-		query.include("author");
-		query.findObjects(getActivity(), new FindListener<Blog>() {
-
-			@Override
-			public void onSuccess(List<Blog> list) {
-				L.d(WModel.PublishBlog, "find success." + list.size());
-				if (list.size() != 0 && list.get(list.size() - 1) != null) {
-					if (mRefreshType == RefreshType.REFRESH) {
-						mListItems.clear();
-					}
-					if (list.size() < WMapConstants.NUMBERS_PER_PAGE) {
-						L.i(TAG, "已加载完所有数据~");
-					}
-					if (AccountUserManager.getInstance().getCurrentUser() != null) {
-						list = DatabaseUtil.getInstance(mContext).setFav(list);
-					}
-					mListItems.addAll(list);
-					mAdapter.notifyDataSetChanged();
-
-					setState(LOADING_COMPLETED);
-					mPullRefreshListView.onRefreshComplete();
-				} else {
-					T.showShort(getActivity(), "暂无更多数据~");
-					pageNum--;
-					setState(LOADING_COMPLETED);
-					mPullRefreshListView.onRefreshComplete();
-				}
-			}
-
-			@Override
-			public void onError(int arg0, String arg1) {
-				L.d(WModel.PublishBlog, arg0 + "find failed." + arg1);
-				pageNum--;
-				setState(LOADING_FAILED);
-				mPullRefreshListView.onRefreshComplete();
-			}
-		});
+		new Thread(task).start();
 	}
 
 	private static final int LOADING = 1;

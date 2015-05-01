@@ -28,10 +28,11 @@ public class WMFragmentManager extends ContentFragmentManager implements
 	public final static int TYPE_IMAGE_BROWSER = 0x0033;// 图片查看页面
 	public final static int TYPE_FEEDBACK = 0x0034;// 图片查看页面
 	public final static int TYPE_NEW_FOOTBLOG = 0x0035;// 发布足迹页面
-	public final static int TYPE_FOOTBLOG_COMMENT = 0x0036;//足迹评论页
-	public final static int TYPE_FAVOURITE = 0x0037;//我的收藏
-	public final static int TYPE_PERSONAL_FOOTBLOG = 0x0038;//查看足迹
-	public final static int TYPE_FRIEND_RECOMMEND = 0x0039;//好友推荐
+	public final static int TYPE_FOOTBLOG_COMMENT = 0x0036;// 足迹评论页
+	public final static int TYPE_FAVOURITE = 0x0037;// 我的收藏
+	public final static int TYPE_PERSONAL_FOOTBLOG = 0x0038;// 查看足迹
+	public final static int TYPE_FRIEND_RECOMMEND = 0x0039;// 好友推荐
+	public final static int TYPE_ABOUT = 0x0040;// 关于软件
 
 	/** 前一个fragment 类型 ，即从哪个fragment跳转过来的 */
 	private int mPreviousFragmentType = TYPE_NONE;
@@ -106,6 +107,9 @@ public class WMFragmentManager extends ContentFragmentManager implements
 			break;
 		case TYPE_FRIEND_RECOMMEND:
 			fragment = new FriendRecommendFragment();
+			break;
+		case TYPE_ABOUT:
+			fragment = new AboutFragment();
 			break;
 		}
 		return fragment;
@@ -240,7 +244,7 @@ public class WMFragmentManager extends ContentFragmentManager implements
 		boolean isMapContentFragment = false;
 		switch (type) {
 		case TYPE_MAP_HOME:
-			
+
 			isMapContentFragment = true;
 			break;
 		case TYPE_CHAT:

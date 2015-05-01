@@ -177,7 +177,7 @@ public class ChatMessageManager implements EventListener {
 		// 清空 每次mainactivity进入onresume的时候，清空消息数量
 		MyMessageReceiver.mNewNum = 0;
 	}
-
+	
 	public static ChatMessageManager getInstance() {
 		if (instance == null) {
 			instance = new ChatMessageManager();

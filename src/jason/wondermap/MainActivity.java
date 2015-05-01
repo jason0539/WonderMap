@@ -182,9 +182,7 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onDestroy() {
 		L.d(WModel.MainActivity, "onDestroy");
-		WLocationManager.getInstance().stop();
-		// 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
-		MapControler.getInstance().unInit();
+		launchHelper.checkExit();
 		super.onDestroy();
 	}
 

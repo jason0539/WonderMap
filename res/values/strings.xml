@@ -18,6 +18,7 @@
     <!-- 设置页面 -->
     <string name="set_feedback">意见反馈</string>
     <string name="set_favourite">足迹收藏</string>
+    <string name="set_about">关于活点</string>
     <!-- my end -->
 
     <string name="login_username_hint">请输入用户名&#8230;</string>

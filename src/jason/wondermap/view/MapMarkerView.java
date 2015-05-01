@@ -26,6 +26,9 @@ public class MapMarkerView {
 		if (user == null) {
 			L.d(WModel.CrashUpload, "user 是空指针");
 		}
+		if (mInflater==null) {
+			mInflater = BaseFragment.getInflater();
+		}
 		view = mInflater.inflate(R.layout.view_mapmarker, null);
 		iv_marker_head = (ImageView) view
 				.findViewById(R.id.view_mapmarker_head);

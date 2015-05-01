@@ -24,7 +24,7 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 	private TextView tv_set_name;
 	private RelativeLayout layout_info, layout_blacklist, layout_feedback,
 			layout_favourite, layout_switch_notification, layout_switch_voice,
-			layout_switch_vibrate;
+			layout_switch_vibrate,layout_about;
 	private CheckBox ck_notify, ck_voice, ck_vibrate;
 	private View view1, view2;
 	private SharePreferenceUtil mSharedUtil;
@@ -90,6 +90,9 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 			wmFragmentManager.showFragment(WMFragmentManager.TYPE_USERINFO,
 					bundle);
 			break;
+		case R.id.layout_about:
+			wmFragmentManager.showFragment(WMFragmentManager.TYPE_ABOUT);
+			break;
 		case R.id.btn_logout:
 			WonderMapApplication.getInstance().logout();
 			BaseFragment.getMainActivity().finish();
@@ -144,6 +147,7 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 		layout_feedback = (RelativeLayout) mRootView
 				.findViewById(R.id.layout_feedback);
 		layout_info = (RelativeLayout) mRootView.findViewById(R.id.layout_info);
+		layout_about = (RelativeLayout)mRootView.findViewById(R.id.layout_about);
 		layout_switch_notification = (RelativeLayout) mRootView
 				.findViewById(R.id.rl_switch_notification);
 		layout_switch_voice = (RelativeLayout) mRootView
@@ -166,6 +170,7 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 		layout_favourite.setOnClickListener(this);
 		layout_feedback.setOnClickListener(this);
 		layout_switch_notification.setOnClickListener(this);
+		layout_about.setOnClickListener(this);
 		layout_switch_voice.setOnClickListener(this);
 		layout_switch_vibrate.setOnClickListener(this);
 	}

@@ -137,8 +137,8 @@ public abstract class DialogBase extends Dialog {
 		}
 		getWindow().setAttributes(params);
 		this.setOnDismissListener(GetOnDismissListener());
-		this.getWindow().setSoftInputMode(
-				WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//		this.getWindow().setSoftInputMode(
+//				WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 	}
 
 	/**

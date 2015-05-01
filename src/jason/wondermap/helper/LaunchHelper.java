@@ -1,13 +1,14 @@
 package jason.wondermap.helper;
 
-import com.xiaomi.market.sdk.XiaomiUpdateAgent;
-
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.User;
 import jason.wondermap.config.BundleTake;
+import jason.wondermap.controler.MapControler;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.manager.AccountUserManager;
+import jason.wondermap.manager.ChatMessageManager;
+import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.UserInfo;
@@ -15,7 +16,16 @@ import jason.wondermap.utils.WModel;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.xiaomi.market.sdk.XiaomiUpdateAgent;
+
 public class LaunchHelper {
+	public void checkExit() {
+		WLocationManager.getInstance().stop();
+		// 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
+		MapControler.getInstance().unInit();
+		ChatMessageManager.getInstance().unInit();
+	}
+
 	public void checkLaunch(Context mContext) {
 		checkCrashLog(mContext);
 		checkIsNeedToConfirmInfo();
