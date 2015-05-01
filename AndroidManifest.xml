@@ -112,7 +112,7 @@
         <!-- 地图服务验证 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="QOHuuTEiozH0tib8YO0t51Go" />
+            android:value="784FwY2gl6Wh4tIyWg639AGl" />
         <!-- eclipse调试使用 -->
         <!-- 784FwY2gl6Wh4tIyWg639AGl -->
 

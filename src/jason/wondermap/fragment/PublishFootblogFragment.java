@@ -4,9 +4,11 @@ import jason.wondermap.R;
 import jason.wondermap.bean.Blog;
 import jason.wondermap.bean.User;
 import jason.wondermap.manager.AccountUserManager;
+import jason.wondermap.manager.FootblogManager;
 import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.CacheUtils;
 import jason.wondermap.utils.L;
+import jason.wondermap.utils.StringUtils;
 import jason.wondermap.utils.WModel;
 import jason.wondermap.view.HeaderLayout.onRightImageButtonClickListener;
 
@@ -24,8 +26,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -37,7 +37,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UploadFileListener;
@@ -89,15 +88,18 @@ public class PublishFootblogFragment extends ContentFragment implements
 		@Override
 		public void onClick() {
 			String commitContent = content.getText().toString().trim();
-			if (TextUtils.isEmpty(commitContent)) {
+			//足迹可以还有图片，文字图片有一个即可
+			if (TextUtils.isEmpty(commitContent)&&StringUtils.isStringNull(targeturl)) {
 				ShowToast("内容不能为空");
 				return;
 			}
 			if (targeturl == null) {
-				publishWithoutFigure(commitContent, null);
+				FootblogManager.getInstance().publishWithoutFigure(
+						commitContent, null);
 			} else {
-				publish(commitContent);
+				FootblogManager.getInstance().publish(commitContent, targeturl);
 			}
+			wmFragmentManager.back(null);
 		}
 	};
 
@@ -138,67 +140,6 @@ public class PublishFootblogFragment extends ContentFragment implements
 		default:
 			break;
 		}
-	}
-
-	/*
-	 * 发表带图片
-	 */
-	private void publish(final String commitContent) {
-
-		final BmobFile figureFile = new BmobFile(new File(targeturl));
-		figureFile.upload(mContext, new UploadFileListener() {
-
-			@Override
-			public void onSuccess() {
-				L.i("上传文件成功。" + figureFile.getFileUrl(mContext));
-				publishWithoutFigure(commitContent, figureFile);
-			}
-
-			@Override
-			public void onProgress(Integer arg0) {
-				L.d(WModel.PublishBlog, "progress --->" + arg0);
-			}
-
-			@Override
-			public void onFailure(int arg0, String arg1) {
-				L.d(WModel.PublishBlog, "progress --->" + arg0);
-				L.i("上传文件失败。" + arg1);
-			}
-		});
-	}
-
-	private void publishWithoutFigure(final String commitContent,
-			final BmobFile figureFile) {
-		User user = AccountUserManager.getInstance().getCurrentUser();
-		final Blog blog = new Blog();
-		blog.setAuthor(user);
-		blog.setContent(commitContent);
-		if (figureFile != null) {
-			blog.setContentfigureurl(figureFile);
-		}
-		blog.setLocation(WLocationManager.getInstance().getBmobGeoPoint());
-		blog.setBdLocation(WLocationManager.getInstance().getBDLocation());
-		blog.setLove(0);
-		blog.setHate(0);
-		blog.setShare(0);
-		blog.setComment(0);
-		blog.setPass(true);
-		blog.save(mContext, new SaveListener() {
-
-			@Override
-			public void onSuccess() {
-				ShowToast("发表成功");
-				// TODO 发表成功自动返回//应该带参数，成功则刷新
-				// setResult(RESULT_OK);
-				// finish();
-				wmFragmentManager.back(null);
-			}
-
-			@Override
-			public void onFailure(int arg0, String arg1) {
-				ShowToast("发表失败！" + arg1);
-			}
-		});
 	}
 
 	String targeturl = null;

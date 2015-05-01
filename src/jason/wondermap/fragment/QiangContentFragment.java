@@ -3,20 +3,19 @@ package jason.wondermap.fragment;
 import jason.wondermap.R;
 import jason.wondermap.adapter.AIContentAdapter;
 import jason.wondermap.bean.Blog;
+import jason.wondermap.bean.User;
 import jason.wondermap.config.WMapConstants;
 import jason.wondermap.dao.DatabaseUtil;
 import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.manager.FootblogManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.T;
+import jason.wondermap.utils.WModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -33,6 +32,7 @@ import android.widget.TextView;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobDate;
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.listener.FindListener;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -183,18 +183,27 @@ public class QiangContentFragment extends RealFragment {
 		// query.setCachePolicy(CachePolicy.NETWORK_ONLY);
 		query.setLimit(WMapConstants.NUMBERS_PER_PAGE);
 		// TODO 只看好友和自己，好友数量足够多，可能会有问题，超过1024k请求限制
-		Map<String, BmobChatUser> friendsMap = new HashMap<String, BmobChatUser>(
-				AccountUserManager.getInstance().getContactList());
-		friendsMap.put(AccountUserManager.getInstance().getCurrentUserid(),
-				AccountUserManager.getInstance().getCurrentUser());
-		Set<String> friends = friendsMap.keySet();
-		query.addWhereContainedIn("author", friends);
-//		BmobQuery<User> innerQuery = new BmobQuery<User>();
-//		innerQuery.addWhereRelatedTo("contacts", new BmobPointer(
-//				AccountUserManager.getInstance().getCurrentUser()));
-//		// innerQuery.
-//		query.addWhereMatchesQuery("author",
-//				BmobChatUser.class.getSimpleName(), innerQuery);
+		// Map<String, BmobChatUser> friendsMap = new HashMap<String,
+		// BmobChatUser>(
+		// AccountUserManager.getInstance().getContactList());
+		// friendsMap.put(AccountUserManager.getInstance().getCurrentUserid(),
+		// AccountUserManager.getInstance().getCurrentUser());
+		// Set<String> friends = friendsMap.keySet();
+		// query.addWhereContainedIn("author", friends);
+		// 复杂查询http://docs.bmob.cn/android/developdoc/index.html?menukey=develop_doc&key=develop_android#index_%E5%E2pn
+		BmobQuery<User> innerFriendsQuery = new BmobQuery<User>();
+		innerFriendsQuery.addWhereRelatedTo("contacts", new BmobPointer(
+				AccountUserManager.getInstance().getCurrentUser()));
+		BmobQuery<User> innerMyselfQuery = new BmobQuery<User>();
+		innerMyselfQuery.addWhereEqualTo("objectId", AccountUserManager
+				.getInstance().getCurrentUserid());
+		List<BmobQuery<User>> queries = new ArrayList<BmobQuery<User>>();
+		queries.add(innerFriendsQuery);
+		queries.add(innerMyselfQuery);
+		BmobQuery<User> innerQuery = new BmobQuery<User>();
+		innerQuery.or(queries);
+		// innerQuery.
+		query.addWhereMatchesQuery("author", "_User", innerQuery);
 		BmobDate date = new BmobDate(new Date(System.currentTimeMillis()));
 		query.addWhereLessThan("createdAt", date);
 		L.i(TAG, "SIZE:" + WMapConstants.NUMBERS_PER_PAGE * pageNum);
@@ -205,7 +214,7 @@ public class QiangContentFragment extends RealFragment {
 
 			@Override
 			public void onSuccess(List<Blog> list) {
-				L.i(TAG, "find success." + list.size());
+				L.d(WModel.PublishBlog, "find success." + list.size());
 				if (list.size() != 0 && list.get(list.size() - 1) != null) {
 					if (mRefreshType == RefreshType.REFRESH) {
 						mListItems.clear();
@@ -231,7 +240,7 @@ public class QiangContentFragment extends RealFragment {
 
 			@Override
 			public void onError(int arg0, String arg1) {
-				L.i(TAG, "find failed." + arg1);
+				L.d(WModel.PublishBlog, arg0 + "find failed." + arg1);
 				pageNum--;
 				setState(LOADING_FAILED);
 				mPullRefreshListView.onRefreshComplete();

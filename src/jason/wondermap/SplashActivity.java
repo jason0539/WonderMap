@@ -66,10 +66,10 @@ public class SplashActivity extends Activity {
 		@Override
 		public void handleMessage(Message msg) {
 			// 检查是否显示提醒用户授权信息
-//			if (!WonderMapApplication.getInstance().getSpUtil().hasAccept()) {
-//				openUserAccessbleDialog(msg.what);
-//				return;
-//			}
+			if (!WonderMapApplication.getInstance().getSpUtil().hasAccept()) {
+				openUserAccessbleDialog(msg.what);
+				return;
+			}
 			Intent intent = null;
 			switch (msg.what) {
 			case GO_HOME:

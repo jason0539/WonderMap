@@ -119,7 +119,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	/** 是否正在显示退出应用对话框 */
-	public boolean isShowingExitAppDialog() {
+	public boolean isShowingDialog() {
 		if (appDialog != null && appDialog.isShowing()) {
 			return true;
 		}

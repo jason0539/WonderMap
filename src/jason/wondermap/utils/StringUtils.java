@@ -3,6 +3,16 @@ package jason.wondermap.utils;
 import android.text.TextUtils;
 
 public class StringUtils {
+	/**字符串是否为空
+	 * @param string
+	 * @return
+	 */
+	public final static boolean isStringNull(String string){
+		if (string==null||string.equals("")) {
+			return true;
+		}
+		return false;
+	}
 	/**
 	 * 检验邮箱格式是否正确
 	 * 
