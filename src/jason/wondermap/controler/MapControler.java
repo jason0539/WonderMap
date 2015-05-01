@@ -504,6 +504,9 @@ public class MapControler {
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
+	/**
+	 * 初始化地图控制，没有依赖
+	 */
 	public void init(MapView mapView) {
 		mContext = WonderMapApplication.getInstance();
 		mMapView = mapView;
@@ -522,15 +525,19 @@ public class MapControler {
 		// 恢复到上次的地图状态
 		mBaiduMap.animateMapStatus(statusSaveHelper.getStatus(mBaiduMap));
 	}
-
+	private boolean visible = false;
 	public void onPause() {
 		mMapView.onPause();
+		visible = false;
 	}
 
 	public void onResume() {
 		mMapView.onResume();
+		visible = true;
 	}
-
+	public boolean isVisible(){
+		return visible;
+	}
 	public void unInit() {
 		// 关闭定位图层
 		mBaiduMap.setMyLocationEnabled(false);

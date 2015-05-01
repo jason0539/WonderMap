@@ -21,8 +21,8 @@ public class ChatMessageManager implements EventListener {
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	public void unInit() {
-		mContext.unregisterReceiver(newReceiver);
-		mContext.unregisterReceiver(userReceiver);
+//		mContext.unregisterReceiver(newReceiver);
+//		mContext.unregisterReceiver(userReceiver);
 		// 取消定时检测服务
 		// BmobChat.getInstance(this).stopPollService();
 	}

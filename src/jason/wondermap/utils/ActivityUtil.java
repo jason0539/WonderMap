@@ -1,7 +1,7 @@
 package jason.wondermap.utils;
 
+import jason.wondermap.MainActivity;
 import jason.wondermap.R;
-import jason.wondermap.SplashActivity;
 import jason.wondermap.WonderMapApplication;
 
 import java.io.ByteArrayOutputStream;
@@ -18,9 +18,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -36,18 +33,18 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.SparseArray;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import android.widget.Toast;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 public final class ActivityUtil {
 
@@ -449,7 +446,7 @@ public final class ActivityUtil {
 		intent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 		intent.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
 		intent.addCategory(Intent.CATEGORY_LAUNCHER);
-		intent.setClass(context, SplashActivity.class);
+		intent.setClass(context, MainActivity.class);
 		shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, intent);
 		context.sendBroadcast(shortcut);
 	}

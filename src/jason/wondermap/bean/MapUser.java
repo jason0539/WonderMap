@@ -62,7 +62,10 @@ public class MapUser {
 					public void onLoadingComplete(String imageUri, View c,
 							Bitmap loadedImage) {
 						mapUser.setHeadBitmap(loadedImage);
-						listener.onSuccess(mapUser);
+						// markerView总是空指针，因为获取不到inflate，这里判断下如果为空则直接不添加
+						if (BaseFragment.getInflater() != null) {
+							listener.onSuccess(mapUser);
+						}
 					}
 
 					@Override

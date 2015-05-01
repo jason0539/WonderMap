@@ -1,6 +1,5 @@
 package jason.wondermap.adapter;
 
-import jason.wondermap.LoginActivity;
 import jason.wondermap.R;
 import jason.wondermap.bean.Blog;
 import jason.wondermap.bean.User;
@@ -131,11 +130,7 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 			public void onClick(View v) {
 				// 点击头像，如果未登陆则跳转到登陆页面
 				if (AccountUserManager.getInstance().getCurrentUser() == null) {
-					T.showShort(mContext, "请先登录。");
-					Activity mainActivity = BaseFragment.getMainActivity();
-					mainActivity.startActivity(new Intent(mainActivity,
-							LoginActivity.class));
-					mainActivity.finish();
+					gotoLogin();
 					return;
 				}
 				Bundle bundle = new Bundle();
@@ -214,11 +209,7 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 			@Override
 			public void onClick(View v) {
 				if (AccountUserManager.getInstance().getCurrentUser() == null) {
-					T.showShort(mContext, "请先登录。");
-					Activity mainActivity = BaseFragment.getMainActivity();
-					mainActivity.startActivity(new Intent(mainActivity,
-							LoginActivity.class));
-					mainActivity.finish();
+					gotoLogin();
 					return;
 				}
 				if (entity.getMyLove()) {
@@ -301,11 +292,7 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 				}
 				// 评论
 				if (AccountUserManager.getInstance().getCurrentUser() == null) {
-					T.showShort(mContext, "请先登录。");
-					Activity mainActivity = BaseFragment.getMainActivity();
-					mainActivity.startActivity(new Intent(mainActivity,
-							LoginActivity.class));
-					mainActivity.finish();
+					gotoLogin();
 					return;
 				}
 				FootblogManager.getInstance().setCurrentBlog(entity);
@@ -420,11 +407,7 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 			}
 		} else {
 			// 前往登录注册界面
-			T.showShort(mContext, "收藏前请先登录。");
-			Activity mainActivity = BaseFragment.getMainActivity();
-			mainActivity.startActivity(new Intent(mainActivity,
-					LoginActivity.class));
-			mainActivity.finish();
+			gotoLogin();
 			// Intent intent = new Intent();
 			// intent.setClass(mContext, RegisterAndLoginActivity.class);
 			// MyApplication.getInstance().getTopActivity()
@@ -456,11 +439,7 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 			});
 		} else {
 			// 前往登录注册界面
-			T.showShort(mContext, "获取收藏前请先登录。");
-			Activity mainActivity = BaseFragment.getMainActivity();
-			mainActivity.startActivity(new Intent(mainActivity,
-					LoginActivity.class));
-			mainActivity.finish();
+			 gotoLogin();
 			// Intent intent = new Intent();
 			// intent.setClass(mContext, RegisterAndLoginActivity.class);
 			// MyApplication
@@ -468,5 +447,9 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 			// .getTopActivity()
 			// .startActivityForResult(intent, WMapConstants.GET_FAVOURITE);
 		}
+	}
+	private  void gotoLogin(){
+		T.showShort(mContext, "获取收藏前请先登录。");
+		BaseFragment.getWMFragmentManager().showFragment(WMFragmentManager.TYPE_LOGIN);
 	}
 }

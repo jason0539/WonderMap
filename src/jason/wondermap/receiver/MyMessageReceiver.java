@@ -3,6 +3,7 @@ package jason.wondermap.receiver;
 import jason.wondermap.MainActivity;
 import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
+import jason.wondermap.controler.MapControler;
 import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.manager.PushMsgSendManager;
@@ -10,6 +11,7 @@ import jason.wondermap.utils.CollectionUtils;
 import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.UserInfo;
+import jason.wondermap.view.MapMarkerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +83,11 @@ public class MyMessageReceiver extends BroadcastReceiver {
 	 */
 	private void handleHelloMsg(JSONObject json) {
 		L.d("收到hello消息，回复world消息");
+		// if (!MapControler.getInstance().isVisible()) {
+		// L.d("收地图不可见");
+		//
+		// return;
+		// }
 		MapUserManager.getInstance().addUserFromUserId(
 				BmobJsonUtil.getString(json, UserInfo.USER_ID));// 更新地图
 		// 应该加上参数，只发送给hello用户
@@ -89,6 +96,11 @@ public class MyMessageReceiver extends BroadcastReceiver {
 
 	private void handleWorldMsg(JSONObject json) {
 		L.d("收到world消息");
+		// if (!MapControler.getInstance().isVisible()) {
+		// L.d("地图不可见");
+		//
+		// return;
+		// }
 		MapUserManager.getInstance().addUserFromUserId(
 				BmobJsonUtil.getString(json, UserInfo.USER_ID));
 	}
@@ -115,7 +127,7 @@ public class MyMessageReceiver extends BroadcastReceiver {
 							handler.onOffline();
 					} else {
 						// 清空数据
-						WonderMapApplication.getInstance().logout();
+						AccountUserManager.getInstance().logout();
 					}
 				}
 			} else if (tag.equals(UserInfo.HELLO)) {

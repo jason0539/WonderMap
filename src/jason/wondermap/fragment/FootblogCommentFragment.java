@@ -1,6 +1,5 @@
 package jason.wondermap.fragment;
 
-import jason.wondermap.LoginActivity;
 import jason.wondermap.R;
 import jason.wondermap.adapter.AIContentAdapter;
 import jason.wondermap.adapter.FootblogCommentAdapter;
@@ -194,10 +193,7 @@ public class FootblogCommentFragment extends ContentFragment implements
 			publishComment(currentUser, commentEdit);
 		} else {// 未登录
 			T.showShort(mContext, "发表评论前请先登录。");
-			Activity mainActivity = BaseFragment.getMainActivity();
-			mainActivity.startActivity(new Intent(mainActivity,
-					LoginActivity.class));
-			mainActivity.finish();
+			BaseFragment.getWMFragmentManager().showFragment(WMFragmentManager.TYPE_LOGIN);
 			// T.showShort(mContext, "发表评论前请先登录。");
 			// Intent intent = new Intent();
 			// intent.setClass(this, RegisterAndLoginActivity.class);

@@ -120,6 +120,7 @@ public class UpdateInfoFragment extends ContentFragment {
 							updateName(nick);
 						}
 					});
+			break;
 		case phone:
 			et_edit_info.setHint("请输入手机号");
 			et_edit_info.setInputType(InputType.TYPE_CLASS_NUMBER);

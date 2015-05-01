@@ -1,7 +1,7 @@
-package jason.wondermap;
+package jason.wondermap.fragment;
 
+import jason.wondermap.R;
 import jason.wondermap.bean.User;
-import jason.wondermap.config.BundleTake;
 import jason.wondermap.interfacer.LoginListener;
 import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.proxy.UserProxy;
@@ -14,21 +14,20 @@ import jason.wondermap.utils.StringUtils;
 import jason.wondermap.utils.T;
 import jason.wondermap.view.DeletableEditText;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
-public class LoginActivity extends FragmentActivity implements OnClickListener,
+public class LoginFragment extends ContentFragment implements OnClickListener,
 		ILoginListener, ISignUpListener, IResetPasswordListener {
 	public static final int QQLoginSuccess = 11;
 
@@ -45,7 +44,7 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 	private Button registerButton;
 	private SmoothProgressBar progressbar;
 	private UserProxy userProxy;
-	private Context mContext;
+	private ViewGroup mRootViewGroup;
 
 	private enum UserOperation {
 		LOGIN, REGISTER, RESET_PASSWORD
@@ -54,11 +53,10 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 	UserOperation operation = UserOperation.LOGIN;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		mContext = this;
-		setContentView(R.layout.activity_register);
-		initView();
+	protected View onCreateContentView(LayoutInflater inflater) {
+		mRootViewGroup = (ViewGroup) inflater.inflate(
+				R.layout.activity_register, mContainer, false);
+		return mRootViewGroup;
 	}
 
 	@Override
@@ -67,10 +65,14 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 		dimissProgressbar();
 		T.showShort(mContext, "注册成功");
 		// 前往设置资料页
-		Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-		intent.putExtra(BundleTake.NeedToEditInfo, true);
-		startActivity(intent);
-		finish();
+		wmFragmentManager.showFragment(WMFragmentManager.TYPE_MAP_HOME);
+	}
+
+	@Override
+	public void onLoginSuccess() {
+		// 更新用户的地理位置以及好友的资料
+		AccountUserManager.getInstance().updateUserInfos();
+		wmFragmentManager.showFragment(WMFragmentManager.TYPE_MAP_HOME);
 	}
 
 	@Override
@@ -80,18 +82,9 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 	}
 
 	@Override
-	public void onLoginSuccess() {
-		// 更新用户的地理位置以及好友的资料
-		AccountUserManager.getInstance().updateUserInfos();
-		Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-		startActivity(intent);
-		finish();
-	}
-
-	@Override
 	public void onLoginFailure(String msg) {
 		dimissProgressbar();
-		Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+		Toast.makeText(getMainActivity(), msg, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -222,13 +215,13 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 
 	private void loginByWeibo() {
 		progressbar.setVisibility(View.VISIBLE);
-		WeiboLoginHelper helper = new WeiboLoginHelper(LoginActivity.this);
+		WeiboLoginHelper helper = new WeiboLoginHelper(getMainActivity());
 		helper.login(qqLoginListener);
 	}
 
 	private void loginByQQ() {
 		progressbar.setVisibility(View.VISIBLE);
-		TencentLoginHelper helper = new TencentLoginHelper(LoginActivity.this);
+		TencentLoginHelper helper = new TencentLoginHelper(getMainActivity());
 		helper.login(qqLoginListener);
 	}
 
@@ -323,17 +316,25 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-	private void initView() {
-		loginTitle = (TextView) findViewById(R.id.login_menu);
-		registerTitle = (TextView) findViewById(R.id.register_menu);
-		resetPassword = (TextView) findViewById(R.id.reset_password_menu);
-		qqLogin = (TextView) findViewById(R.id.tv_qq);
-		wbLogin = (TextView) findViewById(R.id.tv_weibo);
-		userPasswordInput = (DeletableEditText) findViewById(R.id.user_password_input);
-		userPasswordRepeat = (DeletableEditText) findViewById(R.id.user_password_input_repeat);
-		userEmailInput = (DeletableEditText) findViewById(R.id.user_email_input);
-		registerButton = (Button) findViewById(R.id.register);
-		progressbar = (SmoothProgressBar) findViewById(R.id.sm_progressbar);
+
+	@Override
+	protected void onInitView() {
+		loginTitle = (TextView) mRootViewGroup.findViewById(R.id.login_menu);
+		registerTitle = (TextView) mRootViewGroup
+				.findViewById(R.id.register_menu);
+		resetPassword = (TextView) mRootViewGroup
+				.findViewById(R.id.reset_password_menu);
+		qqLogin = (TextView) mRootViewGroup.findViewById(R.id.tv_qq);
+		wbLogin = (TextView) mRootViewGroup.findViewById(R.id.tv_weibo);
+		userPasswordInput = (DeletableEditText) mRootViewGroup
+				.findViewById(R.id.user_password_input);
+		userPasswordRepeat = (DeletableEditText) mRootViewGroup
+				.findViewById(R.id.user_password_input_repeat);
+		userEmailInput = (DeletableEditText) mRootViewGroup
+				.findViewById(R.id.user_email_input);
+		registerButton = (Button) mRootViewGroup.findViewById(R.id.register);
+		progressbar = (SmoothProgressBar) mRootViewGroup
+				.findViewById(R.id.sm_progressbar);
 		updateLayout(operation);
 		userProxy = new UserProxy(mContext);
 		loginTitle.setOnClickListener(this);
@@ -351,6 +352,6 @@ public class LoginActivity extends FragmentActivity implements OnClickListener,
 	}
 
 	private void toast(String msg) {
-		Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+		Toast.makeText(getMainActivity(), msg, Toast.LENGTH_SHORT).show();
 	}
 }

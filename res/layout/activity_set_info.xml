@@ -132,8 +132,7 @@
                 <TextView
                     android:id="@+id/tv_set_phone_number"
                     style="@style/Userinfo.Item.Textview"
-                    android:layout_alignParentRight="true"
-                    android:text="18233563519" />
+                    android:layout_alignParentRight="true" />
 
                 <TextView
                     android:layout_width="wrap_content"

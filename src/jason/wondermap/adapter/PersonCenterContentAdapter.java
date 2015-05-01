@@ -1,9 +1,7 @@
 package jason.wondermap.adapter;
 
-import jason.wondermap.LoginActivity;
 import jason.wondermap.R;
 import jason.wondermap.bean.Blog;
-import jason.wondermap.bean.BlogComment;
 import jason.wondermap.bean.User;
 import jason.wondermap.config.WMapConstants;
 import jason.wondermap.fragment.BaseFragment;
@@ -17,9 +15,7 @@ import jason.wondermap.utils.T;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.view.View;
@@ -348,10 +344,7 @@ public class PersonCenterContentAdapter extends BaseContentAdapter<Blog> {
 			// intent.setClass(mContext, RegisterAndLoginActivity.class);
 			// MyApplication.getInstance().getTopActivity()
 			// .startActivityForResult(intent, SAVE_FAVOURITE);
-			Activity mainActivity = BaseFragment.getMainActivity();
-			mainActivity.startActivity(new Intent(mainActivity,
-					LoginActivity.class));
-			mainActivity.finish();
+			BaseFragment.getWMFragmentManager().showFragment(WMFragmentManager.TYPE_LOGIN);
 		}
 	}
 
@@ -385,10 +378,7 @@ public class PersonCenterContentAdapter extends BaseContentAdapter<Blog> {
 			// intent.setClass(mContext, RegisterAndLoginActivity.class);
 			// MyApplication.getInstance().getTopActivity()
 			// .startActivityForResult(intent, Constant.GET_FAVOURITE);
-			Activity mainActivity = BaseFragment.getMainActivity();
-			mainActivity.startActivity(new Intent(mainActivity,
-					LoginActivity.class));
-			mainActivity.finish();
+			BaseFragment.getWMFragmentManager().showFragment(WMFragmentManager.TYPE_LOGIN);
 		}
 	}
 }

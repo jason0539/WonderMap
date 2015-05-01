@@ -1,6 +1,5 @@
 package jason.wondermap.fragment;
 
-import jason.wondermap.LoginActivity;
 import jason.wondermap.MainActivity;
 import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
@@ -87,8 +86,8 @@ public class BaseFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		// L.e(TAG, "onCreate");
 		setHasOptionsMenu(true); // 允许fragment修改menu
-		// 自动登陆状态下检测是否在其他设备登陆
-		AccountUserManager.getInstance().checkLogin();
+		// TODO 自动登陆状态下检测是否在其他设备登陆
+//		AccountUserManager.getInstance().checkLogin();
 	}
 
 	@Override
@@ -287,8 +286,8 @@ public class BaseFragment extends Fragment {
 		// 设置成功事件
 		dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialogInterface, int userId) {
-				WonderMapApplication.getInstance().logout();
-				startActivity(new Intent(context, LoginActivity.class));
+				AccountUserManager.getInstance().logout();
+				getWMFragmentManager().showFragment(WMFragmentManager.TYPE_LOGIN);
 				// finish();
 				dialogInterface.dismiss();
 			}

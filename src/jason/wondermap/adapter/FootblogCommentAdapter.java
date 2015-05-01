@@ -1,6 +1,5 @@
 package jason.wondermap.adapter;
 
-import jason.wondermap.LoginActivity;
 import jason.wondermap.R;
 import jason.wondermap.bean.BlogComment;
 import jason.wondermap.bean.User;
@@ -14,9 +13,7 @@ import jason.wondermap.utils.UserInfo;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -81,10 +78,7 @@ public class FootblogCommentAdapter extends BaseContentAdapter<BlogComment> {
 				// 点击头像，如果未登陆则跳转到登陆页面
 				if (AccountUserManager.getInstance().getCurrentUser() == null) {
 					T.showShort(mContext, "请先登录。");
-					Activity mainActivity = BaseFragment.getMainActivity();
-					mainActivity.startActivity(new Intent(mainActivity,
-							LoginActivity.class));
-					mainActivity.finish();
+					BaseFragment.getWMFragmentManager().showFragment(WMFragmentManager.TYPE_LOGIN);
 					return;
 				}
 				Bundle bundle = new Bundle();

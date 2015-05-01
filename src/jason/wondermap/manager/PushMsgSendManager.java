@@ -16,7 +16,6 @@ import java.util.TimerTask;
 
 import org.json.JSONObject;
 
-import cn.bmob.im.BmobUserManager;
 import cn.bmob.v3.BmobPushManager;
 import cn.bmob.v3.listener.PushListener;
 
@@ -31,6 +30,9 @@ public class PushMsgSendManager {
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	public void sayHello() {
+		if (AccountUserManager.getInstance().getCurrentUserid().equals("")) {
+			return;
+		}
 		if (CommonUtils.isNetworkAvailable(WonderMapApplication.getInstance())) {// 如果网络可用
 			Map<String, String> map = new HashMap<String, String>();
 			map.put(UserInfo.TAG, UserInfo.HELLO);
@@ -101,6 +103,10 @@ public class PushMsgSendManager {
 		pushManager = new BmobPushManager<MyMessageReceiver>(
 				WonderMapApplication.getInstance());
 		failReSendTimer = new Timer();
+	}
+
+	public void destroy() {
+		failReSendTimer.cancel();
 	}
 
 	private static PushMsgSendManager instance = null;

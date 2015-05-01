@@ -16,20 +16,16 @@ public class MapMarkerView {
 	private static ImageView iv_marker_head;
 	private static TextView iv_marker_name;
 	private static View view;
-	private static LayoutInflater mInflater;
-
-	public static void initInflate(Activity activity) {
-		mInflater = activity.getLayoutInflater();
-	}
 
 	public static View createView(final MapUser user) {
 		if (user == null) {
 			L.d(WModel.CrashUpload, "user 是空指针");
 		}
-		if (mInflater==null) {
-			mInflater = BaseFragment.getInflater();
+		if (BaseFragment.getInflater()==null) {
+			L.d(WModel.CrashUpload, "getInflater is null");
 		}
-		view = mInflater.inflate(R.layout.view_mapmarker, null);
+		view = BaseFragment.getInflater()
+				.inflate(R.layout.view_mapmarker, null);
 		iv_marker_head = (ImageView) view
 				.findViewById(R.id.view_mapmarker_head);
 		iv_marker_name = (TextView) view.findViewById(R.id.view_mapmarker_name);

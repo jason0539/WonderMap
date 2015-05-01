@@ -43,6 +43,9 @@ public class WLocationManager {
 	private boolean hasLocationChanged;
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	/**
+	 * 使用定位，bmobPush服务
+	 */
 	public void start() {
 		mLocationClient = new LocationClient(WonderMapApplication.getInstance());
 		mMyLocationListener = new MyLocationListener();
@@ -56,12 +59,13 @@ public class WLocationManager {
 		mLocationClient.setLocOption(option);
 		mLocationClient.start();
 		mSearch = GeoCoder.newInstance();
-		PushMsgSendManager.getInstance().sayHello();
 	}
 
 	public void stop() {
 		mLocationClient.unRegisterLocationListener(mMyLocationListener);
 		mLocationClient.stop();
+		PushMsgSendManager.getInstance().destroy();
+		mSearch = null;
 	}
 
 	/**

@@ -2,7 +2,6 @@ package jason.wondermap;
 
 import jason.wondermap.config.WMapConstants;
 import jason.wondermap.crash.CrashHandler;
-import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.utils.SharePreferenceUtil;
 
 import java.io.File;
@@ -43,14 +42,9 @@ public class WonderMapApplication extends Application {
 		CrashHandler crashHandler = CrashHandler.getInstance();
 		crashHandler.init(getApplicationContext());
 		mApplication = this;
-		init();
-	}
-
-	private void init() {
 		// 在使用SDK各组件之前初始化context信息，传入ApplicationContext
 		SDKInitializer.initialize(WonderMapApplication.getInstance());
 		initImageLoader(getApplicationContext());
-		AccountUserManager.getInstance().downloadContact();
 	}
 
 	/** 初始化ImageLoader */
@@ -99,18 +93,7 @@ public class WonderMapApplication extends Application {
 	}
 
 	/**
-	 * 退出登录,清空缓存数据
-	 */
-	public void logout() {
-		BmobUserManager.getInstance(getApplicationContext()).logout();
-		AccountUserManager.getInstance().setContactList(null);
-		// WMapLocationManager.getInstance().setLatitude(null);
-		// WMapLocationManager.getInstance().setLongtitude(null);
-	}
-
-	/**
 	 * 获取本地存储帮助类
-	 * @return
 	 */
 	public synchronized SharePreferenceUtil getSpUtil() {
 		if (mSpUtil == null) {

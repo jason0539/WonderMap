@@ -3,7 +3,9 @@ package jason.wondermap.fragment;
 import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.controler.MapControler;
+import jason.wondermap.helper.LaunchHelper;
 import jason.wondermap.manager.MapUserManager;
+import jason.wondermap.manager.PushMsgSendManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.T;
 import jason.wondermap.utils.WModel;
@@ -53,12 +55,12 @@ public class MapHomeFragment extends ContentFragment {
 	@Override
 	protected void onInitView() {
 		L.d(TAG + ":onInitView");
+		new LaunchHelper().checkIsNeedToConfirmInfo();
 		if (MapUserManager.getInstance().isOnlyShowFriends()) {
 			initTopBarForOnlyTitle(mRootView, "好友地图");
 		} else {
 			initTopBarForOnlyTitle(mRootView, "在线地图");
 		}
-
 		bottomBar = new MainBottomBar(
 				mRootView.findViewById(R.id.main_bottom_bar));
 		locationView = mRootView.findViewById(R.id.tv_maphome_location);
@@ -67,6 +69,7 @@ public class MapHomeFragment extends ContentFragment {
 		typeView = mRootView.findViewById(R.id.tv_maphome_type);
 		friendView = mRootView.findViewById(R.id.tv_maphome_friend);
 		initListener();
+		PushMsgSendManager.getInstance().sayHello();
 	}
 
 	private void initListener() {

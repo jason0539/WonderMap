@@ -1,23 +1,18 @@
 package jason.wondermap.fragment;
 
-import jason.wondermap.LoginActivity;
 import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.utils.SharePreferenceUtil;
 import jason.wondermap.utils.UserInfo;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import cn.bmob.im.BmobUserManager;
 
 public class MineFragment extends ContentFragment implements OnClickListener {
 	private TextView btn_logout;
@@ -94,9 +89,8 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 			wmFragmentManager.showFragment(WMFragmentManager.TYPE_ABOUT);
 			break;
 		case R.id.btn_logout:
-			WonderMapApplication.getInstance().logout();
-			BaseFragment.getMainActivity().finish();
-			startActivity(new Intent(getActivity(), LoginActivity.class));
+			AccountUserManager.getInstance().logout();
+			BaseFragment.getWMFragmentManager().backTo(WMFragmentManager.TYPE_SPLASH, null);
 			break;
 		case R.id.rl_switch_notification:
 			if (ck_notify.isChecked()) {
