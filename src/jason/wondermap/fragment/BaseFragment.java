@@ -34,15 +34,18 @@ public class BaseFragment extends Fragment {
 	protected static LayoutInflater mInflater;
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-	public static void initBeforeAll(MainActivity activity,WMFragmentManager fragmentManager) {
+	public static void initBeforeAll(MainActivity activity,
+			WMFragmentManager fragmentManager) {
 		mActivity = activity;
 		mContext = WonderMapApplication.getInstance();
 		wmFragmentManager = fragmentManager;
 		mInflater = mActivity.getLayoutInflater();
 	}
-	public static LayoutInflater getInflater(){
+
+	public static LayoutInflater getInflater() {
 		return mInflater;
 	}
+
 	public boolean canProcessUI() {
 		return isAdded();
 	}

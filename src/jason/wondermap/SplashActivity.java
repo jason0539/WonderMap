@@ -3,6 +3,7 @@ package jason.wondermap;
 import jason.wondermap.config.WMapConfig;
 import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.utils.L;
+import jason.wondermap.view.MapMarkerView;
 import jason.wondermap.view.dialog.DialogTips;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -36,6 +37,7 @@ public class SplashActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
+		MapMarkerView.initInflate(this);//TODO 解决MapMarkerview总是空指针的问题，可能是推送开启之后，inflate还没获取到，
 		// 是否开启debug模式--默认开启状态
 		BmobChat.DEBUG_MODE = true;
 		// BmobIM SDK初始化--只需要这一段代码即可完成初始化
