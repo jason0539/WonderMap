@@ -14,12 +14,18 @@ import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+/**
+ * 我的页面
+ * 
+ * @author liuzhenhui
+ * 
+ */
 public class MineFragment extends ContentFragment implements OnClickListener {
 	private TextView btn_logout;
 	private TextView tv_set_name;
 	private RelativeLayout layout_info, layout_blacklist, layout_feedback,
 			layout_favourite, layout_switch_notification, layout_switch_voice,
-			layout_switch_vibrate,layout_about;
+			layout_switch_vibrate, layout_about;
 	private CheckBox ck_notify, ck_voice, ck_vibrate;
 	private View view1, view2;
 	private SharePreferenceUtil mSharedUtil;
@@ -67,7 +73,6 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.layout_blacklist:// 启动到黑名单页面
 			wmFragmentManager.showFragment(WMFragmentManager.TYPE_BLACK_LIST);
@@ -140,7 +145,8 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 		layout_feedback = (RelativeLayout) mRootView
 				.findViewById(R.id.layout_feedback);
 		layout_info = (RelativeLayout) mRootView.findViewById(R.id.layout_info);
-		layout_about = (RelativeLayout)mRootView.findViewById(R.id.layout_about);
+		layout_about = (RelativeLayout) mRootView
+				.findViewById(R.id.layout_about);
 		layout_switch_notification = (RelativeLayout) mRootView
 				.findViewById(R.id.rl_switch_notification);
 		layout_switch_voice = (RelativeLayout) mRootView

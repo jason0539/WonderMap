@@ -1,8 +1,8 @@
 package jason.wondermap.fragment;
 
 import jason.wondermap.R;
-import jason.wondermap.WonderMapApplication;
 import jason.wondermap.adapter.MessageRecentAdapter;
+import jason.wondermap.manager.ChatMessageManager;
 import jason.wondermap.receiver.MyMessageReceiver;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.UserInfo;
@@ -117,7 +117,7 @@ public class RecentFragment extends ContentFragment implements
 		// 监听消息＝＝＝＝start
 		MyMessageReceiver.ehList.add(this);// 监听推送的消息
 		// 清空
-		MyMessageReceiver.mNewNum = 0;
+		ChatMessageManager.mNewNum = 0;
 		// 监听消息＝＝＝＝＝end
 	}
 
@@ -219,7 +219,6 @@ public class RecentFragment extends ContentFragment implements
 
 	@Override
 	public void onOffline() {
-
 	}
 
 	@Override
@@ -228,15 +227,9 @@ public class RecentFragment extends ContentFragment implements
 	}
 
 	private void refreshNewMsg(BmobMsg message) {
-		// 声音提示
-		boolean isAllow = WonderMapApplication.getInstance().getSpUtil()
-				.isAllowVoice();
-		if (isAllow) {
-			WonderMapApplication.getInstance().getMediaPlayer().start();
-		}
 		// 也要存储起来
 		if (message != null) {
-			BmobChatManager.getInstance(mContext).saveReceiveMessage(true,
+			BmobChatManager.getInstance(mContext).saveReceiveMessage(false,
 					message);
 		}
 		// 当前页面如果为会话页面，刷新此页面

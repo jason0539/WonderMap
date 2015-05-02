@@ -4,20 +4,13 @@ import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.view.dialog.DialogTips;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.baidu.mapapi.SDKInitializer;
 
 public class SplashFragment extends ContentFragment {
 	private static final int GO_HOME = 100;
@@ -25,7 +18,6 @@ public class SplashFragment extends ContentFragment {
 
 	private DialogTips mExitAppDialog = null;
 	private ViewGroup mRootViewGroup;
-	private BaiduReceiver mReceiver;// 注册广播接收器，用于监听网络以及验证key
 
 	@Override
 	protected View onCreateContentView(LayoutInflater inflater) {
@@ -36,12 +28,6 @@ public class SplashFragment extends ContentFragment {
 
 	@Override
 	protected void onInitView() {
-		// 注册地图 SDK 广播监听者
-		IntentFilter iFilter = new IntentFilter();
-		iFilter.addAction(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR);
-		iFilter.addAction(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR);
-		mReceiver = new BaiduReceiver();
-		mContext.registerReceiver(mReceiver, iFilter);
 	}
 
 	// 退出登录后回到这里，onInitView只执行一次，所以放在onResume里面
@@ -123,25 +109,9 @@ public class SplashFragment extends ContentFragment {
 		wmFragmentManager.showFragment(WMFragmentManager.TYPE_LOGIN);
 	}
 
-	public class BaiduReceiver extends BroadcastReceiver {
-		public void onReceive(Context context, Intent intent) {
-			String s = intent.getAction();
-			if (s.equals(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR)) {
-				Toast.makeText(mContext,
-						"key 验证出错! 请在 AndroidManifest.xml 文件中检查 key 设置",
-						Toast.LENGTH_SHORT).show();
-			} else if (s
-					.equals(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR)) {
-				Toast.makeText(mContext, "当前网络连接不稳定，请检查您的网络设置!",
-						Toast.LENGTH_SHORT).show();
-			}
-		}
-	}
-
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		mContext.unregisterReceiver(mReceiver);
 	}
 
 }

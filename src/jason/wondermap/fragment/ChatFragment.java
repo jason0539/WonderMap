@@ -7,6 +7,7 @@ import jason.wondermap.adapter.MessageChatAdapter;
 import jason.wondermap.adapter.NewRecordPlayClickListener;
 import jason.wondermap.bean.FaceText;
 import jason.wondermap.config.WMapConstants;
+import jason.wondermap.manager.ChatMessageManager;
 import jason.wondermap.receiver.MyMessageReceiver;
 import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.FaceTextUtils;
@@ -25,11 +26,8 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -87,8 +85,6 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 
 	XListView mListView;
 	EmoticonsEditText edit_user_comment;
-	// 新消息接收器
-	NewBroadcastReceiver receiver;
 	// 收到消息
 	public static final int NEW_MESSAGE = 0x001;
 
@@ -142,7 +138,6 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 		MsgPagerNum = 0;
 		BmobLog.i("聊天对象：" + targetUser.getUsername() + ",targetId = "
 				+ targetId);
-		initNewMessageBroadCast(); // 注册消息接收器
 		mHeaderLayout = (HeaderLayout) mRootView
 				.findViewById(R.id.common_actionbar);
 		mListView = (XListView) mRootView.findViewById(R.id.mListView);
@@ -162,7 +157,7 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 		BmobNotifyManager.getInstance(mContext).cancelNotify();
 		BmobDB.create(mContext).resetUnread(targetId);
 		// 清空消息未读数-这个要在刷新之后
-		MyMessageReceiver.mNewNum = 0;
+		ChatMessageManager.mNewNum = 0;
 		if (mBackBundle != null) {
 			// if (mBackBundle.containsKey(UserInfo.INTENT)) {
 			// case WMapConstants.REQUESTCODE_TAKE_LOCATION:// 地理位置
@@ -201,10 +196,6 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 	public void onDestroyView() {
 		super.onDestroy();
 		hideSoftInputView();
-		try {
-			mContext.unregisterReceiver(receiver);
-		} catch (Exception e) {
-		}
 	}
 
 	@Override
@@ -265,6 +256,7 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 		public void handleMessage(Message msg) {
 			if (msg.what == NEW_MESSAGE) {
 				BmobMsg message = (BmobMsg) msg.obj;
+				L.d("从Receive收到" + message.getContent());
 				String uid = message.getBelongId();
 				BmobMsg m = BmobChatManager.getInstance(mContext).getMessage(
 						message.getConversationId(), message.getMsgTime());
@@ -522,53 +514,14 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝内部实现＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-	/**
-	 * 注册新消息接收器
-	 */
-	private void initNewMessageBroadCast() {
-		receiver = new NewBroadcastReceiver();
-		IntentFilter intentFilter = new IntentFilter(
-				BmobConfig.BROADCAST_NEW_MESSAGE);
-		// 设置广播的优先级别大于Mainacitivity,这样如果消息来的时候正好在chat页面，直接显示消息，而不是提示消息未读
-		intentFilter.setPriority(5);
-		mContext.registerReceiver(receiver, intentFilter);
-	}
-
-	/**
-	 * 新消息广播接收者
-	 */
-	private class NewBroadcastReceiver extends BroadcastReceiver {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			String from = intent.getStringExtra("fromId");
-			String msgId = intent.getStringExtra("msgId");
-			String msgTime = intent.getStringExtra("msgTime");
-			// 收到这个广播的时候，message已经在消息表中，可直接获取
-			if (TextUtils.isEmpty(from) && TextUtils.isEmpty(msgId)
-					&& TextUtils.isEmpty(msgTime)) {
-				BmobMsg msg = BmobChatManager.getInstance(mContext).getMessage(
-						msgId, msgTime);
-				if (!from.equals(targetId))// 如果不是当前正在聊天对象的消息，不处理
-					return;
-				// 添加到当前页面
-				mAdapter.add(msg);
-				// 定位
-				mListView.setSelection(mAdapter.getCount() - 1);
-				// 取消当前聊天对象的未读标示
-				BmobDB.create(mContext).resetUnread(targetId);
-			}
-			// 记得把广播给终结掉
-			abortBroadcast();
-		}
-	}
 
 	/**
 	 * 界面刷新
 	 */
 	private void initOrRefresh() {
 		if (mAdapter != null) {
-			if (MyMessageReceiver.mNewNum != 0) {// 用于更新当在聊天界面锁屏期间来了消息，这时再回到聊天页面的时候需要显示新来的消息
-				int news = MyMessageReceiver.mNewNum;// 有可能锁屏期间，来了N条消息,因此需要倒叙显示在界面上
+			if (ChatMessageManager.mNewNum != 0) {// 用于更新当在聊天界面锁屏期间来了消息，这时再回到聊天页面的时候需要显示新来的消息
+				int news = ChatMessageManager.mNewNum;// 有可能锁屏期间，来了N条消息,因此需要倒叙显示在界面上
 				int size = initMsgData().size();
 				for (int i = (news - 1); i >= 0; i--) {
 					mAdapter.add(initMsgData().get(size - (i + 1)));// 添加最后一条消息到界面显示
@@ -1039,7 +992,6 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 
 	@Override
 	public void onOffline() {
-		getMainActivity().showOfflineDialog();
 	}
 
 	@Override

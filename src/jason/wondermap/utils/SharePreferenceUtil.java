@@ -39,6 +39,10 @@ public class SharePreferenceUtil {
 		return mSharedPreferences.getBoolean(SHARED_KEY_NOTIFY, true);
 	}
 
+	/**是否允许通知
+	 *策略：此项代表消息总控制，如果关闭，则通知栏、声音、震动都关闭，
+	 *如果开启，则通知栏肯定有通知，声音和震动通过另外两个开关控制
+	 */
 	public void setPushNotifyEnable(boolean isChecked) {
 		editor.putBoolean(SHARED_KEY_NOTIFY, isChecked);
 		editor.commit();

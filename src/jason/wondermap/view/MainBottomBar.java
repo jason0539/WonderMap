@@ -130,7 +130,6 @@ public class MainBottomBar implements EventListener {
 
 	@Override
 	public void onOffline() {
-
 	}
 
 	@Override

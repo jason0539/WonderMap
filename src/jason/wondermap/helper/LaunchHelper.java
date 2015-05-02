@@ -32,7 +32,6 @@ public class LaunchHelper {
 	 * 退出时需要回收的资源，按初始化的相反方向
 	 */
 	public void checkExit() {
-		ChatMessageManager.getInstance().unInit();
 		WLocationManager.getInstance().stop();
 		AccountUserManager.getInstance().destroy();
 		// 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
@@ -53,8 +52,6 @@ public class LaunchHelper {
 		MapUserManager.getInstance();
 		// 定位，一旦开始就使用push发送消息，依赖Bmob Push服务，挪到MapHomeFrag里面，保证在服务协议之后显示
 //		WLocationManager.getInstance().start();
-		// 接收消息，依赖Bmob IM服务
-		ChatMessageManager.getInstance();// 开始接收消息
 		checkCrashLog(mContext);
 		// 设置小米自动更新组件，仅wifi下更新
 		XiaomiUpdateAgent.setCheckUpdateOnlyWifi(true);

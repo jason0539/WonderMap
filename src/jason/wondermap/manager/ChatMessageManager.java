@@ -4,157 +4,100 @@ import jason.wondermap.MainActivity;
 import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.fragment.BaseFragment;
-import jason.wondermap.fragment.WMFragmentManager;
-import jason.wondermap.receiver.MyMessageReceiver;
-import jason.wondermap.utils.T;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.BmobNotifyManager;
-import cn.bmob.im.bean.BmobInvitation;
 import cn.bmob.im.bean.BmobMsg;
 import cn.bmob.im.config.BmobConfig;
-import cn.bmob.im.inteface.EventListener;
 
-public class ChatMessageManager implements EventListener {
+/**
+ * 常驻的消息管理
+ * 
+ * @author liuzhenhui
+ * 
+ */
+public class ChatMessageManager {
+	public static int mNewNum = 0;// 新到消息数量
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-	public void unInit() {
-		// mContext.unregisterReceiver(newReceiver);
-		// mContext.unregisterReceiver(userReceiver);
-		// 取消定时检测服务
-		// BmobChat.getInstance(this).stopPollService();
-	}
-
-	@Override
-	public void onMessage(BmobMsg message) {
-		refreshNewMsg(message);
-	}
-
-	@Override
-	public void onNetChange(boolean isNetConnected) {
-		if (isNetConnected) {
-			T.showShort(mContext, R.string.network_tips);
-		}
-	}
-
-	@Override
-	public void onAddUser(BmobInvitation message) {
-		refreshInvite(message);
-	}
-
-	@Override
-	public void onOffline() {
-		BaseFragment.getMainActivity().showOfflineDialog();
-	}
-
-	@Override
-	public void onReaded(String conversionId, String msgTime) {
-	}
-
-	// ＝＝＝＝＝＝＝＝＝＝＝＝内部实现＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-	NewBroadcastReceiver newReceiver;
-	TagBroadcastReceiver userReceiver;
-
-	/**
-	 * 新消息广播接收者
-	 */
-	private class NewBroadcastReceiver extends BroadcastReceiver {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			// 刷新界面
-			refreshNewMsg(null);
-			// 记得把广播给终结掉
-			abortBroadcast();
-		}
-	}
-
-	private void initNewMessageBroadCast() {
-		// 注册接收消息广播
-		newReceiver = new NewBroadcastReceiver();
-		IntentFilter intentFilter = new IntentFilter(
-				BmobConfig.BROADCAST_NEW_MESSAGE);
-		// 优先级要低于ChatActivity
-		intentFilter.setPriority(3);
-		mContext.registerReceiver(newReceiver, intentFilter);
-	}
-
-	/**
-	 * 刷新界面
-	 */
-	private void refreshNewMsg(BmobMsg message) {
-		// 声音提示
-		boolean isAllow = WonderMapApplication.getInstance().getSpUtil()
-				.isAllowVoice();
-		if (isAllow) {
-			WonderMapApplication.getInstance().getMediaPlayer().start();
-		}
+	public void notifyMsg(BmobMsg msg) {
+		mNewNum++;
 		// 更新ui,聊天界面的红点之类的
 		// 也要存储起来
-		if (message != null) {
-			BmobChatManager.getInstance(mContext).saveReceiveMessage(true,
-					message);
+		if (msg != null) {
+			BmobChatManager.getInstance(mContext)
+					.saveReceiveMessage(false, msg);
 		}
-		if (BaseFragment.getWMFragmentManager().getCurrentFragmentType() == WMFragmentManager.TYPE_CHAT) {
-			// 当前页面如果为会话页面，刷新此页面
-			if (BaseFragment.getWMFragmentManager().getCurrentFragment() != null) {
-				// BaseFragment.getWMFragmentManager().getCurrentFragment().refresh();
-			}
-		}
-	}
-
-	private void initTagMessageBroadCast() {
-		// 注册接收消息广播
-		userReceiver = new TagBroadcastReceiver();
-
-		IntentFilter intentFilter = new IntentFilter(
-				BmobConfig.BROADCAST_ADD_USER_MESSAGE);
-		// 优先级要低于ChatActivity
-		intentFilter.setPriority(3);
-		mContext.registerReceiver(userReceiver, intentFilter);
+		showMsgNotify(msg);
 	}
 
 	/**
-	 * 标签消息广播接收者
+	 * 显示其他Tag的通知 showOtherNotify
 	 */
-	private class TagBroadcastReceiver extends BroadcastReceiver {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			BmobInvitation message = (BmobInvitation) intent
-					.getSerializableExtra("invite");
-			refreshInvite(message);
-			// 记得把广播给终结掉
-			abortBroadcast();
-		}
-	}
-
-	/**
-	 * 刷新好友请求
-	 */
-	private void refreshInvite(BmobInvitation message) {
+	public void showOtherNotify(Context context, String username, String toId,
+			String ticker, Class<?> cls) {
 		boolean isAllow = WonderMapApplication.getInstance().getSpUtil()
+				.isAllowPushNotify();
+		boolean isAllowVoice = WonderMapApplication.getInstance().getSpUtil()
 				.isAllowVoice();
-		if (isAllow) {
-			WonderMapApplication.getInstance().getMediaPlayer().start();
+		boolean isAllowVibrate = WonderMapApplication.getInstance().getSpUtil()
+				.isAllowVibrate();
+		if (isAllow
+				&& AccountUserManager.getInstance().getCurrentUser() != null
+				&& AccountUserManager.getInstance().getCurrentUserid()
+						.equals(toId)) {
+			// 同时提醒通知,原来点击后跳转到好友添加请求页面，之后调整。／／NewFriendActivity
+			BmobNotifyManager.getInstance(context).showNotify(isAllowVoice,
+					isAllowVibrate, R.drawable.ic_app_icon, ticker, username,
+					ticker.toString(), MainActivity.class);
 		}
-		// iv_contact_tips.setVisibility(View.VISIBLE);
-		if (BaseFragment.getWMFragmentManager().getCurrentFragmentType() == WMFragmentManager.TYPE_CONTACT) {
-			if (BaseFragment.getWMFragmentManager().getCurrentFragment() != null) {
-				// BaseFragment.getWMFragmentManager().getCurrentFragment().refresh();
-			}
+	}
+
+	/**
+	 * 显示与聊天消息的通知
+	 */
+	public void showMsgNotify(BmobMsg msg) {
+		boolean isAllow = WonderMapApplication.getInstance().getSpUtil()
+				.isAllowPushNotify();
+		if (!isAllow) {// 关闭通知则一律不再通知，包括通知栏、声音、震动
+			return;
+		}
+		// 更新通知栏
+		int icon = R.drawable.ic_app_icon;
+		String trueMsg = "";
+		if (msg.getMsgType() == BmobConfig.TYPE_TEXT
+				&& msg.getContent().contains("\\ue")) {
+			trueMsg = "[表情]";
+		} else if (msg.getMsgType() == BmobConfig.TYPE_IMAGE) {
+			trueMsg = "[图片]";
+		} else if (msg.getMsgType() == BmobConfig.TYPE_VOICE) {
+			trueMsg = "[语音]";
+		} else if (msg.getMsgType() == BmobConfig.TYPE_LOCATION) {
+			trueMsg = "[位置]";
 		} else {
-			// 同时提醒通知
-			String tickerText = message.getFromname() + "请求添加好友";
-			boolean isAllowVibrate = WonderMapApplication.getInstance()
-					.getSpUtil().isAllowVibrate();
-			BmobNotifyManager.getInstance(mContext).showNotify(isAllow,
-					isAllowVibrate, R.drawable.ic_app_icon, tickerText,
-					message.getFromname(), tickerText.toString(),
-					MainActivity.class);
-			// 此处应该为NewFriendActivity
+			trueMsg = msg.getContent();
 		}
+		CharSequence tickerText = msg.getBelongUsername() + ":" + trueMsg;
+		String contentTitle = msg.getBelongUsername() + " (" + mNewNum
+				+ "条新消息)";
+
+		Intent intent = new Intent(mContext, MainActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+		boolean isAllowVoice = WonderMapApplication.getInstance().getSpUtil()
+				.isAllowVoice();
+		boolean isAllowVibrate = WonderMapApplication.getInstance().getSpUtil()
+				.isAllowVibrate();
+
+		BmobNotifyManager.getInstance(mContext).showNotifyWithExtras(
+				isAllowVoice, isAllowVibrate, icon, tickerText.toString(),
+				contentTitle, tickerText.toString(), intent);
+	}
+
+	public void onOffline() {
+		// 下线
+		BaseFragment.getMainActivity().showOfflineDialog();
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -166,12 +109,6 @@ public class ChatMessageManager implements EventListener {
 		// 开启定时检测服务（单位为秒）-在这里检测后台是否还有未读的消息，有的话就取出来
 		// 如果你觉得检测服务比较耗流量和电量，你也可以去掉这句话-同时还有onDestory方法里面的stopPollService方法
 		// BmobChat.getInstance(this).startPollService(30);
-		// 开启广播接收器
-		initNewMessageBroadCast();
-		initTagMessageBroadCast();
-		MyMessageReceiver.ehList.add(this);// 监听推送的消息
-		// 清空 每次mainactivity进入onresume的时候，清空消息数量
-		MyMessageReceiver.mNewNum = 0;
 	}
 
 	public static ChatMessageManager getInstance() {
@@ -180,4 +117,5 @@ public class ChatMessageManager implements EventListener {
 		}
 		return instance;
 	}
+
 }
