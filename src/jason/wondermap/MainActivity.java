@@ -5,25 +5,21 @@ import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.ContentFragment;
 import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.helper.LaunchHelper;
+import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.WModel;
 import jason.wondermap.view.dialog.DialogTips;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.Toast;
 
-import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.MapView;
 
 public class MainActivity extends FragmentActivity {
@@ -31,7 +27,6 @@ public class MainActivity extends FragmentActivity {
 	private View mForbidTouchView; // 禁止触摸的空视图
 	private DialogTips appDialog = null;
 	private LaunchHelper launchHelper;
-	private BaiduReceiver mReceiver;// 注册广播接收器，用于监听网络以及验证key
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +35,6 @@ public class MainActivity extends FragmentActivity {
 		initView();
 		launchHelper = new LaunchHelper();
 		launchHelper.checkLaunch(this);
-		// 注册地图 SDK 广播监听者
-		IntentFilter iFilter = new IntentFilter();
-		iFilter.addAction(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR);
-		iFilter.addAction(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR);
-		mReceiver = new BaiduReceiver();
-		registerReceiver(mReceiver, iFilter);
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -88,32 +77,33 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void openExitAppDialog() {
-//		appDialog = new DialogTips(this, "退出", getResources().getString(
-//				R.string.exit_tips), "确定", true, true);
-//		// 设置成功事件
-//		appDialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
-//			public void onClick(DialogInterface dialogInterface, int userId) {
-//				exitApp();
-//			}
-//		});
-//		// 显示确认对话框
-//		appDialog.show();
-//
-//		appDialog.setOnDismissListener(new OnDismissListener() {
-//
-//			@Override
-//			public void onDismiss(DialogInterface dialog) {
-//				appDialog = null;
-//			}
-//		});
-//
-//		if (!appDialog.isShowing()) {
-//			try {
-//				appDialog.show();
-//			} catch (Exception e) {
-//			}
-//		}
-		//没有处理好退出进入的逻辑，总是crash，暂时默认返回直接推到后台，不让退出
+		// appDialog = new DialogTips(this, "退出", getResources().getString(
+		// R.string.exit_tips), "确定", true, true);
+		// // 设置成功事件
+		// appDialog.SetOnSuccessListener(new DialogInterface.OnClickListener()
+		// {
+		// public void onClick(DialogInterface dialogInterface, int userId) {
+		// exitApp();
+		// }
+		// });
+		// // 显示确认对话框
+		// appDialog.show();
+		//
+		// appDialog.setOnDismissListener(new OnDismissListener() {
+		//
+		// @Override
+		// public void onDismiss(DialogInterface dialog) {
+		// appDialog = null;
+		// }
+		// });
+		//
+		// if (!appDialog.isShowing()) {
+		// try {
+		// appDialog.show();
+		// } catch (Exception e) {
+		// }
+		// }
+		// 没有处理好退出进入的逻辑，总是crash，暂时默认返回直接推到后台，不让退出
 		exitApp();
 	}
 
@@ -158,21 +148,22 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	/**
-	 * 构造广播监听类，监听 SDK key 验证以及网络异常广播
+	 * 显示下线的对话框 showOfflineDialog
+	 * 
+	 * @return void
+	 * @throws
 	 */
-	public class BaiduReceiver extends BroadcastReceiver {
-		public void onReceive(Context context, Intent intent) {
-			String s = intent.getAction();
-			if (s.equals(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR)) {
-				Toast.makeText(MainActivity.this,
-						"key 验证出错! 请在 AndroidManifest.xml 文件中检查 key 设置",
-						Toast.LENGTH_SHORT).show();
-			} else if (s
-					.equals(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR)) {
-				Toast.makeText(MainActivity.this, "当前网络连接不稳定，请检查您的网络设置!",
-						Toast.LENGTH_SHORT).show();
+	public void showOfflineDialog() {
+		appDialog = new DialogTips(this, "您的账号已在其他设备上登录!", "重新登录");
+		// 设置成功事件
+		appDialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialogInterface, int userId) {
+				AccountUserManager.getInstance().logout();
+				appDialog.dismiss();
 			}
-		}
+		});
+		// 显示确认对话框
+		appDialog.show();
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -212,7 +203,6 @@ public class MainActivity extends FragmentActivity {
 	protected void onDestroy() {
 		L.d(WModel.MainActivity, "onDestroy into");
 		launchHelper.checkExit();
-		unregisterReceiver(mReceiver);
 		L.d(WModel.MainActivity, "onDestroy out");
 		super.onDestroy();
 	}

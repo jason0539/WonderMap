@@ -6,6 +6,7 @@ import jason.wondermap.WonderMapApplication;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.receiver.MyMessageReceiver;
+import jason.wondermap.utils.T;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,41 +22,36 @@ public class ChatMessageManager implements EventListener {
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	public void unInit() {
-//		mContext.unregisterReceiver(newReceiver);
-//		mContext.unregisterReceiver(userReceiver);
+		// mContext.unregisterReceiver(newReceiver);
+		// mContext.unregisterReceiver(userReceiver);
 		// 取消定时检测服务
 		// BmobChat.getInstance(this).stopPollService();
 	}
 
 	@Override
 	public void onMessage(BmobMsg message) {
-		// TODO Auto-generated method stub
 		refreshNewMsg(message);
 	}
 
 	@Override
 	public void onNetChange(boolean isNetConnected) {
-		// TODO Auto-generated method stub
 		if (isNetConnected) {
-			// ShowToast(R.string.network_tips);
+			T.showShort(mContext, R.string.network_tips);
 		}
 	}
 
 	@Override
 	public void onAddUser(BmobInvitation message) {
-		// TODO Auto-generated method stub
 		refreshInvite(message);
 	}
 
 	@Override
 	public void onOffline() {
-		// TODO Auto-generated method stub
-		// showOfflineDialog(this);
+		BaseFragment.getMainActivity().showOfflineDialog();
 	}
 
 	@Override
 	public void onReaded(String conversionId, String msgTime) {
-		// TODO Auto-generated method stub
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝内部实现＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -177,7 +173,7 @@ public class ChatMessageManager implements EventListener {
 		// 清空 每次mainactivity进入onresume的时候，清空消息数量
 		MyMessageReceiver.mNewNum = 0;
 	}
-	
+
 	public static ChatMessageManager getInstance() {
 		if (instance == null) {
 			instance = new ChatMessageManager();

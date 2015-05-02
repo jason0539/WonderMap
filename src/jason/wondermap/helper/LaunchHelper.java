@@ -21,29 +21,41 @@ import cn.bmob.im.BmobChat;
 
 import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
+/**
+ * 启动退出帮助类
+ * 
+ * @author liuzhenhui
+ * 
+ */
 public class LaunchHelper {
+	/**
+	 * 退出时需要回收的资源，按初始化的相反方向
+	 */
 	public void checkExit() {
 		ChatMessageManager.getInstance().unInit();
 		WLocationManager.getInstance().stop();
 		AccountUserManager.getInstance().destroy();
 		// 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
 		MapControler.getInstance().unInit();
-//		ImageLoader.getInstance().destroy();
-//		MapUserManager.getInstance().
+		// ImageLoader.getInstance().destroy();
+		// MapUserManager.getInstance().
 	}
 
+	/**
+	 * 启动时需要启动的资源，注意时序
+	 */
 	public void checkLaunch(Context mContext) {
-		// 初始化地图用户管理，依赖MapControl
-		MapUserManager.getInstance();
 		// 初始化bmob相关，定位一旦成功就要发送消息，没有依赖
 		BmobChat.DEBUG_MODE = true;
 		BmobChat.getInstance(mContext).init(WMapConfig.applicationId);
-		// 定位，一旦开始就使用push发送消息，依赖Bmob Push服务
-		WLocationManager.getInstance().start();
+		AccountUserManager.getInstance().downloadContact();
+		// 初始化地图用户管理，依赖MapControl和bmob获取联系人
+		MapUserManager.getInstance();
+		// 定位，一旦开始就使用push发送消息，依赖Bmob Push服务，挪到MapHomeFrag里面，保证在服务协议之后显示
+//		WLocationManager.getInstance().start();
 		// 接收消息，依赖Bmob IM服务
 		ChatMessageManager.getInstance();// 开始接收消息
 		checkCrashLog(mContext);
-		AccountUserManager.getInstance().downloadContact();
 		// 设置小米自动更新组件，仅wifi下更新
 		XiaomiUpdateAgent.setCheckUpdateOnlyWifi(true);
 		XiaomiUpdateAgent.update(mContext);

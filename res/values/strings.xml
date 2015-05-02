@@ -95,7 +95,7 @@
     <string name="tips_maphome_location">点击：视图平移到我的位置\n长按：平移并放大视图到我的位置\n记得有长按功能哦～</string>
     <string name="tips_maphome_maptype">切换卫星地图和普通地图</string>
     <string name="tips_maphome_allorfriends">切换地图显示类型\n好友地图：显示所有好友，无论是否在线\n在线地图：显示目前所有在线的人，包括陌生人和在线好友</string>
-    <string name="tips_maphome_big">点击：视图平移到我的位置\n长按：平移并放大视图到我的位置\n记得有长按功能哦～</string>
     <string name="tips_maphome_small">还可以长按哦～\n长按可以直接缩放到全国视图\n试试吧</string>
+    <string name="tips_maphome_big">长按地图上的点，放大更精确\n试试吧</string>
 
 </resources>

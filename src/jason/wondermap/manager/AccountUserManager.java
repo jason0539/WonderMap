@@ -33,11 +33,12 @@ public class AccountUserManager {
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	/**
-	 * 退出登录,清空缓存数据
+	 * 退出登录,清空缓存数据,推到启动页
 	 */
 	public void logout() {
 		BmobUserManager.getInstance(mApplication).logout();
 		setContactList(null);
+		BaseFragment.getWMFragmentManager().backTo(WMFragmentManager.TYPE_SPLASH, null);
 	}
 
 	/**

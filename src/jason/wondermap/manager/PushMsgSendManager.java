@@ -29,6 +29,9 @@ import cn.bmob.v3.listener.PushListener;
 public class PushMsgSendManager {
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	/**
+	 * mapHome进入时调用，wlocation定位时调用
+	 */
 	public void sayHello() {
 		if (AccountUserManager.getInstance().getCurrentUserid().equals("")) {
 			return;

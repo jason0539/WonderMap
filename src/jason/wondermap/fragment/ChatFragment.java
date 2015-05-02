@@ -1039,7 +1039,7 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 
 	@Override
 	public void onOffline() {
-		showOfflineDialog(mContext);
+		getMainActivity().showOfflineDialog();
 	}
 
 	@Override

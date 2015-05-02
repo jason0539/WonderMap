@@ -71,8 +71,12 @@ public class MapUserManager {
 
 			@Override
 			public void run() {
-				Iterator<Entry<String, MapUser>> iterator = friendMapUsers
-						.entrySet().iterator();
+				HashMap<String, MapUser> users = null;
+				synchronized (friendMapUsers) {
+					users = new HashMap<String, MapUser>(friendMapUsers);
+				}
+				Iterator<Entry<String, MapUser>> iterator = users.entrySet()
+						.iterator();
 				Entry<String, MapUser> entry;
 				while (iterator.hasNext()) {
 					entry = iterator.next();

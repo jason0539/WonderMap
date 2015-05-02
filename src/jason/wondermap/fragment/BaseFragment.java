@@ -275,25 +275,4 @@ public class BaseFragment extends Fragment {
 		}
 	}
 
-	/**
-	 * 显示下线的对话框 showOfflineDialog
-	 * 
-	 * @return void
-	 * @throws
-	 */
-	public void showOfflineDialog(final Context context) {
-		DialogTips dialog = new DialogTips(mContext, "您的账号已在其他设备上登录!", "重新登录");
-		// 设置成功事件
-		dialog.SetOnSuccessListener(new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialogInterface, int userId) {
-				AccountUserManager.getInstance().logout();
-				getWMFragmentManager().showFragment(WMFragmentManager.TYPE_LOGIN);
-				// finish();
-				dialogInterface.dismiss();
-			}
-		});
-		// 显示确认对话框
-		dialog.show();
-		dialog = null;
-	}
 }

@@ -90,7 +90,6 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 			break;
 		case R.id.btn_logout:
 			AccountUserManager.getInstance().logout();
-			BaseFragment.getWMFragmentManager().backTo(WMFragmentManager.TYPE_SPLASH, null);
 			break;
 		case R.id.rl_switch_notification:
 			if (ck_notify.isChecked()) {

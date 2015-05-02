@@ -30,6 +30,7 @@ public class SharePreferenceUtil {
 	private String SHARED_KEY_ACCEPT = "shared_key_accept";// 接受用户协议，小米的
 	private String SHARED_KEY_LOCATION = "shared_key_location";
 	private String SHARED_KEY_SMALL = "shared_key_small";//
+	private String SHARED_KEY_BIG = "shared_key_big";//
 	private String SHARED_KEY_MAPTYPE = "shared_key_maptype";//
 	private String SHARED_KEY_ALLORFRIEND = "shared_key_allorfriend";//
 
@@ -117,7 +118,16 @@ public class SharePreferenceUtil {
 		editor.putBoolean(SHARED_KEY_ALLORFRIEND, isChecked);
 		editor.commit();
 	}
+	// 是否第一次放大
 
+	public boolean isFirstBig() {
+		return mSharedPreferences.getBoolean(SHARED_KEY_BIG, true);
+	}
+
+	public void setFirstBig(boolean isChecked) {
+		editor.putBoolean(SHARED_KEY_BIG, isChecked);
+		editor.commit();
+	}
 	// 是否第一次缩小
 
 	public boolean isFirstSmall() {

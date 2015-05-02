@@ -6,6 +6,7 @@ import jason.wondermap.controler.MapControler;
 import jason.wondermap.helper.LaunchHelper;
 import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.manager.PushMsgSendManager;
+import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.T;
 import jason.wondermap.utils.WModel;
@@ -13,7 +14,6 @@ import jason.wondermap.view.MainBottomBar;
 
 import java.util.Map;
 
-import B.t;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,7 +55,12 @@ public class MapHomeFragment extends ContentFragment {
 	@Override
 	protected void onInitView() {
 		L.d(TAG + ":onInitView");
+		// 检查是否需要确认信息
 		new LaunchHelper().checkIsNeedToConfirmInfo();
+		// 开始定位
+		WLocationManager.getInstance().start();
+		// 发送hello
+		PushMsgSendManager.getInstance().sayHello();
 		if (MapUserManager.getInstance().isOnlyShowFriends()) {
 			initTopBarForOnlyTitle(mRootView, "好友地图");
 		} else {
@@ -69,7 +74,6 @@ public class MapHomeFragment extends ContentFragment {
 		typeView = mRootView.findViewById(R.id.tv_maphome_type);
 		friendView = mRootView.findViewById(R.id.tv_maphome_friend);
 		initListener();
-		PushMsgSendManager.getInstance().sayHello();
 	}
 
 	private void initListener() {
@@ -90,6 +94,13 @@ public class MapHomeFragment extends ContentFragment {
 				switch (v.getId()) {
 				case R.id.tv_maphome_big:
 					L.d(WModel.MapControl, "点击放大按钮");
+					if (WonderMapApplication.getInstance().getSpUtil()
+							.isFirstBig()) {
+						BaseFragment.getMainActivity().showTips(
+								R.string.tips_maphome_big);
+						WonderMapApplication.getInstance().getSpUtil()
+								.setFirstBig(false);
+					}
 					MapControler.getInstance().zoomIn(false);
 					break;
 				case R.id.tv_maphome_small:
