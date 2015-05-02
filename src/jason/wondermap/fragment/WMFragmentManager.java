@@ -35,6 +35,7 @@ public class WMFragmentManager extends ContentFragmentManager implements
 	public final static int TYPE_ABOUT = 0x0040;// 关于软件
 	public final static int TYPE_SPLASH = 0x0041;// splash
 	public final static int TYPE_LOGIN = 0x0042;// 登录
+	public final static int TYPE_SETTING = 0x0043;// 消息通知
 
 	/** 前一个fragment 类型 ，即从哪个fragment跳转过来的 */
 	private int mPreviousFragmentType = TYPE_NONE;
@@ -118,6 +119,9 @@ public class WMFragmentManager extends ContentFragmentManager implements
 			break;
 		case TYPE_LOGIN:
 			fragment = new LoginFragment();
+			break;
+		case TYPE_SETTING:
+			fragment = new SettingFragment();
 			break;
 		}
 		return fragment;

@@ -8,9 +8,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:duplicateParentState="true" 
-        android:padding="5dp"
-        >
+        android:background="@drawable/selector_settings_item_down"
+        android:duplicateParentState="true"
+        android:padding="5dp" >
 
         <ImageView
             android:id="@+id/avatar"

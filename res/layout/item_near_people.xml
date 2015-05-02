@@ -3,6 +3,7 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="horizontal"
+    android:background="@drawable/selector_settings_item_down"
     android:padding="10dp" >
 
     <ImageView

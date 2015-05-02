@@ -18,6 +18,7 @@
     <!-- 设置页面 -->
     <string name="set_feedback">意见反馈</string>
     <string name="set_favourite">足迹收藏</string>
+    <string name="set_setting">消息通知</string>
     <string name="set_about">关于活点地图</string>
     <!-- my end -->
 

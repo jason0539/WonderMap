@@ -24,11 +24,7 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 	private TextView btn_logout;
 	private TextView tv_set_name;
 	private RelativeLayout layout_info, layout_blacklist, layout_feedback,
-			layout_favourite, layout_switch_notification, layout_switch_voice,
-			layout_switch_vibrate, layout_about;
-	private CheckBox ck_notify, ck_voice, ck_vibrate;
-	private View view1, view2;
-	private SharePreferenceUtil mSharedUtil;
+			layout_favourite, layout_about,layout_setting;
 	private ViewGroup mRootView;
 
 	@Override
@@ -42,33 +38,19 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 	protected void onInitView() {
 		findViews();
 		setListenter();
-		mSharedUtil = WonderMapApplication.getInstance().getSpUtil();
 		initTopBarForLeft(mRootView, "设置");
 		refreshView();
 	}
 
 	@Override
 	public void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 		refreshView();
 	}
 
 	private void refreshView() {
-		boolean isAllowNotify = mSharedUtil.isAllowPushNotify();
-		ck_notify.setChecked(isAllowNotify);
-		boolean isAllowVoice = mSharedUtil.isAllowVoice();
-		ck_voice.setChecked(isAllowVoice);
-		boolean isAllowVibrate = mSharedUtil.isAllowVibrate();
-		ck_vibrate.setChecked(isAllowVibrate);
 		tv_set_name.setText(AccountUserManager.getInstance()
 				.getCurrentUserName());
-		if (!isAllowNotify) {
-			layout_switch_vibrate.setVisibility(View.GONE);
-			layout_switch_voice.setVisibility(View.GONE);
-			view1.setVisibility(View.GONE);
-			view2.setVisibility(View.GONE);
-		}
 	}
 
 	@Override
@@ -96,44 +78,9 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 		case R.id.btn_logout:
 			AccountUserManager.getInstance().logout();
 			break;
-		case R.id.rl_switch_notification:
-			if (ck_notify.isChecked()) {
-				ck_notify.setChecked(false);
-				mSharedUtil.setPushNotifyEnable(false);
-				layout_switch_vibrate.setVisibility(View.GONE);
-				layout_switch_voice.setVisibility(View.GONE);
-				view1.setVisibility(View.GONE);
-				view2.setVisibility(View.GONE);
-			} else {
-				ck_notify.setChecked(true);
-				mSharedUtil.setPushNotifyEnable(true);
-				layout_switch_vibrate.setVisibility(View.VISIBLE);
-				layout_switch_voice.setVisibility(View.VISIBLE);
-				view1.setVisibility(View.VISIBLE);
-				view2.setVisibility(View.VISIBLE);
-			}
-
+		case R.id.layout_setting:
+			wmFragmentManager.showFragment(WMFragmentManager.TYPE_SETTING);
 			break;
-		case R.id.rl_switch_voice:
-			if (ck_voice.isChecked()) {
-				ck_voice.setChecked(false);
-				mSharedUtil.setAllowVoiceEnable(false);
-			} else {
-				ck_voice.setChecked(true);
-				mSharedUtil.setAllowVoiceEnable(true);
-			}
-
-			break;
-		case R.id.rl_switch_vibrate:
-			if (ck_vibrate.isChecked()) {
-				ck_vibrate.setChecked(false);
-				mSharedUtil.setAllowVibrateEnable(false);
-			} else {
-				ck_vibrate.setChecked(true);
-				mSharedUtil.setAllowVibrateEnable(true);
-			}
-			break;
-
 		}
 	}
 
@@ -147,19 +94,9 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 		layout_info = (RelativeLayout) mRootView.findViewById(R.id.layout_info);
 		layout_about = (RelativeLayout) mRootView
 				.findViewById(R.id.layout_about);
-		layout_switch_notification = (RelativeLayout) mRootView
-				.findViewById(R.id.rl_switch_notification);
-		layout_switch_voice = (RelativeLayout) mRootView
-				.findViewById(R.id.rl_switch_voice);
-		layout_switch_vibrate = (RelativeLayout) mRootView
-				.findViewById(R.id.rl_switch_vibrate);
-		view1 = (View) mRootView.findViewById(R.id.view1);
-		view2 = (View) mRootView.findViewById(R.id.view2);
+		layout_setting = (RelativeLayout )mRootView.findViewById(R.id.layout_setting);
 		tv_set_name = (TextView) mRootView.findViewById(R.id.tv_set_name);
 		btn_logout = (TextView) mRootView.findViewById(R.id.btn_logout);
-		ck_notify = (CheckBox) mRootView.findViewById(R.id.ck_set_notification);
-		ck_voice = (CheckBox) mRootView.findViewById(R.id.ck_set_voice);
-		ck_vibrate = (CheckBox) mRootView.findViewById(R.id.ck_set_vibrate);
 	}
 
 	private void setListenter() {
@@ -168,10 +105,8 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 		layout_blacklist.setOnClickListener(this);
 		layout_favourite.setOnClickListener(this);
 		layout_feedback.setOnClickListener(this);
-		layout_switch_notification.setOnClickListener(this);
 		layout_about.setOnClickListener(this);
-		layout_switch_voice.setOnClickListener(this);
-		layout_switch_vibrate.setOnClickListener(this);
+		layout_setting.setOnClickListener(this);
 	}
 
 }
