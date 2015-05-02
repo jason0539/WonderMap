@@ -122,6 +122,7 @@
                 android:singleLine="true"
                 android:text="贞会说" />
         </RelativeLayout>
+
     </LinearLayout>
 
 </LinearLayout>

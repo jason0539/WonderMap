@@ -2,8 +2,10 @@ package jason.wondermap.fragment;
 
 import jason.wondermap.R;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,7 +67,9 @@ public class AboutFragment extends ContentFragment implements OnClickListener {
 			albumDialog.getWindow().setGravity(Gravity.CENTER);
 			break;
 		case R.id.layout_weibo:
-
+			Intent intent = new Intent(Intent.ACTION_VIEW);
+			intent.setData(Uri.parse("http://www.weibo.com/u/2553717707"));
+			startActivity(intent);
 			break;
 
 		default:
