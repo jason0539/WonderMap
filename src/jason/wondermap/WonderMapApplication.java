@@ -2,6 +2,7 @@ package jason.wondermap;
 
 import jason.wondermap.config.WMapConstants;
 import jason.wondermap.crash.CrashHandler;
+import jason.wondermap.utils.L;
 import jason.wondermap.utils.SharePreferenceUtil;
 
 import java.io.File;
@@ -65,6 +66,7 @@ public class WonderMapApplication extends Application {
 				// .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
 				.writeDebugLogs() // Remove for release app
 				.build();
+		L.isDebug=true;
 		// Initialize ImageLoader with configuration.
 		ImageLoader.getInstance().init(config);// 全局初始化此配置
 	}

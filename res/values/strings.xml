@@ -18,7 +18,7 @@
     <!-- 设置页面 -->
     <string name="set_feedback">意见反馈</string>
     <string name="set_favourite">足迹收藏</string>
-    <string name="set_about">关于活点</string>
+    <string name="set_about">关于活点地图</string>
     <!-- my end -->
 
     <string name="login_username_hint">请输入用户名&#8230;</string>
@@ -49,7 +49,7 @@
     <string name="add_name">名字</string>
     <string name="add_name_hint">请输入昵称&#8230;</string>
     <string name="add_gender">性别</string>
-    <string name="set_notify">接收新消息通知</string>
+    <string name="set_notify">消息通知</string>
     <string name="set_myinfo">个人资料</string>
     <string name="set_blacklist">黑名单</string>
     <string name="set_voice">声音</string>
@@ -97,5 +97,6 @@
     <string name="tips_maphome_allorfriends">切换地图显示类型\n好友地图：显示所有好友，无论是否在线\n在线地图：显示目前所有在线的人，包括陌生人和在线好友</string>
     <string name="tips_maphome_small">还可以长按哦～\n长按可以直接缩放到全国视图\n试试吧</string>
     <string name="tips_maphome_big">长按地图上的点，放大更精确\n试试吧</string>
-
+	<string name="about_me">开发者</string>
+	<string name="about_weibo">微博</string>
 </resources>
