@@ -66,7 +66,7 @@ public class WonderMapApplication extends Application {
 				// .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
 				.writeDebugLogs() // Remove for release app
 				.build();
-		L.isDebug=true;
+		L.isDebug = true;
 		// Initialize ImageLoader with configuration.
 		ImageLoader.getInstance().init(config);// 全局初始化此配置
 	}
@@ -99,9 +99,11 @@ public class WonderMapApplication extends Application {
 	 */
 	public synchronized SharePreferenceUtil getSpUtil() {
 		if (mSpUtil == null) {
-			String currentId = BmobUserManager.getInstance(
-					getApplicationContext()).getCurrentUserObjectId();
-			String sharedName = currentId + WMapConstants.PREFERENCE_NAME;
+			//原来是每个用户都不同的本地存储，导致tips服务协议等弹窗重复弹出，现在去掉这个设定，以后有需要再改
+			// String currentId = BmobUserManager.getInstance(
+			// getApplicationContext()).getCurrentUserObjectId();
+			// String sharedName = currentId + WMapConstants.PREFERENCE_NAME;
+			String sharedName = WMapConstants.PREFERENCE_NAME;
 			mSpUtil = new SharePreferenceUtil(this, sharedName);
 		}
 		return mSpUtil;
