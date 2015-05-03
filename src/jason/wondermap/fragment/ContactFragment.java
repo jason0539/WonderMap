@@ -1,6 +1,7 @@
 package jason.wondermap.fragment;
 
 import jason.wondermap.R;
+import jason.wondermap.WonderMapApplication;
 import jason.wondermap.adapter.UserFriendAdapter;
 import jason.wondermap.bean.User;
 import jason.wondermap.manager.AccountUserManager;
@@ -8,6 +9,8 @@ import jason.wondermap.utils.CharacterParser;
 import jason.wondermap.utils.CollectionUtils;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.PinyinComparator;
+import jason.wondermap.utils.StringUtils;
+import jason.wondermap.utils.T;
 import jason.wondermap.utils.UserInfo;
 import jason.wondermap.view.ClearEditText;
 import jason.wondermap.view.HeaderLayout.onRightImageButtonClickListener;
@@ -244,19 +247,31 @@ public class ContactFragment extends ContentFragment implements
 
 			@Override
 			public void onClick(View v) {
-				BaseFragment.getMainActivity().showMessage(
-						"进入后需要读取你的通讯录数据，仅用来推荐好友，是否进入",
-						new DialogInterface.OnClickListener() {
+				if (StringUtils.isStringNull(AccountUserManager.getInstance()
+						.getCurrentUser().getPhone())) {
+					T.showLong(mContext, "您还没有填写自己的手机号，强烈建议填写，方便其他好友找到您");
+				}
+				if (WonderMapApplication.getInstance().getSpUtil()
+						.hasAcceptPhone()) {
+					wmFragmentManager
+							.showFragment(WMFragmentManager.TYPE_FRIEND_RECOMMEND);
+				} else {
+					BaseFragment.getMainActivity().showMessage(
+							"进入后需要读取你的通讯录数据，用来推荐好友，是否同意进入并读取通讯录",
+							new DialogInterface.OnClickListener() {
 
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								wmFragmentManager
-										.showFragment(WMFragmentManager.TYPE_FRIEND_RECOMMEND);
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									WonderMapApplication.getInstance()
+											.getSpUtil().setAcceptPhone(true);
+									wmFragmentManager
+											.showFragment(WMFragmentManager.TYPE_FRIEND_RECOMMEND);
 
-							}
+								}
 
-						});
+							});
+				}
 			}
 		});
 

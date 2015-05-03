@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import android.widget.Toast;
-import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.config.BmobConfig;
@@ -29,7 +28,7 @@ import cn.bmob.v3.listener.UpdateListener;
  */
 public class AccountUserManager {
 	private WonderMapApplication mApplication;
-	private Map<String, BmobChatUser> contactList;
+	private Map<String, BmobChatUser> contactList = new HashMap<String, BmobChatUser>();;
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	/**
@@ -38,7 +37,8 @@ public class AccountUserManager {
 	public void logout() {
 		BmobUserManager.getInstance(mApplication).logout();
 		setContactList(null);
-		BaseFragment.getWMFragmentManager().backTo(WMFragmentManager.TYPE_SPLASH, null);
+		BaseFragment.getWMFragmentManager().backTo(
+				WMFragmentManager.TYPE_SPLASH, null);
 	}
 
 	/**
@@ -228,7 +228,6 @@ public class AccountUserManager {
 
 	private AccountUserManager() {
 		mApplication = WonderMapApplication.getInstance();
-		contactList = new HashMap<String, BmobChatUser>();
 	}
 
 	public void destroy() {

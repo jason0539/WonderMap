@@ -173,7 +173,8 @@ public class PersonalFootblogFragment extends ContentFragment implements
 				});
 		mListView = mPullToRefreshListView.getRefreshableView();
 		mQiangYus = new ArrayList<Blog>();
-		mAdapter = new AIContentAdapter(mContext, mQiangYus);
+		//个人足迹页不显示分享按钮
+		mAdapter = new AIContentAdapter(mContext, mQiangYus,false);
 		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 

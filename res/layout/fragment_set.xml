@@ -54,6 +54,7 @@
             <RelativeLayout
                 android:id="@+id/layout_favourite"
                 style="@style/SetFragment.Item"
+                android:visibility="gone"
                 android:minHeight="50dp" >
 
                 <TextView
@@ -74,6 +75,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
+                android:visibility="gone"
                 android:background="#eeeeee" />
 
             <RelativeLayout

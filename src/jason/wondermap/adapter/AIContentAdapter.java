@@ -19,9 +19,7 @@ import jason.wondermap.utils.T;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -51,11 +49,22 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 	public static final int NUMBERS_PER_PAGE = 15;// 每次请求返回评论条数
 	private Context mContext;
 	private OnClickListener outsideClickListener;
+	private boolean isShowShare = true;
 
 	// 女生颜色#EC197D 男生#2BA2E5
 	public AIContentAdapter(Context context, List<Blog> list) {
 		super(context, list);
 		mContext = context;
+	}
+
+	/**
+	 * 给足迹详情页之外的其他页面用，只有足迹详情页才显示分享按钮
+	 */
+	public AIContentAdapter(Context context, List<Blog> list,
+			boolean isShowShare) {
+		super(context, list);
+		mContext = context;
+		this.isShowShare = isShowShare;
 	}
 
 	/**
@@ -70,6 +79,7 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 		super(context, list);
 		mContext = context;
 		outsideClickListener = lClickListener;
+		this.isShowShare = true;
 	}
 
 	@Override
@@ -104,6 +114,9 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 					.findViewById(R.id.item_action_hate);
 			viewHolder.share = (TextView) convertView
 					.findViewById(R.id.item_action_share);
+			if (!isShowShare) {
+				viewHolder.share.setVisibility(View.GONE);
+			}
 			viewHolder.comment = (TextView) convertView
 					.findViewById(R.id.item_action_comment);
 			convertView.setTag(viewHolder);
@@ -439,7 +452,7 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 			});
 		} else {
 			// 前往登录注册界面
-			 gotoLogin();
+			gotoLogin();
 			// Intent intent = new Intent();
 			// intent.setClass(mContext, RegisterAndLoginActivity.class);
 			// MyApplication
@@ -448,8 +461,10 @@ public class AIContentAdapter extends BaseContentAdapter<Blog> {
 			// .startActivityForResult(intent, WMapConstants.GET_FAVOURITE);
 		}
 	}
-	private  void gotoLogin(){
+
+	private void gotoLogin() {
 		T.showShort(mContext, "获取收藏前请先登录。");
-		BaseFragment.getWMFragmentManager().showFragment(WMFragmentManager.TYPE_LOGIN);
+		BaseFragment.getWMFragmentManager().showFragment(
+				WMFragmentManager.TYPE_LOGIN);
 	}
 }

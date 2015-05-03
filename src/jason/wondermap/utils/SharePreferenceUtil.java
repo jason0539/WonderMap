@@ -28,7 +28,8 @@ public class SharePreferenceUtil {
 	private String SHARED_KEY_VIBRATE = "shared_key_vibrate";// 是否允许震动
 	private String SHARED_KEY_CRASH = "shared_key_crash";// 是否有crash日志信息
 	private String SHARED_KEY_ACCEPT = "shared_key_accept";// 接受用户协议，小米的
-	private String SHARED_KEY_LOCATION = "shared_key_location";
+	private String SHARED_KEY_ACCEPT_PHONE = "shared_key_accept_phone";// 接受读取通讯录
+	private String SHARED_KEY_LOCATION = "shared_key_location";//
 	private String SHARED_KEY_SMALL = "shared_key_small";//
 	private String SHARED_KEY_BIG = "shared_key_big";//
 	private String SHARED_KEY_MAPTYPE = "shared_key_maptype";//
@@ -39,9 +40,8 @@ public class SharePreferenceUtil {
 		return mSharedPreferences.getBoolean(SHARED_KEY_NOTIFY, true);
 	}
 
-	/**是否允许通知
-	 *策略：此项代表消息总控制，如果关闭，则通知栏、声音、震动都关闭，
-	 *如果开启，则通知栏肯定有通知，声音和震动通过另外两个开关控制
+	/**
+	 * 是否允许通知 策略：此项代表消息总控制，如果关闭，则通知栏、声音、震动都关闭， 如果开启，则通知栏肯定有通知，声音和震动通过另外两个开关控制
 	 */
 	public void setPushNotifyEnable(boolean isChecked) {
 		editor.putBoolean(SHARED_KEY_NOTIFY, isChecked);
@@ -92,6 +92,18 @@ public class SharePreferenceUtil {
 		editor.putBoolean(SHARED_KEY_ACCEPT, hasAccept);
 		editor.commit();
 	}
+	// 用户是否同意授权读取通讯录
+	public boolean hasAcceptPhone() {
+		boolean hasLog = mSharedPreferences
+				.getBoolean(SHARED_KEY_ACCEPT_PHONE, false);
+		return hasLog;
+	}
+	
+	// 设置用户是否同意授权读取通讯录
+	public void setAcceptPhone(boolean hasAccept) {
+		editor.putBoolean(SHARED_KEY_ACCEPT_PHONE, hasAccept);
+		editor.commit();
+	}
 
 	// 第一次定位
 	public boolean isFirstLocation() {
@@ -122,6 +134,7 @@ public class SharePreferenceUtil {
 		editor.putBoolean(SHARED_KEY_ALLORFRIEND, isChecked);
 		editor.commit();
 	}
+
 	// 是否第一次放大
 
 	public boolean isFirstBig() {
@@ -132,6 +145,7 @@ public class SharePreferenceUtil {
 		editor.putBoolean(SHARED_KEY_BIG, isChecked);
 		editor.commit();
 	}
+
 	// 是否第一次缩小
 
 	public boolean isFirstSmall() {

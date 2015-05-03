@@ -99,7 +99,7 @@ public class WonderMapApplication extends Application {
 	 */
 	public synchronized SharePreferenceUtil getSpUtil() {
 		if (mSpUtil == null) {
-			//原来是每个用户都不同的本地存储，导致tips服务协议等弹窗重复弹出，现在去掉这个设定，以后有需要再改
+			// 原来是每个用户都不同的本地存储，导致tips服务协议等弹窗重复弹出，现在去掉这个设定，以后有需要再改
 			// String currentId = BmobUserManager.getInstance(
 			// getApplicationContext()).getCurrentUserObjectId();
 			// String sharedName = currentId + WMapConstants.PREFERENCE_NAME;

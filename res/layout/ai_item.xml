@@ -129,9 +129,18 @@
         <ImageView
             android:id="@+id/item_action_fav"
             style="@style/FootblogBottomTextview"
-            android:layout_toLeftOf="@+id/item_action_love"
+            android:layout_toLeftOf="@+id/item_action_share"
             android:scaleType="centerInside"
+            android:visibility="gone"
             android:src="@drawable/ic_action_fav_normal" />
+ <!-- 分享 -->
+
+        <TextView
+            android:id="@+id/item_action_share"
+            style="@style/FootblogBottomTextview"
+            android:layout_toLeftOf="@+id/item_action_love"
+            android:layout_marginRight="2dp"
+            android:drawableLeft="@drawable/ic_action_share" />
         <!-- 赞 -->
 
         <TextView
@@ -153,16 +162,9 @@
         <TextView
             android:id="@+id/item_action_comment"
             style="@style/FootblogBottomTextview"
-            android:layout_toLeftOf="@+id/item_action_share"
-            android:drawableLeft="@drawable/ic_action_comment" />
-        <!-- 分享 -->
-
-        <TextView
-            android:id="@+id/item_action_share"
-            style="@style/FootblogBottomTextview"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="2dp"
-            android:drawableLeft="@drawable/ic_action_share" />
+            android:drawableLeft="@drawable/ic_action_comment" />
+       
     </RelativeLayout>
 
 </RelativeLayout>

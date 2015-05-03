@@ -29,7 +29,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.datatype.BmobDate;
 import cn.bmob.v3.datatype.BmobPointer;
@@ -81,13 +80,11 @@ public class QiangContentFragment extends RealFragment {
 
 	@Override
 	public void onAttach(Activity activity) {
-		// TODO Auto-generated method stub
 		super.onAttach(activity);
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		currentIndex = getArguments().getInt("page");
 		pageNum = 0;
@@ -144,7 +141,7 @@ public class QiangContentFragment extends RealFragment {
 
 		actualListView = mPullRefreshListView.getRefreshableView();
 		mListItems = new ArrayList<Blog>();
-		mAdapter = new AIContentAdapter(mContext, mListItems);
+		mAdapter = new AIContentAdapter(mContext, mListItems, false);
 		actualListView.setAdapter(mAdapter);
 		ViewGroup emptyView = (ViewGroup) BaseFragment.getInflater().inflate(
 				R.layout.view_footblog_empty, null);
@@ -168,8 +165,6 @@ public class QiangContentFragment extends RealFragment {
 		});
 		return contentView;
 	}
-
-			
 
 	/**
 	 * 获取足迹数据，本来是直接获取的，4月29日，放到线程里面，暂时没发现问题中，之后要优化足迹页加载流畅度
@@ -221,8 +216,7 @@ public class QiangContentFragment extends RealFragment {
 						L.i(TAG, "已加载完所有数据~");
 					}
 					if (AccountUserManager.getInstance().getCurrentUser() != null) {
-						list = DatabaseUtil.getInstance(mContext).setFav(
-								list);
+						list = DatabaseUtil.getInstance(mContext).setFav(list);
 					}
 					mListItems.addAll(list);
 					mAdapter.notifyDataSetChanged();
