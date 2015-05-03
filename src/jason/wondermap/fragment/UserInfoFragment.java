@@ -43,6 +43,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import cn.bmob.im.BmobChatManager;
 import cn.bmob.im.BmobUserManager;
+import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.config.BmobConfig;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.im.util.BmobLog;
@@ -284,6 +285,23 @@ public class UserInfoFragment extends ContentFragment implements
 					@Override
 					public void onFailure(int arg0, String arg1) {
 						ShowToast("确认失败，请重试");
+					}
+				});
+		BmobUserManager.getInstance(mContext).addContactAfterAgree("活点地图",
+				new FindListener<BmobChatUser>() {
+
+					@Override
+					public void onError(int arg0, final String arg1) {
+						
+					}
+
+					@Override
+					public void onSuccess(List<BmobChatUser> arg0) {
+						// method stub
+						// 保存到内存中
+						AccountUserManager.getInstance().setContactList(
+								CollectionUtils.list2map(BmobDB
+										.create(mContext).getContactList()));
 					}
 				});
 	}
@@ -630,6 +648,7 @@ public class UserInfoFragment extends ContentFragment implements
 	private void viewForMyself() {
 		initTopBarForLeft(mRootView, "我的资料");
 		btn_browse_footblog.setVisibility(View.VISIBLE);
+		layout_name.setEnabled(true);
 		layout_age.setEnabled(true);
 		layout_head.setEnabled(true);
 		layout_gender.setEnabled(true);
