@@ -62,10 +62,6 @@ public class WLocationManager {
 	}
 
 	public void stop() {
-		//有可能在MainActivity还没进入MapHome，定位还没初始化，所以不能销毁
-		if (mLocationClient == null) {
-			return;
-		}
 		mLocationClient.unRegisterLocationListener(mMyLocationListener);
 		mLocationClient.stop();
 		PushMsgSendManager.getInstance().destroy();
