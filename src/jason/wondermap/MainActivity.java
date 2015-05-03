@@ -9,7 +9,6 @@ import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.WModel;
 import jason.wondermap.view.dialog.DialogTips;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -209,6 +208,7 @@ public class MainActivity extends FragmentActivity {
 
 	@Override
 	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
+		L.d(WModel.MainActivity, "onActivityResult");
 		super.onActivityResult(arg0, arg1, arg2);
 	}
 

@@ -46,13 +46,13 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="2"
+        android:gravity="center_vertical"
         android:orientation="vertical" >
 
         <RelativeLayout
             android:id="@+id/layout_me"
             style="@style/SetFragment.Item"
-            android:layout_marginTop="89dp"
             android:minHeight="50dp" >
 
             <ImageView
@@ -123,6 +123,30 @@
                 android:text="贞会说" />
         </RelativeLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#eeeeee" />
+
+        <RelativeLayout
+            android:id="@+id/layout_recommend"
+            style="@style/SetFragment.Item"
+            android:minHeight="50dp" >
+
+            <ImageView
+                android:id="@+id/iv_about_recommend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="5dp"
+                android:src="@drawable/icon_about_recommend" />
+
+            <TextView
+                style="@style/Smile.TextView._Black"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/iv_about_recommend"
+                android:text="@string/recommend_friend" />
+        </RelativeLayout>
     </LinearLayout>
 
 </LinearLayout>

@@ -10,10 +10,11 @@ import jason.wondermap.proxy.UserProxy.IResetPasswordListener;
 import jason.wondermap.proxy.UserProxy.ISignUpListener;
 import jason.wondermap.sns.TencentLoginHelper;
 import jason.wondermap.sns.WeiboLoginHelper;
+import jason.wondermap.utils.L;
 import jason.wondermap.utils.StringUtils;
 import jason.wondermap.utils.T;
 import jason.wondermap.view.DeletableEditText;
-import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -213,12 +214,21 @@ public class LoginFragment extends ContentFragment implements OnClickListener,
 		}
 	}
 
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝微博登陆＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+
 	private void loginByWeibo() {
 		progressbar.setVisibility(View.VISIBLE);
 		WeiboLoginHelper helper = new WeiboLoginHelper(getMainActivity());
 		helper.login(qqLoginListener);
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		L.d("onActivityResult");
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝微博登陆＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	private void loginByQQ() {
 		progressbar.setVisibility(View.VISIBLE);
 		TencentLoginHelper helper = new TencentLoginHelper(getMainActivity());
