@@ -379,6 +379,9 @@ public class ContactFragment extends ContentFragment implements
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
+		if (position == 0) {// 不处理头部view
+			return;
+		}
 		User user = (User) userAdapter.getItem(position - 1);
 		// 先进入好友的详细资料页面
 		Bundle bundle = new Bundle();
@@ -389,7 +392,7 @@ public class ContactFragment extends ContentFragment implements
 	@Override
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
 			int position, long arg3) {
-		if (position == 0) {//不处理头部view
+		if (position == 0) {// 不处理头部view
 			return true;
 		}
 		User user = (User) userAdapter.getItem(position - 1);
