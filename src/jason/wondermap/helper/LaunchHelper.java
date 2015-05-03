@@ -8,7 +8,6 @@ import jason.wondermap.controler.MapControler;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.manager.AccountUserManager;
-import jason.wondermap.manager.ChatMessageManager;
 import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.CommonUtils;

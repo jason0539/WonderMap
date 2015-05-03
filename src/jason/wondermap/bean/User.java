@@ -34,7 +34,6 @@ public class User extends BmobChatUser {
 	 */
 	private boolean sex;
 
-	private Blog blog;
 	private int age;// 年龄
 	private boolean infoIsSet;// 个人信息是否设置完成
 	private String phone;
@@ -69,14 +68,6 @@ public class User extends BmobChatUser {
 
 	public void setFavorite(BmobRelation favorite) {
 		this.favorite = favorite;
-	}
-
-	public Blog getBlog() {
-		return blog;
-	}
-
-	public void setBlog(Blog blog) {
-		this.blog = blog;
 	}
 
 	public BmobRelation getBlogs() {
@@ -123,16 +114,20 @@ public class User extends BmobChatUser {
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
-	public double getLat(){
+
+	public double getLat() {
 		return location.getLatitude();
 	}
-	public void setLat(double d){
+
+	public void setLat(double d) {
 		location.setLatitude(d);
 	}
-	public double getLng(){
+
+	public double getLng() {
 		return location.getLongitude();
 	}
-	public void setLng(double d){
+
+	public void setLng(double d) {
 		location.setLongitude(d);
 	}
 }

@@ -182,39 +182,52 @@ public class MyMessageReceiver extends BroadcastReceiver {
 								}
 							}
 						} else if (tag.equals(BmobConfig.TAG_ADD_AGREE)) {
-							String username = BmobJsonUtil.getString(jo,
-									BmobConstant.PUSH_KEY_TARGETUSERNAME);
-							// 收到对方的同意请求之后，就得添加对方为好友--已默认添加同意方为好友，并保存到本地好友数据库
-							BmobUserManager.getInstance(context)
-									.addContactAfterAgree(username,
-											new FindListener<BmobChatUser>() {
+							// 检查是否是发给我的
+							if (currentUser != null) {// 有登陆用户
+								if (toId.equals(currentUser.getObjectId())) {
+									String username = BmobJsonUtil
+											.getString(
+													jo,
+													BmobConstant.PUSH_KEY_TARGETUSERNAME);
+									// 收到对方的同意请求之后，就得添加对方为好友--已默认添加同意方为好友，并保存到本地好友数据库
+									BmobUserManager
+											.getInstance(context)
+											.addContactAfterAgree(
+													username,
+													new FindListener<BmobChatUser>() {
 
-												@Override
-												public void onError(int arg0,
-														final String arg1) {
+														@Override
+														public void onError(
+																int arg0,
+																final String arg1) {
 
-												}
+														}
 
-												@Override
-												public void onSuccess(
-														List<BmobChatUser> arg0) {
-													// method stub
-													// 保存到内存中
-													AccountUserManager
-															.getInstance()
-															.setContactList(
-																	CollectionUtils
-																			.list2map(BmobDB
-																					.create(context)
-																					.getContactList()));
-												}
-											});
-							// 显示通知
-							ChatMessageManager.getInstance().showOtherNotify(
-									context, username, toId,
-									username + "同意添加您为好友", MainActivity.class);
-							// 创建一个临时验证会话--用于在会话界面形成初始会话
-							BmobMsg.createAndSaveRecentAfterAgree(context, json);
+														@Override
+														public void onSuccess(
+																List<BmobChatUser> arg0) {
+															// method stub
+															// 保存到内存中
+															AccountUserManager
+																	.getInstance()
+																	.setContactList(
+																			CollectionUtils
+																					.list2map(BmobDB
+																							.create(context)
+																							.getContactList()));
+														}
+													});
+									// 显示通知
+									ChatMessageManager.getInstance()
+											.showOtherNotify(context, username,
+													toId,
+													username + "同意添加您为好友",
+													MainActivity.class);
+									// 创建一个临时验证会话--用于在会话界面形成初始会话
+									BmobMsg.createAndSaveRecentAfterAgree(
+											context, json);
+								}
+							}
 						} else if (tag.equals(BmobConfig.TAG_READED)) {// 已读回执
 							String conversionId = BmobJsonUtil.getString(jo,
 									BmobConstant.PUSH_READED_CONVERSIONID);

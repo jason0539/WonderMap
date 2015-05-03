@@ -233,12 +233,12 @@ public class FootblogCommentFragment extends ContentFragment implements
 					public void onSuccess() {
 						L.i(TAG, "更新评论成功。");
 						aiContentAdapter.notifyDataSetChanged();
+						
 						// fetchData();
 					}
 
 					@Override
 					public void onFailure(int arg0, String arg1) {
-						// TODO Auto-generated method stub
 						L.i(TAG, "更新评论失败。" + arg1);
 					}
 				});
