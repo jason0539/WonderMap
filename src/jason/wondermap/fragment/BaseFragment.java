@@ -87,7 +87,7 @@ public class BaseFragment extends Fragment {
 		// L.e(TAG, "onCreate");
 		setHasOptionsMenu(true); // 允许fragment修改menu
 		// TODO 自动登陆状态下检测是否在其他设备登陆
-//		AccountUserManager.getInstance().checkLogin();
+		// AccountUserManager.getInstance().checkLogin();
 	}
 
 	@Override
@@ -162,6 +162,9 @@ public class BaseFragment extends Fragment {
 		if (text == null || text.equals("")) {
 			return;
 		}
+		if (null == this || !this.isAdded()) {
+			return;
+		}
 		if (mToast == null) {
 			mToast = Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT);
 		} else {
@@ -171,6 +174,9 @@ public class BaseFragment extends Fragment {
 	}
 
 	public void ShowToast(int text) {
+		if (null == this || !this.isAdded()) {
+			return;
+		}
 		if (mToast == null) {
 			mToast = Toast.makeText(getActivity(), text, Toast.LENGTH_LONG);
 		} else {
