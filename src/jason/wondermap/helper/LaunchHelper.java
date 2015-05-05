@@ -47,8 +47,6 @@ public class LaunchHelper {
 		BmobChat.DEBUG_MODE = true;
 		BmobChat.getInstance(mContext).init(WMapConfig.applicationId);
 		AccountUserManager.getInstance().downloadContact();
-		// 初始化地图用户管理，依赖MapControl和bmob获取联系人
-		MapUserManager.getInstance();
 		// 定位，一旦开始就使用push发送消息，依赖Bmob Push服务，挪到MapHomeFrag里面，保证在服务协议之后显示
 //		WLocationManager.getInstance().start();
 		checkCrashLog(mContext);

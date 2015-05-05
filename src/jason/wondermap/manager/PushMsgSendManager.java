@@ -16,6 +16,7 @@ import java.util.TimerTask;
 
 import org.json.JSONObject;
 
+import android.os.Looper;
 import cn.bmob.v3.BmobPushManager;
 import cn.bmob.v3.listener.PushListener;
 
@@ -55,7 +56,7 @@ public class PushMsgSendManager {
 						@Override
 						public void run() {
 							L.i("resend msg...");
-							sayHello();
+//							sayHello();
 						}
 					}, 100);
 				}
@@ -85,7 +86,7 @@ public class PushMsgSendManager {
 						@Override
 						public void run() {
 							L.i("resend msg...");
-							sayWorld();
+//							sayWorld();
 						}
 					}, 100);
 				}
@@ -94,7 +95,7 @@ public class PushMsgSendManager {
 			T.showLong(BaseFragment.getMainActivity(), R.string.network_tips);
 		}
 	}
-	
+
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝内部实现＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝

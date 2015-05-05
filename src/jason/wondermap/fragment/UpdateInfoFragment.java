@@ -226,10 +226,10 @@ public class UpdateInfoFragment extends ContentFragment {
 
 												@Override
 												public void onSuccess() {
-													// 修改成功直接返回
-													PushMsgSendManager
-															.getInstance()
-															.sayHello();
+//													// 修改成功直接返回
+//													PushMsgSendManager
+//															.getInstance()
+//															.sayHello();
 													ShowToast("修改成功");
 													wmFragmentManager
 															.back(null);

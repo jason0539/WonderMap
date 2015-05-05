@@ -5,7 +5,6 @@ import jason.wondermap.WonderMapApplication;
 import jason.wondermap.controler.MapControler;
 import jason.wondermap.helper.LaunchHelper;
 import jason.wondermap.manager.MapUserManager;
-import jason.wondermap.manager.PushMsgSendManager;
 import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.T;
@@ -60,7 +59,9 @@ public class MapHomeFragment extends ContentFragment {
 		// 开始定位
 		WLocationManager.getInstance().start();
 		// 发送hello
-		PushMsgSendManager.getInstance().sayHello();
+//		PushMsgSendManager.getInstance().sayHello();
+		// 初始化地图用户管理，依赖MapControl和bmob获取联系人
+				MapUserManager.getInstance();
 		if (MapUserManager.getInstance().isOnlyShowFriends()) {
 			initTopBarForOnlyTitle(mRootView, "好友地图");
 		} else {
@@ -149,7 +150,7 @@ public class MapHomeFragment extends ContentFragment {
 					if (MapUserManager.getInstance().isOnlyShowFriends()) {
 						T.showShort(getActivity(), "已切换到在线地图");
 						initTopBarForOnlyTitle(mRootView, "在线地图");
-						MapUserManager.getInstance().showAll();
+						MapUserManager.getInstance().showOnLine();
 					} else {
 						T.showShort(getActivity(), "已切换到好友地图");
 						initTopBarForOnlyTitle(mRootView, "好友地图");

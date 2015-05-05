@@ -75,10 +75,10 @@ public class MyMessageReceiver extends BroadcastReceiver {
 		//
 		// return;
 		// }
-		MapUserManager.getInstance().addUserFromUserId(
-				BmobJsonUtil.getString(json, UserInfo.USER_ID));// 更新地图
+//		MapUserManager.getInstance().addUserFromUserId(
+//				BmobJsonUtil.getString(json, UserInfo.USER_ID));// 更新地图
 		// 应该加上参数，只发送给hello用户
-		PushMsgSendManager.getInstance().sayWorld();
+//		PushMsgSendManager.getInstance().sayWorld();
 	}
 
 	/**
@@ -91,8 +91,8 @@ public class MyMessageReceiver extends BroadcastReceiver {
 		//
 		// return;
 		// }
-		MapUserManager.getInstance().addUserFromUserId(
-				BmobJsonUtil.getString(json, UserInfo.USER_ID));
+//		MapUserManager.getInstance().addUserFromUserId(
+//				BmobJsonUtil.getString(json, UserInfo.USER_ID));
 	}
 
 	/**

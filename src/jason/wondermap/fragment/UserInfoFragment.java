@@ -277,8 +277,8 @@ public class UserInfoFragment extends ContentFragment implements
 								.bindInstallationForRegister(
 										AccountUserManager.getInstance()
 												.getCurrentUserName());
-						// 确认信息后马上sayhello，更新信息给对方
-						PushMsgSendManager.getInstance().sayHello();
+//						// 确认信息后马上sayhello，更新信息给对方
+//						PushMsgSendManager.getInstance().sayHello();
 						wmFragmentManager.back(null);
 					}
 
@@ -569,7 +569,7 @@ public class UserInfoFragment extends ContentFragment implements
 				new UpdateListener() {
 					@Override
 					public void onSuccess() {
-						PushMsgSendManager.getInstance().sayHello();
+//						PushMsgSendManager.getInstance().sayHello();
 						ShowToast("头像更新成功！");
 						refreshAvatar(url);
 					}

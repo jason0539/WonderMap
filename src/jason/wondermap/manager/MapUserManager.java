@@ -2,7 +2,10 @@ package jason.wondermap.manager;
 
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.MapUser;
+import jason.wondermap.bean.User;
 import jason.wondermap.controler.MapControler;
+import jason.wondermap.helper.OnlineUserHelper;
+import jason.wondermap.interfacer.GetOnlineUserListener;
 import jason.wondermap.interfacer.MapUserTransferListener;
 import jason.wondermap.utils.CollectionUtils;
 import jason.wondermap.utils.L;
@@ -34,6 +37,7 @@ public class MapUserManager {
 	private boolean isFriend = false;
 	private Timer timer;
 	private HashMap<String, MapUser> allMapUsers = new HashMap<String, MapUser>();
+	private HashMap<String, BmobChatUser> lastAllMapUsers = new HashMap<String, BmobChatUser>();
 	private HashMap<String, MapUser> friendMapUsers = new HashMap<String, MapUser>();
 	private Map<String, BmobChatUser> lastFriendMaps = new HashMap<String, BmobChatUser>();
 
@@ -65,6 +69,9 @@ public class MapUserManager {
 		// 之后每次切换，都是直接恢复到地图上就行了
 		else {
 			onResumeAllUsersOnMap();
+		}
+		if (timer != null) {
+			timer.cancel();
 		}
 		timer = new Timer();
 		timer.schedule(new TimerTask() {
@@ -127,6 +134,104 @@ public class MapUserManager {
 				}
 			}
 		}, 0, Period);
+	}
+
+	/**
+	 * 只显示好友
+	 */
+	public void showOnLine() {
+		isFriend = false;
+		WonderMapApplication.getInstance().getSpUtil()
+				.setValue(ShowFriendOrAll, isFriend);
+		MapControler.getInstance().clearMarker();
+		// 第一次切换到在线地图，好友为空，则从内存读取出来，添加到地图
+		if (allMapUsers.size() == 0) {
+			onlineUserHelper.getOnlineList(new GetOnlineUserListener() {
+				@Override
+				public void onSuccess(List<BmobChatUser> onlineUsers) {
+					lastAllMapUsers = new HashMap<String, BmobChatUser>(
+							CollectionUtils.list2map(onlineUsers));
+					ArrayList<BmobChatUser> list = CollectionUtils
+							.map2arrayList(lastAllMapUsers);
+					for (int i = 0; i < list.size(); i++) {
+						UserTransferUtil.FriendToMapUser(list.get(i),
+								new MapUserTransferListener() {
+									@Override
+									public void onSuccess(MapUser user) {
+										addUser(user);
+									}
+								});
+					}
+				}
+			});
+		}
+		// 之后每次切换，都是直接恢复到地图上就行了
+		else {
+			onResumeAllUsersOnMap();
+		}
+		if (timer != null) {
+			timer.cancel();
+		}
+		timer = new Timer();
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				HashMap<String, MapUser> users = null;
+				synchronized (allMapUsers) {
+					users = new HashMap<String, MapUser>(allMapUsers);
+				}
+				Iterator<Entry<String, MapUser>> iterator = users.entrySet()
+						.iterator();
+				Entry<String, MapUser> entry;
+				while (iterator.hasNext()) {
+					entry = iterator.next();
+					entry.getValue().updateSelf();
+				}
+				// 每次更新后，检查是否在线用户有变化
+				onlineUserHelper.getOnlineList(new GetOnlineUserListener() {
+					@Override
+					public void onSuccess(List<BmobChatUser> onlineUsers) {
+						Map<String, BmobChatUser> newestMap = CollectionUtils
+								.list2map(onlineUsers);// 最新在线列表
+						List<BmobChatUser> lists = CollectionUtils
+								.map2list(newestMap);
+						// 遍历新列表，找出新好友并添加
+						for (BmobChatUser bmobChatUser : lists) {
+							String objectId = bmobChatUser.getObjectId();
+							if (!lastAllMapUsers.containsKey(objectId)) {
+								// 之前添加过，下线的
+								if (allMapUsers.containsKey(objectId)) {
+									L.d(WModel.UpdateFriend,
+											bmobChatUser.getUsername() + "被删除了");
+									lastAllMapUsers.remove(objectId);
+									// 从图上删除的逻辑
+									allMapUsers.remove(objectId).getMarker()
+											.remove();
+								}
+								// 之前不包含，新上线的
+								else {
+									L.d(WModel.UpdateFriend,
+											bmobChatUser.getUsername()
+													+ "是上线的，加入成功");
+									lastAllMapUsers.put(objectId, bmobChatUser);
+									UserTransferUtil.FriendToMapUser(
+											bmobChatUser,
+											new MapUserTransferListener() {
+												@Override
+												public void onSuccess(
+														MapUser user) {
+													addUser(user);
+												}
+											});
+								}
+							}
+						}
+						;
+					}
+				});
+			}
+		}, Period, Period);
 	}
 
 	/**
@@ -266,12 +371,17 @@ public class MapUserManager {
 	private MapUserManager() {
 		isFriend = WonderMapApplication.getInstance().getSpUtil()
 				.getValue(ShowFriendOrAll, false);
+		onlineUserHelper = new OnlineUserHelper(
+				WonderMapApplication.getInstance());
 		if (isFriend) {
 			showFriends();
+		} else {
+			showOnLine();
 		}
 	}
 
 	private static MapUserManager instance = null;
+	private OnlineUserHelper onlineUserHelper;
 
 	public static MapUserManager getInstance() {
 		if (instance == null) {

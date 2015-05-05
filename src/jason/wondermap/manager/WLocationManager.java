@@ -105,7 +105,7 @@ public class WLocationManager {
 			// 更新位置到服务器
 			AccountUserManager.getInstance().updateUserLocation(lastGeoPoint);
 			// 推送给其他人，每隔一段时间更新一次位置，以后陌生人不更新，好友实时更新
-			PushMsgSendManager.getInstance().sayHello();
+//			PushMsgSendManager.getInstance().sayHello();
 			// 保存到本地
 			saveLatitude(latitude + "");
 			saveLongtitude(longtitude + "");
