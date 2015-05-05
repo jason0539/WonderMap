@@ -1,11 +1,7 @@
 package jason.wondermap.fragment;
 
 import jason.wondermap.R;
-import jason.wondermap.bean.Blog;
-import jason.wondermap.bean.User;
-import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.manager.FootblogManager;
-import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.CacheUtils;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.StringUtils;
@@ -37,9 +33,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import cn.bmob.v3.datatype.BmobFile;
-import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UploadFileListener;
 
 /**
  * @author liuzhenhui
@@ -154,15 +147,21 @@ public class PublishFootblogFragment extends ContentFragment implements
 				String fileName = null;
 				if (data != null) {
 					Uri originalUri = data.getData();
-					ContentResolver cr = mContext.getContentResolver();
+					L.d(WModel.PublishBlog, "originalUri path："+originalUri.getPath());
+					ContentResolver cr = getMainActivity().getContentResolver();
 					Cursor cursor = cr.query(originalUri, null, null, null,
 							null);
-					if (cursor.moveToFirst()) {
-						do {
-							fileName = cursor.getString(cursor
-									.getColumnIndex("_data"));
-							L.d(WModel.PublishBlog, "get album:" + fileName);
-						} while (cursor.moveToNext());
+					if (cursor==null) {
+						//小米进入后
+						fileName = originalUri.getPath();
+					}else{
+						if (cursor.moveToFirst()) {
+							do {
+								fileName = cursor.getString(cursor
+										.getColumnIndex("_data"));
+								L.d(WModel.PublishBlog, "get album:" + fileName);
+							} while (cursor.moveToNext());
+						}
 					}
 					Bitmap bitmap = compressImageFromFile(fileName);
 					String suffix = fileName.substring(fileName
