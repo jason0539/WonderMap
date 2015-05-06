@@ -2,7 +2,6 @@ package jason.wondermap.manager;
 
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.MapUser;
-import jason.wondermap.bean.User;
 import jason.wondermap.controler.MapControler;
 import jason.wondermap.helper.OnlineUserHelper;
 import jason.wondermap.interfacer.GetOnlineUserListener;
@@ -231,7 +230,7 @@ public class MapUserManager {
 					}
 				});
 			}
-		}, Period, Period);
+		}, 0, Period);
 	}
 
 	/**
@@ -366,22 +365,37 @@ public class MapUserManager {
 	public boolean isOnlyShowFriends() {
 		return isFriend;
 	}
-
-	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-	private MapUserManager() {
-		isFriend = WonderMapApplication.getInstance().getSpUtil()
-				.getValue(ShowFriendOrAll, false);
-		onlineUserHelper = new OnlineUserHelper(
-				WonderMapApplication.getInstance());
+	public void onPause(){
+		L.d(WModel.UpdateFriend, "暂停更新用户位置");
+		isPause = true;
+		if (timer!=null) {
+			timer.cancel();
+		}
+	}
+	/**
+	 * 恢复好友
+	 */
+	public void onResume(){
+		L.d(WModel.UpdateFriend, "恢复更新用户位置");
+		isPause = false;
 		if (isFriend) {
 			showFriends();
 		} else {
 			showOnLine();
 		}
 	}
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	private MapUserManager() {
+		isFriend = WonderMapApplication.getInstance().getSpUtil()
+				.getValue(ShowFriendOrAll, false);
+		onlineUserHelper = new OnlineUserHelper(
+				WonderMapApplication.getInstance());
+		onResume();
+	}
 
 	private static MapUserManager instance = null;
 	private OnlineUserHelper onlineUserHelper;
+	private boolean isPause = false;
 
 	public static MapUserManager getInstance() {
 		if (instance == null) {

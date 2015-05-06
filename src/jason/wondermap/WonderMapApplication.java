@@ -8,10 +8,7 @@ import jason.wondermap.utils.SharePreferenceUtil;
 import java.io.File;
 
 import android.app.Application;
-import android.app.NotificationManager;
 import android.content.Context;
-import android.media.MediaPlayer;
-import cn.bmob.im.BmobUserManager;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
@@ -32,20 +29,18 @@ public class WonderMapApplication extends Application {
 
 	private static WonderMapApplication mApplication;
 	private SharePreferenceUtil mSpUtil;
-	private NotificationManager mNotificationManager;
-	private MediaPlayer mMediaPlayer;
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝内部实现＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		mApplication = this;
 		// 将crash 的log抓取存储在sd卡的crash目录
 		CrashHandler crashHandler = CrashHandler.getInstance();
-		crashHandler.init(getApplicationContext());
-		mApplication = this;
+		crashHandler.init(mApplication);
 		// 在使用SDK各组件之前初始化context信息，传入ApplicationContext
-		SDKInitializer.initialize(WonderMapApplication.getInstance());
-		initImageLoader(getApplicationContext());
+		SDKInitializer.initialize(mApplication);
+		initImageLoader(mApplication);
 	}
 
 	/** 初始化ImageLoader */
@@ -59,15 +54,14 @@ public class WonderMapApplication extends Application {
 				.threadPoolSize(3).threadPriority(Thread.NORM_PRIORITY - 2)
 				.memoryCache(new WeakMemoryCache())
 				.denyCacheImageMultipleSizesInMemory()
-				.discCacheFileNameGenerator(new Md5FileNameGenerator())
 				// 将保存的时候的URI名称用MD5 加密
+				.discCacheFileNameGenerator(new Md5FileNameGenerator())
 				.tasksProcessingOrder(QueueProcessingType.LIFO)
 				.discCache(new UnlimitedDiscCache(cacheDir))// 自定义缓存路径
 				// .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
 				.writeDebugLogs() // Remove for release app
 				.build();
 		L.isDebug = true;
-		// Initialize ImageLoader with configuration.
 		ImageLoader.getInstance().init(config);// 全局初始化此配置
 	}
 
@@ -77,21 +71,6 @@ public class WonderMapApplication extends Application {
 	 */
 	public synchronized static WonderMapApplication getInstance() {
 		return mApplication;
-	}
-
-	/**
-	 * 获取通知管理工具
-	 */
-	public NotificationManager getNotificationManager() {
-		if (mNotificationManager == null)
-			mNotificationManager = (NotificationManager) getSystemService(android.content.Context.NOTIFICATION_SERVICE);
-		return mNotificationManager;
-	}
-
-	public synchronized MediaPlayer getMediaPlayer() {
-		if (mMediaPlayer == null)
-			mMediaPlayer = MediaPlayer.create(this, R.raw.notify);
-		return mMediaPlayer;
 	}
 
 	/**

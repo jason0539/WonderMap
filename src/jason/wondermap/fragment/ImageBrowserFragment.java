@@ -3,6 +3,7 @@ package jason.wondermap.fragment;
 import jason.wondermap.R;
 import jason.wondermap.utils.ImageLoadOptions;
 import jason.wondermap.utils.L;
+import jason.wondermap.utils.StringUtils;
 import jason.wondermap.utils.UserInfo;
 import jason.wondermap.utils.WModel;
 import jason.wondermap.view.CustomViewPager;
@@ -24,7 +25,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-public class ImageBrowserFragment extends ContentFragment implements OnPageChangeListener{
+public class ImageBrowserFragment extends ContentFragment implements
+		OnPageChangeListener {
 	private CustomViewPager mSvpPager;
 	private ImageBrowserAdapter mAdapter;
 	LinearLayout layout_image;
@@ -35,13 +37,17 @@ public class ImageBrowserFragment extends ContentFragment implements OnPageChang
 
 	@Override
 	protected View onCreateContentView(LayoutInflater inflater) {
-		mRootView = (ViewGroup) inflater.inflate(R.layout.activity_showpicture, mContainer, false);
+		mRootView = (ViewGroup) inflater.inflate(R.layout.activity_showpicture,
+				mContainer, false);
 		return mRootView;
 	}
 
 	@Override
 	protected void onInitView() {
 		mPhotos = mShowBundle.getStringArrayList(UserInfo.PHOTOS);
+		if (mPhotos == null) {
+			mPhotos = new ArrayList<String>();
+		}
 		mPosition = mShowBundle.getInt(UserInfo.POSITION);
 		mSvpPager = (CustomViewPager) mRootView.findViewById(R.id.pagerview);
 		mAdapter = new ImageBrowserAdapter(mContext);
@@ -49,7 +55,7 @@ public class ImageBrowserFragment extends ContentFragment implements OnPageChang
 		mSvpPager.setCurrentItem(mPosition, false);
 		mSvpPager.setOnPageChangeListener(this);
 		for (int i = 0; i < mPhotos.size(); i++) {
-			L.d(WModel.ImageShow,mPhotos.get(i));
+			L.d(WModel.ImageShow, mPhotos.get(i));
 		}
 	}
 
@@ -68,69 +74,77 @@ public class ImageBrowserFragment extends ContentFragment implements OnPageChang
 		mPosition = arg0;
 	}
 
-	private class ImageBrowserAdapter extends PagerAdapter{
-		
+	private class ImageBrowserAdapter extends PagerAdapter {
+
 		private LayoutInflater inflater;
-		
-		public ImageBrowserAdapter (Context context){
+
+		public ImageBrowserAdapter(Context context) {
 			this.inflater = LayoutInflater.from(context);
 		}
-		
+
 		@Override
 		public int getCount() {
-			// TODO Auto-generated method stub
 			return mPhotos.size();
 		}
 
 		@Override
 		public boolean isViewFromObject(View view, Object object) {
-			// TODO Auto-generated method stub
 			return view == object;
 		}
 
 		@Override
 		public View instantiateItem(ViewGroup container, int position) {
-			
+
 			View imageLayout = inflater.inflate(R.layout.item_show_picture,
-	                container, false);
-	        final PhotoView photoView = (PhotoView) imageLayout
-	                .findViewById(R.id.photoview);
-	        final ProgressBar progress = (ProgressBar)imageLayout.findViewById(R.id.progress);
-	        
-	        final String imgUrl = mPhotos.get(position);
-	        ImageLoader.getInstance().displayImage(imgUrl, photoView, ImageLoadOptions.getOptions(),new SimpleImageLoadingListener() {
-				
-				@Override
-				public void onLoadingStarted(String imageUri, View view) {
-					progress.setVisibility(View.VISIBLE);
-				}
-				
-				@Override
-				public void onLoadingFailed(String imageUri, View view,
-						FailReason failReason) {
-					progress.setVisibility(View.GONE);
-					
-				}
-				
-				@Override
-				public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-					progress.setVisibility(View.GONE);
-				}
-				
-				@Override
-				public void onLoadingCancelled(String imageUri, View view) {
-					progress.setVisibility(View.GONE);
-				}
-			});
-	        
-	        container.addView(imageLayout, 0);
-	        return imageLayout;
+					container, false);
+			final PhotoView photoView = (PhotoView) imageLayout
+					.findViewById(R.id.photoview);
+			final ProgressBar progress = (ProgressBar) imageLayout
+					.findViewById(R.id.progress);
+
+			final String imgUrl = mPhotos.get(position);
+			if (StringUtils.isStringNull(imgUrl)) {
+				photoView.setImageResource(R.drawable.user_icon_default_main);
+			} else {
+				ImageLoader.getInstance().displayImage(imgUrl, photoView,
+						ImageLoadOptions.getOptions(),
+						new SimpleImageLoadingListener() {
+
+							@Override
+							public void onLoadingStarted(String imageUri,
+									View view) {
+								progress.setVisibility(View.VISIBLE);
+							}
+
+							@Override
+							public void onLoadingFailed(String imageUri,
+									View view, FailReason failReason) {
+								progress.setVisibility(View.GONE);
+
+							}
+
+							@Override
+							public void onLoadingComplete(String imageUri,
+									View view, Bitmap loadedImage) {
+								progress.setVisibility(View.GONE);
+							}
+
+							@Override
+							public void onLoadingCancelled(String imageUri,
+									View view) {
+								progress.setVisibility(View.GONE);
+							}
+						});
+			}
+
+			container.addView(imageLayout, 0);
+			return imageLayout;
 		}
 
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object) {
 			container.removeView((View) object);
 		}
-		
+
 	}
 }

@@ -1,8 +1,5 @@
 package jason.wondermap.manager;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-
 import jason.wondermap.MainActivity;
 import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;

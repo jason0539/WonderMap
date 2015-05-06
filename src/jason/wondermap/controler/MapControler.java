@@ -525,19 +525,36 @@ public class MapControler {
 		// 恢复到上次的地图状态
 		mBaiduMap.animateMapStatus(statusSaveHelper.getStatus(mBaiduMap));
 	}
+
 	private boolean visible = false;
+
+	/**
+	 * 暂停更新地图上用户的位置
+	 */
 	public void onPause() {
 		mMapView.onPause();
 		visible = false;
+		MapUserManager.getInstance().onPause();
 	}
 
+	/**
+	 * 恢复更新地图上用户的位置
+	 */
 	public void onResume() {
 		mMapView.onResume();
 		visible = true;
+		MapUserManager.getInstance().onResume();
 	}
-	public boolean isVisible(){
+
+	/**
+	 * 当前地图是否可见
+	 * 
+	 * @return
+	 */
+	public boolean isVisible() {
 		return visible;
 	}
+
 	public void unInit() {
 		// 关闭定位图层
 		mBaiduMap.setMyLocationEnabled(false);

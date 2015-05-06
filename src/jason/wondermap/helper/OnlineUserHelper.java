@@ -18,7 +18,7 @@ import cn.bmob.v3.listener.CountListener;
 import cn.bmob.v3.listener.FindListener;
 
 public class OnlineUserHelper {
-	private static final int MIN_USER = 20;
+	private static final int MIN_USER = 15;
 	private static final int MINUTE = 60 * 1000;// 分钟
 	private static final int HOUR = 60 * MINUTE;// 小时
 	private Context mContext;

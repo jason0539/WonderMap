@@ -173,9 +173,9 @@ public class TencentLoginHelper {
 	 */
 	private boolean getQQSex(JSONObject jsonObject) {
 		String sex = BmobJsonUtil.getString(jsonObject, "gender");
-		if (("女").equals(sex)) {// 除了为女，其他所有情况都默认为男性
-			return false;
+		if (("男").equals(sex)) {// 除了为男，其他所有情况都默认为女性
+			return true;
 		}
-		return true;
+		return false;
 	}
 }

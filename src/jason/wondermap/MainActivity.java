@@ -169,14 +169,12 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onPause() {
 		L.d(WModel.MainActivity, "onPause");
-		MapControler.getInstance().onPause();
 		super.onPause();
 	}
 
 	@Override
 	protected void onResume() {
 		L.d(WModel.MainActivity, "onResume");
-		MapControler.getInstance().onResume();
 		super.onResume();
 	}
 

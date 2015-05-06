@@ -15,6 +15,7 @@ public class WMapConstants {
 	 * sharedPreference存储名称
 	 */
 	public static final String PREFERENCE_NAME = "_wmap_sp";
+	// 图片缓存
 	public static final String CACHE_DIR = "WMap/Cache";
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝SharedPreference存储相关 end＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -48,10 +49,10 @@ public class WMapConstants {
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝bmob移植 end＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝图片移植 start＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-	public static final int NUMBERS_PER_PAGE = 15;//每次请求返回评论条数
+	public static final int NUMBERS_PER_PAGE = 15;// 每次请求返回评论条数
 	public static final int GET_FAVOURITE = 3;
-	//点击足迹相关控件，如果没有登录，则先进入登陆页面，登陆成功后返回之前操作界面
-	
+	// 点击足迹相关控件，如果没有登录，则先进入登陆页面，登陆成功后返回之前操作界面
+
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝图片移植 end＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	//
 }

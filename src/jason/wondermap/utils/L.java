@@ -34,6 +34,9 @@ public class L {
 	}
 
 	public static void d(String tag, String msg) {
+		if (msg == null || msg.equals("")) {
+			return;
+		}
 		if (isDebug)
 			Log.i(tag, msg);
 	}

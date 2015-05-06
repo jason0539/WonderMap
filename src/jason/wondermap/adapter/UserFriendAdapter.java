@@ -19,12 +19,10 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-/** 好友列表
-  * @ClassName: UserFriendAdapter
-  * @Description: TODO
-  * @author smile
-  * @date 2014-6-12 下午3:03:40
-  */
+/**
+ * @author liuzhenhui
+ * 
+ */
 @SuppressLint("DefaultLocale")
 public class UserFriendAdapter extends BaseAdapter implements SectionIndexer {
 	private Context ct;
@@ -35,23 +33,25 @@ public class UserFriendAdapter extends BaseAdapter implements SectionIndexer {
 		this.data = datas;
 	}
 
-	/** 当ListView数据发生变化时,调用此方法来更新ListView
-	  * @Title: updateListView
-	  * @Description: TODO
-	  * @param @param list 
-	  * @return void
-	  * @throws
-	  */
+	/**
+	 * 当ListView数据发生变化时,调用此方法来更新ListView
+	 * 
+	 * @Title: updateListView
+	 * @Description: TODO
+	 * @param @param list
+	 * @return void
+	 * @throws
+	 */
 	public void updateListView(List<User> list) {
 		this.data = list;
 		notifyDataSetChanged();
 	}
 
-	public void remove(User user){
+	public void remove(User user) {
 		this.data.remove(user);
 		notifyDataSetChanged();
 	}
-	
+
 	@Override
 	public int getCount() {
 		return data.size();
@@ -89,8 +89,11 @@ public class UserFriendAdapter extends BaseAdapter implements SectionIndexer {
 		final String avatar = friend.getAvatar();
 
 		if (!TextUtils.isEmpty(avatar)) {
-			ImageLoader.getInstance().displayImage(avatar, viewHolder.avatar, ImageLoadOptions.getOptions());
-		} 
+			ImageLoader.getInstance().displayImage(avatar, viewHolder.avatar,
+					ImageLoadOptions.getOptions());
+		} else {
+			viewHolder.avatar.setImageResource(R.drawable.user_icon_default);
+		}
 		viewHolder.name.setText(name);
 
 		// 根据position获取分类的首字母的Char ascii值
@@ -127,7 +130,7 @@ public class UserFriendAdapter extends BaseAdapter implements SectionIndexer {
 		for (int i = 0; i < getCount(); i++) {
 			String sortStr = data.get(i).getSortLetters();
 			char firstChar = sortStr.toUpperCase().charAt(0);
-			if (firstChar == section){
+			if (firstChar == section) {
 				return i;
 			}
 		}

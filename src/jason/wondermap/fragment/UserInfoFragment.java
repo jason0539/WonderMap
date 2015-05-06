@@ -16,6 +16,7 @@ import jason.wondermap.view.dialog.DialogTips;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -203,7 +204,18 @@ public class UserInfoFragment extends ContentFragment implements
 			wmFragmentManager.showFragment(WMFragmentManager.TYPE_CHAT, bundle);
 			break;
 		case R.id.layout_head:
-			showAvatarPop();
+			if (isMyself) {
+				showAvatarPop();
+			} else {
+				ArrayList<String> photos = new ArrayList<String>();
+				//这里头像可能为空
+				photos.add(user.getAvatar());
+				Bundle bundle1 = new Bundle();
+				bundle1.putStringArrayList(UserInfo.PHOTOS, photos);
+				bundle1.putInt(UserInfo.POSITION, 0);
+				BaseFragment.getWMFragmentManager().showFragment(
+						WMFragmentManager.TYPE_IMAGE_BROWSER, bundle1);
+			}
 			break;
 		case R.id.layout_age:
 			Bundle nickBundle = new Bundle();
@@ -277,8 +289,8 @@ public class UserInfoFragment extends ContentFragment implements
 								.bindInstallationForRegister(
 										AccountUserManager.getInstance()
 												.getCurrentUserName());
-//						// 确认信息后马上sayhello，更新信息给对方
-//						PushMsgSendManager.getInstance().sayHello();
+						// // 确认信息后马上sayhello，更新信息给对方
+						// PushMsgSendManager.getInstance().sayHello();
 						wmFragmentManager.back(null);
 					}
 
@@ -292,7 +304,7 @@ public class UserInfoFragment extends ContentFragment implements
 
 					@Override
 					public void onError(int arg0, final String arg1) {
-						
+
 					}
 
 					@Override
@@ -569,7 +581,7 @@ public class UserInfoFragment extends ContentFragment implements
 				new UpdateListener() {
 					@Override
 					public void onSuccess() {
-//						PushMsgSendManager.getInstance().sayHello();
+						// PushMsgSendManager.getInstance().sayHello();
 						ShowToast("头像更新成功！");
 						refreshAvatar(url);
 					}
@@ -638,11 +650,11 @@ public class UserInfoFragment extends ContentFragment implements
 		tv_editinfo_tips.setVisibility(View.VISIBLE);// 显示确认资料键
 		layout_name.setEnabled(true);
 		layout_age.setEnabled(true);
-		layout_head.setEnabled(true);
+		// layout_head.setEnabled(true);
 		layout_gender.setEnabled(true);
 		layout_signs.setEnabled(true);
-		layout_phoneNumber.setVisibility(View.VISIBLE);
 		layout_phoneNumber.setEnabled(true);
+		layout_phoneNumber.setVisibility(View.VISIBLE);
 	}
 
 	private void viewForMyself() {
@@ -650,7 +662,7 @@ public class UserInfoFragment extends ContentFragment implements
 		btn_browse_footblog.setVisibility(View.VISIBLE);
 		layout_name.setEnabled(true);
 		layout_age.setEnabled(true);
-		layout_head.setEnabled(true);
+		// layout_head.setEnabled(true);
 		layout_gender.setEnabled(true);
 		layout_signs.setEnabled(true);
 		layout_phoneNumber.setVisibility(View.VISIBLE);
@@ -713,7 +725,7 @@ public class UserInfoFragment extends ContentFragment implements
 		btn_chat.setOnClickListener(this);
 		// 不可用
 		layout_age.setEnabled(false);
-		layout_head.setEnabled(false);
+		// layout_head.setEnabled(false);//头像头可以点击，自己的点击设置，别人的放大查看
 		layout_gender.setEnabled(false);
 		layout_age.setEnabled(false);
 		layout_name.setEnabled(false);

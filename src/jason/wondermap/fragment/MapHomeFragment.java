@@ -59,9 +59,9 @@ public class MapHomeFragment extends ContentFragment {
 		// 开始定位
 		WLocationManager.getInstance().start();
 		// 发送hello
-//		PushMsgSendManager.getInstance().sayHello();
+		// PushMsgSendManager.getInstance().sayHello();
 		// 初始化地图用户管理，依赖MapControl和bmob获取联系人
-				MapUserManager.getInstance();
+		MapUserManager.getInstance();
 		if (MapUserManager.getInstance().isOnlyShowFriends()) {
 			initTopBarForOnlyTitle(mRootView, "好友地图");
 		} else {
@@ -211,20 +211,23 @@ public class MapHomeFragment extends ContentFragment {
 	}
 
 	@Override
+	public void onPause() {
+		L.d(TAG + ":onPause");
+		MapControler.getInstance().onPause();
+		bottomBar.onPause();
+		super.onPause();
+	};
+
+	@Override
 	public void onResume() {
 		L.d(TAG + ":onResume");
+		MapControler.getInstance().onResume();
 		// 确保消息未读数量正确
 		bottomBar.onResume();
 		// 确保所有用户都在地图上显示出来,activity进入onPause之后marker都消失了
 		MapUserManager.getInstance().onResumeAllUsersOnMap();
 		super.onResume();
 	}
-
-	public void onPause() {
-		L.d(TAG + ":onPause");
-		bottomBar.onPause();
-		super.onPause();
-	};
 
 	@Override
 	public void onDestroyView() {
