@@ -1,6 +1,5 @@
 package jason.wondermap.config;
 
-import android.R.integer;
 import android.os.Environment;
 
 /**
@@ -10,6 +9,9 @@ import android.os.Environment;
  * 
  */
 public class WMapConstants {
+
+	// 应用相关
+	public static final String REAL_PACKAGE_NAME = "jason.wondermap";
 	// ＝＝＝＝＝＝＝＝＝＝＝＝存储相关 start＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	/**
 	 * sharedPreference存储名称

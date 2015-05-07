@@ -55,7 +55,8 @@ public class MapUserManager {
 					AccountUserManager.getInstance().getContactList());
 			ArrayList<BmobChatUser> list = CollectionUtils
 					.map2arrayList(lastFriendMaps);
-			for (int i = 0; i < list.size(); i++) {
+			int size = list.size();
+			for (int i = 0; i < size; i++) {
 				UserTransferUtil.FriendToMapUser(list.get(i),
 						new MapUserTransferListener() {
 							@Override
@@ -152,7 +153,8 @@ public class MapUserManager {
 							CollectionUtils.list2map(onlineUsers));
 					ArrayList<BmobChatUser> list = CollectionUtils
 							.map2arrayList(lastAllMapUsers);
-					for (int i = 0; i < list.size(); i++) {
+					int size =  list.size();
+					for (int i = 0; i <size; i++) {
 						UserTransferUtil.FriendToMapUser(list.get(i),
 								new MapUserTransferListener() {
 									@Override
@@ -365,17 +367,19 @@ public class MapUserManager {
 	public boolean isOnlyShowFriends() {
 		return isFriend;
 	}
-	public void onPause(){
+
+	public void onPause() {
 		L.d(WModel.UpdateFriend, "暂停更新用户位置");
 		isPause = true;
-		if (timer!=null) {
+		if (timer != null) {
 			timer.cancel();
 		}
 	}
+
 	/**
 	 * 恢复好友
 	 */
-	public void onResume(){
+	public void onResume() {
 		L.d(WModel.UpdateFriend, "恢复更新用户位置");
 		isPause = false;
 		if (isFriend) {
@@ -384,6 +388,7 @@ public class MapUserManager {
 			showOnLine();
 		}
 	}
+
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	private MapUserManager() {
 		isFriend = WonderMapApplication.getInstance().getSpUtil()

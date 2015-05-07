@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.baidu.location.l;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;

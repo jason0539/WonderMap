@@ -17,9 +17,14 @@
             android:layout_height="match_parent"
             android:clickable="true" />
     </FrameLayout>
-    <!-- 底部Bar -->
+    <!-- 防止刚进入应用，切换fragment时，闪过地图白屏，而添加的一个遮挡 -->
 
-
+    <RelativeLayout
+        android:id="@+id/layout_hide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/theme_color" >
+    </RelativeLayout>
     <!-- 显示框架 -->
 
     <FrameLayout

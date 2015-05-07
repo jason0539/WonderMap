@@ -4,20 +4,31 @@ import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.User;
 import jason.wondermap.config.BundleTake;
 import jason.wondermap.config.WMapConfig;
+import jason.wondermap.config.WMapConstants;
 import jason.wondermap.controler.MapControler;
+import jason.wondermap.crash.CrashHandler;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.manager.AccountUserManager;
-import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.UserInfo;
 import jason.wondermap.utils.WModel;
+
+import java.io.File;
+
 import android.content.Context;
 import android.os.Bundle;
 import cn.bmob.im.BmobChat;
 
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
 /**
@@ -27,6 +38,9 @@ import com.xiaomi.market.sdk.XiaomiUpdateAgent;
  * 
  */
 public class LaunchHelper {
+
+	private Context mContext = WonderMapApplication.getInstance();;
+
 	/**
 	 * 退出时需要回收的资源，按初始化的相反方向
 	 */
@@ -39,16 +53,43 @@ public class LaunchHelper {
 		// MapUserManager.getInstance().
 	}
 
+	/** 初始化ImageLoader */
+	private void initImageLoader(Context context) {
+		File cacheDir = StorageUtils.getOwnCacheDirectory(context,
+				WMapConstants.CACHE_DIR);// 获取到缓存的目录地址
+		// 创建配置ImageLoader(所有的选项都是可选的,只使用那些你真的想定制)，这个可以设定在APPLACATION里面，设置为全局的配置参数
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+				context)
+				// 线程池内加载的数量
+				.threadPoolSize(3)
+				.threadPriority(Thread.NORM_PRIORITY - 2)
+				.memoryCache(new WeakMemoryCache())
+				.denyCacheImageMultipleSizesInMemory()
+				// 将保存的时候的URI名称用MD5 加密
+				.discCacheFileNameGenerator(new Md5FileNameGenerator())
+				.tasksProcessingOrder(QueueProcessingType.LIFO)
+				.discCache(new UnlimitedDiscCache(cacheDir))// 自定义缓存路径
+				// .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
+				.writeDebugLogs() // Remove for release app
+				.build();
+		L.isDebug = true;
+		ImageLoader.getInstance().init(config);// 全局初始化此配置
+	}
+
 	/**
 	 * 启动时需要启动的资源，注意时序
 	 */
-	public void checkLaunch(Context mContext) {
+	public void checkLaunch() {
+		// 将crash 的log抓取存储在sd卡的crash目录
+		CrashHandler crashHandler = CrashHandler.getInstance();
+		crashHandler.init(WonderMapApplication.getInstance());
+		initImageLoader(WonderMapApplication.getInstance());
 		// 初始化bmob相关，定位一旦成功就要发送消息，没有依赖
 		BmobChat.DEBUG_MODE = true;
 		BmobChat.getInstance(mContext).init(WMapConfig.applicationId);
-		AccountUserManager.getInstance().downloadContact();
+		AccountUserManager.getInstance().loadLocalContact();
 		// 定位，一旦开始就使用push发送消息，依赖Bmob Push服务，挪到MapHomeFrag里面，保证在服务协议之后显示
-//		WLocationManager.getInstance().start();
+		// WLocationManager.getInstance().start();
 		checkCrashLog(mContext);
 		// 设置小米自动更新组件，仅wifi下更新
 		XiaomiUpdateAgent.setCheckUpdateOnlyWifi(true);

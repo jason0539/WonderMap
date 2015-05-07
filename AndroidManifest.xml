@@ -87,7 +87,7 @@
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote" >
+            android:process=":baiduMap" >
         </service>
         <!-- 地图服务验证 -->
         <meta-data

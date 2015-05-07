@@ -18,25 +18,61 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.MapView;
 
 public class MainActivity extends FragmentActivity {
 	private WMFragmentManager fragmentManager;
 	private View mForbidTouchView; // 禁止触摸的空视图
 	private DialogTips appDialog = null;
-	private LaunchHelper launchHelper;
+	private View hideView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		L.d(WModel.MainActivity, "onCreate");
-		initView();
-		launchHelper = new LaunchHelper();
-		launchHelper.checkLaunch(this);
+		// 初始化地图，setContentView需要地图控件
+		SDKInitializer.initialize(WonderMapApplication.getInstance());
+		setContentView(R.layout.activity_main);
+		fragmentManager = new WMFragmentManager(this);
+		BaseFragment.initBeforeAll(this, fragmentManager);
+		mForbidTouchView = findViewById(R.id.view_main_forbid_touch);
+		fragmentManager.showFragment(WMFragmentManager.TYPE_SPLASH);
+		hideView = findViewById(R.id.layout_hide);
+		// 初始化地图,定位一旦开始就要使用地图，没有依赖
+		MapControler.getInstance().init((MapView) findViewById(R.id.bmapView));
+		mForbidTouchView.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				return true;
+			}
+		});
+		getWindow().getDecorView().setBackgroundDrawable(null);
+		forbidTouch(false);// 默认不禁止触摸
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	/**
+	 * 启动结束，释放遮挡地图的红色底图
+	 */
+	public void releaseLaunchView() {
+		if (null != hideView) {
+			try {
+				ViewGroup vg = (ViewGroup) getWindow().getDecorView()
+						.findViewById(android.R.id.content);
+				if (null != vg) {
+					vg.removeView(hideView);
+				}
+			} catch (Exception e) {
+			}
+			hideView.setBackgroundDrawable(null);
+			hideView = null;
+		}
+	}
+
 	/**
 	 * 禁止点击事件，true禁止
 	 */
@@ -119,38 +155,14 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public void onBackPressed() {
 		ContentFragment fragment = fragmentManager.getCurrentFragment();
-
 		if (fragment != null && fragment.onBackPressed())
 			return;
-
 		if (fragmentManager.getFragmentStackSize() > 0)
 			fragmentManager.back(null);
-
-	}
-
-	private void initView() {
-		setContentView(R.layout.activity_main);
-		fragmentManager = new WMFragmentManager(this);
-		BaseFragment.initBeforeAll(this, fragmentManager);
-		fragmentManager.showFragment(WMFragmentManager.TYPE_SPLASH);
-		// 初始化地图,定位一旦开始就要使用地图，没有依赖
-		MapControler.getInstance().init((MapView) findViewById(R.id.bmapView));
-		mForbidTouchView = findViewById(R.id.view_main_forbid_touch);
-		mForbidTouchView.setOnTouchListener(new OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				return true;
-			}
-		});
-		forbidTouch(false);// 默认不禁止触摸
 	}
 
 	/**
 	 * 显示下线的对话框 showOfflineDialog
-	 * 
-	 * @return void
-	 * @throws
 	 */
 	public void showOfflineDialog() {
 		appDialog = new DialogTips(this, "您的账号已在其他设备上登录!", "重新登录");
@@ -199,7 +211,7 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onDestroy() {
 		L.d(WModel.MainActivity, "onDestroy into");
-		launchHelper.checkExit();
+		new LaunchHelper().checkExit();
 		L.d(WModel.MainActivity, "onDestroy out");
 		super.onDestroy();
 	}

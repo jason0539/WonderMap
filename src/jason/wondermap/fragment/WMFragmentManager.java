@@ -256,7 +256,7 @@ public class WMFragmentManager extends ContentFragmentManager implements
 		boolean isMapContentFragment = false;
 		switch (type) {
 		case TYPE_MAP_HOME:
-
+		case TYPE_SPLASH:
 			isMapContentFragment = true;
 			break;
 		case TYPE_CHAT:

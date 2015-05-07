@@ -221,11 +221,15 @@ public class MapHomeFragment extends ContentFragment {
 	@Override
 	public void onResume() {
 		L.d(TAG + ":onResume");
-		MapControler.getInstance().onResume();
-		// 确保消息未读数量正确
-		bottomBar.onResume();
-		// 确保所有用户都在地图上显示出来,activity进入onPause之后marker都消失了
-		MapUserManager.getInstance().onResumeAllUsersOnMap();
+		new Thread(new Runnable() {
+			public void run() {
+				MapControler.getInstance().onResume();
+				// 确保消息未读数量正确
+				bottomBar.onResume();
+				// 确保所有用户都在地图上显示出来,activity进入onPause之后marker都消失了
+				// MapUserManager.getInstance().onResumeAllUsersOnMap();
+			}
+		}).start();
 		super.onResume();
 	}
 

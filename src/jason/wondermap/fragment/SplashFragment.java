@@ -1,8 +1,18 @@
 package jason.wondermap.fragment;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import cn.bmob.im.BmobChat;
+
 import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
+import jason.wondermap.config.WMapConfig;
+import jason.wondermap.helper.LaunchHelper;
 import jason.wondermap.manager.AccountUserManager;
+import jason.wondermap.utils.AnimationFactory;
+import jason.wondermap.utils.L;
+import jason.wondermap.utils.WModel;
 import jason.wondermap.view.dialog.DialogTips;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -11,13 +21,15 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 
 public class SplashFragment extends ContentFragment {
 	private static final int GO_HOME = 100;
 	private static final int GO_LOGIN = 200;
 
-	private DialogTips mExitAppDialog = null;
+	private DialogTips mExitAppDialog;
 	private ViewGroup mRootViewGroup;
+	private LaunchHelper launchHelper;
 
 	@Override
 	protected View onCreateContentView(LayoutInflater inflater) {
@@ -34,16 +46,22 @@ public class SplashFragment extends ContentFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (AccountUserManager.getInstance().getCurrentUser() != null) {
-			// 每次自动登陆的时候就需要更新下当前位置和好友的资料，因为好友的头像，昵称啥的是经常变动的
-			AccountUserManager.getInstance().updateUserInfos();
-			mHandler.sendEmptyMessageDelayed(GO_HOME, 2000);
-		} else {// 前往登陆
-			mHandler.sendEmptyMessageDelayed(GO_LOGIN, 2000);
-		}
+		long t = System.currentTimeMillis();
+		new Thread(new Runnable() {
+			public void run() {
+				if (AccountUserManager.getInstance().getCurrentUser() != null) {
+					// 每次自动登陆的时候就需要更新下当前位置和好友的资料，因为好友的头像，昵称啥的是经常变动的
+					mHandler.sendEmptyMessageDelayed(GO_HOME, 2000);
+				} else {// 前往登陆
+					mHandler.sendEmptyMessageDelayed(GO_LOGIN, 2000);
+				}
+			}
+		}).start();
+		L.d(WModel.Time, "splash时间" + (System.currentTimeMillis() - t));
 	}
 
-	private Handler mHandler = new Handler() {
+	private Handler mHandler = new Handler(BaseFragment.getMainActivity()
+			.getMainLooper()) {
 		@Override
 		public void handleMessage(Message msg) {
 			// 检查是否显示提醒用户授权信息
@@ -61,6 +79,23 @@ public class SplashFragment extends ContentFragment {
 			}
 		}
 	};
+
+	private void launch() {
+		getMainActivity().releaseLaunchView();
+		launchHelper = new LaunchHelper();
+		launchHelper.checkLaunch();
+		AccountUserManager.getInstance().updateUserInfos();
+	}
+
+	private void goHomeFrag() {
+		launch();
+		wmFragmentManager.showFragment(WMFragmentManager.TYPE_MAP_HOME);
+	}
+
+	private void goLoginFrag() {
+		launch();
+		wmFragmentManager.showFragment(WMFragmentManager.TYPE_LOGIN);
+	}
 
 	/**
 	 * 打开提醒用户授权窗口，仅小米应用商店需要
@@ -101,17 +136,21 @@ public class SplashFragment extends ContentFragment {
 		mExitAppDialog.show();
 	}
 
-	private void goHomeFrag() {
-		wmFragmentManager.showFragment(WMFragmentManager.TYPE_MAP_HOME);
-	}
-
-	private void goLoginFrag() {
-		wmFragmentManager.showFragment(WMFragmentManager.TYPE_LOGIN);
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝动画效果＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	@Override
+	protected Map<View, Animation> animationIn(long lastDuration,
+			int fragmentType, boolean isBack) {
+		Map<View, Animation> animMap = new HashMap<View, Animation>();
+		animMap.put(mContentView, AnimationFactory.getAnimation(mContext,
+				AnimationFactory.ANIM_POP_IN, lastDuration, 300));
+		return animMap;
 	}
 
 	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
+	protected Map<View, Animation> animationOut(int fragmentType, boolean isBack) {
+		Map<View, Animation> animMap = new HashMap<View, Animation>();
+		animMap.put(mContentView, AnimationFactory.getAnimation(mContext,
+				AnimationFactory.ANIM_POP_OUT, -1, 300));
+		return animMap;
 	}
-
 }

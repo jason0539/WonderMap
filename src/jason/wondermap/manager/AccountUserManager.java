@@ -44,7 +44,7 @@ public class AccountUserManager {
 	/**
 	 * 下载好友信息
 	 */
-	public void downloadContact() {
+	public void loadLocalContact() {
 		// 若用户登陆过，则先从好友数据库中取出好友list存入内存中
 		if (BmobUserManager.getInstance(mApplication).getCurrentUser() != null) {
 			// 获取本地好友user list到内存,方便以后获取好友list
@@ -100,7 +100,6 @@ public class AccountUserManager {
 
 					@Override
 					public void onError(int arg0, String arg1) {
-						// TODO Auto-generated method stub
 						if (arg0 == BmobConfig.CODE_COMMON_NONE) {
 							L.d(arg1);
 						} else {

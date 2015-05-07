@@ -8,14 +8,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/tv_splash_logo"
+        android:layout_marginTop="100dp"
         android:src="@drawable/login_logo" />
-
-    <TextView
-        android:id="@+id/tv_splash_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_centerInParent="true" />
 
     <TextView
         android:layout_width="match_parent"
@@ -23,8 +17,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
         android:gravity="center_horizontal"
-        android:text="随时随地看见TA"
+        android:text="@string/app_slogan"
         android:textColor="@android:color/white"
-        android:textSize="18dp" />
+        android:textSize="@dimen/text_size_medium" />
 
 </RelativeLayout>

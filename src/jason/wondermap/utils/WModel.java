@@ -17,5 +17,6 @@ public class WModel {
 	public static String MapControl = "MapControl";
 	public static String UpdateFriend = "UpdateFriend";
 	public static String PhoneNumber = "PhoneNumber";
+	public static String Time = "Time";
 	
 }
