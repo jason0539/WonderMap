@@ -78,6 +78,12 @@ public class MapUserManager {
 
 			@Override
 			public void run() {
+				if (isPause) {
+					L.d(WModel.UpdateFriend, "已经暂停更新，跳过更新");
+					isNeedToUpdate = true;
+					return;
+				}
+				isNeedToUpdate = false;
 				HashMap<String, MapUser> users = null;
 				synchronized (friendMapUsers) {
 					users = new HashMap<String, MapUser>(friendMapUsers);
@@ -153,8 +159,8 @@ public class MapUserManager {
 							CollectionUtils.list2map(onlineUsers));
 					ArrayList<BmobChatUser> list = CollectionUtils
 							.map2arrayList(lastAllMapUsers);
-					int size =  list.size();
-					for (int i = 0; i <size; i++) {
+					int size = list.size();
+					for (int i = 0; i < size; i++) {
 						UserTransferUtil.FriendToMapUser(list.get(i),
 								new MapUserTransferListener() {
 									@Override
@@ -178,6 +184,12 @@ public class MapUserManager {
 
 			@Override
 			public void run() {
+				if (isPause) {
+					L.d(WModel.UpdateFriend, "已经暂停更新，跳过更新");
+					isNeedToUpdate = true;
+					return;
+				}
+				isNeedToUpdate = false;
 				HashMap<String, MapUser> users = null;
 				synchronized (allMapUsers) {
 					users = new HashMap<String, MapUser>(allMapUsers);
@@ -233,18 +245,6 @@ public class MapUserManager {
 				});
 			}
 		}, 0, Period);
-	}
-
-	/**
-	 * 显示所有人
-	 */
-	public void showAll() {
-		timer.cancel();
-		isFriend = false;
-		WonderMapApplication.getInstance().getSpUtil()
-				.setValue(ShowFriendOrAll, isFriend);
-		MapControler.getInstance().clearMarker();
-		onResumeAllUsersOnMap();
 	}
 
 	/**
@@ -371,9 +371,6 @@ public class MapUserManager {
 	public void onPause() {
 		L.d(WModel.UpdateFriend, "暂停更新用户位置");
 		isPause = true;
-		if (timer != null) {
-			timer.cancel();
-		}
 	}
 
 	/**
@@ -382,11 +379,24 @@ public class MapUserManager {
 	public void onResume() {
 		L.d(WModel.UpdateFriend, "恢复更新用户位置");
 		isPause = false;
-		if (isFriend) {
-			showFriends();
-		} else {
-			showOnLine();
+		if (isNeedToUpdate) {
+			new Thread(new Runnable() {
+				public void run() {
+					if (isFriend) {
+						showFriends();
+					} else {
+						showOnLine();
+					}
+				}
+			}).start();
 		}
+	}
+
+	/**
+	 * 使用地图查看位置等信息之后，会清除所有marker，所以外部调用，强制更新用户位置
+	 */
+	public void setNeedToUpdate() {
+		isNeedToUpdate = true;
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -401,6 +411,7 @@ public class MapUserManager {
 	private static MapUserManager instance = null;
 	private OnlineUserHelper onlineUserHelper;
 	private boolean isPause = false;
+	private boolean isNeedToUpdate = true;
 
 	public static MapUserManager getInstance() {
 		if (instance == null) {

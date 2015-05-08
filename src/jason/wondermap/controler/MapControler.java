@@ -534,7 +534,6 @@ public class MapControler {
 	public void onPause() {
 		mMapView.onPause();
 		visible = false;
-		MapUserManager.getInstance().onPause();
 	}
 
 	/**
@@ -543,7 +542,6 @@ public class MapControler {
 	public void onResume() {
 		mMapView.onResume();
 		visible = true;
-		MapUserManager.getInstance().onResume();
 	}
 
 	/**

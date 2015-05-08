@@ -5,7 +5,9 @@ import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.ContentFragment;
 import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.helper.LaunchHelper;
+import jason.wondermap.interfacer.LaunchInitListener;
 import jason.wondermap.manager.AccountUserManager;
+import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.WModel;
 import jason.wondermap.view.dialog.DialogTips;
@@ -20,7 +22,6 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 
-import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.MapView;
 
 public class MainActivity extends FragmentActivity {
@@ -28,30 +29,54 @@ public class MainActivity extends FragmentActivity {
 	private View mForbidTouchView; // 禁止触摸的空视图
 	private DialogTips appDialog = null;
 	private View hideView;
+	private LaunchHelper launchHelper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		L.d(WModel.MainActivity, "onCreate");
-		// 初始化地图，setContentView需要地图控件
-		SDKInitializer.initialize(WonderMapApplication.getInstance());
-		setContentView(R.layout.activity_main);
+		long t = System.currentTimeMillis();
 		fragmentManager = new WMFragmentManager(this);
 		BaseFragment.initBeforeAll(this, fragmentManager);
+		setContentView(R.layout.activity_main);
+		// 初始化地图显示,依赖地图sdk初始化
+		MapControler.getInstance().init((MapView) findViewById(R.id.bmapView));
 		mForbidTouchView = findViewById(R.id.view_main_forbid_touch);
 		fragmentManager.showFragment(WMFragmentManager.TYPE_SPLASH);
-		hideView = findViewById(R.id.layout_hide);
-		// 初始化地图,定位一旦开始就要使用地图，没有依赖
-		MapControler.getInstance().init((MapView) findViewById(R.id.bmapView));
-		mForbidTouchView.setOnTouchListener(new OnTouchListener() {
+		L.d(WModel.Time,
+				"MainActivity onCreate时间" + (System.currentTimeMillis() - t));
+	}
 
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				return true;
-			}
-		});
+	private LaunchInitListener initListener;
+
+	public void setOnLaunchInitLis(LaunchInitListener android) {
+		initListener = android;
+	}
+
+	public void init() {
+		long t = System.currentTimeMillis();
 		getWindow().getDecorView().setBackgroundDrawable(null);
 		forbidTouch(false);// 默认不禁止触摸
+		L.d(WModel.Time, "MainActivity init时间"
+				+ (System.currentTimeMillis() - t));
+		new Thread(new Runnable() {
+			public void run() {
+				launchHelper = new LaunchHelper();
+				launchHelper.checkLaunch();
+				// 往底图添加用户，依赖地图控制器，bmob用户下载
+				MapUserManager.getInstance();
+				hideView = findViewById(R.id.layout_hide);
+				// 初始化地图,定位一旦开始就要使用地图，没有依赖
+				mForbidTouchView.setOnTouchListener(new OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						return true;
+					}
+				});
+				initListener.OnFinished();
+			}
+		}).start();
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -181,12 +206,14 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onPause() {
 		L.d(WModel.MainActivity, "onPause");
+		MapControler.getInstance().onPause();
 		super.onPause();
 	}
 
 	@Override
 	protected void onResume() {
 		L.d(WModel.MainActivity, "onResume");
+		MapControler.getInstance().onResume();
 		super.onResume();
 	}
 

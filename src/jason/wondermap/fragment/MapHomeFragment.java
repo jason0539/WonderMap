@@ -5,7 +5,6 @@ import jason.wondermap.WonderMapApplication;
 import jason.wondermap.controler.MapControler;
 import jason.wondermap.helper.LaunchHelper;
 import jason.wondermap.manager.MapUserManager;
-import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.T;
 import jason.wondermap.utils.WModel;
@@ -54,14 +53,13 @@ public class MapHomeFragment extends ContentFragment {
 	@Override
 	protected void onInitView() {
 		L.d(TAG + ":onInitView");
-		// 检查是否需要确认信息
-		new LaunchHelper().checkIsNeedToConfirmInfo();
-		// 开始定位
-		WLocationManager.getInstance().start();
-		// 发送hello
-		// PushMsgSendManager.getInstance().sayHello();
-		// 初始化地图用户管理，依赖MapControl和bmob获取联系人
-		MapUserManager.getInstance();
+		new Thread(new Runnable() {
+			public void run() {
+				// 检查是否需要确认信息
+				new LaunchHelper().checkIsNeedToConfirmInfo();
+			}
+		}).start();
+		long t = System.currentTimeMillis();
 		if (MapUserManager.getInstance().isOnlyShowFriends()) {
 			initTopBarForOnlyTitle(mRootView, "好友地图");
 		} else {
@@ -75,6 +73,9 @@ public class MapHomeFragment extends ContentFragment {
 		typeView = mRootView.findViewById(R.id.tv_maphome_type);
 		friendView = mRootView.findViewById(R.id.tv_maphome_friend);
 		initListener();
+		L.d(WModel.Time,
+				"MapHomeFragment onInitView时间"
+						+ (System.currentTimeMillis() - t));
 	}
 
 	private void initListener() {
@@ -213,7 +214,7 @@ public class MapHomeFragment extends ContentFragment {
 	@Override
 	public void onPause() {
 		L.d(TAG + ":onPause");
-		MapControler.getInstance().onPause();
+		MapUserManager.getInstance().onPause();
 		bottomBar.onPause();
 		super.onPause();
 	};
@@ -221,15 +222,11 @@ public class MapHomeFragment extends ContentFragment {
 	@Override
 	public void onResume() {
 		L.d(TAG + ":onResume");
-		new Thread(new Runnable() {
-			public void run() {
-				MapControler.getInstance().onResume();
-				// 确保消息未读数量正确
-				bottomBar.onResume();
-				// 确保所有用户都在地图上显示出来,activity进入onPause之后marker都消失了
-				// MapUserManager.getInstance().onResumeAllUsersOnMap();
-			}
-		}).start();
+		// 确保消息未读数量正确
+		bottomBar.onResume();
+		MapUserManager.getInstance().onResume();
+		// 确保所有用户都在地图上显示出来,activity进入onPause之后marker都消失了
+		// MapUserManager.getInstance().onResumeAllUsersOnMap();
 		super.onResume();
 	}
 

@@ -80,16 +80,18 @@ public class LaunchHelper {
 	 * 启动时需要启动的资源，注意时序
 	 */
 	public void checkLaunch() {
-		// 将crash 的log抓取存储在sd卡的crash目录
+		// 初始化图片加载库
+		initImageLoader(WonderMapApplication.getInstance());
+		// 加载联系人
+		AccountUserManager.getInstance().loadLocalContact();
+		// 更新最新信息
+		AccountUserManager.getInstance().updateUserInfos();
+		// 日志抓取类
 		CrashHandler crashHandler = CrashHandler.getInstance();
 		crashHandler.init(WonderMapApplication.getInstance());
-		initImageLoader(WonderMapApplication.getInstance());
-		// 初始化bmob相关，定位一旦成功就要发送消息，没有依赖
-		BmobChat.DEBUG_MODE = true;
-		BmobChat.getInstance(mContext).init(WMapConfig.applicationId);
-		AccountUserManager.getInstance().loadLocalContact();
-		// 定位，一旦开始就使用push发送消息，依赖Bmob Push服务，挪到MapHomeFrag里面，保证在服务协议之后显示
+		// 定位，一旦开始就使用Bmob保存位置，挪到MapHomeFrag里面，保证在服务协议之后显示
 		// WLocationManager.getInstance().start();
+		// 检查崩溃日志
 		checkCrashLog(mContext);
 		// 设置小米自动更新组件，仅wifi下更新
 		XiaomiUpdateAgent.setCheckUpdateOnlyWifi(true);

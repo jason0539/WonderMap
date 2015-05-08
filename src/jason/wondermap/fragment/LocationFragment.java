@@ -3,6 +3,7 @@ package jason.wondermap.fragment;
 import jason.wondermap.R;
 import jason.wondermap.config.WMapConstants;
 import jason.wondermap.controler.MapControler;
+import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.UserInfo;
@@ -14,15 +15,10 @@ import android.view.ViewGroup;
 import cn.bmob.im.util.BmobLog;
 
 import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
 import com.baidu.mapapi.map.MapStatus;
-import com.baidu.mapapi.map.MapStatusUpdate;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.geocode.GeoCodeResult;
-import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
@@ -35,6 +31,7 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
  */
 public class LocationFragment extends ContentFragment implements
 		OnGetGeoCoderResultListener {
+	private static final String TAG = LocationFragment.class.getSimpleName();
 	private MapStatus lastMapStatus;
 	private BDLocation lastLocation = null;
 	private ViewGroup mRootView;
@@ -42,6 +39,7 @@ public class LocationFragment extends ContentFragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		L.d(TAG, "onCreateView");
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 		if (view != null) {
 			view.setClickable(false); // 允许地图可点击
@@ -51,6 +49,7 @@ public class LocationFragment extends ContentFragment implements
 
 	@Override
 	protected View onCreateContentView(LayoutInflater inflater) {
+		L.d(TAG, "onCreateContentView");
 		mRootView = (ViewGroup) inflater.inflate(R.layout.activity_location,
 				mContainer, false);
 		return mRootView;
@@ -58,7 +57,9 @@ public class LocationFragment extends ContentFragment implements
 
 	@Override
 	protected void onInitView() {
+		L.d(TAG, "onInitView");
 		MapControler.getInstance().clearMarker();
+		MapUserManager.getInstance().setNeedToUpdate();
 		lastMapStatus = MapControler.getInstance().getMapStatus();
 		initBaiduMap();
 	}

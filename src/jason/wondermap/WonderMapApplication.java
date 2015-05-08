@@ -1,8 +1,16 @@
 package jason.wondermap;
 
+import jason.wondermap.config.WMapConfig;
 import jason.wondermap.config.WMapConstants;
+import jason.wondermap.manager.WLocationManager;
+import jason.wondermap.utils.L;
+import jason.wondermap.utils.OsUtils;
 import jason.wondermap.utils.SharePreferenceUtil;
+import jason.wondermap.utils.WModel;
 import android.app.Application;
+import cn.bmob.im.BmobChat;
+
+import com.baidu.mapapi.SDKInitializer;
 
 /**
  * 应用上下文
@@ -18,6 +26,24 @@ public class WonderMapApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		mApplication = this;
+		String processName = OsUtils.getProcessName(this,
+				android.os.Process.myPid());
+		L.d(WModel.Time, "进程名称" + processName);
+		if (processName != null) {
+			boolean defaultProcess = processName
+					.equals(WMapConstants.REAL_PACKAGE_NAME);
+			if (defaultProcess) {
+				L.d(WModel.Time, "初始化" + processName);
+				// 初始化地图，setContentView需要地图控件
+				SDKInitializer.initialize(WonderMapApplication.getInstance());
+				// 初始化bmob服务
+				BmobChat.DEBUG_MODE = true;
+				BmobChat.getInstance(this).init(WMapConfig.applicationId);
+				// 开始定位，依赖地图初始化，bmob服务
+				WLocationManager.getInstance().start();
+			}
+		}
+
 	}
 
 	/**
