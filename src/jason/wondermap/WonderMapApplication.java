@@ -43,7 +43,7 @@ public class WonderMapApplication extends Application {
 				BmobChat.getInstance(this).init(WMapConfig.applicationId);
 				// 开始定位，依赖地图初始化，bmob服务
 				WLocationManager.getInstance().start();
-				//小米集成统计
+				// 小米集成统计
 				MiStatInterface.initialize(this, WMapConfig.MiAppId,
 						WMapConfig.MiAppKey, WMapConfig.CHANNEL_MI);
 				L.d(WModel.Time, "APPLICATION 时间"

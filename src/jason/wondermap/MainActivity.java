@@ -14,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -22,6 +23,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 
 import com.baidu.mapapi.map.MapView;
+import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
 public class MainActivity extends FragmentActivity {
 	private WMFragmentManager fragmentManager;
@@ -56,6 +58,9 @@ public class MainActivity extends FragmentActivity {
 	public void init() {
 		getWindow().getDecorView().setBackgroundDrawable(null);
 		forbidTouch(false);// 默认不禁止触摸
+		// 设置小米自动更新组件，仅wifi下更新
+		XiaomiUpdateAgent.setCheckUpdateOnlyWifi(true);
+		XiaomiUpdateAgent.update(this);
 		new Thread(new Runnable() {
 			public void run() {
 				launchHelper = new LaunchHelper();

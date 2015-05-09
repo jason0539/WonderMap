@@ -57,7 +57,7 @@ public class LaunchHelper {
 				.tasksProcessingOrder(QueueProcessingType.LIFO)
 				.discCache(new UnlimitedDiscCache(cacheDir))// 自定义缓存路径
 				// .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
-				.writeDebugLogs() // Remove for release app
+//				.writeDebugLogs() // Remove for release app
 				.build();
 		L.isDebug = true;
 		ImageLoader.getInstance().init(config);// 全局初始化此配置
@@ -83,9 +83,6 @@ public class LaunchHelper {
 		// 仅wifi下统计数据
 		MiStatInterface.setUploadPolicy(
 				MiStatInterface.UPLOAD_POLICY_WIFI_ONLY, 0);
-		// 设置小米自动更新组件，仅wifi下更新
-		XiaomiUpdateAgent.setCheckUpdateOnlyWifi(true);
-		XiaomiUpdateAgent.update(mContext);
 	}
 
 	/**
