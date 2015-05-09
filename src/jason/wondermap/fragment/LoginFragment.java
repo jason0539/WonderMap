@@ -1,5 +1,7 @@
 package jason.wondermap.fragment;
 
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
+
 import jason.wondermap.R;
 import jason.wondermap.bean.User;
 import jason.wondermap.interfacer.LoginListener;
@@ -245,7 +247,7 @@ public class LoginFragment extends ContentFragment implements OnClickListener,
 		@Override
 		public void onFail(String errString) {
 			dimissProgressbar();
-			toast(errString);
+			ShowToast(errString);
 		}
 	};
 
@@ -361,7 +363,14 @@ public class LoginFragment extends ContentFragment implements OnClickListener,
 		}
 	}
 
-	private void toast(String msg) {
-		Toast.makeText(getMainActivity(), msg, Toast.LENGTH_SHORT).show();
+	@Override
+	public void onResume() {
+		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "登陆页");
+	}
+	@Override
+	public void onPause() {
+		super.onPause();
+		MiStatInterface.recordPageEnd();
 	}
 }

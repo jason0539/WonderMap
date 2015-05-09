@@ -21,6 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
+
 public class SplashFragment extends ContentFragment {
 	private static final int GO_HOME = 100;
 	private static final int GO_LOGIN = 200;
@@ -45,6 +47,7 @@ public class SplashFragment extends ContentFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "启动页");
 		long t = System.currentTimeMillis();
 		mHandler.sendEmptyMessage(INIT);
 		L.d(WModel.Time, "splash onResume时间" + (System.currentTimeMillis() - t));
@@ -140,6 +143,12 @@ public class SplashFragment extends ContentFragment {
 		mExitAppDialog.setIsFullScreen(true);
 		// 显示确认对话框
 		mExitAppDialog.show();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		MiStatInterface.recordPageEnd();
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝动画效果＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝

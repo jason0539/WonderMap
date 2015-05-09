@@ -12,6 +12,8 @@ import jason.wondermap.view.xlist.XListView.IXListViewListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -242,5 +244,14 @@ public class AddFriendFragment extends ContentFragment implements
 			mListView.stopRefresh();
 		}
 	}
-
+	@Override
+	public void onResume() {
+		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "添加好友页");
+	}
+	@Override
+	public void onPause() {
+		super.onPause();
+		MiStatInterface.recordPageEnd();
+	}
 }

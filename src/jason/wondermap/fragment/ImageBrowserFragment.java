@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 public class ImageBrowserFragment extends ContentFragment implements
 		OnPageChangeListener {
@@ -147,5 +148,15 @@ public class ImageBrowserFragment extends ContentFragment implements
 			container.removeView((View) object);
 		}
 
+	}
+	@Override
+	public void onResume() {
+		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "图片详情页");
+	}
+	@Override
+	public void onPause() {
+		super.onPause();
+		MiStatInterface.recordPageEnd();
 	}
 }

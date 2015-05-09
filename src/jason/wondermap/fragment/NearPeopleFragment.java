@@ -13,6 +13,8 @@ import jason.wondermap.view.xlist.XListView.IXListViewListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -246,5 +248,15 @@ public class NearPeopleFragment extends ContentFragment implements
 					}
 				});
 
+	}
+	@Override
+	public void onResume() {
+		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "附近的人页");
+	}
+	@Override
+	public void onPause() {
+		super.onPause();
+		MiStatInterface.recordPageEnd();
 	}
 }

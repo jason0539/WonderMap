@@ -1,5 +1,7 @@
 package jason.wondermap.fragment;
 
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
+
 import jason.wondermap.R;
 import jason.wondermap.adapter.QiangContentAdapter;
 import jason.wondermap.view.HeaderLayout.onRightImageButtonClickListener;
@@ -48,10 +50,12 @@ public class DiscoveryFragment extends ContentFragment implements
 	@Override
 	public void onResume() {
 		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "足迹页");
 	}
 
 	public void onPause() {
 		super.onPause();
+		MiStatInterface.recordPageEnd();
 	};
 
 	@Override

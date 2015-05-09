@@ -22,6 +22,7 @@ import com.baidu.mapapi.search.geocode.GeoCodeResult;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 /**
  * 发送位置和位置浏览
@@ -136,12 +137,14 @@ public class LocationFragment extends ContentFragment implements
 	}
 
 	@Override
-	public void onPause() {
-		super.onPause();
-	}
-
 	public void onResume() {
 		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "位置发送浏览页");
+	}
+	@Override
+	public void onPause() {
+		super.onPause();
+		MiStatInterface.recordPageEnd();
 	}
 
 	@Override

@@ -12,6 +12,8 @@ import jason.wondermap.view.MainBottomBar;
 
 import java.util.Map;
 
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -210,6 +212,7 @@ public class MapHomeFragment extends ContentFragment {
 	@Override
 	public void onPause() {
 		L.d(TAG + ":onPause");
+		MiStatInterface.recordPageEnd();
 		MapUserManager.getInstance().onPause();
 		bottomBar.onPause();
 		super.onPause();
@@ -218,6 +221,7 @@ public class MapHomeFragment extends ContentFragment {
 	@Override
 	public void onResume() {
 		L.d(TAG + ":onResume");
+		MiStatInterface.recordPageStart(getActivity(), "地图首页");
 		// 确保消息未读数量正确
 		bottomBar.onResume();
 		MapUserManager.getInstance().onResume();

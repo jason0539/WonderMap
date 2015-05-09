@@ -1,18 +1,17 @@
 package jason.wondermap.fragment;
 
 import jason.wondermap.R;
-import jason.wondermap.WonderMapApplication;
 import jason.wondermap.manager.AccountUserManager;
-import jason.wondermap.utils.SharePreferenceUtil;
 import jason.wondermap.utils.UserInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 /**
  * 我的页面
@@ -24,7 +23,7 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 	private TextView btn_logout;
 	private TextView tv_set_name;
 	private RelativeLayout layout_info, layout_blacklist, layout_feedback,
-			layout_favourite, layout_about,layout_setting;
+			layout_favourite, layout_about, layout_setting;
 	private ViewGroup mRootView;
 
 	@Override
@@ -39,12 +38,6 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 		findViews();
 		setListenter();
 		initTopBarForLeft(mRootView, "设置");
-		refreshView();
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
 		refreshView();
 	}
 
@@ -94,7 +87,8 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 		layout_info = (RelativeLayout) mRootView.findViewById(R.id.layout_info);
 		layout_about = (RelativeLayout) mRootView
 				.findViewById(R.id.layout_about);
-		layout_setting = (RelativeLayout )mRootView.findViewById(R.id.layout_setting);
+		layout_setting = (RelativeLayout) mRootView
+				.findViewById(R.id.layout_setting);
 		tv_set_name = (TextView) mRootView.findViewById(R.id.tv_set_name);
 		btn_logout = (TextView) mRootView.findViewById(R.id.btn_logout);
 	}
@@ -109,4 +103,16 @@ public class MineFragment extends ContentFragment implements OnClickListener {
 		layout_setting.setOnClickListener(this);
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "设置页");
+		refreshView();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		MiStatInterface.recordPageEnd();
+	}
 }

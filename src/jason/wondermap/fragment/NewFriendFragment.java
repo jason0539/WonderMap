@@ -1,5 +1,7 @@
 package jason.wondermap.fragment;
 
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
+
 import jason.wondermap.R;
 import jason.wondermap.adapter.NewFriendAdapter;
 import jason.wondermap.view.dialog.DialogTips;
@@ -85,5 +87,15 @@ public class NewFriendFragment extends ContentFragment implements
 		if (from == null) {//  如果是点击通知栏进来的，则返回时回到主页面,这里定为返回到地图首页
 			wmFragmentManager.backTo(WMFragmentManager.TYPE_MAP_HOME, null);
 		}
+	}
+	@Override
+	public void onResume() {
+		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "好友请求页");
+	}
+	@Override
+	public void onPause() {
+		super.onPause();
+		MiStatInterface.recordPageEnd();
 	}
 }

@@ -3,7 +3,6 @@ package jason.wondermap.helper;
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.bean.User;
 import jason.wondermap.config.BundleTake;
-import jason.wondermap.config.WMapConfig;
 import jason.wondermap.config.WMapConstants;
 import jason.wondermap.controler.MapControler;
 import jason.wondermap.crash.CrashHandler;
@@ -12,7 +11,6 @@ import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.manager.WLocationManager;
-import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.UserInfo;
 import jason.wondermap.utils.WModel;
@@ -21,7 +19,6 @@ import java.io.File;
 
 import android.content.Context;
 import android.os.Bundle;
-import cn.bmob.im.BmobChat;
 
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -31,6 +28,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.xiaomi.market.sdk.XiaomiUpdateAgent;
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 /**
  * 启动退出帮助类
@@ -77,11 +75,14 @@ public class LaunchHelper {
 		AccountUserManager.getInstance().updateUserInfos();
 		// 往底图添加用户，依赖地图控制器，bmob用户下载
 		MapUserManager.getInstance();
-		// 日志抓取类
+		// // 日志抓取类
 		CrashHandler crashHandler = CrashHandler.getInstance();
 		crashHandler.init(WonderMapApplication.getInstance());
-		// 检查崩溃日志
-		checkCrashLog(mContext);
+		// 崩溃后上传日志
+		MiStatInterface.enableExceptionCatcher(true);
+		// 仅wifi下统计数据
+		MiStatInterface.setUploadPolicy(
+				MiStatInterface.UPLOAD_POLICY_WIFI_ONLY, 0);
 		// 设置小米自动更新组件，仅wifi下更新
 		XiaomiUpdateAgent.setCheckUpdateOnlyWifi(true);
 		XiaomiUpdateAgent.update(mContext);
@@ -91,37 +92,12 @@ public class LaunchHelper {
 	 * 退出时需要回收的资源，按初始化的相反方向
 	 */
 	public void checkExit() {
-//		MapUserManager.getInstance();
+		// MapUserManager.getInstance();
 		AccountUserManager.getInstance().destroy();
 		ImageLoader.getInstance().destroy();
 		// 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
 		MapControler.getInstance().unInit();
 		WLocationManager.getInstance().stop();
-	}
-
-	/**
-	 * 检查是否有crash 日志信息需要上传，如果有且当前为wifi环境则上传
-	 * 
-	 * @param context
-	 */
-	private void checkCrashLog(final Context context) {
-		new Thread() {
-			@Override
-			public void run() {
-				super.run();
-				if (!CommonUtils.isWifi(context)) {// 仅wifi环境下上传
-					return;
-				}
-				if (WonderMapApplication.getInstance().getSpUtil()
-						.hasCrashLog()) {
-					CrashLogHelper crashLogManager = new CrashLogHelper();
-					crashLogManager.uploadLog();
-					L.d(WModel.CrashUpload, "存在crash 文件");
-				} else {
-					L.d(WModel.CrashUpload, "没有crash");
-				}
-			}
-		}.start();
 	}
 
 	public void checkIsNeedToConfirmInfo() {

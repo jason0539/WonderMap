@@ -38,6 +38,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnLastItemVisibleLis
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 /**
  * @author liuzhenhui
@@ -338,5 +339,14 @@ public class PersonalFootblogFragment extends ContentFragment implements
 		updatePersonalInfo(user);
 		T.showShort(mContext, "更新信息成功。");
 	}
-
+	@Override
+	public void onResume() {
+		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "个人足迹页");
+	}
+	@Override
+	public void onPause() {
+		super.onPause();
+		MiStatInterface.recordPageEnd();
+	}
 }

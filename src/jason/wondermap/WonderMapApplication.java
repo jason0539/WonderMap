@@ -11,6 +11,7 @@ import android.app.Application;
 import cn.bmob.im.BmobChat;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 /**
  * 应用上下文
@@ -42,6 +43,9 @@ public class WonderMapApplication extends Application {
 				BmobChat.getInstance(this).init(WMapConfig.applicationId);
 				// 开始定位，依赖地图初始化，bmob服务
 				WLocationManager.getInstance().start();
+				//小米集成统计
+				MiStatInterface.initialize(this, WMapConfig.MiAppId,
+						WMapConfig.MiAppKey, WMapConfig.CHANNEL_MI);
 				L.d(WModel.Time, "APPLICATION 时间"
 						+ (System.currentTimeMillis() - t));
 			}

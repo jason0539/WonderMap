@@ -56,6 +56,7 @@ import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 /**
  * 资料页面
@@ -184,9 +185,16 @@ public class UserInfoFragment extends ContentFragment implements
 	@Override
 	public void onResume() {
 		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "个人信息页");
 		if (isMyself) {
 			initMyData();// 修改完之后接着刷新
 		}
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		MiStatInterface.recordPageEnd();
 	}
 
 	@Override
@@ -208,7 +216,7 @@ public class UserInfoFragment extends ContentFragment implements
 				showAvatarPop();
 			} else {
 				ArrayList<String> photos = new ArrayList<String>();
-				//这里头像可能为空
+				// 这里头像可能为空
 				photos.add(user.getAvatar());
 				Bundle bundle1 = new Bundle();
 				bundle1.putStringArrayList(UserInfo.PHOTOS, photos);

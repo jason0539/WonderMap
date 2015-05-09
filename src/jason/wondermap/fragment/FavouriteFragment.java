@@ -1,5 +1,7 @@
 package jason.wondermap.fragment;
 
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
+
 import jason.wondermap.adapter.AIContentAdapter;
 import jason.wondermap.adapter.BaseContentAdapter;
 import jason.wondermap.bean.Blog;
@@ -25,5 +27,14 @@ public class FavouriteFragment extends CommonPullRefreshFragment {
 				mListItems.get(position - 1));
 		wmFragmentManager.showFragment(WMFragmentManager.TYPE_FOOTBLOG_COMMENT);
 	}
-
+	@Override
+	public void onResume() {
+		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "收藏页");
+	}
+	@Override
+	public void onPause() {
+		super.onPause();
+		MiStatInterface.recordPageEnd();
+	}
 }

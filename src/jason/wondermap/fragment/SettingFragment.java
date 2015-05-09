@@ -1,5 +1,7 @@
 package jason.wondermap.fragment;
 
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
+
 import jason.wondermap.R;
 import jason.wondermap.WonderMapApplication;
 import jason.wondermap.utils.SharePreferenceUtil;
@@ -111,5 +113,17 @@ public class SettingFragment extends ContentFragment implements OnClickListener 
 		layout_switch_notification.setOnClickListener(this);
 		layout_switch_voice.setOnClickListener(this);
 		layout_switch_vibrate.setOnClickListener(this);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "通知设置页");
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		MiStatInterface.recordPageEnd();
 	}
 }

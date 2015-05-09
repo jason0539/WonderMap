@@ -24,6 +24,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -150,6 +152,7 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 	@Override
 	public void onResume() {
 		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "聊天页");
 		// 新消息到达，重新刷新界面
 		initOrRefresh();
 		MyMessageReceiver.ehList.add(this);// 监听推送的消息
@@ -178,6 +181,7 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 	@Override
 	public void onPause() {
 		super.onPause();
+		MiStatInterface.recordPageEnd();
 		MyMessageReceiver.ehList.remove(this);// 监听推送的消息
 		// 停止录音
 		if (recordManager.isRecording()) {

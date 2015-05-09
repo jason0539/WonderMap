@@ -15,6 +15,8 @@ import jason.wondermap.utils.WModel;
 
 import java.util.HashMap;
 
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
+
 import android.app.ProgressDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,5 +102,15 @@ public class FriendRecommendFragment extends ContentFragment {
 		TencentShareEntity entity = new TencentShareEntity(title, img,
 				targetUrl, summary, comment);
 		return entity;
+	}
+	@Override
+	public void onResume() {
+		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "好友推荐页");
+	}
+	@Override
+	public void onPause() {
+		super.onPause();
+		MiStatInterface.recordPageEnd();
 	}
 }

@@ -1,5 +1,7 @@
 package jason.wondermap.fragment;
 
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
+
 import jason.wondermap.R;
 import jason.wondermap.adapter.MessageRecentAdapter;
 import jason.wondermap.manager.ChatMessageManager;
@@ -84,12 +86,14 @@ public class RecentFragment extends ContentFragment implements
 	@Override
 	public void onPause() {
 		super.onPause();
+		MiStatInterface.recordPageEnd();
 		MyMessageReceiver.ehList.remove(this);// 取消监听推送的消息
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "最近会话页");
 		if (!hidden) {
 			refresh();
 		}

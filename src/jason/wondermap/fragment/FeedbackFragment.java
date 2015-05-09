@@ -1,5 +1,7 @@
 package jason.wondermap.fragment;
 
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
+
 import cn.bmob.v3.listener.SaveListener;
 import jason.wondermap.R;
 import jason.wondermap.helper.FeedbackHelper;
@@ -61,5 +63,14 @@ public class FeedbackFragment extends ContentFragment {
 			}
 		}
 	};
-
+	@Override
+	public void onResume() {
+		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "反馈页");
+	};
+	@Override
+	public void onPause() {
+		super.onPause();
+		MiStatInterface.recordPageEnd();
+	}
 }

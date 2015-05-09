@@ -14,6 +14,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -247,5 +249,15 @@ public class PublishFootblogFragment extends ContentFragment implements
 			e.printStackTrace();
 		}
 		return file.getAbsolutePath();
+	}
+	@Override
+	public void onResume() {
+		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "发布足迹页");
+	}
+	@Override
+	public void onPause() {
+		super.onPause();
+		MiStatInterface.recordPageEnd();
 	}
 }

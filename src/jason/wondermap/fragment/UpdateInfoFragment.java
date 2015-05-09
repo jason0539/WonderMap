@@ -10,6 +10,8 @@ import jason.wondermap.view.HeaderLayout.onRightImageButtonClickListener;
 
 import java.util.List;
 
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
+
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -250,4 +252,14 @@ public class UpdateInfoFragment extends ContentFragment {
 	enum Info {
 		age, sign, name, phone
 	};
+	@Override
+	public void onResume() {
+		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "修改资料页");
+	}
+	@Override
+	public void onPause() {
+		super.onPause();
+		MiStatInterface.recordPageEnd();
+	}
 }

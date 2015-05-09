@@ -16,5 +16,9 @@ public class WMapConfig {
 	public static final String SCOPE = "email,direct_messages_read,direct_messages_write,"
 			+ "friendships_groups_read,friendships_groups_write,statuses_to_me_read,"
 			+ "follow_app_official_microblog," + "invitation_write";
-
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝xiaomi==========================
+	public static String MiAppId = "2882303761517328500";
+	public static String MiAppKey = "5881732890500";
+	public static String CHANNEL_MI = "Mi";
+	public static String CHANNEL_BMOB = "Bmob";
 }

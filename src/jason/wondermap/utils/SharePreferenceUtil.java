@@ -68,18 +68,6 @@ public class SharePreferenceUtil {
 		editor.commit();
 	}
 
-	// 是否发生过crash，存储文件名
-	public boolean hasCrashLog() {
-		boolean hasLog = mSharedPreferences.getBoolean(SHARED_KEY_CRASH, false);
-		return hasLog;
-	}
-
-	// 设置是否有crash文件，发生crash后设为true，上传完成设为false
-	public void setCrashLog(boolean hasCrash) {
-		editor.putBoolean(SHARED_KEY_CRASH, hasCrash);
-		editor.commit();
-	}
-
 	// 用户是否同意授权使用位置信息
 	public boolean hasAccept() {
 		boolean hasLog = mSharedPreferences

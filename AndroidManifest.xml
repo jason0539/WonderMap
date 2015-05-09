@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jason.wondermap"
-    android:versionCode="105051330"
-    android:versionName="1.0505.1330" >
+    android:versionCode="105090954"
+    android:versionName="1.0509.0954" >
 
     <uses-sdk
         android:minSdkVersion="11"

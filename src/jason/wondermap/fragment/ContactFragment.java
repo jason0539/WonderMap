@@ -20,6 +20,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
+
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -275,11 +277,16 @@ public class ContactFragment extends ContentFragment implements
 	@Override
 	public void onResume() {
 		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "好友页");
 		if (!hidden) {
 			refresh();
 		}
 	}
-
+	@Override
+	public void onPause() {
+		super.onPause();
+		MiStatInterface.recordPageEnd();
+	}
 	public void refresh() {
 		try {
 			getActivity().runOnUiThread(new Runnable() {

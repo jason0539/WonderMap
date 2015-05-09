@@ -14,6 +14,8 @@ import jason.wondermap.utils.T;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -319,5 +321,14 @@ public class FootblogCommentFragment extends ContentFragment implements
 				+ 15;
 		listView.setLayoutParams(params);
 	}
-
+	@Override
+	public void onResume() {
+		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "足迹评论页");
+	}
+	@Override
+	public void onPause() {
+		super.onPause();
+		MiStatInterface.recordPageEnd();
+	}
 }

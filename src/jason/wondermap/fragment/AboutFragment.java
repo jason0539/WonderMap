@@ -1,5 +1,7 @@
 package jason.wondermap.fragment;
 
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
+
 import jason.wondermap.R;
 import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.sns.TencentShare;
@@ -104,5 +106,15 @@ public class AboutFragment extends ContentFragment implements OnClickListener {
 		TencentShareEntity entity = new TencentShareEntity(title, img,
 				targetUrl, summary, comment);
 		return entity;
+	}
+	@Override
+	public void onResume() {
+		super.onResume();
+		MiStatInterface.recordPageStart(getActivity(), "关于页");
+	}
+	@Override
+	public void onPause() {
+		super.onPause();
+		MiStatInterface.recordPageEnd();
 	}
 }
