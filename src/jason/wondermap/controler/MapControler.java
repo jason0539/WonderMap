@@ -532,7 +532,9 @@ public class MapControler {
 	 * 暂停更新地图上用户的位置
 	 */
 	public void onPause() {
-		mMapView.onPause();
+		if (mMapView != null) {
+			mMapView.onPause();
+		}
 		visible = false;
 	}
 
@@ -540,7 +542,9 @@ public class MapControler {
 	 * 恢复更新地图上用户的位置
 	 */
 	public void onResume() {
-		mMapView.onResume();
+		if (mMapView != null) {
+			mMapView.onResume();
+		}
 		visible = true;
 	}
 

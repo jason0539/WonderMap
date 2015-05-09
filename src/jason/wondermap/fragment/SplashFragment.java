@@ -21,13 +21,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 
-import com.xiaomi.mistatistic.sdk.MiStatInterface;
-
 public class SplashFragment extends ContentFragment {
 	private static final int GO_HOME = 100;
 	private static final int GO_LOGIN = 200;
 	private static final int INIT = 300;
-	private static final int DELAY = 1200;
+	private static final int DELAY = 1500;
 
 	private DialogTips mExitAppDialog;
 	private ViewGroup mRootViewGroup;
@@ -47,7 +45,6 @@ public class SplashFragment extends ContentFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		MiStatInterface.recordPageStart(getActivity(), "启动页");
 		long t = System.currentTimeMillis();
 		mHandler.sendEmptyMessage(INIT);
 		L.d(WModel.Time, "splash onResume时间" + (System.currentTimeMillis() - t));
@@ -97,12 +94,12 @@ public class SplashFragment extends ContentFragment {
 	}
 
 	private void goHomeFrag() {
-		mActivity.releaseLaunchView();
+		mActivity.releaseHideView();
 		wmFragmentManager.showFragment(WMFragmentManager.TYPE_MAP_HOME);
 	}
 
 	private void goLoginFrag() {
-		mActivity.releaseLaunchView();
+		mActivity.releaseHideView();
 		wmFragmentManager.showFragment(WMFragmentManager.TYPE_LOGIN);
 	}
 
@@ -148,7 +145,6 @@ public class SplashFragment extends ContentFragment {
 	@Override
 	public void onPause() {
 		super.onPause();
-		MiStatInterface.recordPageEnd();
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝动画效果＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝

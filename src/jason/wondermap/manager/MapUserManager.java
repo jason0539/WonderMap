@@ -405,7 +405,6 @@ public class MapUserManager {
 				.getValue(ShowFriendOrAll, false);
 		onlineUserHelper = new OnlineUserHelper(
 				WonderMapApplication.getInstance());
-		onResume();
 	}
 
 	private static MapUserManager instance = null;
