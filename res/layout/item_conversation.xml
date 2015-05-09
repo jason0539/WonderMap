@@ -2,48 +2,45 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/message_top_height"
-    android:orientation="vertical" 
-    >
+    android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="65dp"
         android:background="@drawable/selector_settings_item_down"
+        android:minHeight="65dp"
         android:paddingBottom="5.0dip"
-        android:paddingTop="5.0dip" 
-        >
+        android:paddingTop="5.0dip" >
 
         <ImageView
             android:id="@+id/iv_recent_avatar"
             style="@style/Smile.ImageView.Photo_Middle"
-            android:layout_gravity="center_vertical"
             android:layout_alignParentLeft="true"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:src="@drawable/default_head" />
 
         <TextView
             android:id="@+id/tv_recent_name"
+            style="@style/Smile.TextView._Black"
             android:layout_width="wrap_content"
             android:layout_height="25.0dip"
             android:layout_marginLeft="10.0dip"
             android:layout_marginRight="58.0dip"
-            style="@style/Smile.TextView._Black"
             android:layout_toRightOf="@id/iv_recent_avatar"
             android:ellipsize="end"
             android:gravity="left|center"
             android:singleLine="true"
-            android:textColor="@drawable/recent_name_text_color_selector"
-            />
+            android:textColor="@drawable/recent_name_text_color_selector" />
 
         <TextView
             android:id="@+id/tv_recent_msg"
             android:layout_width="fill_parent"
             android:layout_height="35.0dip"
             android:layout_below="@id/tv_recent_name"
-             android:layout_toRightOf="@id/iv_recent_avatar"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="35.0dip"
+            android:layout_toRightOf="@id/iv_recent_avatar"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:paddingLeft="6.0dip"

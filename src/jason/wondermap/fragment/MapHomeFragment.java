@@ -53,13 +53,9 @@ public class MapHomeFragment extends ContentFragment {
 	@Override
 	protected void onInitView() {
 		L.d(TAG + ":onInitView");
-		new Thread(new Runnable() {
-			public void run() {
-				// 检查是否需要确认信息
-				new LaunchHelper().checkIsNeedToConfirmInfo();
-			}
-		}).start();
 		long t = System.currentTimeMillis();
+		// 检查是否需要确认信息
+		new LaunchHelper().checkIsNeedToConfirmInfo();
 		if (MapUserManager.getInstance().isOnlyShowFriends()) {
 			initTopBarForOnlyTitle(mRootView, "好友地图");
 		} else {

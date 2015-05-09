@@ -34,13 +34,16 @@ public class WonderMapApplication extends Application {
 					.equals(WMapConstants.REAL_PACKAGE_NAME);
 			if (defaultProcess) {
 				L.d(WModel.Time, "初始化" + processName);
+				long t = System.currentTimeMillis();
 				// 初始化地图，setContentView需要地图控件
 				SDKInitializer.initialize(WonderMapApplication.getInstance());
 				// 初始化bmob服务
-				BmobChat.DEBUG_MODE = true;
+				// BmobChat.DEBUG_MODE = true;
 				BmobChat.getInstance(this).init(WMapConfig.applicationId);
 				// 开始定位，依赖地图初始化，bmob服务
 				WLocationManager.getInstance().start();
+				L.d(WModel.Time, "APPLICATION 时间"
+						+ (System.currentTimeMillis() - t));
 			}
 		}
 

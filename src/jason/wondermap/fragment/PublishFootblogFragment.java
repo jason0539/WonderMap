@@ -82,7 +82,7 @@ public class PublishFootblogFragment extends ContentFragment implements
 		public void onClick() {
 			String commitContent = content.getText().toString().trim();
 			//足迹可以还有图片，文字图片有一个即可
-			if (TextUtils.isEmpty(commitContent)&&StringUtils.isStringNull(targeturl)) {
+			if (TextUtils.isEmpty(commitContent)&&TextUtils.isEmpty(targeturl)) {
 				ShowToast("内容不能为空");
 				return;
 			}

@@ -10,6 +10,7 @@ import jason.wondermap.crash.CrashHandler;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.manager.AccountUserManager;
+import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.L;
@@ -40,18 +41,6 @@ import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 public class LaunchHelper {
 
 	private Context mContext = WonderMapApplication.getInstance();;
-
-	/**
-	 * 退出时需要回收的资源，按初始化的相反方向
-	 */
-	public void checkExit() {
-		WLocationManager.getInstance().stop();
-		AccountUserManager.getInstance().destroy();
-		// 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
-		MapControler.getInstance().unInit();
-		// ImageLoader.getInstance().destroy();
-		// MapUserManager.getInstance().
-	}
 
 	/** 初始化ImageLoader */
 	private void initImageLoader(Context context) {
@@ -86,16 +75,28 @@ public class LaunchHelper {
 		AccountUserManager.getInstance().loadLocalContact();
 		// 更新最新信息
 		AccountUserManager.getInstance().updateUserInfos();
+		// 往底图添加用户，依赖地图控制器，bmob用户下载
+		MapUserManager.getInstance();
 		// 日志抓取类
 		CrashHandler crashHandler = CrashHandler.getInstance();
 		crashHandler.init(WonderMapApplication.getInstance());
-		// 定位，一旦开始就使用Bmob保存位置，挪到MapHomeFrag里面，保证在服务协议之后显示
-		// WLocationManager.getInstance().start();
 		// 检查崩溃日志
 		checkCrashLog(mContext);
 		// 设置小米自动更新组件，仅wifi下更新
 		XiaomiUpdateAgent.setCheckUpdateOnlyWifi(true);
 		XiaomiUpdateAgent.update(mContext);
+	}
+
+	/**
+	 * 退出时需要回收的资源，按初始化的相反方向
+	 */
+	public void checkExit() {
+//		MapUserManager.getInstance();
+		AccountUserManager.getInstance().destroy();
+		ImageLoader.getInstance().destroy();
+		// 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
+		MapControler.getInstance().unInit();
+		WLocationManager.getInstance().stop();
 	}
 
 	/**

@@ -7,12 +7,9 @@ import jason.wondermap.bean.User;
 import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.utils.CharacterParser;
 import jason.wondermap.utils.CollectionUtils;
-import jason.wondermap.utils.L;
 import jason.wondermap.utils.PinyinComparator;
-import jason.wondermap.utils.StringUtils;
 import jason.wondermap.utils.T;
 import jason.wondermap.utils.UserInfo;
-import jason.wondermap.view.ClearEditText;
 import jason.wondermap.view.HeaderLayout.onRightImageButtonClickListener;
 import jason.wondermap.view.MyLetterView;
 import jason.wondermap.view.MyLetterView.OnTouchingLetterChangedListener;
@@ -24,20 +21,15 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -46,7 +38,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import cn.bmob.im.BmobUserManager;
 import cn.bmob.im.bean.BmobChatUser;
 import cn.bmob.im.db.BmobDB;
 import cn.bmob.v3.listener.UpdateListener;
@@ -55,39 +46,25 @@ public class ContactFragment extends ContentFragment implements
 		OnItemClickListener, OnItemLongClickListener {
 
 	private final static String TAG = ContactFragment.class.getSimpleName();
-	ClearEditText mClearEditText;
-	private ViewGroup mContainer;
 	private ViewGroup mRootView;
-	TextView dialog;
-	LayoutInflater mInflater;
-	BmobUserManager userManager;
+	private TextView dialog;
 
-	ListView list_friends;
-	MyLetterView right_letter;
+	private ListView list_friends;
+	private MyLetterView right_letter;
 
-	private UserFriendAdapter userAdapter;// 好友
+	private UserFriendAdapter userAdapter;
 
-	List<User> friends = new ArrayList<User>();
+	private List<User> friends = new ArrayList<User>();
+	private ImageView iv_msg_tips;// 好友请求提示
+	private LinearLayout layout_new;// 新朋友
+	private LinearLayout layout_near;// 附近的人
+	private LinearLayout layout_recommend;// 好友推荐
 
-	private InputMethodManager inputMethodManager;
-
-	/**
-	 * 汉字转换成拼音的类
-	 */
 	private CharacterParser characterParser;
 	/**
 	 * 根据拼音来排列ListView里面的数据类
 	 */
 	private PinyinComparator pinyinComparator;
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		L.d(TAG, "onCreateView");
-		mContainer = container;
-		mInflater = inflater;
-		return super.onCreateView(inflater, container, savedInstanceState);
-	}
 
 	@Override
 	protected View onCreateContentView(LayoutInflater inflater) {
@@ -98,11 +75,6 @@ public class ContactFragment extends ContentFragment implements
 
 	@Override
 	protected void onInitView() {
-		userManager = BmobUserManager.getInstance(mContext);
-		inputMethodManager = (InputMethodManager) getActivity()
-				.getSystemService(Context.INPUT_METHOD_SERVICE);
-		characterParser = CharacterParser.getInstance();
-		pinyinComparator = new PinyinComparator();
 		initTopBarForBoth(mRootView, "联系人",
 				R.drawable.base_action_bar_add_bg_selector,
 				new onRightImageButtonClickListener() {
@@ -113,35 +85,10 @@ public class ContactFragment extends ContentFragment implements
 								.showFragment(WMFragmentManager.TYPE_ADD_FRIEND);
 					}
 				});
+		characterParser = new CharacterParser();
+		pinyinComparator = new PinyinComparator();
 		initListView();
 		initRightLetterView();
-		initEditText();
-	}
-
-	private void initEditText() {
-		mClearEditText = (ClearEditText) mRootView
-				.findViewById(R.id.et_msg_search);
-		// 根据输入框输入值的改变来过滤搜索
-		mClearEditText.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				// 当输入框里面的值为空，更新为原来的列表，否则为过滤数据列表
-				filterData(s.toString());
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-
-			}
-		});
 	}
 
 	/**
@@ -210,12 +157,6 @@ public class ContactFragment extends ContentFragment implements
 		Collections.sort(friends, pinyinComparator);
 	}
 
-	ImageView iv_msg_tips;
-	TextView tv_new_name;
-	LinearLayout layout_new;// 新朋友
-	LinearLayout layout_near;// 附近的人
-	LinearLayout layout_recommend;// 好友推荐
-
 	private void initListView() {
 		list_friends = (ListView) mRootView.findViewById(R.id.list_friends);
 		RelativeLayout headView = (RelativeLayout) mInflater.inflate(
@@ -247,7 +188,7 @@ public class ContactFragment extends ContentFragment implements
 
 			@Override
 			public void onClick(View v) {
-				if (StringUtils.isStringNull(AccountUserManager.getInstance()
+				if (TextUtils.isEmpty(AccountUserManager.getInstance()
 						.getCurrentUser().getPhone())) {
 					T.showLong(mContext, "您还没有填写自己的手机号，强烈建议填写，方便其他好友找到您");
 				}
@@ -285,14 +226,7 @@ public class ContactFragment extends ContentFragment implements
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// 隐藏软键盘
-				if (getActivity().getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
-					if (getActivity().getCurrentFocus() != null)
-						inputMethodManager.hideSoftInputFromWindow(
-								getActivity().getCurrentFocus()
-										.getWindowToken(),
-								InputMethodManager.HIDE_NOT_ALWAYS);
-				}
+				hideSoftInputView();
 				return false;
 			}
 		});
@@ -431,44 +365,36 @@ public class ContactFragment extends ContentFragment implements
 
 	/**
 	 * 删除联系人 deleteContact
-	 * 
-	 * @return void
-	 * @throws
 	 */
 	private void deleteContact(final User user) {
 		final ProgressDialog progress = new ProgressDialog(getActivity());
 		progress.setMessage("正在删除...");
 		progress.setCanceledOnTouchOutside(false);
 		progress.show();
-		userManager.deleteContact(user.getObjectId(), new UpdateListener() {
+		AccountUserManager.getInstance().getUserManager()
+				.deleteContact(user.getObjectId(), new UpdateListener() {
 
-			@Override
-			public void onSuccess() {
-				ShowToast("删除成功");
-				// 删除内存
-				AccountUserManager.getInstance().getContactList()
-						.remove(user.getObjectId());
-				// 更新界面
-				getActivity().runOnUiThread(new Runnable() {
-					public void run() {
+					@Override
+					public void onSuccess() {
+						ShowToast("删除成功");
+						// 删除内存
+						AccountUserManager.getInstance().getContactList()
+								.remove(user.getObjectId());
+						// 更新界面
+						getActivity().runOnUiThread(new Runnable() {
+							public void run() {
+								progress.dismiss();
+								userAdapter.remove(user);
+							}
+						});
+					}
+
+					@Override
+					public void onFailure(int arg0, String arg1) {
+						ShowToast("删除失败：" + arg1);
 						progress.dismiss();
-						userAdapter.remove(user);
 					}
 				});
-			}
-
-			@Override
-			public void onFailure(int arg0, String arg1) {
-				ShowToast("删除失败：" + arg1);
-				progress.dismiss();
-			}
-		});
-	}
-
-	@Override
-	public void onDestroyView() {
-		// 在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
-		super.onDestroyView();
 	}
 
 }

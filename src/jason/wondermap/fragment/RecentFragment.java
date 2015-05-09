@@ -46,7 +46,6 @@ public class RecentFragment extends ContentFragment implements
 	private ViewGroup mRootView;
 	private boolean hidden;
 	private ListView listview;
-	private ClearEditText mClearEditText;
 	private MessageRecentAdapter adapter;
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝UI相关 生命周期＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -80,26 +79,6 @@ public class RecentFragment extends ContentFragment implements
 						.queryRecents());
 		listview.setAdapter(adapter);
 
-		mClearEditText = (ClearEditText) mRootView
-				.findViewById(R.id.et_msg_search);
-		mClearEditText.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				adapter.getFilter().filter(s);
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-			}
-		});
 	}
 
 	@Override

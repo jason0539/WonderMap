@@ -7,7 +7,6 @@ import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.helper.LaunchHelper;
 import jason.wondermap.interfacer.LaunchInitListener;
 import jason.wondermap.manager.AccountUserManager;
-import jason.wondermap.manager.MapUserManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.WModel;
 import jason.wondermap.view.dialog.DialogTips;
@@ -31,6 +30,7 @@ public class MainActivity extends FragmentActivity {
 	private View hideView;
 	private LaunchHelper launchHelper;
 
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝启动初始化＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,17 +54,12 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void init() {
-		long t = System.currentTimeMillis();
 		getWindow().getDecorView().setBackgroundDrawable(null);
 		forbidTouch(false);// 默认不禁止触摸
-		L.d(WModel.Time, "MainActivity init时间"
-				+ (System.currentTimeMillis() - t));
 		new Thread(new Runnable() {
 			public void run() {
 				launchHelper = new LaunchHelper();
 				launchHelper.checkLaunch();
-				// 往底图添加用户，依赖地图控制器，bmob用户下载
-				MapUserManager.getInstance();
 				hideView = findViewById(R.id.layout_hide);
 				// 初始化地图,定位一旦开始就要使用地图，没有依赖
 				mForbidTouchView.setOnTouchListener(new OnTouchListener() {
@@ -75,6 +70,7 @@ public class MainActivity extends FragmentActivity {
 					}
 				});
 				initListener.OnFinished();
+				initListener = null;
 			}
 		}).start();
 	}

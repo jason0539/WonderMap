@@ -15,6 +15,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,7 +104,7 @@ public class ImageBrowserFragment extends ContentFragment implements
 					.findViewById(R.id.progress);
 
 			final String imgUrl = mPhotos.get(position);
-			if (StringUtils.isStringNull(imgUrl)) {
+			if (TextUtils.isEmpty(imgUrl)) {
 				photoView.setImageResource(R.drawable.user_icon_default_main);
 			} else {
 				ImageLoader.getInstance().displayImage(imgUrl, photoView,

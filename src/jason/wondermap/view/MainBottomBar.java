@@ -30,7 +30,6 @@ public class MainBottomBar implements EventListener {
 	private BadgeViewForButton mBadgeViewforContact;
 
 	public MainBottomBar(View rootView) {
-		// L.d("bottomBar构造器");
 		fragmentManager = BaseFragment.getWMFragmentManager();
 		initViews(rootView);
 	}
@@ -39,9 +38,10 @@ public class MainBottomBar implements EventListener {
 	 * MapHomeFragment中只构造一次bottombar，所以实例都是存在的,在这里更新红点
 	 */
 	public void onResume() {
-		int num = BmobDB.create(BaseFragment.getMainActivity())
+		final int num = BmobDB.create(BaseFragment.getMainActivity())
 				.getAllUnReadCount();
 		boolean hasUnread = num > 0 ? true : false;
+		MyMessageReceiver.ehList.add(MainBottomBar.this);
 		if (hasUnread) {
 			mBadgeViewforMsg.setText(num + "");
 			mBadgeViewforMsg.show();
@@ -49,7 +49,6 @@ public class MainBottomBar implements EventListener {
 			mBadgeViewforMsg.hide();
 		}
 		queryMyfriends();
-		MyMessageReceiver.ehList.add(this);
 	}
 
 	public void onPause() {
@@ -66,7 +65,8 @@ public class MainBottomBar implements EventListener {
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝内部实现＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
-	private void initViews(View view) {
+	private void initViews(final View view) {
+		long t = System.currentTimeMillis();
 		mRootView = view;
 		msgButton = (Button) mRootView.findViewById(R.id.btn_main_recent);
 		friendButton = (Button) mRootView.findViewById(R.id.btn_main_contact);
@@ -81,6 +81,7 @@ public class MainBottomBar implements EventListener {
 				WonderMapApplication.getInstance(), msgButton);
 		mBadgeViewforContact = new BadgeViewForButton(
 				WonderMapApplication.getInstance(), friendButton);
+		L.d(WModel.Time, "底部 initViews时间" + (System.currentTimeMillis() - t));
 	}
 
 	private OnClickListener getOnClickLis() {
@@ -117,6 +118,21 @@ public class MainBottomBar implements EventListener {
 		queryMyfriends();
 	}
 
+	/**
+	 * 是否有好友请求
+	 */
+	private void queryMyfriends() {
+		// 是否有新的好友请求
+		boolean hasInvite = BmobDB.create(BaseFragment.getMainActivity())
+				.hasNewInvite();
+		if (hasInvite) {
+			mBadgeViewforContact.setText(" ");
+			mBadgeViewforContact.show();
+		} else {
+			mBadgeViewforContact.hide();
+		}
+	}
+
 	@Override
 	public void onMessage(BmobMsg message) {
 		L.d(WModel.BottomBarNum, "收到消息");
@@ -137,6 +153,9 @@ public class MainBottomBar implements EventListener {
 
 	}
 
+	/**
+	 * 新消息到达角标
+	 */
 	private void refreshNewMsg(BmobMsg message) {
 		if (!mBadgeViewforMsg.isShown()) {
 			L.d(WModel.BottomBarNum, "角标未显示，设为1并显示");
@@ -147,15 +166,5 @@ public class MainBottomBar implements EventListener {
 			mBadgeViewforMsg.increment(1);
 		}
 
-	}
-
-	private void queryMyfriends() {
-		// 是否有新的好友请求
-		if (BmobDB.create(BaseFragment.getMainActivity()).hasNewInvite()) {
-			mBadgeViewforContact.setText(" ");
-			mBadgeViewforContact.show();
-		} else {
-			mBadgeViewforContact.hide();
-		}
 	}
 }
