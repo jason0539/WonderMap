@@ -47,23 +47,20 @@ public class ContactFragment extends ContentFragment implements
 
 	private final static String TAG = ContactFragment.class.getSimpleName();
 	private ViewGroup mRootView;
-	private TextView dialog;
 
-	private ListView list_friends;
-	private MyLetterView right_letter;
-
-	private UserFriendAdapter userAdapter;
-
-	private List<User> friends = new ArrayList<User>();
 	private ImageView iv_msg_tips;// 好友请求提示
 	private LinearLayout layout_new;// 新朋友
 	private LinearLayout layout_near;// 附近的人
 	private LinearLayout layout_recommend;// 好友推荐
 
+	private List<User> friends = new ArrayList<User>();
+	private ListView list_friends;
+	private UserFriendAdapter userAdapter;
 	private CharacterParser characterParser;
-	/**
-	 * 根据拼音来排列ListView里面的数据类
-	 */
+	private MyLetterView right_letter;
+	private TextView dialog;// 快速搜索侧边触摸后显示的字母
+
+	// 根据拼音来排列ListView里面的数据类
 	private PinyinComparator pinyinComparator;
 
 	@Override
@@ -75,7 +72,7 @@ public class ContactFragment extends ContentFragment implements
 
 	@Override
 	protected void onInitView() {
-		initTopBarForBoth(mRootView, "联系人",
+		initTopBarForBoth(mRootView, "好友",
 				R.drawable.base_action_bar_add_bg_selector,
 				new onRightImageButtonClickListener() {
 
@@ -89,33 +86,6 @@ public class ContactFragment extends ContentFragment implements
 		pinyinComparator = new PinyinComparator();
 		initListView();
 		initRightLetterView();
-	}
-
-	/**
-	 * 根据输入框中的值来过滤数据并更新ListView
-	 * 
-	 * @param filterStr
-	 */
-	private void filterData(String filterStr) {
-		List<User> filterDateList = new ArrayList<User>();
-		if (TextUtils.isEmpty(filterStr)) {
-			filterDateList = friends;
-		} else {
-			filterDateList.clear();
-			for (User sortModel : friends) {
-				String name = sortModel.getUsername();
-				if (name != null) {
-					if (name.indexOf(filterStr.toString()) != -1
-							|| characterParser.getSelling(name).startsWith(
-									filterStr.toString())) {
-						filterDateList.add(sortModel);
-					}
-				}
-			}
-		}
-		// 根据a-z进行排序
-		Collections.sort(filterDateList, pinyinComparator);
-		userAdapter.updateListView(filterDateList);
 	}
 
 	/**
@@ -264,9 +234,6 @@ public class ContactFragment extends ContentFragment implements
 
 	/**
 	 * 获取好友列表 queryMyfriends
-	 * 
-	 * @return void
-	 * @throws
 	 */
 	private void queryMyfriends() {
 		// 是否有新的好友请求

@@ -10,7 +10,6 @@
     <com.handmark.pulltorefresh.library.PullToRefreshListView
         android:id="@+id/pull_refresh_list"
         android:layout_width="fill_parent"
-        android:scrollbars="none"
         android:layout_height="fill_parent"
         android:cacheColorHint="#00000000"
         android:divider="#00000000"
@@ -19,6 +18,7 @@
         android:fastScrollEnabled="false"
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"
+        android:scrollbars="none"
         android:smoothScrollbar="true" />
 
     <ProgressBar

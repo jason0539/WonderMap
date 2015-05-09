@@ -35,12 +35,6 @@ public class UserFriendAdapter extends BaseAdapter implements SectionIndexer {
 
 	/**
 	 * 当ListView数据发生变化时,调用此方法来更新ListView
-	 * 
-	 * @Title: updateListView
-	 * @Description: TODO
-	 * @param @param list
-	 * @return void
-	 * @throws
 	 */
 	public void updateListView(List<User> list) {
 		this.data = list;
