@@ -7,7 +7,7 @@ import jason.wondermap.fragment.WMFragmentManager;
 import jason.wondermap.helper.LaunchHelper;
 import jason.wondermap.interfacer.LaunchInitListener;
 import jason.wondermap.manager.AccountUserManager;
-import jason.wondermap.manager.MapUserManager;
+import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.WModel;
 import jason.wondermap.view.dialog.DialogTips;
@@ -15,6 +15,8 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -26,6 +28,8 @@ import com.baidu.mapapi.map.MapView;
 import com.xiaomi.market.sdk.XiaomiUpdateAgent;
 
 public class MainActivity extends FragmentActivity {
+	// 由于setContentView耗时400ms＋，所以显示启动页延迟一段时间，保证动画流畅度
+	private static final int Show_Splash = 0x0001;
 	private WMFragmentManager fragmentManager;
 	private View mForbidTouchView; // 禁止触摸的空视图
 	private DialogTips appDialog = null;
@@ -38,31 +42,40 @@ public class MainActivity extends FragmentActivity {
 		L.d(WModel.MainActivity, "onCreate");
 		long t = System.currentTimeMillis();
 		setContentView(R.layout.activity_main);
-		L.d(WModel.Time,
-				"MainActivity onCreate时间" + (System.currentTimeMillis() - t));
 		fragmentManager = new WMFragmentManager(this);
 		BaseFragment.initBeforeAll(this, fragmentManager);
 		mForbidTouchView = findViewById(R.id.view_main_forbid_touch);
-		fragmentManager.showFragment(WMFragmentManager.TYPE_SPLASH);
+		handler.sendEmptyMessageDelayed(Show_Splash, System.currentTimeMillis()-t);
+		L.d(WModel.Time,
+				"MainActivity onCreate时间" + (System.currentTimeMillis() - t));
 	}
 
-	private LaunchInitListener initListener;
-
-	public void setOnLaunchInitLis(LaunchInitListener android) {
-		initListener = android;
-	}
+	Handler handler = new Handler() {
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case Show_Splash:
+				fragmentManager.showFragment(WMFragmentManager.TYPE_SPLASH);
+				break;
+			default:
+				break;
+			}
+		};
+	};
 
 	public void init() {
+		// 初始化地图显示,依赖地图sdk初始化
+		MapControler.getInstance().init((MapView) findViewById(R.id.bmapView));
+		// 开始定位，依赖地图初始化，定位成功要存储，依赖bmob服务，
+		WLocationManager.getInstance().start();
 		// 设置小米自动更新组件，仅wifi下更新
 		XiaomiUpdateAgent.setCheckUpdateOnlyWifi(true);
 		XiaomiUpdateAgent.update(this);
 		getWindow().getDecorView().setBackgroundDrawable(null);
 		forbidTouch(false);// 默认不禁止触摸
-		// 初始化地图显示,依赖地图sdk初始化
-		MapControler.getInstance().init((MapView) findViewById(R.id.bmapView));
 		new Thread(new Runnable() {
 			public void run() {
 				long t = System.currentTimeMillis();
+				new LaunchHelper().checkLaunch();
 				hideView = findViewById(R.id.layout_hide);
 				// 初始化地图,定位一旦开始就要使用地图，没有依赖
 				mForbidTouchView.setOnTouchListener(new OnTouchListener() {
@@ -175,6 +188,12 @@ public class MainActivity extends FragmentActivity {
 			return true;
 		}
 		return false;
+	}
+
+	private LaunchInitListener initListener;
+
+	public void setOnLaunchInitLis(LaunchInitListener android) {
+		initListener = android;
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝内部实现＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝

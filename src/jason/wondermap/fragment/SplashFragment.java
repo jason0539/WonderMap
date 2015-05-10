@@ -25,7 +25,7 @@ public class SplashFragment extends ContentFragment {
 	private static final int GO_HOME = 100;
 	private static final int GO_LOGIN = 200;
 	private static final int INIT = 300;
-	private static final int DELAY = 1500;
+	private static final int DELAY = 600;
 
 	private DialogTips mExitAppDialog;
 	private ViewGroup mRootViewGroup;
@@ -46,7 +46,7 @@ public class SplashFragment extends ContentFragment {
 	public void onResume() {
 		super.onResume();
 		long t = System.currentTimeMillis();
-		mHandler.sendEmptyMessage(INIT);
+		mHandler.sendEmptyMessageDelayed(INIT,DELAY);
 		L.d(WModel.Time, "splash onResume时间" + (System.currentTimeMillis() - t));
 	}
 

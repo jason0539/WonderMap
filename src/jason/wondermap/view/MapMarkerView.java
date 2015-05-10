@@ -5,23 +5,21 @@ import jason.wondermap.bean.MapUser;
 import jason.wondermap.fragment.BaseFragment;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.WModel;
-import android.app.Activity;
 import android.graphics.Bitmap;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MapMarkerView {
-	private static ImageView iv_marker_head;
-	private static TextView iv_marker_name;
-	private static View view;
+	private ImageView iv_marker_head;
+	private TextView iv_marker_name;
+	private View view;
 
-	public static View createView(final MapUser user) {
+	public View createView(final MapUser user) {
 		if (user == null) {
 			L.d(WModel.CrashUpload, "user 是空指针");
 		}
-		if (BaseFragment.getInflater()==null) {
+		if (BaseFragment.getInflater() == null) {
 			L.d(WModel.CrashUpload, "getInflater is null");
 		}
 		view = BaseFragment.getInflater()

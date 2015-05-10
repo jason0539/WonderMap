@@ -56,7 +56,7 @@ public class MapHomeFragment extends ContentFragment {
 	protected void onInitView() {
 		L.d(TAG + ":onInitView");
 		long t = System.currentTimeMillis();
-		// 检查是否需要确认信息
+		// 检查是否需要确认信息    
 		new LaunchHelper().checkIsNeedToConfirmInfo();
 		if (MapUserManager.getInstance().isOnlyShowFriends()) {
 			initTopBarForOnlyTitle(mRootView, "好友地图");

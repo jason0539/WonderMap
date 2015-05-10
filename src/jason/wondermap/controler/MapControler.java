@@ -15,8 +15,6 @@ import jason.wondermap.view.MapMarkerView;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Map.Entry;
 
 import android.content.Context;
@@ -62,6 +60,7 @@ public class MapControler {
 	private LatLng currentPt;// 当前触摸地点
 	private String touchType;// 触摸事件类型
 	private InfoWindow mInfoWindow;// 点击用户图标弹出窗,暂时无用
+	private MapMarkerView markerView;
 	private MapStatus mapStatus;
 
 	private LocationMode mCurrentMode; // 定位模式（普通、跟随、罗盘）
@@ -398,7 +397,7 @@ public class MapControler {
 	 * @return 返回该用户的地标，唯一，位置变动则更新该地标位置
 	 */
 	public Marker addUser(MapUser user) {
-		View view = MapMarkerView.createView(user);
+		View view = markerView.createView(user);
 		Marker marker = addMarker(user.getLat(), user.getLng(), view);
 		return marker;
 	}
@@ -510,6 +509,7 @@ public class MapControler {
 	public void init(MapView mapView) {
 		mContext = WonderMapApplication.getInstance();
 		mMapView = mapView;
+		markerView = new MapMarkerView();
 		mMapView.showScaleControl(false);// 隐藏比例尺
 		mMapView.showZoomControls(false);// 隐藏缩放控件
 		mMapView.removeViewAt(1);// 隐藏百度logo
