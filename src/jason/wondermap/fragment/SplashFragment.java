@@ -46,7 +46,7 @@ public class SplashFragment extends ContentFragment {
 	public void onResume() {
 		super.onResume();
 		long t = System.currentTimeMillis();
-		mHandler.sendEmptyMessageDelayed(INIT,DELAY);
+		mHandler.sendEmptyMessageDelayed(INIT, DELAY);
 		L.d(WModel.Time, "splash onResume时间" + (System.currentTimeMillis() - t));
 	}
 
@@ -60,12 +60,14 @@ public class SplashFragment extends ContentFragment {
 				mActivity.init();
 				break;
 			case GO_HOME:
-				showService(msg);
-				goHomeFrag();
+				if (!showService(msg)) {
+					goHomeFrag();
+				}
 				break;
 			case GO_LOGIN:
-				showService(msg);
-				goLoginFrag();
+				if (!showService(msg)) {
+					goLoginFrag();
+				}
 				break;
 			}
 			L.d(WModel.Time, "splash mHandler时间"
@@ -85,12 +87,13 @@ public class SplashFragment extends ContentFragment {
 		}
 	};
 
-	private void showService(Message msg) {
+	private boolean showService(Message msg) {
 		// 检查是否显示提醒用户授权信息
 		if (!WonderMapApplication.getInstance().getSpUtil().hasAccept()) {
 			openUserAccessbleDialog(msg.what);
-			return;
+			return true;
 		}
+		return false;
 	}
 
 	private void goHomeFrag() {

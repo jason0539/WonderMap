@@ -1,8 +1,10 @@
 package jason.wondermap.helper;
 
 import jason.wondermap.WonderMapApplication;
+import jason.wondermap.config.WMapConstants;
 import jason.wondermap.controler.MapControler;
 import jason.wondermap.manager.WLocationManager;
+import jason.wondermap.utils.L;
 import jason.wondermap.utils.SharePreferenceUtil;
 
 import com.baidu.mapapi.map.BaiduMap;
@@ -12,6 +14,12 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapStatus.Builder;
 import com.baidu.mapapi.model.LatLng;
 
+/**
+ * 地图状态保存，用于恢复上次应用退出时地图的状态恢复
+ * 
+ * @author liuzhenhui
+ * 
+ */
 public class MapStatusSaveHelper {
 	private final String LAT = "status_lat";
 	private final String LNG = "status_lng";
@@ -27,10 +35,12 @@ public class MapStatusSaveHelper {
 
 	public MapStatusSaveHelper() {
 		spUtil = WonderMapApplication.getInstance().getSpUtil();
-		lat = Double.valueOf(spUtil.getValue(LAT, WLocationManager
-				.getInstance().getLatitude() + ""));
-		lng = Double.valueOf(spUtil.getValue(LNG, WLocationManager
-				.getInstance().getLongtitude() + ""));
+		String latString = WLocationManager.getInstance().getLatitude() + "";
+		String lngString = WLocationManager.getInstance().getLongtitude() + "";
+		// 获取本地保存的位置，如果本地保存为空则移动到当前定位到的位置，如果当前位置为空，则默认移动到北京
+		lat = Double.valueOf(spUtil.getValue(LAT, latString));
+		lng = Double.valueOf(spUtil.getValue(LNG, lngString));
+		L.d("默认位置" + lat + "," + lng);
 		zoom = spUtil.getValue(ZOOM, MapControler.ZoomLevelMin);
 		rotate = spUtil.getValue(ROTATE, 0);
 		overlook = spUtil.getValue(OVERLOOK, 0);

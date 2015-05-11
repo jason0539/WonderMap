@@ -56,5 +56,9 @@ public class WMapConstants {
 	// 点击足迹相关控件，如果没有登录，则先进入登陆页面，登陆成功后返回之前操作界面
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝图片移植 end＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-	//
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝定位相关＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+	public static final double LAT_DEFAILT_DOUBLE = 39.916439;
+	public static final double LNG_DEFAILT_DOUBLE = 116.402724;
+	public static final String LAT_DEFAILT_STRING = "39.916439";
+	public static final String LNG_DEFAILT_STRING = "116.402724";
 }

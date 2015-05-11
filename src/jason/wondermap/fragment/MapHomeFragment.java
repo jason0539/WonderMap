@@ -5,6 +5,7 @@ import jason.wondermap.WonderMapApplication;
 import jason.wondermap.controler.MapControler;
 import jason.wondermap.helper.LaunchHelper;
 import jason.wondermap.manager.MapUserManager;
+import jason.wondermap.manager.WLocationManager;
 import jason.wondermap.utils.L;
 import jason.wondermap.utils.T;
 import jason.wondermap.utils.WModel;
@@ -223,6 +224,10 @@ public class MapHomeFragment extends ContentFragment {
 		L.d(TAG + ":onResume");
 		super.onResume();
 		MiStatInterface.recordPageStart(getActivity(), "地图首页");
+		if (bottomBar == null) {
+			bottomBar = new MainBottomBar(
+					mRootView.findViewById(R.id.main_bottom_bar));
+		}
 		// 确保消息未读数量正确
 		bottomBar.onResume();
 		MapUserManager.getInstance().onResume();

@@ -84,8 +84,7 @@ public class NearPeopleFragment extends ContentFragment implements
 		if (WLocationManager.getInstance().getLatitude() != 0.0
 				&& WLocationManager.getInstance().getLongtitude() != 0.0) {
 			double latitude = WLocationManager.getInstance().getLatitude();
-			double longtitude = WLocationManager.getInstance()
-					.getLongtitude();
+			double longtitude = WLocationManager.getInstance().getLongtitude();
 			// 封装的查询方法，当进入此页面时 isUpdate为false，当下拉刷新的时候设置为true就行。
 			// 此方法默认每页查询10条数据,若想查询多于10条，可在查询之前设置BRequest.QUERY_LIMIT_COUNT，如：BRequest.QUERY_LIMIT_COUNT=20
 			// 此方法是新增的查询指定10公里内的性别为女性的用户列表，默认包含好友列表
@@ -188,7 +187,9 @@ public class NearPeopleFragment extends ContentFragment implements
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
-		// TODO Auto-generated method stub
+		if (position == 0) {
+			return;
+		}
 		User user = (User) adapter.getItem(position - 1);
 		Bundle bundle = new Bundle();
 		bundle.putString(UserInfo.USER_ID, user.getObjectId());
@@ -249,11 +250,13 @@ public class NearPeopleFragment extends ContentFragment implements
 				});
 
 	}
+
 	@Override
 	public void onResume() {
 		super.onResume();
 		MiStatInterface.recordPageStart(getActivity(), "附近的人页");
 	}
+
 	@Override
 	public void onPause() {
 		super.onPause();

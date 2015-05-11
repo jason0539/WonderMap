@@ -1,8 +1,10 @@
 package jason.wondermap.manager;
 
 import jason.wondermap.WonderMapApplication;
+import jason.wondermap.config.WMapConstants;
 import jason.wondermap.controler.MapControler;
 import jason.wondermap.utils.L;
+import jason.wondermap.utils.T;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import cn.bmob.v3.datatype.BmobGeoPoint;
@@ -34,6 +36,7 @@ public class WLocationManager {
 	private MyLocationListener mMyLocationListener;
 	private BDLocation lastBdLocation;
 	private BmobGeoPoint lastGeoPoint;
+	private boolean isLocationSuccess;
 	private GeoCoder mSearch = null;
 
 	private double latitude;
@@ -62,7 +65,7 @@ public class WLocationManager {
 	}
 
 	public void stop() {
-		//有可能在MainActivity还没进入MapHome，定位还没初始化，所以不能销毁
+		// 有可能在MainActivity还没进入MapHome，定位还没初始化，所以不能销毁
 		if (mLocationClient == null) {
 			return;
 		}
@@ -79,9 +82,16 @@ public class WLocationManager {
 
 		@Override
 		public void onReceiveLocation(BDLocation location) {
-			if (location == null || location.getLatitude() == 0
-					|| location.getLongitude() == 0)
+			if (location == null
+					|| location.getLocType() == BDLocation.TypeNone
+					|| location.getLatitude() == 4.9E-324
+					|| location.getLongitude() == 4.9E-324) {
+				L.d("当前定位结果无效，抛弃");
+				isLocationSuccess = false;
+				T.showShort(mApplication, "定位失败，请给予活点地图定位权限");
 				return;
+			}
+			isLocationSuccess = true;
 			lastBdLocation = location;
 			lastGeoPoint = new BmobGeoPoint(location.getLongitude(),
 					location.getLatitude());
@@ -105,14 +115,13 @@ public class WLocationManager {
 			// 更新位置到服务器
 			AccountUserManager.getInstance().updateUserLocation(lastGeoPoint);
 			// 推送给其他人，每隔一段时间更新一次位置，以后陌生人不更新，好友实时更新
-//			PushMsgSendManager.getInstance().sayHello();
+			// PushMsgSendManager.getInstance().sayHello();
 			// 保存到本地
 			saveLatitude(latitude + "");
 			saveLongtitude(longtitude + "");
 			lastLatitude = latitude;
 			lastLongtitude = longtitude;
 		}
-
 	}
 
 	public boolean isLocationChanged() {
@@ -121,6 +130,15 @@ public class WLocationManager {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * 定位是否成功
+	 * 
+	 * @return
+	 */
+	public boolean isLocationSuccess() {
+		return isLocationSuccess;
 	}
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝GEO相关＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
@@ -144,7 +162,8 @@ public class WLocationManager {
 		editor = preferences.edit();
 		latitude = lastLatitude = Double.valueOf(getSavedLatitude());// 初始默认为上次位置
 		longtitude = lastLongtitude = Double.valueOf(getSavedLongtitude());
-		L.d("第一次获取到lat" + latitude + ";第一次lng" + longtitude);
+		lastGeoPoint = new BmobGeoPoint(longtitude, latitude);
+		L.d("默认获取到lat" + latitude + "；lng" + longtitude);
 	}
 
 	public static WLocationManager getInstance() {
@@ -156,10 +175,16 @@ public class WLocationManager {
 
 	// =＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝get set＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	public double getLongtitude() {
+		if (longtitude == 0) {
+			return WMapConstants.LNG_DEFAILT_DOUBLE;
+		}
 		return longtitude;
 	}
 
 	public double getLatitude() {
+		if (latitude == 0) {
+			return WMapConstants.LAT_DEFAILT_DOUBLE;
+		}
 		return latitude;
 	}
 
@@ -180,6 +205,9 @@ public class WLocationManager {
 	}
 
 	public BmobGeoPoint getBmobGeoPoint() {
+		if (lastGeoPoint == null) {
+			lastGeoPoint = new BmobGeoPoint();
+		}
 		return lastGeoPoint;
 	}
 
@@ -189,7 +217,7 @@ public class WLocationManager {
 	 */
 	private String getSavedLongtitude() {
 		String longtitude = preferences.getString(PREF_LONGTITUDE, "");
-		return longtitude.equals("") ? "116.402724" : longtitude;
+		return longtitude.equals("") ? "0" : longtitude;
 	}
 
 	/**
@@ -204,7 +232,7 @@ public class WLocationManager {
 	 */
 	private String getSavedLatitude() {
 		String latitude = preferences.getString(PREF_LATITUDE, "");
-		return latitude.equals("") ? "39.916439" : latitude;
+		return latitude.equals("") ? "0" : latitude;
 	}
 
 	/**
