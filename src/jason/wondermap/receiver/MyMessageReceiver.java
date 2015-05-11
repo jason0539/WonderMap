@@ -3,12 +3,9 @@ package jason.wondermap.receiver;
 import jason.wondermap.MainActivity;
 import jason.wondermap.manager.AccountUserManager;
 import jason.wondermap.manager.ChatMessageManager;
-import jason.wondermap.manager.MapUserManager;
-import jason.wondermap.manager.PushMsgSendManager;
 import jason.wondermap.utils.CollectionUtils;
 import jason.wondermap.utils.CommonUtils;
 import jason.wondermap.utils.L;
-import jason.wondermap.utils.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +43,7 @@ public class MyMessageReceiver extends BroadcastReceiver {
 	// 事件监听，三个监听者,有监听者则传给监听者处理，没有则给ChatMessageManager处理
 	public static ArrayList<EventListener> ehList = new ArrayList<EventListener>();
 
-	BmobChatUser currentUser;
+	private BmobChatUser currentUser;
 
 	// 如果你想发送自定义格式的消息，请使用sendJsonMessage方法来发送Json格式的字符串，然后你按照格式自己解析并处理
 
@@ -75,10 +72,10 @@ public class MyMessageReceiver extends BroadcastReceiver {
 		//
 		// return;
 		// }
-//		MapUserManager.getInstance().addUserFromUserId(
-//				BmobJsonUtil.getString(json, UserInfo.USER_ID));// 更新地图
+		// MapUserManager.getInstance().addUserFromUserId(
+		// BmobJsonUtil.getString(json, UserInfo.USER_ID));// 更新地图
 		// 应该加上参数，只发送给hello用户
-//		PushMsgSendManager.getInstance().sayWorld();
+		// PushMsgSendManager.getInstance().sayWorld();
 	}
 
 	/**
@@ -91,8 +88,8 @@ public class MyMessageReceiver extends BroadcastReceiver {
 		//
 		// return;
 		// }
-//		MapUserManager.getInstance().addUserFromUserId(
-//				BmobJsonUtil.getString(json, UserInfo.USER_ID));
+		// MapUserManager.getInstance().addUserFromUserId(
+		// BmobJsonUtil.getString(json, UserInfo.USER_ID));
 	}
 
 	/**
@@ -109,11 +106,13 @@ public class MyMessageReceiver extends BroadcastReceiver {
 					// 下线直接交给消息管理处理
 					ChatMessageManager.getInstance().onOffline();
 				}
-			} else if (tag.equals(UserInfo.HELLO)) {
-				handleHelloMsg(jo);
-			} else if (tag.equals(UserInfo.WORLD)) {
-				handleWorldMsg(jo);
-			} else {
+			}
+			// else if (tag.equals(UserInfo.HELLO)) {
+			// handleHelloMsg(jo);
+			// } else if (tag.equals(UserInfo.WORLD)) {
+			// handleWorldMsg(jo);
+			// }
+			else {
 				L.d("聊天的正常消息");
 				String fromId = BmobJsonUtil.getString(jo,
 						BmobConstant.PUSH_KEY_TARGETID);

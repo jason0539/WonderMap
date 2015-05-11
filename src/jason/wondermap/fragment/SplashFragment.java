@@ -50,7 +50,7 @@ public class SplashFragment extends ContentFragment {
 		L.d(WModel.Time, "splash onResume时间" + (System.currentTimeMillis() - t));
 	}
 
-	private Handler mHandler = new Handler(mActivity.getMainLooper()) {
+	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			long t = System.currentTimeMillis();

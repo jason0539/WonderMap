@@ -27,15 +27,13 @@ import cn.bmob.v3.listener.UpdateListener;
  * 
  */
 public class AccountUserManager {
-	private WonderMapApplication mApplication;
-	private Map<String, BmobChatUser> contactList = new HashMap<String, BmobChatUser>();;
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝对外接口＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	/**
 	 * 退出登录,清空缓存数据,推到启动页
 	 */
 	public void logout() {
-		BmobUserManager.getInstance(mApplication).logout();
+		bmobUserManager.logout();
 		setContactList(null);
 		BaseFragment.getWMFragmentManager().backTo(
 				WMFragmentManager.TYPE_SPLASH, null);
@@ -46,7 +44,7 @@ public class AccountUserManager {
 	 */
 	public void loadLocalContact() {
 		// 若用户登陆过，则先从好友数据库中取出好友list存入内存中
-		if (BmobUserManager.getInstance(mApplication).getCurrentUser() != null) {
+		if (bmobUserManager.getCurrentUser() != null) {
 			// 获取本地好友user list到内存,方便以后获取好友list
 			contactList = CollectionUtils.list2map(BmobDB.create(mApplication)
 					.getContactList());
@@ -76,7 +74,7 @@ public class AccountUserManager {
 	 * 除登陆注册和欢迎页面外-用于检测是否有其他设备登录了同一账号
 	 */
 	public void checkLogin() {
-		if (BmobUserManager.getInstance(mApplication).getCurrentUser() == null) {
+		if (bmobUserManager.getCurrentUser() == null) {
 			Toast.makeText(mApplication, "您的账号已在其他设备上登录!", Toast.LENGTH_SHORT)
 					.show();
 			// TODO 下线提醒
@@ -95,8 +93,8 @@ public class AccountUserManager {
 		// updateUserLocation();
 		// 查询该用户的好友列表(这个好友列表是去除黑名单用户的哦),目前支持的查询好友个数为100，如需修改请在调用这个方法前设置BmobConfig.LIMIT_CONTACTS即可。
 		// 这里默认采取的是登陆成功之后即将好于列表存储到数据库中，并更新到当前内存中,
-		BmobUserManager.getInstance(mApplication).queryCurrentContactList(
-				new FindListener<BmobChatUser>() {
+		bmobUserManager
+				.queryCurrentContactList(new FindListener<BmobChatUser>() {
 
 					@Override
 					public void onError(int arg0, String arg1) {
@@ -138,21 +136,19 @@ public class AccountUserManager {
 	}
 
 	public User getCurrentUser() {
-		return BmobUserManager.getInstance(mApplication).getCurrentUser(
-				User.class);
+		return bmobUserManager.getCurrentUser(User.class);
 	}
 
 	public String getCurrentUserName() {
-		return BmobUserManager.getInstance(mApplication).getCurrentUserName();
+		return bmobUserManager.getCurrentUserName();
 	}
 
 	public BmobUserManager getUserManager() {
-		return BmobUserManager.getInstance(mApplication);
+		return bmobUserManager;
 	}
 
 	public String getCurrentUserid() {
-		return BmobUserManager.getInstance(mApplication)
-				.getCurrentUserObjectId();
+		return bmobUserManager.getCurrentUserObjectId();
 	}
 
 	public void updateCurrentUserSex(boolean se, UpdateListener listener) {
@@ -198,7 +194,6 @@ public class AccountUserManager {
 			return;
 		}
 		User currUser = getCurrentUser();
-
 		currUser.setPhone(phone);
 		currUser.update(mApplication, listener);
 	}
@@ -224,9 +219,13 @@ public class AccountUserManager {
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝模式化代码＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 	private static AccountUserManager instance = null;
+	private WonderMapApplication mApplication;
+	private Map<String, BmobChatUser> contactList = new HashMap<String, BmobChatUser>();
+	private BmobUserManager bmobUserManager;
 
 	private AccountUserManager() {
 		mApplication = WonderMapApplication.getInstance();
+		bmobUserManager = BmobUserManager.getInstance(mApplication);
 	}
 
 	public void destroy() {

@@ -45,7 +45,8 @@ public class MainActivity extends FragmentActivity {
 		fragmentManager = new WMFragmentManager(this);
 		BaseFragment.initBeforeAll(this, fragmentManager);
 		mForbidTouchView = findViewById(R.id.view_main_forbid_touch);
-		handler.sendEmptyMessageDelayed(Show_Splash, System.currentTimeMillis()-t);
+		handler.sendEmptyMessageDelayed(Show_Splash, System.currentTimeMillis()
+				- t);
 		L.d(WModel.Time,
 				"MainActivity onCreate时间" + (System.currentTimeMillis() - t));
 	}

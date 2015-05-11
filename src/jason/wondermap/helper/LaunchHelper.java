@@ -45,6 +45,10 @@ public class LaunchHelper {
 		// 异常处理类，提示用户应用即将退出
 		CrashHandler crashHandler = CrashHandler.getInstance();
 		crashHandler.init(WonderMapApplication.getInstance());
+		L.isDebug = true;
+		// 测试时打开，防止测试机污染后台统计数据
+		// MiStatInterface.setUploadPolicy(MiStatInterface.UPLOAD_POLICY_DEVELOPMENT,
+		// 0);
 	}
 
 	/** 初始化ImageLoader */
@@ -66,7 +70,6 @@ public class LaunchHelper {
 				// .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
 				// .writeDebugLogs() // Remove for release app
 				.build();
-		L.isDebug = true;
 		ImageLoader.getInstance().init(config);// 全局初始化此配置
 	}
 

@@ -56,15 +56,15 @@ public class MapHomeFragment extends ContentFragment {
 	protected void onInitView() {
 		L.d(TAG + ":onInitView");
 		long t = System.currentTimeMillis();
-		// 检查是否需要确认信息    
+		bottomBar = new MainBottomBar(
+				mRootView.findViewById(R.id.main_bottom_bar));
+		// 检查是否需要确认信息
 		new LaunchHelper().checkIsNeedToConfirmInfo();
 		if (MapUserManager.getInstance().isOnlyShowFriends()) {
 			initTopBarForOnlyTitle(mRootView, "好友地图");
 		} else {
 			initTopBarForOnlyTitle(mRootView, "在线地图");
 		}
-		bottomBar = new MainBottomBar(
-				mRootView.findViewById(R.id.main_bottom_bar));
 		locationView = mRootView.findViewById(R.id.tv_maphome_location);
 		smallView = mRootView.findViewById(R.id.tv_maphome_small);
 		bigView = mRootView.findViewById(R.id.tv_maphome_big);
@@ -212,22 +212,22 @@ public class MapHomeFragment extends ContentFragment {
 	@Override
 	public void onPause() {
 		L.d(TAG + ":onPause");
+		super.onPause();
 		MiStatInterface.recordPageEnd();
 		MapUserManager.getInstance().onPause();
 		bottomBar.onPause();
-		super.onPause();
 	};
 
 	@Override
 	public void onResume() {
 		L.d(TAG + ":onResume");
+		super.onResume();
 		MiStatInterface.recordPageStart(getActivity(), "地图首页");
 		// 确保消息未读数量正确
 		bottomBar.onResume();
 		MapUserManager.getInstance().onResume();
 		// 确保所有用户都在地图上显示出来,activity进入onPause之后marker都消失了
 		// MapUserManager.getInstance().onResumeAllUsersOnMap();
-		super.onResume();
 	}
 
 	@Override

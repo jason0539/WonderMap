@@ -80,7 +80,6 @@ import cn.bmob.v3.listener.PushListener;
 
 public class ChatFragment extends ContentFragment implements OnClickListener,
 		IXListViewListener, EventListener {
-	private ViewGroup mContainer;
 	private ViewGroup mRootView;
 	private Button btn_chat_emo, btn_chat_send, btn_chat_add,
 			btn_chat_keyboard, btn_speak, btn_chat_voice;
@@ -113,13 +112,6 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 	MessageChatAdapter mAdapter;
 
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝生命周期＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		mContainer = container;
-		return super.onCreateView(inflater, container, savedInstanceState);
-	}
 
 	@Override
 	protected View onCreateContentView(LayoutInflater inflater) {
@@ -834,7 +826,7 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 			boolean isNetConnected = CommonUtils.isNetworkAvailable(mContext);
 			if (!isNetConnected) {
 				ShowToast(R.string.network_tips);
-				// return;
+				return;
 			}
 			// 组装BmobMessage对象
 			BmobMsg message = BmobMsg
@@ -844,7 +836,6 @@ public class ChatFragment extends ContentFragment implements OnClickListener,
 			manager.sendTextMessage(targetUser, message);
 			// 刷新界面
 			refreshMessage(message);
-
 			break;
 		case R.id.tv_camera:// 拍照
 			selectImageFromCamera();
