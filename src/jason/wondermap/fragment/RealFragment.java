@@ -9,7 +9,6 @@ public class RealFragment extends Fragment{
 	protected Context mContext;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		TAG = this.getClass().getSimpleName();
 		mContext = getActivity();
@@ -17,13 +16,11 @@ public class RealFragment extends Fragment{
 	
 	@Override
 	public void onResume() {
-		// TODO Auto-generated method stub
 		super.onResume();
 	}
 
 	@Override
 	public void onPause() {
-		// TODO Auto-generated method stub
 		super.onPause();
 	}
 }

@@ -51,7 +51,7 @@ public class MainActivity extends FragmentActivity {
 				"MainActivity onCreate时间" + (System.currentTimeMillis() - t));
 	}
 
-	Handler handler = new Handler() {
+	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case Show_Splash:
@@ -62,6 +62,10 @@ public class MainActivity extends FragmentActivity {
 			}
 		};
 	};
+
+	public Handler getHandler() {
+		return handler;
+	}
 
 	public void init() {
 		// 初始化地图显示,依赖地图sdk初始化

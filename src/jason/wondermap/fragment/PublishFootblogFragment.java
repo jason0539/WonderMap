@@ -70,9 +70,9 @@ public class PublishFootblogFragment extends ContentFragment implements
 
 		picView = (ImageView) mRootViewGroup
 				.findViewById(R.id.iv_publish_footblog_view);
-		getActivity().getWindow().setSoftInputMode(
-				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
-						| WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+		// getActivity().getWindow().setSoftInputMode(
+		// WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE
+		// | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
 		openLayout.setOnClickListener(this);
 		takeLayout.setOnClickListener(this);
@@ -83,8 +83,9 @@ public class PublishFootblogFragment extends ContentFragment implements
 		@Override
 		public void onClick() {
 			String commitContent = content.getText().toString().trim();
-			//足迹可以还有图片，文字图片有一个即可
-			if (TextUtils.isEmpty(commitContent)&&TextUtils.isEmpty(targeturl)) {
+			// 足迹可以还有图片，文字图片有一个即可
+			if (TextUtils.isEmpty(commitContent)
+					&& TextUtils.isEmpty(targeturl)) {
 				ShowToast("内容不能为空");
 				return;
 			}
@@ -149,14 +150,15 @@ public class PublishFootblogFragment extends ContentFragment implements
 				String fileName = null;
 				if (data != null) {
 					Uri originalUri = data.getData();
-					L.d(WModel.PublishBlog, "originalUri path："+originalUri.getPath());
+					L.d(WModel.PublishBlog,
+							"originalUri path：" + originalUri.getPath());
 					ContentResolver cr = getMainActivity().getContentResolver();
 					Cursor cursor = cr.query(originalUri, null, null, null,
 							null);
-					if (cursor==null) {
-						//小米进入后
+					if (cursor == null) {
+						// 小米进入后
 						fileName = originalUri.getPath();
-					}else{
+					} else {
 						if (cursor.moveToFirst()) {
 							do {
 								fileName = cursor.getString(cursor
@@ -250,11 +252,13 @@ public class PublishFootblogFragment extends ContentFragment implements
 		}
 		return file.getAbsolutePath();
 	}
+
 	@Override
 	public void onResume() {
 		super.onResume();
 		MiStatInterface.recordPageStart(getActivity(), "发布足迹页");
 	}
+
 	@Override
 	public void onPause() {
 		super.onPause();

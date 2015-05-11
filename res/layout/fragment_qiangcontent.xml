@@ -29,14 +29,4 @@
         android:indeterminateDrawable="@anim/loading"
         android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/networkTips"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="请检查网络并下拉刷新"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:visibility="visible" />
-
 </RelativeLayout>

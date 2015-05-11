@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 public class DiscoveryFragment extends ContentFragment implements
 		OnPageChangeListener {
 	ViewGroup mRootViewGroup;
-	private View contentView;
 	private ViewPager mViewPager;
 	private QiangContentAdapter mAdapter;
 
