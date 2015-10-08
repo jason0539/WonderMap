@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values-zh/xiaomi_strings.xml -->
+    <eat-comment/>
+    <string name="xiaomi_bytes_unit"><ns1:g id="size">%1$s</ns1:g>B</string>
+    <string name="xiaomi_external_storage_unavailable">存储分区不可用，请检查SD卡</string>
+    <string name="xiaomi_kilobytes_unit"><ns1:g id="size">%1$s</ns1:g>KB</string>
+    <string name="xiaomi_megabytes_unit"><ns1:g id="size">%1$s</ns1:g>MB</string>
+    <string name="xiaomi_update_dialog_message">推荐您立即升级到最新的<ns1:g id="version_name">%1$s</ns1:g>版\n大小: <ns1:g id="app_size">%2$s</ns1:g></string>
+    <string name="xiaomi_update_dialog_message_diff">推荐您立即升级到最新的<ns1:g id="version_name">%1$s</ns1:g>版\n增量更新只需下载: <ns1:g id="app_size">%2$s</ns1:g></string>
+    <string name="xiaomi_update_dialog_title"><ns1:g id="app_name">%1$s</ns1:g>新版本</string>
+</resources>

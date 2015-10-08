@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:state_window_focused="false" android:drawable="@drawable/bg_account_normal"></item>
+    <item android:state_focused="true" android:drawable="@drawable/bg_account_focus"></item>
+
+</selector>
+<!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/drawable/selector_edittext_account.xml -->

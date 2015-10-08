@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_bg_color"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/common_actionbar"
+        layout="@layout/include_action_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/common_actionbar" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/edit_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@drawable/selector_edittext"
+                android:gravity="left|top"
+                android:hint="说说这段风景的故事吧"
+                android:inputType="textMultiLine"
+                android:minLines="8"
+                android:paddingLeft="4dip"
+                android:paddingRight="4dip" >
+
+                <requestFocus />
+            </EditText>
+
+            <ImageView
+                android:id="@+id/iv_publish_footblog_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/edit_content"
+                android:layout_alignRight="@+id/edit_content"
+                android:layout_below="@id/edit_content"
+                android:scaleType="centerCrop"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:id="@+id/pic_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/edit_content"
+                android:layout_alignRight="@+id/edit_content"
+                android:layout_below="@id/iv_publish_footblog_view"
+                android:orientation="horizontal"
+                android:paddingTop="8dp" >
+
+                <ImageView
+                    android:id="@+id/open_pic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_edit_pic"
+                    android:padding="16dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/open_picture" />
+
+                <ImageView
+                    android:id="@+id/take_pic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_edit_pic"
+                    android:padding="16dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/take_picture" />
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

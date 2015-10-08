@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#F7F7F7"
+    android:orientation="vertical"
+    android:padding="16dp" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/comment_item_user_head"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/user_icon_default_main" />
+        <!-- 姓名 -->
+
+        <TextView
+            android:id="@+id/userName_comment"
+            style="@style/TextTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/comment_item_user_head"
+            android:text="userName"
+            android:textSize="16sp" />
+        <!-- 性别 -->
+
+        <CheckBox
+            android:id="@+id/comment_item_user_sex"
+            style="@style/TextTheme"
+            android:layout_alignBottom="@+id/userName_comment"
+            android:layout_marginLeft="6dp"
+            android:layout_toRightOf="@id/userName_comment"
+            android:button="@drawable/selector_sex_checkbox"
+            android:checked="true"
+            android:focusable="false"
+            android:gravity="center" />
+        <!-- 年龄 -->
+
+        <TextView
+            android:id="@+id/comment_item_user_age"
+            style="@style/FootblogTopTextview"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@+id/comment_item_user_sex"
+            android:gravity="center"
+            android:text="22"
+            android:textColor="#2BA2E5" />
+
+        <TextView
+            android:id="@+id/index_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="4dp"
+            android:background="@drawable/bg_comment_floor"
+            android:gravity="center"
+            android:text="1楼"
+            android:textColor="#888888" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/content_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dip"
+        android:text="评论"
+        android:textColor="#666666"
+        android:textSize="16sp" />
+
+</LinearLayout>

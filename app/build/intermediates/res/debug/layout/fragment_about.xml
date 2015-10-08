@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_bg_color"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/common_actionbar"
+        layout="@layout/include_action_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/iv_about_icon"
+            android:layout_width="84dp"
+            android:layout_height="84dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_app_icon" />
+
+        <TextView
+            android:id="@+id/tv_about_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="活点地图" />
+
+        <TextView
+            android:id="@+id/tv_about_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:text="1.0428" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/layout_me"
+            style="@style/SetFragment.Item"
+            android:minHeight="50dp" >
+
+            <ImageView
+                android:id="@+id/iv_about_me"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="5dp"
+                android:src="@drawable/my_head_icon" />
+
+            <TextView
+                android:id="@+id/tv_set_name_tips"
+                style="@style/Smile.TextView._Black"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/iv_about_me"
+                android:text="@string/about_me" />
+
+            <TextView
+                android:id="@+id/tv_set_name"
+                style="@style/Smile.TextView._Black"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="5dp"
+                android:layout_toRightOf="@id/tv_set_name_tips"
+                android:drawablePadding="10dp"
+                android:ellipsize="end"
+                android:gravity="right"
+                android:singleLine="true"
+                android:text="Jason0539" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#eeeeee" />
+
+        <RelativeLayout
+            android:id="@+id/layout_weibo"
+            style="@style/SetFragment.Item"
+            android:minHeight="50dp" >
+
+            <ImageView
+                android:id="@+id/iv_about_weibo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="5dp"
+                android:src="@drawable/weibo_logo" />
+
+            <TextView
+                style="@style/Smile.TextView._Black"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/iv_about_weibo"
+                android:text="@string/about_weibo" />
+
+            <TextView
+                android:id="@+id/tv_set_name"
+                style="@style/Smile.TextView._Black"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="5dp"
+                android:drawablePadding="10dp"
+                android:ellipsize="end"
+                android:gravity="right"
+                android:singleLine="true"
+                android:text="贞会说" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#eeeeee" />
+
+        <RelativeLayout
+            android:id="@+id/layout_recommend"
+            style="@style/SetFragment.Item"
+            android:minHeight="50dp" >
+
+            <ImageView
+                android:id="@+id/iv_about_recommend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="5dp"
+                android:src="@drawable/icon_about_recommend" />
+
+            <TextView
+                style="@style/Smile.TextView._Black"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/iv_about_recommend"
+                android:text="@string/recommend_friend" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout><!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/layout/fragment_about.xml -->

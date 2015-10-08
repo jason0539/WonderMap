@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jason.wondermap.view.HeaderLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/base_action_bar_height" >
+</jason.wondermap.view.HeaderLayout><!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/layout/include_action_bar.xml -->

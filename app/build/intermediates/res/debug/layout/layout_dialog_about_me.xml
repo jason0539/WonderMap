@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="16dp" >
+
+    <TextView
+        android:id="@+id/album_pic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:drawableTop="@drawable/zhenhuishuo2"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="公众号：贞会说"
+        android:textColor="#666666"
+        android:textSize="18sp" />
+
+</LinearLayout><!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/layout/layout_dialog_about_me.xml -->

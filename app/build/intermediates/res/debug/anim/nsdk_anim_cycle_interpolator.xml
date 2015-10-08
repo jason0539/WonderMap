@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cycleInterpolator xmlns:android="http://schemas.android.com/apk/res/android"
+     android:duration="100" /><!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/anim/nsdk_anim_cycle_interpolator.xml -->

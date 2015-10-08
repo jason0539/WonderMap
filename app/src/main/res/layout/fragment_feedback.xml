@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/theme_bg_color"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/common_actionbar"
+        layout="@layout/include_action_bar" />
+
+    <EditText
+        android:id="@+id/et_feedback_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:background="@drawable/selector_edittext"
+        android:hint="请写下你的意见，我们会认真倾听"
+        android:minHeight="145dp" />
+
+    <Button
+        android:id="@+id/btn_feedback_commit"
+        style="@style/Smile.Button.theme"
+        android:layout_width="fill_parent"
+        android:layout_height="45dp"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:text="@string/feedback_commit" />
+
+</LinearLayout>

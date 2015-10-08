@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF" >
+
+    <TextView
+        android:id="@+id/login_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_login_tab"
+        android:gravity="center"
+        android:padding="8dip"
+        android:text="登录"
+        android:textColor="@color/second_color"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/register_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/login_menu"
+        android:layout_toRightOf="@id/login_menu"
+        android:gravity="center"
+        android:padding="8dip"
+        android:text="注册"
+        android:textColor="@color/second_color"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/reset_password_menu"
+        style="@style/TextTheme.tipstheme_second"
+        android:layout_alignTop="@id/login_menu"
+        android:layout_toRightOf="@id/register_menu"
+        android:gravity="center"
+        android:padding="8dip"
+        android:text="找回密码" />
+
+    <View
+        android:id="@+id/diviver"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/register_menu"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@color/theme_color" />
+
+    <jason.wondermap.view.DeletableEditText
+        android:id="@+id/user_email_input"
+        android:layout_width="wrap_content"
+        android:layout_height="48dip"
+        android:layout_alignLeft="@id/diviver"
+        android:layout_alignRight="@id/diviver"
+        android:layout_below="@+id/diviver"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/selector_edittext_account"
+        android:drawableLeft="@drawable/user_name"
+        android:drawableRight="@drawable/user_delete"
+        android:ems="10"
+        android:hint="请输入邮箱地址"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="4dip"
+        android:paddingRight="4dip"
+        android:singleLine="true" >
+
+        <requestFocus />
+    </jason.wondermap.view.DeletableEditText>
+
+    <jason.wondermap.view.DeletableEditText
+        android:id="@+id/user_password_input"
+        android:layout_width="wrap_content"
+        android:layout_height="48dip"
+        android:layout_alignLeft="@id/user_email_input"
+        android:layout_alignRight="@id/user_email_input"
+        android:layout_below="@+id/user_email_input"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/selector_edittext_account"
+        android:drawableLeft="@drawable/user_password"
+        android:drawableRight="@drawable/user_delete"
+        android:ems="10"
+        android:hint="请输入密码"
+        android:inputType="textPassword"
+        android:paddingLeft="4dip"
+        android:paddingRight="4dip"
+        android:singleLine="true" />
+
+    <jason.wondermap.view.DeletableEditText
+        android:id="@+id/user_password_input_repeat"
+        android:layout_width="wrap_content"
+        android:layout_height="48dip"
+        android:layout_alignLeft="@id/user_password_input"
+        android:layout_alignRight="@id/user_password_input"
+        android:layout_below="@+id/user_password_input"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/selector_edittext_account"
+        android:drawableLeft="@drawable/user_password"
+        android:drawableRight="@drawable/user_delete"
+        android:ems="10"
+        android:hint="请确认密码"
+        android:inputType="textPassword"
+        android:paddingLeft="4dip"
+        android:paddingRight="4dip"
+        android:singleLine="true" />
+
+    <Button
+        android:id="@+id/register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/user_password_input_repeat"
+        android:layout_alignRight="@+id/user_password_input_repeat"
+        android:layout_below="@+id/user_password_input_repeat"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/selector_logout"
+        android:text="登录"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
+
+    <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+        android:id="@+id/sm_progressbar"
+        style="@style/GPlusProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/register"
+        android:layout_alignRight="@id/register"
+        android:layout_below="@id/register"
+        android:layout_marginTop="-9dp"
+        android:indeterminate="true"
+        android:paddingLeft="1dip"
+        android:paddingRight="1dip"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tv_weibo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:clickable="true"
+            android:drawablePadding="10dp"
+            android:drawableTop="@drawable/find_friend_icon_weibo"
+            android:gravity="center"
+            android:text="新浪微博"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_qq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:clickable="true"
+            android:drawablePadding="10dp"
+            android:drawableTop="@drawable/find_friend_icon_tencent"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:text="腾讯QQ"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</RelativeLayout>

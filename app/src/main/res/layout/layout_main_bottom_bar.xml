@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_main_bottom_bar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/main_bottombar_height"
+    android:background="@android:color/transparent"
+    android:baselineAligned="false"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/btn_main_recent"
+            style="@style/BottomBar"
+            android:drawableTop="@drawable/tab_message_btn"
+            android:text="@string/main_tab_recent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/btn_main_contact"
+            style="@style/BottomBar"
+            android:drawableTop="@drawable/tab_contact_btn"
+            android:text="@string/main_tab_contact" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/btn_main_discover"
+            style="@style/BottomBar"
+            android:drawableTop="@drawable/tab_footblog"
+            android:text="@string/main_tab_footblog" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+        <Button
+            android:id="@+id/btn_main_mine"
+            style="@style/BottomBar"
+            android:drawableTop="@drawable/tab_set_btn"
+            android:text="@string/mian_tab_set" />
+    </LinearLayout>
+
+</LinearLayout>

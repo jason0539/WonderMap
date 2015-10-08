@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/icon_male" android:state_checked="true"></item>
+    <item android:drawable="@drawable/icon_female" android:state_checked="false"></item>
+
+</selector><!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/drawable/selector_sex_checkbox.xml -->

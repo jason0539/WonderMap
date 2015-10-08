@@ -1,0 +1,33 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "21.1.1"
+
+    defaultConfig {
+        applicationId "jason.wondermap"
+        minSdkVersion 11
+        targetSdkVersion 18
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
+        }
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:19.1.0'
+    compile files('libs/BaiduLBS_Android.jar')
+    compile files('libs/BmobIM_V1.1.8beta_20150408.jar')
+    compile files('libs/BmobSDK_V3.3.5_0408.jar')
+    compile files('libs/MiStats_SDK_Client_1_3_0.jar')
+    compile files('libs/mta-sdk-1.0.0.jar')
+    compile files('libs/open_sdk.jar')
+    compile files('libs/photoview-library-1.2.2.jar')
+    compile files('libs/universal-image-loader-1.9.2_sources.jar')
+    compile files('libs/weibosdkcore.jar')
+    compile files('libs/xiaomi_sdk.jar')
+}

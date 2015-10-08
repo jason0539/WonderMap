@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/colors.xml -->
+    <eat-comment/>
+    <integer-array name="gplus_colors">
+        <item>@color/gplus_color_1</item>
+        <item>@color/gplus_color_2</item>
+        <item>@color/gplus_color_3</item>
+        <item>@color/gplus_color_4</item>
+    </integer-array>
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/smooth_progressbar_defaults.xml -->
+    <eat-comment/>
+    <bool name="spb_default_mirror_mode">false</bool>
+    <bool name="spb_default_reversed">false</bool>
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/colors.xml -->
+    <eat-comment/>
+    <color name="base_action_bar_title_color">#2f2725</color>
+    <color name="base_actionbar_bg">#f5f5f5</color>
+    <color name="base_color_text_black">#3e3e39</color>
+    <color name="base_color_text_gray">#9fa0a0</color>
+    <color name="base_color_text_white">#ffffff</color>
+    <color name="base_menu_left_bg">#393c44</color>
+    <color name="base_tab_indicator_text_color">#f82c22</color>
+    <color name="c_f98800">#ed4e23</color>
+    <color name="color_bottom_bg">#272a2e</color>
+    <color name="color_bottom_text_normal">#9da0a4</color>
+    <color name="color_bottom_text_press">#4f9ef6</color>
+    <color name="color_half_transparent">#b0000000</color>
+    <color name="color_theme">#489cfa</color>
+    <color name="color_transparent_bg">#80000000</color>
+    <color name="color_transparent_bg1">#e0000000</color>
+    <color name="common_bg">#fcfcfc</color>
+    <color name="dialog_color_title">#f82c22</color>
+    <color name="gplus_color_1">#3e802f</color>
+    <color name="gplus_color_2">#427fed</color>
+    <color name="gplus_color_3">#b23424</color>
+    <color name="gplus_color_4">#f4b400</color>
+    <color name="guide_color">#898989</color>
+    <color name="home_item_color_bg">#f4f6f6</color>
+    <color name="msg_chat_bg">#eceff4</color>
+    <color name="msg_emote_divider">#ffa1a1a1</color>
+    <color name="pull_refresh_textview">#000000</color>
+    <color name="second_color">#888888</color>
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/smooth_progressbar_defaults.xml -->
+    <eat-comment/>
+    <color name="spb_default_color">#33b5e5</color>
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/colors.xml -->
+    <eat-comment/>
+    <color name="text_gray">#969696</color>
+    <color name="theme_bg_color">#f4f6f6</color>
+    <color name="theme_color">#D95555</color>
+    <color name="transparent">#00000000</color>
+    <declare-styleable name="ActionBar"><attr format="string" localization="suggested" name="title"/></declare-styleable>
+    <declare-styleable name="PullToRefresh"><attr format="reference|color" name="ptrRefreshableViewBackground"/><attr format="reference|color" name="ptrHeaderBackground"/><attr format="reference|color" name="ptrHeaderTextColor"/><attr format="reference|color" name="ptrHeaderSubTextColor"/><attr name="ptrMode"><flag name="disabled" value="0x0"/><flag name="pullFromStart" value="0x1"/><flag name="pullFromEnd" value="0x2"/><flag name="both" value="0x3"/><flag name="manualOnly" value="0x4"/><flag name="pullDownFromTop" value="0x1"/><flag name="pullUpFromBottom" value="0x2"/></attr><attr format="reference|boolean" name="ptrShowIndicator"/><attr format="reference" name="ptrDrawable"/><attr format="reference" name="ptrDrawableStart"/><attr format="reference" name="ptrDrawableEnd"/><attr format="reference|boolean" name="ptrOverScroll"/><attr format="reference" name="ptrHeaderTextAppearance"/><attr format="reference" name="ptrSubHeaderTextAppearance"/><attr name="ptrAnimationStyle"><flag name="rotate" value="0x0"/><flag name="flip" value="0x1"/></attr><attr format="reference|boolean" name="ptrScrollingWhileRefreshingEnabled"/><attr format="reference|boolean" name="ptrListViewExtrasEnabled"/><attr format="reference|boolean" name="ptrRotateDrawableWhilePulling"/><attr format="reference|color" name="ptrAdapterViewBackground"/><attr format="reference" name="ptrDrawableTop"/><attr format="reference" name="ptrDrawableBottom"/></declare-styleable>
+    <declare-styleable name="SmoothProgressBar"><attr format="reference" name="spbStyle"/><attr format="color" name="spb_color"/><attr format="dimension" name="spb_stroke_width"/><attr format="dimension" name="spb_stroke_separator_length"/><attr format="integer" name="spb_sections_count"/><attr format="float" name="spb_speed"/><attr format="enum" name="spb_interpolator"><enum name="spb_interpolator_accelerate" value="0"/><enum name="spb_interpolator_linear" value="1"/><enum name="spb_interpolator_acceleratedecelerate" value="2"/><enum name="spb_interpolator_decelerate" value="3"/></attr><attr format="boolean" name="spb_reversed"/><attr format="boolean" name="spb_mirror_mode"/><attr format="reference" name="spb_colors"/></declare-styleable>
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/dimens.xml -->
+    <eat-comment/>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="base_action_bar_height">48.0dip</dimen>
+    <dimen name="base_action_bar_title_size">22.0sp</dimen>
+    <dimen name="base_line_width">0.5dip</dimen>
+    <dimen name="base_line_width_1">1dip</dimen>
+    <dimen name="base_line_width_2">2dip</dimen>
+    <dimen name="base_scrollview_top_height">50.0dip</dimen>
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/dimens_pull2refresh.xml -->
+    <eat-comment/>
+    <dimen name="header_footer_left_right_padding">24dp</dimen>
+    <dimen name="header_footer_top_bottom_padding">12dp</dimen>
+    <dimen name="indicator_corner_radius">12dp</dimen>
+    <dimen name="indicator_internal_padding">4dp</dimen>
+    <dimen name="indicator_right_padding">10dp</dimen>
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/dimens.xml -->
+    <eat-comment/>
+    <dimen name="main_bottombar_height">60dp</dimen>
+    <dimen name="margin_chat_top">5.0dip</dimen>
+    <dimen name="message_top_height">70.0dip</dimen>
+    <dimen name="register_margin">10.0dp</dimen>
+    <dimen name="score_item_height">100.0dip</dimen>
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/smooth_progressbar_defaults.xml -->
+    <eat-comment/>
+    <dimen name="spb_default_stroke_separator_length">4dp</dimen>
+    <dimen name="spb_default_stroke_width">4dp</dimen>
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/dimens.xml -->
+    <eat-comment/>
+    <dimen name="tab_height">48dp</dimen>
+    <dimen name="tab_padding_left_right">40dp</dimen>
+    <dimen name="tab_padding_top_bottom">15dp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+    <dimen name="text_size_medium">16sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="time_line_content_left_margin">52.0dip</dimen>
+    <dimen name="time_line_content_right_margin">7.0dip</dimen>
+    <dimen name="time_line_line_left_margin">24dip</dimen>
+    <dimen name="time_line_line_width">2.0dip</dimen>
+    <dimen name="userinfo_fragment_layout_pading">10dp</dimen>
+    <dimen name="userinfo_fragment_userhead_item_minheight">80dp</dimen>
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/ids_pull2refresh.xml -->
+    <eat-comment/>
+    <item name="gridview" type="id"/>
+    <item name="scrollview" type="id"/>
+    <item name="webview" type="id"/>
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/smooth_progressbar_defaults.xml -->
+    <eat-comment/>
+    <integer name="spb_default_interpolator">0</integer>
+    <integer name="spb_default_sections_count">4</integer>
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="about_me">开发者</string>
+    <string name="about_weibo">微博</string>
+    <string name="accept_tips">用户你好:
+        \n在使用活点地图前，请您阅读本服务条款
+        \n1、活点地图尊重并保护所有用户的隐私，除非经您亲自许可，不会披露您的个人隐私资料
+        \n2、为了显示您在地图上的位置，需要获取您的位置信息，如果系统提示活点地图需要访问您的位置，建议允许访问，否则无法正常定位您的位置
+        \n\n感谢您的使用。</string>
+    <string name="action_settings">Settings</string>
+    <string name="add_age">年龄</string>
+    <string name="add_avator">头像</string>
+    <string name="add_friend">添加好友</string>
+    <string name="add_gender">性别</string>
+    <string name="add_name">名字</string>
+    <string name="add_name_hint">请输入昵称…</string>
+    <string name="add_phone_number">手机</string>
+    <string name="app_name">活点地图-好友定位</string>
+    <string name="app_slogan">随时随地看见TA</string>
+    <string name="black_tips">已添加至黑名单，你将不再收到对方的消息!</string>
+    <string name="blacklist">黑名单</string>
+    <string name="browse_footblog">查看足迹</string>
+    <string name="camera">拍摄</string>
+    <string name="chat">发起会话</string>
+    <string name="confirm_info">确认资料</string>
+    <string name="confirm_info_tips">请点击编辑以上资料，完成后确认</string>
+    <string name="contact_recommend">好友推荐</string>
+    <string name="empty_tips_footblog">"还没有足迹哟\n足迹页能看到好友和自己发布的足迹"</string>
+    <string name="empty_tips_recommend">"没有更多通讯录好友在用\n做吃螃蟹的第一人\n向好友推荐一下吧↓"</string>
+    <string name="exit_tips">确认要退出么？</string>
+    <string name="feedback_commit">提交建议</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="location">位置</string>
+    <string name="login">登录</string>
+    <string name="login_account">账号 </string>
+    <string name="login_email">确认密码 </string>
+    <string name="login_email_hint">请在此输入密码…</string>
+    <string name="login_password_hint">请输入密码…</string>
+    <string name="login_pwd">密码 </string>
+    <string name="login_username_hint">请输入用户名…</string>
+    <string name="logout">退出登陆</string>
+    <string name="longclick_speak">长按说话</string>
+    <string name="main_tab_contact">好友</string>
+    <string name="main_tab_footblog">足迹</string>
+    <string name="main_tab_recent">会话</string>
+    <string name="message_search_hint">搜索…</string>
+    <string name="mian_tab_set">设置</string>
+    <string name="near_people">附近的人</string>
+    <string name="network_tips">当前网络不可用,请检查您的网络!</string>
+    <string name="new_friends">好友请求</string>
+    <string name="phone_number_tips">(手机号仅本人可见，用来推荐好友，建议填写)</string>
+    <string name="picture">照片</string>
+    <string name="pop_choose">从手机相册选中</string>
+    <string name="pop_photo">拍照</string>
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/pull_refresh_strings.xml -->
+    <eat-comment/>
+    <string name="pull_to_refresh_from_bottom_pull_label">@string/pull_to_refresh_pull_label</string>
+    <string name="pull_to_refresh_from_bottom_refreshing_label">@string/pull_to_refresh_refreshing_label</string>
+    <string name="pull_to_refresh_from_bottom_release_label">@string/pull_to_refresh_release_label</string>
+    <string name="pull_to_refresh_pull_label" translatable="false">向下拉动可以刷新</string>
+    <string name="pull_to_refresh_refreshing_label" translatable="false">加载中…</string>
+    <string name="pull_to_refresh_release_label" translatable="false">松开可以刷新</string>
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="recommend_friend">推荐给好友</string>
+    <string name="register">注册</string>
+    <string name="register_txt1">还没有账号？</string>
+    <string name="register_txt2">立即注册 ></string>
+    <string name="search">搜索</string>
+    <string name="send_state">已读</string>
+    <string name="set_about">关于活点地图</string>
+    <string name="set_blacklist">黑名单</string>
+    <string name="set_favourite">足迹收藏</string>
+    <string name="set_feedback">意见反馈</string>
+    <string name="set_myinfo">个人资料</string>
+    <string name="set_notify">消息通知</string>
+    <string name="set_setting">消息通知</string>
+    <string name="set_vibrate">震动</string>
+    <string name="set_voice">声音</string>
+    <string name="show_notice">\t\t\t\t\t自V1.0.6版本开始，应用源码中将不再公开ApplicationId,开发者请自行到官网申请。\n\t\t\t\t\t申请成功之后在应用程序启动页(SplashActivity)进行初始化操作!</string>
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/smooth_progressbar_defaults.xml -->
+    <eat-comment/>
+    <item format="float" name="spb_default_speed" type="string">1.0</item>
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="tips">提示</string>
+    <string name="tips_maphome_allorfriends">这里很重要啊\n在这里切换地图显示类型，有两种类型\n1、好友地图：显示所有好友，无论是否在线，都会显示在地图上，如果只关心亲近的朋友的位置，建议加为好友然后切换到好友地图，这样就不显示陌生人啦\n2、在线地图：显示目前所有在线的人，包括陌生人和在线好友</string>
+    <string name="tips_maphome_big">长按地图上的点，放大更精确\n试试吧</string>
+    <string name="tips_maphome_location">点击：视图平移到我的位置\n长按：平移并放大视图到我的位置\n记得有长按功能哦～</string>
+    <string name="tips_maphome_maptype">切换卫星地图和普通地图</string>
+    <string name="tips_maphome_small">还可以长按哦～\n长按可以直接缩放到全国视图\n试试吧</string>
+    <string name="toast_error_comfirm_password">输入的两次密码不一致</string>
+    <string name="toast_error_password_null">密码不能为空</string>
+    <string name="toast_error_username_null">用户名不能为空</string>
+    <string name="userinfo_fragment_edit">这个家伙很懒，什么也没写</string>
+    <string name="userinfo_fragment_signs">个性签名</string>
+    <string name="username">用户名</string>
+    <string name="voice_cancel_tips">松开手指，取消发送</string>
+    <string name="voice_seconds_tips">还可以说%1$s秒</string>
+    <string name="voice_short_tips">录音时间太短</string>
+    <string name="voice_up_tips">手指上滑,取消发送</string>
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/xiaomi_strings.xml -->
+    <eat-comment/>
+    <string name="xiaomi_bytes_unit"><ns1:g id="size">%1$s</ns1:g>B</string>
+    <string name="xiaomi_external_storage_unavailable">Storage unavailable, please check the SD card.</string>
+    <string name="xiaomi_kilobytes_unit"><ns1:g id="size">%1$s</ns1:g>KB</string>
+    <string name="xiaomi_megabytes_unit"><ns1:g id="size">%1$s</ns1:g>MB</string>
+    <string name="xiaomi_update_dialog_message">Introducing version <ns1:g id="version_name">%1$s</ns1:g>\nSize: <ns1:g id="app_size">%2$s</ns1:g></string>
+    <string name="xiaomi_update_dialog_message_diff">Introducing version <ns1:g id="version_name">%1$s</ns1:g>\nDelta update size: <ns1:g id="app_size">%2$s</ns1:g></string>
+    <string name="xiaomi_update_dialog_title"><ns1:g id="app_name">%1$s</ns1:g> update!</string>
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="xlistview_footer_hint_normal">查看更多</string>
+    <string name="xlistview_footer_hint_ready">松开载入更多</string>
+    <string name="xlistview_header_hint_loading">正在加载…</string>
+    <string name="xlistview_header_hint_normal">下拉刷新</string>
+    <string name="xlistview_header_hint_ready">松开刷新数据</string>
+    <string name="xlistview_header_last_time">上次更新时间：</string>
+    <!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="ActionBar">
+        <item name="android:orientation">horizontal</item>
+        <!-- <item name="android:background">@drawable/top_bar</item> -->
+        <item name="android:background">@color/theme_color</item> <!-- 标题栏颜色 -->
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_height">@dimen/base_action_bar_height</item>
+    </style>
+    <style name="ActionBarTitle">
+        <item name="android:textSize">@dimen/base_action_bar_title_size</item>
+        <item name="android:textColor">@color/base_color_text_white</item>
+        <item name="android:gravity">left|center</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:drawablePadding">1.0dip</item>
+    </style>
+    <style name="Animations"/>
+    <style name="Animations.GrowFromBottom">
+        <item name="@android:windowEnterAnimation">@anim/grow_from_bottom</item>
+        <item name="@android:windowExitAnimation">@anim/shrink_from_top</item>
+    </style>
+    <style name="AppBaseTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:windowBackground">@color/theme_color</item>
+    </style>
+    <style name="BottomBar">
+        <item name="android:background">@android:color/white</item>
+        <item name="android:padding">5dip</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="DialogWindowTitle">
+        <item name="android:maxLines">1</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:textAppearance">@style/TextAppearance.DialogWindowTitle</item>
+    </style>
+    <style name="FootblogBottomTextview">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">4dip</item>
+        <item name="android:layout_marginLeft">8dip</item>
+        <item name="android:layout_marginRight">8dip</item>
+        <item name="android:layout_marginTop">4dip</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#888888</item>
+    </style>
+    <style name="FootblogTopTextview">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">4dip</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginRight">4dip</item>
+        <item name="android:textColor">#888888</item>
+    </style>
+    <style name="GPlusProgressBar" parent="ProgressBar.Horizontal">
+        <item name="spb_stroke_separator_length">12dp</item>
+        <item name="spb_sections_count">4</item>
+        <item name="spb_speed">0.7</item>
+        <item name="spb_interpolator">spb_interpolator_linear</item>
+        <item name="spb_colors">@array/gplus_colors</item>
+    </style>
+    <style name="ProgressBar.Horizontal" parent="@android:style/Widget.ProgressBar.Horizontal"/>
+    <style name="Register_Edit">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1.0</item>
+        <item name="android:layout_marginLeft">@dimen/register_margin</item>
+        <item name="android:background">@color/transparent</item>
+    </style>
+    <style name="Register_Input">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@drawable/base_edit_input</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/base_action_bar_height</item>
+        <item name="android:layout_marginTop">@dimen/register_margin</item>
+        <item name="android:layout_marginLeft">@dimen/register_margin</item>
+        <item name="android:layout_marginRight">@dimen/register_margin</item>
+    </style>
+    <style name="SetFragment"/>
+    <style name="SetFragment.Item" parent="Userinfo.Item">
+        <item name="android:padding">10dp</item>
+    </style>
+    <style name="Smile">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="Smile.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/base_action_bar_height</item>
+    </style>
+    <style name="Smile.Button.logout" parent="Smile.TextView._White">
+        <item name="android:background">@drawable/btn_logout_selector</item>
+    </style>
+    <style name="Smile.Button.theme" parent="Smile.TextView._White">
+        <item name="android:background">@drawable/btn_login_selector</item>
+    </style>
+    <style name="Smile.ImageView">
+        <item name="android:contentDescription">@string/app_name</item>
+    </style>
+    <style name="Smile.ImageView.Photo_Large">
+        <item name="android:layout_width">75dp</item>
+        <item name="android:layout_height">75dp</item>
+        <item name="android:scaleType">fitXY</item>
+    </style>
+    <style name="Smile.ImageView.Photo_Middle">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:scaleType">fitXY</item>
+    </style>
+    <style name="Smile.ImageView.Photo_Small">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:scaleType">fitXY</item>
+    </style>
+    <style name="Smile.TextView">
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="Smile.TextView._Black">
+        <item name="android:textColor">@color/base_color_text_black</item>
+    </style>
+    <style name="Smile.TextView._Gray">
+        <item name="android:textColor">@color/base_color_text_gray</item>
+    </style>
+    <style name="Smile.TextView._Orange">
+        <item name="android:textColor">@color/dialog_color_title</item>
+    </style>
+    <style name="Smile.TextView._White">
+        <item name="android:textColor">@color/base_color_text_white</item>
+    </style>
+    <style name="Smile.View_margin">
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+    </style>
+    <style name="TextAppearance">
+        <item name="android:textColor">#000000</item>
+        <item name="android:textColorHighlight">#FFFFFF</item>
+        <item name="android:textColorHint">#FFFFFF</item>
+        <item name="android:textColorLink">#FFFFFF</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="TextAppearance.DialogWindowTitle">
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="TextTheme">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:shadowColor">#00000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">0</item>
+        <item name="android:shadowRadius">0</item>
+        <item name="android:background">@null</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#242424</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="TextTheme.tipstheme">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="TextTheme.tipstheme_buttontext">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="TextTheme.tipstheme_second">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#888888</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="Userinfo"/>
+    <style name="Userinfo.Item">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/selector_settings_item_down</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:clickable">false</item>
+    </style>
+    <style name="Userinfo.Item.Textview" parent="TextTheme.tipstheme">
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingTop">8dp</item>
+    </style>
+    <style name="alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowTitleStyle">@style/DialogWindowTitle</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <style name="chat_content_date_style">
+        <item name="android:minHeight">50dp</item>
+        <item name="android:gravity">left|center</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:lineSpacingExtra">2dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:background">#bfbfbf</item>
+    </style>
+    <style name="chat_text_date_style">
+        <item name="android:padding">2dp</item>
+        <item name="android:paddingTop">2dip</item>
+        <item name="android:paddingBottom">2dip</item>
+        <item name="android:paddingLeft">12dip</item>
+        <item name="android:paddingRight">12dip</item>
+        <item name="android:textColor">@color/base_color_text_white</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:background">@drawable/chat_time_block</item>
+    </style>
+    <style name="chat_text_name_style">
+        <item name="android:textColor">#818181</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>
