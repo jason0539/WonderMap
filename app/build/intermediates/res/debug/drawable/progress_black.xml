@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<animated-rotate
-          xmlns:android="http://schemas.android.com/apk/res/android" 
-          android:drawable="@drawable/refresh_black" 
-          android:pivotX="50%"
-	      android:pivotY="50%" /><!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/drawable/progress_black.xml -->

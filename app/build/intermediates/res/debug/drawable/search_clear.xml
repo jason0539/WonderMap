@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true" android:drawable="@drawable/search_clear_pressed" />
-    <item android:drawable="@drawable/search_clear_normal" />
-</selector><!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/drawable/search_clear.xml -->

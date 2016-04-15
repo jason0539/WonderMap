@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:drawable="@drawable/fav_edit_pressed" android:state_pressed="true"/>
-    <item android:drawable="@drawable/fav_edit_pressed" android:state_focused="true"/>
-    <item android:drawable="@drawable/fav_edit_default"/>
-
-</selector><!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/drawable/btn_footblog_add_blog_selector.xml -->

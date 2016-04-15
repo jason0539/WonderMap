@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:drawable="@drawable/edittext_normal" android:state_window_focused="false"></item>
-    <item android:drawable="@drawable/edittext_focus" android:state_focused="true"></item>
-
-</selector><!-- From: file:/Users/baidu/MyStudys/AndroidStudioProjects/Wondermap/app/src/main/res/drawable/selector_edittext.xml -->
