@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jason.wondermap"
-    android:versionCode="105111033"
-    android:versionName="1.0511.1033" >
+    android:versionCode="1"
+    android:versionName="1.0.0" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -92,15 +92,7 @@
         <!-- 地图服务验证 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="784FwY2gl6Wh4tIyWg639AGl" />
-        <!-- eclipse调试使用 -->
-        <!-- 784FwY2gl6Wh4tIyWg639AGl -->
-
-
-        <!-- ant签名打包使用 -->
-        <!-- QOHuuTEiozH0tib8YO0t51Go -->
-        <!-- BaiduMap end -->
-
+            android:value="V6hZVGGivGaGAF2Ag2B0S9vZ4pjOI1pe" />
 
         <!-- IM聊天所需的Push start -->
         <service

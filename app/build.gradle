@@ -10,12 +10,26 @@ android {
         targetSdkVersion 18
     }
 
+    signingConfigs {
+        wmConfig {
+            storeFile file("wmkeystore.jks")
+            storePassword "wondermap"
+            keyAlias "wondermap"
+            keyPassword "wondermap"
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.wmConfig
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
         }
+        debug {
+            signingConfig signingConfigs.wmConfig
+        }
     }
+
 }
 
 dependencies {

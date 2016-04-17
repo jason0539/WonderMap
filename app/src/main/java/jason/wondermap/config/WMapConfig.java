@@ -8,7 +8,9 @@ package jason.wondermap.config;
  */
 public class WMapConfig {
 	// 这是Bmob的ApplicationId,用于初始化操作
-	public static String applicationId = "97d9b9786bc2ce1cddf8dddfe81a5d29";
+	////	public static String applicationId = "97d9b9786bc2ce1cddf8dddfe81a5d29";
+	public static String applicationId = "62895bc89db57fd7bb5afb7ee6ca4962";
+	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝qq==========================
 	public static String qqAppId = "100394363";// qq sdk申请的应用id
 	// ＝＝＝＝＝＝＝＝＝＝＝＝＝＝weibo==========================
 	public static String weiboAppId = "999019798";// weibo sdk申请的应用id
